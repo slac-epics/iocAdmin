@@ -1,0 +1,54 @@
+Instructions for iocAdmin users                    Last Updated 06/29/2007
+--------------------------------
+
+The iocAdmin package contains databases and libraries to add ioc administration
+PVs (including STARTTOD (ioc start time), TOD (time-of-day that updates 
+every second), SYSRESET (ioc restart command), access security PVs, etc) to an 
+ioc application.
+
+iocAdmin also provides access.db, the database that defines possible
+access modes (Running, Maintenance, Test, OFFLINE), for both iocs 
+and devices (beamline and other devices).
+
+Also provided is baseSecurity.acf, an access control file with ioc-related
+access rules and groups.
+
+I - Adding the iocAdmin package to your IOC application:
+-------------------------------------------------------
+
+(1) Add IOCADMIN to configure/RELEASE and clean/rebuild configure:
+
+IOCADMIN=/afs/slac/g/lcls/build/epics/modules/iocAdmin/iocAdmin-R<release>
+
+(2) Link the iocAdmin library into your app by adding to xxxApp/src/Makefile:
+
+   xxx_LIBS += iocAdmin
+
+(3) Add the following .dbd files to xxxApp/src/Makefile 
+    or to xxxApp/src/xxxInclude.dbd:
+
+   xxx_DBD += iocAdmin.dbd
+
+(4) Install the iocAdmin database by adding to xxxApp/Db/Makefile:
+
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdmin.db
+   DB_INSTALLS += $(IOCADMIN)/db/access.db        (only if used for devices)
+   DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
+
+(5) Optional - include baseSecurity.acf in any existing acf file that is
+    built in the ioc application.
+
+II - Adding iocAdmin to your IOC startup file:
+-----------------------------------------------
+
+(1) Add iocAdmin database to st.cmd (before iocInit):
+
+    dbLoadRecords("db/iocAdmin.db", "IOC=<iocname>")
+
+(2) If baseSecurity.acf is not included in the ioc application's own
+    acf file, add these lines (before iocInit):
+
+    asSetFilename("<path>/db/baseSecurity.acf")
+    asSetSubstitutions("IOC=<iocname>")
+
+    where <path> must be absolute.
