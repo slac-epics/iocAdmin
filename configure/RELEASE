@@ -14,7 +14,7 @@ EPICS_SITE_TOP=/nfs/slac/g/lcls/build/epics
 # ===========================================================
 # Define the cvs module version that you will use
 # ==========================================================
-BASE_MODULE_VERSION=base-R3-14-8-2-lcls2
+BASE_MODULE_VERSION=base-R3-14-9-lcls1
 
 
 # =================================================================
