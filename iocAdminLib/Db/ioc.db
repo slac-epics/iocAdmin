@@ -188,17 +188,6 @@ record(ao, "$(IOCNAME):MEM_UPD_TIME") {
   field(VAL, "10")
 }
 
-record(calc, "$(IOCNAME):SYS_SEVR_SUM") {
-  field(DESC, "System Status")
-  field(SCAN, "2 second")
-  field(CALC, "A+B+C+D+E")
-  field(INPA, "$(IOCNAME):CA_CONN_CNT.SEVR  NPP MS")
-  field(INPB, "$(IOCNAME):CA_CLNT_CNT.SEVR  NPP MS")
-  field(INPC, "$(IOCNAME):MEM_BLK_FREE.SEVR  NPP MS")
-  field(INPD, "$(IOCNAME):LOAD.SEVR  NPP MS")
-  field(INPE, "$(IOCNAME):FD_FREE.SEVR NPP MS")
-}
-
 record(stringin, "$(IOCNAME):ST_SCRIPT1") {
   field(DESC, "Startup Script Part1")
   field(DTYP, "IOC stats")
