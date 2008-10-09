@@ -55,6 +55,9 @@
 extern struct mbstat mbstat;
 extern struct ifnet  *ifnet;
 
+static uint32_t prev_total = 0;
+static uint32_t prev_idle  = 0;
+
 /* Heap implementation changed; we should use
  * malloc_free_space() which handles these changes
  * transparently but then we don't get the
@@ -148,10 +151,81 @@ Objects_Locations l;
 	}
 	return (n);
 }
+
+/*
+ * The following CPU usage logic from Phil Sorensen at CHESS
+ *
+ * The cpu usage is done the same way as in cpukit/libmisc/cpuuse
+ * from the RTEMS source.
+ */
+
+static void cpu_ticks(uint32_t *total, uint32_t *idle)
+{
+     Objects_Information *obj;
+     Thread_Control     *tc;
+
+     int   x, y;
+     char *name;
+
+     *total = 0;
+     *idle = 0;
+
+     for(x = 1; x <= OBJECTS_APIS_LAST; x++) {
+	  if(!_Objects_Information_table[x]) {
+	       continue;
+	  }
+
+	  obj = _Objects_Information_table[x][1];
+	  if(obj) {
+	       for(y = 1; y <= obj->maximum; y++) {
+		    tc = (Thread_Control *)obj->local_table[y];
+		    if(tc) {
+			 *total += tc->ticks_executed; 
+
+			 if(obj->is_string) {
+			      name = tc->Object.name;
+			      if( name[0] == 'I' && name[1] == 'D' &&
+				  name[2] == 'L' && name[3] == 'E' ) {
+				   *idle = tc->ticks_executed;
+			      }
+			 }
+		    }
+	       }
+	  }
+     }
+}
+ 
+static int getCpuUsageInit(void)
+{
+     cpu_ticks(&prev_total, &prev_idle);
+
+     return 0;
+}
+
+static double getCpuUsage(void)
+{
+     uint32_t total;
+     uint32_t idle;
+     double   delta_total;
+     double   delta_idle;
+
+
+     cpu_ticks(&total, &idle);
+
+     delta_total = (double)total - prev_total;
+     delta_idle = (double)idle - prev_idle;
+
+     prev_total = total;
+     prev_idle = idle;
+
+     return 100.0 - (delta_idle * 100.0 / delta_total);
+}
+
 const struct devIocStatsVirtualOS devIocStatsRTEMSOS = 
-    {0, 0, 0,
+    {getCpuUsageInit, 0, 0, 0,
      getMemInfo,
      getSuspendedTasks,
+     getCpuUsage,
      getClustInfo,
      getTotalClusts,
      getIFErrors};

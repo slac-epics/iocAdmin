@@ -43,10 +43,6 @@
 #define ENGINEER "ENGINEER"
 #define LOCATION "LOCATION"
 #define LOGNAME  "LOGNAME"
-/* Allow compiler to set CPU monitoring spin loop burn period, 0 = disable */
-#ifndef SECONDS_TO_BURN
-#define SECONDS_TO_BURN 5
-#endif
 
 #include "devIocStatsOSD.h"
 
@@ -61,6 +57,10 @@ typedef int clustInfo[2][CLUSTSIZES][4];
  */
 typedef struct devIocStatsVirtualOS {
   /*
+   * Called at ai_init for any initialization needed for the other routines.
+   */
+  int  (*pInit)        (void);
+  /*
    * Get strings for startup script, engineer, and location
    */
   void (*pGetSScript)  (char ***sp, char ***st);
@@ -74,6 +74,10 @@ typedef struct devIocStatsVirtualOS {
    * Get number of suspended tasks
    */
   int (*pGetSuspendedTasks) (void);
+  /*
+   * Get CPU usage
+   */
+  double (*pGetCpuUsage) (void);
   /*
    * Get cluster information and IF errors
    */

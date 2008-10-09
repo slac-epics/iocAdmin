@@ -241,11 +241,13 @@ static int getSuspendedTasks(void)
  * used by bind in devIocStats.c
  */
 const devIocStatsVirtualOS devIocStatsVxWorksOS = 
-    {getSScript,
+    {0, /* no initialization routine */
+     getSScript,
      getEngineer,
      getLocation,
      getMemInfo,
      getSuspendedTasks,
+     0, /* no cpu usage routine */
      getClustInfo,
      getTotalClusts,
      getIFErrors};
