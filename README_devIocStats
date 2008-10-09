@@ -1,4 +1,4 @@
-README_devIocStats		Last Updated 10/03/2008
+README_devIocStats		Last Updated 10/09/2008
 ------------------
 
 I - General Notes on devIocStats - All Operating Systems
@@ -123,8 +123,26 @@ Memory / Heap Statistics
   has not been implemented (although it would be
   straightforward to do).
 
-CPU Load Estimate
-=================
+CPU Load Estimate from the IDLE Task (from Phil Sorensen at CHESS)
+====================================
+
+-  The cpu usage is done the same way as in cpukit/libmisc/cpuuse
+   from the RTEMS source.
+
+-  Comment from Till:
+	The way they determine CPU usage is more appropriate
+	but only so if the 'billing' algorithm has access to a high
+	resolution clock. This is the case for powerpc under 4.9.
+	The code would have to be modified to make use of the
+	high resolution clock however.
+
+	If no high resolution clock is available the 'billing' is always
+	in ticks even if no full tick period is used. This tends to show
+	too high usage numbers.
+
+
+CPU Load Estimate using the cpuBurn Method
+==========================================
 
 - The CPU load estimate works as follows:
 
