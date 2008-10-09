@@ -103,9 +103,11 @@ III - Adding iocAdmin to CA Clients:
 	<iocname>:CLUST_1_0_2
 	<iocname>:CLUST_1_1_2
 
-(4) Alarm Handler - add logic for the IOC heartbeat to the ALH soft IOC 
-    (via email to Judy Rock).  Add the IOC to the "NETWORK" subgroup for all 
-    applicable machine areas with the following PVs:
+(4) Alarm Handler - add logic for the IOC heartbeat (that creates the 
+    HEARTBEATSUM record) to the ALH soft IOC (via email to Judy Rock).  Add 
+    the IOC to the "NETWORK" subgroup for all applicable machine areas with 
+    the following PVs and include them in <iocname>:STATSUMY on the ALH soft 
+    IOC:
 
 	<iocname>:CA_CLNT_CNT
 	<iocname>:CA_CONN_CNT
@@ -114,3 +116,4 @@ III - Adding iocAdmin to CA Clients:
 	<iocname>:LOAD
 	<iocname>:MEM_BLK_FREE
 	<iocname>:HEARTBEATSUM (from the ALH soft IOC)
+
