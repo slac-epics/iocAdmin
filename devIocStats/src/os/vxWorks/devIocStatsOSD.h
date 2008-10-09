@@ -48,6 +48,11 @@
 #define FDTABLE_INUSE(i) (fdTable[i].inuse)
 #define CLUSTSIZES 10
 #endif
+/* Must use cpuBurn to determine cpu usage */
+#ifndef  SECONDS_TO_BURN
+#define SECONDS_TO_BURN 5
+#endif
+
 typedef MEM_PART_STATS memInfo;
 
 extern char *sysBootLine;
