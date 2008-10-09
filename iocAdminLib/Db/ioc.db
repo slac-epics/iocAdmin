@@ -98,10 +98,9 @@ record(ai, "$(IOCNAME):LOAD") {
   field(DTYP, "IOC stats")
   field(INP, "@cpu")
   field(EGU, "%")
-  field(PREC, "1")
   field(HOPR, "100")
   field(HIHI, "80")
-  field(HIGH, "50")
+  field(HIGH, "70")
   field(HHSV, "MAJOR")
   field(HSV, "MINOR")
 }
@@ -298,7 +297,6 @@ record(ai, "$(IOCNAME):DAT_MBUF_FREE") {
   field(DTYP, "IOC stats")
   field(SCAN, "I/O Intr")
   field(EGU, "%")
-  field(PREC, "1")
   field(INP, "@min_data_mbuf")
 }
 
@@ -314,7 +312,6 @@ record(ai, "$(IOCNAME):SYS_MBUF_FREE") {
   field(DTYP, "IOC stats")
   field(SCAN, "I/O Intr")
   field(EGU, "%")
-  field(PREC, "1")
   field(INP, "@min_sys_mbuf")
 }
 
