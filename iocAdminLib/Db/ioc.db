@@ -74,7 +74,6 @@ record(ai, "$(IOCNAME):FD_MAX") {
 record(ai, "$(IOCNAME):FD_CNT") {
   field(DESC, "Allocated File Descriptors")
   field(SCAN, "I/O Intr")
-  field(PINI, "YES")
   field(DTYP, "IOC stats")
   field(FLNK, "$(IOCNAME):FD_FREE.VAL  PP MS")
   field(INP, "@fd")
