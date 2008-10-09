@@ -43,24 +43,6 @@
  *
  * Modifications for LCLS/SPEAR at SLAC:
  * ----------------
- *  08-08-26    Till Straumann, ported to RTEMS.
- *
- *              RTEMS notes:
- *                - RTEMS also uses a 'workspace' memory
- *                  area which is independent of the malloc heap.
- *                  Some system-internal data structures are
- *                  allocated from the workspace area.
- *                  So far, support for monitoring the workspace area 
- *                  has not been implemented (although it would be
- *                  straightforward to do.
- *
- *              The RTEMS/BSD stack has only one pool of mbufs
- *              and only uses two sizes: MSIZE (128b) for 'ordinary'
- *              mbufs, and MCLBYTES (2048b) for 'mbuf clusters'.
- *                 Therefore, the 'data' pool is empty. However,
- *              the calculation of MinDataMBuf always shows usage
- *              info of 100% free (but 100% of 0 is still 0).
- *
  *  08-09-29    Stephanie Allison - moved os-specific parts to
  *              os/<os>/devIocStatsOSD.h and devIocStatsOSD.c.  Added reboot.
  *              Split into devIocStatsAnalog, devIocStatsString,
@@ -368,12 +350,14 @@ static void cpuUsageTask(void *parm)
 
 static void cpuUsageStartMeasurement()
 {
-        if(cpuUsage.didNotComplete && cpuUsage.nBurnNow==0)
-	{
+        if (cpuUsage.startSem)
+        {
+          if(cpuUsage.didNotComplete && cpuUsage.nBurnNow==0)
+          {
 		cpuUsage.usage = 100.0;
-	}
-	else
-	{
+          }
+          else
+          {
 		double temp;
 		double ticksNow,nBurnNow;
 
@@ -384,9 +368,17 @@ static void cpuUsageStartMeasurement()
 		temp = 100.0 * temp/ticksNow;
 		if(temp<0.0 || temp>100.0) temp=0.0;/*take care of tick overflow*/
 		cpuUsage.usage = temp;
-	}
-	cpuUsage.didNotComplete = TRUE;
-	epicsEventSignal(cpuUsage.startSem);
+          }
+          cpuUsage.didNotComplete = TRUE;
+          epicsEventSignal(cpuUsage.startSem);
+        }
+        else
+        {
+          if (pdevIocStatsVirtualOS->pGetCpuUsage)
+            cpuUsage.usage = (*pdevIocStatsVirtualOS->pGetCpuUsage)();
+          else
+            cpuUsage.usage = 0.0;
+        }
 }
 
 static void cpuUsageInit(void)
@@ -407,14 +399,14 @@ static void cpuUsageInit(void)
               {
 		cpuBurn();
 		epicsTimeGetCurrent(&tEnd);
-		if ( epicsTimeDiffInSeconds(&tEnd, &tStart) >= tToWait ) break;
+                cpuUsage.tNow = epicsTimeDiffInSeconds(&tEnd, &tStart);
+		if (cpuUsage.tNow >= tToWait ) break;
 		nBurnNoContention++;
               }
               cpuUsage.nBurnNoContention = nBurnNoContention;
               cpuUsage.nBurnNow          = nBurnNoContention;
               cpuUsage.startSem = epicsEventMustCreate(epicsEventFull);
-              cpuUsage.tNoContention = tToWait;
-              cpuUsage.tNow          = tToWait;
+              cpuUsage.tNoContention = cpuUsage.tNow;
   /*
    * FIXME: epicsThreadPriorityMin is not really the lowest
    *        priority. We could use a native call to
@@ -458,6 +450,7 @@ static long ai_init(int pass)
 #ifdef USE_TASKFAULT
         taskwdAnyInsert(NULL, taskFault, NULL);
 #endif
+        if (pdevIocStatsVirtualOS->pInit) (*pdevIocStatsVirtualOS->pInit)();
 	return 0;
 }
 
@@ -711,12 +704,8 @@ static void statsMaxFree(double* val)
 }
 static void statsProcessLoad(double* val)
 {
-        if (cpuUsage.startSem) {
-          cpuUsageStartMeasurement();
-          *val=cpuUsage.usage;
-        } else {
-          *val = 0.0;
-        } 
+        cpuUsageStartMeasurement();
+        *val=cpuUsage.usage;
 }
 static void statsSuspendedTasks(double *val)
 {

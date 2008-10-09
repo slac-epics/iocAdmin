@@ -5,9 +5,11 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
-# Disable CPU monitoring via low priority spin 
-# by setting SECONDS_TO_BURN to 0 
-#USR_CFLAGS += -DSECONDS_TO_BURN=0
+# Enable CPU monitoring via low priority spin 
+# by setting SECONDS_TO_BURN > 0.  For vxWorks, SECONDS_TO_BURN will
+# default to 5 if this is not defined.  For RTEMS, when SECONDS_TO_BURN
+# is not defined, IDLE task usage is used. 
+#USR_CFLAGS += -DSECONDS_TO_BURN=5
 
 # Not all RTEMS BSPs provide rtemsReboot - use epicsExit instead.
 USR_CFLAGS_RTEMS-uC5282 += -DUSE_epicsExit
