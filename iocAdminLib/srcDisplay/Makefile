@@ -6,6 +6,7 @@ include $(TOP)/configure/CONFIG
 # Low-level stats displays
 EDLS += ioc_stats.edl
 EDLS += ioc_stats_clust.edl
+EDLS += ioc_stats_limits.edl
 EDLS += ioc_stats_reboot_confirm.edl
 
 # IOC display per type of IOC
