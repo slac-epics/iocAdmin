@@ -55,8 +55,8 @@
 extern struct mbstat mbstat;
 extern struct ifnet  *ifnet;
 
-static uint32_t prev_total = 0;
-static uint32_t prev_idle  = 0;
+static double prev_total = 0;
+static double prev_idle  = 0;
 
 /* Heap implementation changed; we should use
  * malloc_free_space() which handles these changes
@@ -66,6 +66,12 @@ static uint32_t prev_idle  = 0;
 #if   (__RTEMS_MAJOR__ > 4) \
    || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
 #define RTEMS_MALLOC_IS_HEAP
+#include <rtems/score/protectedheap.h>
+typedef char objName[13];
+#define RTEMS_OBJ_GET_NAME(tc,name) rtems_object_get_name((tc)->Object.id, sizeof(name),(name));
+#else
+typedef char * objName;
+#define RTEMS_OBJ_GET_NAME(tc,name) name = (tc)->Object.name;
 #endif
 
 static int getMemInfo(memInfo *s)
@@ -159,13 +165,13 @@ Objects_Locations l;
  * from the RTEMS source.
  */
 
-static void cpu_ticks(uint32_t *total, uint32_t *idle)
+static void cpu_ticks(double *total, double *idle)
 {
      Objects_Information *obj;
      Thread_Control     *tc;
 
      int   x, y;
-     char *name;
+     objName name;
 
      *total = 0;
      *idle = 0;
@@ -180,13 +186,22 @@ static void cpu_ticks(uint32_t *total, uint32_t *idle)
 	       for(y = 1; y <= obj->maximum; y++) {
 		    tc = (Thread_Control *)obj->local_table[y];
 		    if(tc) {
-			 *total += tc->ticks_executed; 
-
+#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+			 *total += tc->cpu_time_used.tv_sec;
+			 *total += tc->cpu_time_used.tv_nsec/1E9;
+#else
+			 *total += (double)tc->ticks_executed;
+#endif 
 			 if(obj->is_string) {
-			      name = tc->Object.name;
+			      RTEMS_OBJ_GET_NAME( tc,  name );
 			      if( name[0] == 'I' && name[1] == 'D' &&
 				  name[2] == 'L' && name[3] == 'E' ) {
-				   *idle = tc->ticks_executed;
+#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+				   *idle = tc->cpu_time_used.tv_sec;
+				   *idle = tc->cpu_time_used.tv_nsec/1E9;
+#else
+				   *idle = (double)tc->ticks_executed;
+#endif
 			      }
 			 }
 		    }
@@ -204,16 +219,16 @@ static int getCpuUsageInit(void)
 
 static double getCpuUsage(void)
 {
-     uint32_t total;
-     uint32_t idle;
+     double   total;
+     double   idle;
      double   delta_total;
      double   delta_idle;
 
 
      cpu_ticks(&total, &idle);
 
-     delta_total = (double)total - prev_total;
-     delta_idle = (double)idle - prev_idle;
+     delta_total = total - prev_total;
+     delta_idle = idle - prev_idle;
 
      prev_total = total;
      prev_idle = idle;
