@@ -68,10 +68,16 @@ static double prev_idle  = 0;
 #define RTEMS_MALLOC_IS_HEAP
 #include <rtems/score/protectedheap.h>
 typedef char objName[13];
-#define RTEMS_OBJ_GET_NAME(tc,name) rtems_object_get_name((tc)->Object.id, sizeof(name),(name));
+#define RTEMS_OBJ_GET_NAME(tc,name) rtems_object_get_name((tc)->Object.id, sizeof(name),(name))
 #else
 typedef char * objName;
-#define RTEMS_OBJ_GET_NAME(tc,name) name = (tc)->Object.name;
+#define RTEMS_OBJ_GET_NAME(tc,name) name = (tc)->Object.name
+#endif
+
+#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+#define CPU_ELAPSED_TIME(tc) ((double)(tc)->cpu_time_used.tv_sec + ((double)tc->cpu_time_used.tv_nsec/1E9))
+#else
+#define CPU_ELAPSED_TIME(tc) ((double)(tc)->ticks_executed)
 #endif
 
 static int getMemInfo(memInfo *s)
@@ -186,22 +192,12 @@ static void cpu_ticks(double *total, double *idle)
 	       for(y = 1; y <= obj->maximum; y++) {
 		    tc = (Thread_Control *)obj->local_table[y];
 		    if(tc) {
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-			 *total += tc->cpu_time_used.tv_sec;
-			 *total += tc->cpu_time_used.tv_nsec/1E9;
-#else
-			 *total += (double)tc->ticks_executed;
-#endif 
+			 *total += CPU_ELAPSED_TIME(tc);
 			 if(obj->is_string) {
 			      RTEMS_OBJ_GET_NAME( tc,  name );
 			      if( name[0] == 'I' && name[1] == 'D' &&
 				  name[2] == 'L' && name[3] == 'E' ) {
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-				   *idle = tc->cpu_time_used.tv_sec;
-				   *idle = tc->cpu_time_used.tv_nsec/1E9;
-#else
-				   *idle = (double)tc->ticks_executed;
-#endif
+				   *idle = CPU_ELAPSED_TIME(tc);
 			      }
 			 }
 		    }
