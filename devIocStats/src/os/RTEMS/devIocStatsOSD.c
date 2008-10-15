@@ -83,8 +83,8 @@ typedef char * objName;
 static int getMemInfo(memInfo *s)
 {
 #ifdef RTEMS_MALLOC_IS_HEAP
-  extern Heap_Control * RTEMS_Malloc_Heap;
-  Heap_Control *h = RTEMS_Malloc_Heap;
+  extern Heap_Control RTEMS_Malloc_Heap;
+  Heap_Control *h = &RTEMS_Malloc_Heap;
   Heap_Information_block info;
   
   _Protected_heap_Get_information(h, &info);
