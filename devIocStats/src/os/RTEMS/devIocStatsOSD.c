@@ -55,6 +55,9 @@
 extern struct mbstat mbstat;
 extern struct ifnet  *ifnet;
 
+static double prev_total = 0;
+static double prev_idle  = 0;
+
 /* Heap implementation changed; we should use
  * malloc_free_space() which handles these changes
  * transparently but then we don't get the
@@ -63,13 +66,25 @@ extern struct ifnet  *ifnet;
 #if   (__RTEMS_MAJOR__ > 4) \
    || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
 #define RTEMS_MALLOC_IS_HEAP
+#include <rtems/score/protectedheap.h>
+typedef char objName[13];
+#define RTEMS_OBJ_GET_NAME(tc,name) rtems_object_get_name((tc)->Object.id, sizeof(name),(name))
+#else
+typedef char * objName;
+#define RTEMS_OBJ_GET_NAME(tc,name) name = (tc)->Object.name
+#endif
+
+#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+#define CPU_ELAPSED_TIME(tc) ((double)(tc)->cpu_time_used.tv_sec + ((double)tc->cpu_time_used.tv_nsec/1E9))
+#else
+#define CPU_ELAPSED_TIME(tc) ((double)(tc)->ticks_executed)
 #endif
 
 static int getMemInfo(memInfo *s)
 {
 #ifdef RTEMS_MALLOC_IS_HEAP
-  extern Heap_Control * RTEMS_Malloc_Heap;
-  Heap_Control *h = RTEMS_Malloc_Heap;
+  extern Heap_Control RTEMS_Malloc_Heap;
+  Heap_Control *h = &RTEMS_Malloc_Heap;
   Heap_Information_block info;
   
   _Protected_heap_Get_information(h, &info);
@@ -148,10 +163,80 @@ Objects_Locations l;
 	}
 	return (n);
 }
+
+/*
+ * The following CPU usage logic from Phil Sorensen at CHESS
+ *
+ * The cpu usage is done the same way as in cpukit/libmisc/cpuuse
+ * from the RTEMS source.
+ */
+
+static void cpu_ticks(double *total, double *idle)
+{
+     Objects_Information *obj;
+     Thread_Control     *tc;
+
+     int   x, y;
+     objName name;
+
+     *total = 0;
+     *idle = 0;
+
+     for(x = 1; x <= OBJECTS_APIS_LAST; x++) {
+	  if(!_Objects_Information_table[x]) {
+	       continue;
+	  }
+
+	  obj = _Objects_Information_table[x][1];
+	  if(obj) {
+	       for(y = 1; y <= obj->maximum; y++) {
+		    tc = (Thread_Control *)obj->local_table[y];
+		    if(tc) {
+			 *total += CPU_ELAPSED_TIME(tc);
+			 if(obj->is_string) {
+			      RTEMS_OBJ_GET_NAME( tc,  name );
+			      if( name[0] == 'I' && name[1] == 'D' &&
+				  name[2] == 'L' && name[3] == 'E' ) {
+				   *idle = CPU_ELAPSED_TIME(tc);
+			      }
+			 }
+		    }
+	       }
+	  }
+     }
+}
+ 
+static int getCpuUsageInit(void)
+{
+     cpu_ticks(&prev_total, &prev_idle);
+
+     return 0;
+}
+
+static double getCpuUsage(void)
+{
+     double   total;
+     double   idle;
+     double   delta_total;
+     double   delta_idle;
+
+
+     cpu_ticks(&total, &idle);
+
+     delta_total = total - prev_total;
+     delta_idle = idle - prev_idle;
+
+     prev_total = total;
+     prev_idle = idle;
+
+     return 100.0 - (delta_idle * 100.0 / delta_total);
+}
+
 const struct devIocStatsVirtualOS devIocStatsRTEMSOS = 
-    {0, 0, 0,
+    {getCpuUsageInit, 0, 0, 0,
      getMemInfo,
      getSuspendedTasks,
+     getCpuUsage,
      getClustInfo,
      getTotalClusts,
      getIFErrors};
