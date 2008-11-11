@@ -1,3 +1,18 @@
+# Used by Channel Access Security to determine access to this IOC.
+record(mbbo, "$(IOCNAME):ACCESS")
+{
+  field(DESC, "$(IOCNAME) Acc Mode")
+  field(ASG,  "IOCMANAGERS")
+  field(PINI, "YES")
+  field(ZRST, "Running")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Maintenance")
+  field(ONSV, "MINOR")
+  field(TWST, "Test")
+  field(TWSV, "MINOR")
+  field(THST, "OFFLINE")
+  field(THSV, "MAJOR")
+}
 record(stringin, "$(IOCNAME):STARTTOD")
 {
     field(DESC, "Time and date of startup")

@@ -6,10 +6,6 @@
 #
 #==============================================================================
 #
-file access.db {
-pattern { DEV    , MANAGE      }
-	{ $(IOC) , IOCMANAGERS }
-}
 file ioc.db
 {
 pattern { IOCNAME }
