@@ -15,7 +15,6 @@ DBD += iocAdmin.dbd
 
 LIBRARY = iocAdmin
 
-iocAdmin_SRCS += iocAdmin.c
 iocAdmin_LIBS = $(EPICS_BASE_IOC_LIBS)
 
 #===========================

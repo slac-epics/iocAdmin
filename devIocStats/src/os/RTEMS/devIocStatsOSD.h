@@ -70,6 +70,10 @@
 #else
 #define reboot(x) rtemsReboot()
 #endif
+/* Use alternate to cpuBurn if SECONDS_TO_BURN is not defined */
+#ifndef  SECONDS_TO_BURN
+#define SECONDS_TO_BURN 0
+#endif
 
 typedef struct {
   unsigned long numBytesFree;

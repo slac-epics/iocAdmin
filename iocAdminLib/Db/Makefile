@@ -11,10 +11,12 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 #
-# For all types of BSAC devices
-DB += iocAdmin.db
+DB += ioc.db
+DB += iocCluster.db
 DB += access.db
+DB += iocAdmin.db
 DB += baseSecurity.acf
+
 #
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
@@ -24,5 +26,5 @@ include $(TOP)/configure/RULES
 
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-include $(TOP)/configure/RULES.Db
 
+include $(TOP)/configure/RULES.Db
