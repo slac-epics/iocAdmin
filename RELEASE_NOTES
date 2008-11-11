@@ -1,7 +1,14 @@
 Release Notes
 -------------
-iocAdmin-R2-0-1:
+iocAdmin-R2-1-0:
 devIocStats/src/os/RTEMS/devIocStatsOSD.c - code changes for RTEMS 4.9.
+iocAdminLib/srcRestore/iocAdmin.cwConfig - add STARTTOD (logging only).
+iocAdminLib/Db/access.db, ioc.db, iocAdmin.substitutions, access.doc -
+	Add ACCESS record to ioc.db (no longer uses access.db).
+	Change access.db for requirements by HLA.  Remove colon from name so
+	that ACCESS can be defined per channel or attribute, 
+	not just per device.  Add access.doc documentation.
+README_iocAdmin - description of access usage.
 
 iocAdmin-R2-0-0:
 Built against EPICS R3.14.8.2 and RTEMS 4.7.1 (base-R3-14-8-2-lcls2).
