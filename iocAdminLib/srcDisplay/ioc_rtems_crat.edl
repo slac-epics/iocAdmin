@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 177
-y 134
+x 54
+y 73
 w 280
 h 568
 font "helvetica-medium-r-12.0"
@@ -725,7 +725,7 @@ x 128
 y 232
 w 128
 h 24
-controlPv "$(ioc):LOCATION"
+controlPv "$(ioc):LOC"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -766,7 +766,7 @@ x 104
 y 424
 w 152
 h 24
-controlPv "$(crat):LOCATION"
+controlPv "$(crat):LOC"
 fgColor index 16
 fgAlarm
 bgColor index 12
@@ -1175,53 +1175,6 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 128
-y 264
-w 128
-h 24
-
-beginGroup
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 128
-y 264
-w 128
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Reboot..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ioc_softreset_confirm_8"
-}
-setPosition {
-  0 "parentWindow"
-}
-colorPv "$(ioc):SYSRESET.SEVR"
-endObjectProperties
-
-endGroup
-
-visPv "$(crat):TYPE"
-visMin "6"
-visMax "7"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
 x 104
 y 392
 w 152
@@ -1279,6 +1232,100 @@ lineWidth 2
 alarmPv "$(crat):STATSUMY"
 visPv "$(crat):TYPE"
 visMin "1"
+visMax "7"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 128
+y 264
+w 128
+h 24
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 128
+y 264
+w 128
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Reboot..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_softreset_confirm_4"
+}
+setPosition {
+  0 "parentWindow"
+}
+colorPv "$(ioc):SYSRESET.SEVR"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):TYPE"
+visMin "3"
+visMax "4"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 128
+y 264
+w 128
+h 24
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 128
+y 264
+w 128
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Reboot..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_softreset_confirm_8"
+}
+setPosition {
+  0 "parentWindow"
+}
+colorPv "$(ioc):SYSRESET.SEVR"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):TYPE"
+visMin "6"
 visMax "7"
 endObjectProperties
 

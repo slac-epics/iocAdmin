@@ -510,7 +510,7 @@ x 128
 y 232
 w 128
 h 24
-controlPv "$(ioc):LOCATION"
+controlPv "$(ioc):LOC"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
