@@ -158,7 +158,7 @@ record(ai, "$(IOCNAME):MEM_BLK_FREE") {
   field(LSV, "MINOR")
 }
 
-record(ao, "$(IOCNAME):CA_UPD_RATE") {
+record(ao, "$(IOCNAME):CA_UPD_TIME") {
   field(DESC, "CA Check Update Period")
   field(DTYP, "IOC stats")
   field(OUT, "@ca_scan_rate")
@@ -279,13 +279,6 @@ record(stringin, "$(IOCNAME):EPICS_VERS") {
   field(PINI, "YES")
 }
 
-record(stringin, "$(IOCNAME):LOCATION") {
-  field(DESC, "Location")
-  field(DTYP, "IOC stats")
-  field(INP, "@location")
-  field(PINI, "YES")
-}
-
 record(stringin, "$(IOCNAME):HOSTNAME") {
   field(DESC, "Host Name")
   field(DTYP, "IOC stats")
@@ -349,13 +342,6 @@ record(ai, "$(IOCNAME):IFO_ERR_CNT") {
   field(DTYP, "IOC stats")
   field(SCAN, "I/O Intr")
   field(INP, "@out_errs")
-}
-
-record(stringin, "$(IOCNAME):ENGINEER") {
-  field(DESC, "Cognizant Engineer")
-  field(DTYP, "IOC stats")
-  field(INP, "@engineer")
-  field(PINI, "YES")
 }
 
 record(stringin, "$(IOCNAME):UPTIME") {
