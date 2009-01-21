@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 426
-y 34
+x 196
+y 17
 w 540
 h 700
 font "helvetica-bold-r-18.0"
@@ -470,7 +470,7 @@ minor 0
 release 0
 x 120
 y 175
-w 310
+w 300
 h 15
 controlPv "$(ioc):LOCATION"
 displayMode "decimal"
@@ -528,7 +528,7 @@ minor 0
 release 0
 x 120
 y 155
-w 310
+w 300
 h 15
 controlPv "$(ioc):ENGINEER"
 displayMode "decimal"
@@ -936,7 +936,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 335
+x 240
 y 195
 w 195
 h 25
@@ -1635,9 +1635,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 120
+x 90
 y 195
-w 195
+w 140
 h 25
 fgColor index 14
 bgColor index 6
@@ -1654,10 +1654,10 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 440
-y 155
+x 445
+y 195
 w 90
-h 30
+h 25
 fgColor index 14
 bgColor index 6
 topShadowColor index 1
@@ -1698,6 +1698,32 @@ displayFileName {
 }
 menuLabel {
   0 "$(ioc) Alarm Limits"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 425
+y 155
+w 110
+h 25
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-bold-r-12.0"
+buttonLabel "EPICS Env Vars"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_stats_epics_env"
 }
 setPosition {
   0 "parentWindow"
