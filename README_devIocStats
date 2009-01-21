@@ -1,4 +1,4 @@
-README_devIocStats		Last Updated 10/09/2008
+README_devIocStats		Last Updated 01/20/2009
 ------------------
 
 I - General Notes on devIocStats - All Operating Systems
@@ -17,8 +17,6 @@ String (stringin) Records (DTYP = "IOC stats"), INP = @one of the following:
 					Default - uses ENGINEER env var.
                 location                -IOC Location
 					Default - uses LOCATION env var.
-                logname                 -IOC Log Name
-					Default - uses LOGNAME env var.
                 hostname                -IOC Host Name from gethostname
                 pwd[1-2]                -IOC Current Working Directory 
 					  (2 records) from getcwd
@@ -29,6 +27,25 @@ String (stringin) Records (DTYP = "IOC stats"), INP = @one of the following:
 
 	When a string cannot be determined, the PV will show "not available" 
 	or "<not implemented>" or some other variation.
+
+String (stringin) Records (DTYP = "IOC epics var"), INP = @<EPICS variable>
+============================================================================
+	The record will report an error if INP is not a valid EPICS variable
+	listed in envDefs.h.
+
+	Gets the value of the EPICS environment variable in the INP field
+	using envGetConfigParam.  The record only needs to be processed once, 
+	for which SCAN=Passive and PINI=YES is recommended.
+
+String (stringin) Records (DTYP = "IOC env var"), INP = @<environment variable>
+============================================================================
+	Gets the value of the environment variable in the INP field.
+	Unless the environment variable changes on-the-fly, the record only 
+	needs to be processed once, for which SCAN=Passive and PINI=YES is 
+	recommended.
+
+	If the environment variable does not exist, the PV will show 
+	"not available".
 
 Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
 =========================================================================
