@@ -1,5 +1,14 @@
 Release Notes
 -------------
+iocAdmin-R2-1-1: Jan 20, 2009
+devIocStats/src/devIocStatsString.c, devIocStats.dbd: 
+	Add device support for general environment variables and 
+	EPICS environment variables.
+iocAdminLib/Db/iocEnvVar.db, ioc.db, Makefile, iocAdmin.substitutions:
+	Create database for environment variables.  
+	Add EPICS environment variables.  
+README_devIocStats - description of environment variables support.
+
 iocAdmin-R2-1-0:
 devIocStats/src/os/RTEMS/devIocStatsOSD.c - code changes for RTEMS 4.9.
 iocAdminLib/srcRestore/iocAdmin.cwConfig - add STARTTOD (logging only).
