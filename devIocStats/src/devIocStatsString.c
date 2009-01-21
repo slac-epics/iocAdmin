@@ -264,6 +264,7 @@ static long epics_init_record(stringinRecord* pr)
           }
           ppParam++;
         }
+        pr->dpvt = 0;
         recGblRecordError(S_db_badField,(void*)pr,
                 "devStringinEnvVar (init_record) Illegal INP parm field");
         return S_db_badField;
@@ -292,9 +293,12 @@ static long envvar_read(stringinRecord* pr)
 
 static long epics_read(stringinRecord* pr)
 {
-        if (!envGetConfigParam((ENV_PARAM *)pr->dpvt, MAX_STRING_SIZE, pr->val))
+        if ((!pr->dpvt) ||
+            (!envGetConfigParam((ENV_PARAM *)pr->dpvt,
+                                MAX_STRING_SIZE, pr->val)))
           strcpy(pr->val, notavail);
-	pr->udf=0;
+        else
+          pr->udf=0;
 	return(0);	/* success */
 }
 
