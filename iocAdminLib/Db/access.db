@@ -10,7 +10,7 @@
 #
 record(mbbo, "$(DEV)ACCESS")
 {
-  field(DESC, "$(DEV) Usage Mode")
+  field(DESC, "Usage Mode")
   field(PINI, "YES")
 # Online - this device is operational, working normally, and ready to 
 # be used by higher level software.
@@ -30,4 +30,22 @@ record(mbbo, "$(DEV)ACCESS")
 # software.
   field(THST, "Offline")
   field(THSV, "MAJOR")
+}
+#
+# Used by higher level software to determine if a PV is in feedback or not.
+# May also be used by actuator (magnet and RF) IOC applications to 
+# switch output records to "closed_loop" to prevent outside programs from
+# changing setpoints when an actuator device is in feedback.
+#
+record(mbbo, "$(DEV)FBCK")
+{
+  field(DESC, "Feedback State")
+  field(PINI, "YES")
+# Off - this device can be used in feedback but all feedback loops 
+# using it are off.
+  field(ZRST, "Off")
+# On - this device is being used by one or more feedback loops.
+  field(ONST, "On")
+# Unavailable - this device is not used by any feedback loop.
+  field(TWST, "Unavailable")
 }
