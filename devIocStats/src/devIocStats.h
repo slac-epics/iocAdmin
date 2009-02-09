@@ -42,7 +42,6 @@
 #define ST_CMD   "ST_CMD"
 #define ENGINEER "ENGINEER"
 #define LOCATION "LOCATION"
-#define LOGNAME  "LOGNAME"
 
 #include "devIocStatsOSD.h"
 
