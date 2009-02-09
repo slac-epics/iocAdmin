@@ -1,4 +1,4 @@
-Instructions for iocAdmin users                    Last Updated 11/11/2008
+Instructions for iocAdmin users                    Last Updated 02/09/2009
 --------------------------------
 
 The iocAdmin package contains databases and libraries to add ioc administration
@@ -7,9 +7,9 @@ every second), SYSRESET (ioc restart command), access security PVs, etc) to an
 ioc application.  This package also supports IOC stats (devIocStats) - see 
 README_devIocStats for detail.
 
-iocAdmin also provides access.db, a database template defining the ACCESS 
-record which must be instantiated for every beamline device or device
-attribute.  See iocAdminLib/Db/access.doc for requirements and discussion.
+iocAdmin also provides access.db, a database template defining records for
+device attributes that are common across many IOC applications.  See I-5 
+below for more detail.
 
 Also provided is baseSecurity.acf, an access control file with ioc-related
 access rules and groups.
@@ -37,18 +37,28 @@ IOCADMIN=/afs/slac/g/lcls/build/epics/modules/iocAdmin/iocAdmin-R<release>
    DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
 
 (5) For each device, or device attribute, used by higher-level software 
-    (ie, feedback), an ACCESS mode soft mbbo record (with state names of 
-    Online, Maintenance, Checkout, and Offline) is required and used 
-    (read-only) by the higher-level software to determine proper configuration.
-    This record is set by operations and thus, must be saved and restored 
-    across IOC restart.  It is not meant to be used by Channel Access Security 
-    or for the actual device state which is set by the IOC itself.  Currently, 
-    devices requiring the ACCESS record include beamline devices (ie, BPMs, 
-    bunch length monitors, toroids, faraday cups, PMTs, wire-scanners, 
-    collimators, power meters, gun RF, klystrons, cavities, and magnets).  
-    Note that the ACCESS record may be required per device channel or device 
-    attribute instead of per device, depending on the needs of the 
+    (ie, feedback), an ACCESS mode and FBCK state soft mbbo records are
+    required and used by the higher-level software to determine proper 
+    configuration and display.  Both records must be saved and restored 
+    across IOC restart.  Currently, devices requiring these records include 
+    beamline devices (ie, BPMs, bunch length monitors, toroids, faraday cups, 
+    PMTs, wire-scanners, collimators, power meters, gun RF, klystrons, 
+    cavities, and magnets).  These records may be required per device channel 
+    or device attribute instead of per device, depending on the needs of the 
     higher-level software.  
+
+    The ACCESS record has state names of Online, Maintenance, Checkout, and 
+    Offline and is set by operations.  It is not meant to be used by Channel 
+    Access Security or for the actual device state which is set using a 
+    different record name by the IOC itself.  See iocAdminLib/Db/access.doc 
+    for requirements and discussion of the ACCESS record.
+
+    The FBCK record has state names of Off, On, and Unavailable.  
+    "Unavailable" indicates the device is not used by any feedback loop and
+    this value is set by operations.  "On" is set when ANY feedback loop is 
+    using the device, and "Off" is set when ALL feedback loops are NOT using 
+    the device.  "Off" requires feedback loops to know about each other or 
+    some sort of feedback loop management.
 
     To create this record, make sure access.db template file is installed 
     (see the previous the step) and include access.db in your device 
@@ -101,10 +111,12 @@ III - Adding iocAdmin to CA Clients:
 
 	$(IOCADMIN)/restore/iocAdmin.cwConfig
 
-    (1b) Device Software Mode Record (ACCESS) - for every device ACCESS 
-	 record, add this line to the channel watcher configuration file:
+    (1b) Device-Specific Records - For every device instantiating the 
+         access.db database, add these lines to the channel watcher 
+         configuration file:
 
 	<device name including ALL colons>ACCESS /LOG
+	<device name including ALL colons>FBCK /LOG
 
 (2) EDM:
     (2a) IOC Display - Choose the correct machine area for the IOC and add 
@@ -117,9 +129,10 @@ III - Adding iocAdmin to CA Clients:
 	ioc_rtems_none - RTEMS IOC without a crate interface or AC switch.
 	ioc_rtems_nosupport - RTEMS IOC with a unsupported crate interface
 
-    (2b) Device Access Display - For each device with an ACCESS record, add
-	 a choice or menu button for the record on the device single-unit
-	 diagnostic display and/or subsystem display showing the device status.
+    (2b) Device-Specific Display - For each device instantiating the access.db
+	 database, add choice or menu buttons for ACCESS and FBCK on the 
+	 device single-unit diagnostic display and/or subsystem display 
+	 showing the device status.
 
 (3) Channel Archiver - for each IOC, consider adding some or all of the 
     following records to Channel Archiver:
