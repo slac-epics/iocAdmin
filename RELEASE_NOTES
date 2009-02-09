@@ -1,5 +1,10 @@
 Release Notes
 -------------
+iocAdmin-R2-1-2: Feb 9, 2009
+devIocStats/src/devIocStats.h - get rid of an unused define.
+iocAdminLib/Db/access.db - add FBCK record.
+README_iocAdmin - description of FBCK record.
+
 iocAdmin-R2-1-1: Jan 20, 2009
 devIocStats/src/devIocStatsString.c, devIocStats.dbd: 
 	Add device support for general environment variables and 
