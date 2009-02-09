@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 306
-y 36
+x 10
+y 99
 w 530
 h 300
 font "helvetica-bold-r-18.0"
@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
-title "$(ioc) Limits"
+title "$(ioc) EPICS Env Vars"
 snapToGrid
 gridSize 5
 endScreenProperties
@@ -32,14 +32,14 @@ minor 1
 release 0
 x 5
 y 1
-w 399
+w 349
 h 27
 font "helvetica-bold-r-24.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "IOC EPICS Environment Variables"
+  "EPICS Environment Variables"
 }
 autoSize
 endObjectProperties
