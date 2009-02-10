@@ -11,8 +11,10 @@ include $(TOP)/configure/CONFIG
 # is not defined, IDLE task usage is used. 
 #USR_CFLAGS += -DSECONDS_TO_BURN=5
 
-# Not all RTEMS BSPs provide rtemsReboot - use epicsExit instead.
+# For RTEMS 4.7.1, not all RTEMS BSPs provide rtemsReboot.
 USR_CFLAGS_RTEMS-uC5282 += -DUSE_epicsExit
+# For RTEMS 4.9.1, some RTEMS BSPs use argument for bsp_reset.
+USR_CFLAGS_RTEMS-uC5282 += -Dbsp_reset_arg
 
 #=============================
 
