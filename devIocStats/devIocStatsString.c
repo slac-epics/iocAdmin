@@ -293,12 +293,12 @@ static long envvar_read(stringinRecord* pr)
 
 static long epics_read(stringinRecord* pr)
 {
-        if ((!pr->dpvt) ||
-            (!envGetConfigParam((ENV_PARAM *)pr->dpvt,
-                                MAX_STRING_SIZE, pr->val)))
-          strcpy(pr->val, notavail);
-        else
+        if (pr->dpvt) {
           pr->udf=0;
+          if (!envGetConfigParam((ENV_PARAM *)pr->dpvt,
+                                 MAX_STRING_SIZE, pr->val))
+            strcpy(pr->val, "");
+        }
 	return(0);	/* success */
 }
 
