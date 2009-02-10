@@ -69,7 +69,7 @@
 #ifdef RTEMS_BSP_PGM_EXEC_AFTER /* only defined on uC5282 */
 #define reboot(x) bsp_reset(0)
 #elif   (__RTEMS_MAJOR__ > 4) \
-     || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
+     || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 8)
 #define reboot(x) bsp_reset()
 #else
 #define reboot(x) rtemsReboot()
