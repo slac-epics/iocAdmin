@@ -66,19 +66,13 @@
 #define STARTUP "INIT"
 #define CLUSTSIZES 2 /* only regular mbufs and clusters */
 
-#if   (__RTEMS_MAJOR__ > 4) \
-   || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
-#ifdef bsp_reset_arg
-#define reboot(x) bsp_reset(x)
-#else
+#ifdef RTEMS_BSP_PGM_EXEC_AFTER /* only defined on uC5282 */
+#define reboot(x) bsp_reset(0)
+#elif   (__RTEMS_MAJOR__ > 4) \
+     || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
 #define reboot(x) bsp_reset()
-#endif
-#else
-#ifdef USE_epicsExit
-#define reboot(x) epicsExit(0)
 #else
 #define reboot(x) rtemsReboot()
-#endif
 #endif
 /* Use alternate to cpuBurn if SECONDS_TO_BURN is not defined */
 #ifndef  SECONDS_TO_BURN
