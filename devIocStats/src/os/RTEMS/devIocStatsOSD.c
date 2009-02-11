@@ -229,6 +229,8 @@ static double getCpuUsage(void)
      prev_total = total;
      prev_idle = idle;
 
+     if (delta_idle > delta_total) return 0.0;
+
      return 100.0 - (delta_idle * 100.0 / delta_total);
 }
 
