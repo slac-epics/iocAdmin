@@ -1,11 +1,14 @@
 Release Notes
 -------------
 iocAdmin-R2-1-3: Feb 10, 2009
-devIocStats/src/devIocStatsString.c - set epics env var string to blank and 
-UDF=0 when valid env var but just no value.
-devIocStats/src/Makefile and 
-devIocStats/src/os/RTEMS/devIocStatsOSD.h - use bsp_reset for uC5282 and 
-all BSPs on RTEMS 4.9.1.
+  * devIocStats/src/devIocStatsString.c - set epics env var string to blank 
+    and UDF=0 when valid env var but just no value.
+  * devIocStats/src/Makefile and 
+    devIocStats/src/os/RTEMS/devIocStatsOSD.h - use bsp_reset for uC5282 and 
+    all BSPs on RTEMS 4.9.1.
+  * devIocStats/src/os/RTEMS/devIocStatsOSD.h - use bsp_reset for uC5282 and 
+    all BSPs on RTEMS 4.9.1.
+  * devIocStats/src/os/RTEMS/devIocStatsOSD.c - prevent negative cpu load.
 
 iocAdmin-R2-1-2: Feb 9, 2009
 devIocStats/src/devIocStats.h - get rid of an unused define.
