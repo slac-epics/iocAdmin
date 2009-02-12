@@ -223,9 +223,13 @@ static double getCpuUsage(void)
 
      cpu_ticks(&total, &idle);
 
-     delta_total = total - prev_total;
-     delta_idle = idle - prev_idle;
-
+     if (total >= prev_total) {
+       delta_total = total - prev_total;
+       delta_idle  = idle - prev_idle;
+     } else {
+       delta_total = total;
+       delta_idle  = idle;
+     }
      prev_total = total;
      prev_idle = idle;
 
