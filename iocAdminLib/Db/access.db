@@ -41,6 +41,7 @@ record(mbbo, "$(DEV)FBCK")
 {
   field(DESC, "Feedback State")
   field(PINI, "YES")
+  field(VAL, "2")
 # Off - this device can be used in feedback but all feedback loops 
 # using it are off.
   field(ZRST, "Off")
