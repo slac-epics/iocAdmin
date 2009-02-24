@@ -1,0 +1,4 @@
+driver(drvMrf200Er)
+registrar(drvMrfErRegister)
+registrar(drvMrfRegister)
+registrar(evrEEPROMFixupRegister)

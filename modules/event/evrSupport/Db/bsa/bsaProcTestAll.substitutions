@@ -1,0 +1,26 @@
+file bsaProcTest.db
+{
+#             Meas Defn   
+#	            Name      
+  pattern { DEV      , MD,  MDID, LOCA       }
+	      {  $(DEVICE)  , 1,   1, $(LOC)     }
+	      {  $(DEVICE)  , 2,   2, $(LOC)     }
+	      {  $(DEVICE)  , 3,   3, $(LOC)     }
+	      {  $(DEVICE)  , 4,   4, $(LOC)     }
+	      {  $(DEVICE)  , 5,   5, $(LOC)     }
+	      {  $(DEVICE)  , 6,   6, $(LOC)     }
+	      {  $(DEVICE)  , 7,   7, $(LOC)     }
+	      {  $(DEVICE)  , 8,   8, $(LOC)     }
+	      {  $(DEVICE)  , 9,   9, $(LOC)     }
+	      {  $(DEVICE)  ,10,   10, $(LOC)    }
+	      {  $(DEVICE)  ,11,   11, $(LOC)    }
+	      {  $(DEVICE)  ,12,   12, $(LOC)    }
+	      {  $(DEVICE)  ,13,   13, $(LOC)    }
+	      {  $(DEVICE)  ,14,   14, $(LOC)    }
+	      {  $(DEVICE)  ,15,   15, $(LOC)    }
+	      {  $(DEVICE)  ,16,   1H, $(LOC)    }
+	      {  $(DEVICE)  ,17,   TH, $(LOC)    }
+	      {  $(DEVICE)  ,18,   BR, $(LOC)    }
+	      {  $(DEVICE)  ,19,   F1, $(LOC)    }
+	      {  $(DEVICE)  ,20,   F2, $(LOC)    }
+}

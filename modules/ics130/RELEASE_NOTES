@@ -1,0 +1,17 @@
+ics130-R1-1-1:
+modifications needed to bring the module to EPICS R3-14-9 standard
+Build with base-R3-14-9-lcls1 and rtems 4.7.1
+
+
+ics130-R1-1:
+Change intergral's unit with *sec
+Add PREC to TriggerRate record
+Add Gain control to screen
+FRAME_CNT probably does NOT need minus 1 either
+Check if board is in use when comparing baseaddr
+Steps must be 1 for internal trigger
+Make exit button to exit edm in ICS130_Test.edl
+Calc TriggerRate with multiplier of steps
+
+ics130-R1-0:
+The first release of ics130 EPICS driver and device support

@@ -1,0 +1,17 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+file evrPMXXTrig.cwConfig {
+#      Device	      
+  pattern { DEV             }              
+	  { CAMR:LI25:1:    }
+	  { TRIG:LI25:PM01: }
+	  { TRIG:LI25:PM02: }
+}
+file evrIocTrig.cwConfig {
+#      Device
+ pattern { DEV            }
+         { IOC:LI25:PM01  }
+}
+

@@ -1,0 +1,831 @@
+include "menuScan.dbd"
+include "menuYesNo.dbd"
+include "menuAlarmStat.dbd"
+include "menuAlarmSevr.dbd"
+include "menuPriority.dbd"
+menu(erTRG0) {
+	choice(erTRG0_Disabled,"Disabled")
+	choice(erTRG0_Enabled,"Enabled")
+}
+menu(erOPP) {
+	choice(erOPP_Normal,"Normal")
+	choice(erOPP_Inverted,"Inverted")
+}
+recordtype(er) {
+	include "dbCommon.dbd"
+	field(VAL,DBF_CHAR) {
+		prompt("Worthless Value")
+		asl(ASL0)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(OUT,DBF_OUTLINK) {
+		prompt("Output Specification")
+		promptgroup(GUI_OUTPUT)
+		interest(1)
+	}
+	field(ENAB,DBF_MENU) {
+		prompt("Master Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(menuYesNo)
+	}
+	field(TAXI,DBF_LONG) {
+		prompt("Taxi Violation")
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(LTAX,DBF_LONG) {
+		prompt("Last Taxi Violation")
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(TRG0,DBF_MENU) {
+		prompt("Trigger 0 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(TRG1,DBF_MENU) {
+		prompt("Trigger 1 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(TRG2,DBF_MENU) {
+		prompt("Trigger 2 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(TRG3,DBF_MENU) {
+		prompt("Trigger 3 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(TRG4,DBF_MENU) {
+		prompt("Trigger 4 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(TRG5,DBF_MENU) {
+		prompt("Trigger 5 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(TRG6,DBF_MENU) {
+		prompt("Trigger 6 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT0B,DBF_MENU) {
+		prompt("OTB 0 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT1B,DBF_MENU) {
+		prompt("OTB 1 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT2B,DBF_MENU) {
+		prompt("OTB 2 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT3B,DBF_MENU) {
+		prompt("OTB 3 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT4B,DBF_MENU) {
+		prompt("OTB 4 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT5B,DBF_MENU) {
+		prompt("OTB 5 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT6B,DBF_MENU) {
+		prompt("OTB 6 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT7B,DBF_MENU) {
+		prompt("OTB 7 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+        field(FPGV,DBF_LONG) {
+                prompt("Virtex Configuration Version")
+                promptgroup(GUI_DISPLAY)
+                pp(TRUE)
+                base(HEX)
+                interest(1)
+        }
+        field(BUSD,DBF_STRING) {
+                prompt("Bus Info Description")
+				special("SPC_NOMOD")
+                promptgroup(GUI_DISPLAY)
+                interest(1)
+				size(40)
+        }
+	field(OTP0,DBF_MENU) {
+		prompt("OTP 0 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP1,DBF_MENU) {
+		prompt("OTP 1 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP2,DBF_MENU) {
+		prompt("OTP 2 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP3,DBF_MENU) {
+		prompt("OTP 3 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP4,DBF_MENU) {
+		prompt("OTP 4 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP5,DBF_MENU) {
+		prompt("OTP 5 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP6,DBF_MENU) {
+		prompt("OTP 6 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP7,DBF_MENU) {
+		prompt("OTP 7 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP8,DBF_MENU) {
+		prompt("OTP 8 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTP9,DBF_MENU) {
+		prompt("OTP 9 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTPA,DBF_MENU) {
+		prompt("OTP 10 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTPB,DBF_MENU) {
+		prompt("OTP 11 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTPC,DBF_MENU) {
+		prompt("OTP 12 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTPD,DBF_MENU) {
+		prompt("OTP 13 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OT0W,DBF_USHORT) {
+		prompt("OTP 0 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT1W,DBF_USHORT) {
+		prompt("OTP 1 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT2W,DBF_USHORT) {
+		prompt("OTP 2 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT3W,DBF_USHORT) {
+		prompt("OTP 3 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT4W,DBF_USHORT) {
+		prompt("OTP 4 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT5W,DBF_USHORT) {
+		prompt("OTP 5 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT6W,DBF_USHORT) {
+		prompt("OTP 6 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT7W,DBF_USHORT) {
+		prompt("OTP 7 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT8W,DBF_USHORT) {
+		prompt("OTP 8 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT9W,DBF_USHORT) {
+		prompt("OTP 9 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OTAW,DBF_USHORT) {
+		prompt("OTP 10 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OTBW,DBF_USHORT) {
+		prompt("OTP 11 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OTCW,DBF_USHORT) {
+		prompt("OTP 12 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OTDW,DBF_USHORT) {
+		prompt("OTP 13 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(OT0D,DBF_ULONG) {
+		prompt("OTP 0 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}	
+	field(OT1D,DBF_ULONG) {
+		prompt("OTP 1 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT2D,DBF_ULONG) {
+		prompt("OTP 2 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT3D,DBF_ULONG) {
+		prompt("OTP 3 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT4D,DBF_ULONG) {
+		prompt("OTP 4 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT5D,DBF_ULONG) {
+		prompt("OTP 5 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT6D,DBF_ULONG) {
+		prompt("OTP 6 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT7D,DBF_ULONG) {
+		prompt("OTP 7 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT8D,DBF_ULONG) {
+		prompt("OTP 8 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT9D,DBF_ULONG) {
+		prompt("OTP 9 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OTAD,DBF_ULONG) {
+		prompt("OTP 10 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OTBD,DBF_ULONG) {
+		prompt("OTP 11 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OTCD,DBF_ULONG) {
+		prompt("OTP 12 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OTDD,DBF_ULONG) {
+		prompt("OTP 13 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(OT0P,DBF_MENU) {
+		prompt("OTP 0 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT1P,DBF_MENU) {
+		prompt("OTP 1 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT2P,DBF_MENU) {
+		prompt("OTP 2 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT3P,DBF_MENU) {
+		prompt("OTP 3 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT4P,DBF_MENU) {
+		prompt("OTP 4 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT5P,DBF_MENU) {
+		prompt("OTP 5 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT6P,DBF_MENU) {
+		prompt("OTP 6 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT7P,DBF_MENU) {
+		prompt("OTP 7 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT8P,DBF_MENU) {
+		prompt("OTP 8 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OT9P,DBF_MENU) {
+		prompt("OTP 9 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OTAP,DBF_MENU) {
+		prompt("OTP 10 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OTBP,DBF_MENU) {
+		prompt("OTP 11 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OTCP,DBF_MENU) {
+		prompt("OTP 12 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OTDP,DBF_MENU) {
+		prompt("OTP 13 Polarity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		menu(erOPP)
+		initial("Normal")
+		interest(1)
+	}
+	field(OTL0,DBF_MENU) {
+		prompt("OTL 0 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTL1,DBF_MENU) {
+		prompt("OTL 1 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTL2,DBF_MENU) {
+		prompt("OTL 2 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTL3,DBF_MENU) {
+		prompt("OTL 3 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTL4,DBF_MENU) {
+		prompt("OTL 4 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTL5,DBF_MENU) {
+		prompt("OTL 5 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(OTL6,DBF_MENU) {
+		prompt("OTL 6 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(DGCM,DBF_LONG) {
+		prompt("DG Change Mask")
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(DG0E,DBF_MENU) {
+		prompt("DG 0 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(DG0D,DBF_ULONG) {
+		prompt("DG 0 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(DG0W,DBF_ULONG) {
+		prompt("DG 0 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(DG0C,DBF_USHORT) {
+		prompt("DG 0 Clock prescaler")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(1)
+		interest(1)
+	}
+	field(DG0P,DBF_MENU) {
+		prompt("DG 0 Parity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erOPP)
+	}
+	field(DG1E,DBF_MENU) {
+		prompt("DG 1 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(DG1D,DBF_ULONG) {
+		prompt("DG 1 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(DG1W,DBF_ULONG) {
+		prompt("DG 1 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(DG1C,DBF_USHORT) {
+		prompt("DG 1 Clock prescaler")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(1)
+		interest(1)
+	}
+	field(DG1P,DBF_MENU) {
+		prompt("DG 1 Parity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erOPP)
+	}
+	field(DG2E,DBF_MENU) {
+		prompt("DG 2 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(DG2D,DBF_ULONG) {
+		prompt("DG 2 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(DG2W,DBF_ULONG) {
+		prompt("DG 2 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(DG2C,DBF_USHORT) {
+		prompt("DG 2 Clock prescaler")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(1)
+		interest(1)
+	}
+	field(DG2P,DBF_MENU) {
+		prompt("DG 2 Parity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erOPP)
+	}
+	field(DG3E,DBF_MENU) {
+		prompt("DG 3 Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(DG3D,DBF_ULONG) {
+		prompt("DG 3 Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(DG3W,DBF_ULONG) {
+		prompt("DG 3 Width")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(5)
+		interest(1)
+	}
+	field(DG3C,DBF_USHORT) {
+		prompt("DG 3 Clock prescaler")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(1)
+		interest(1)
+	}
+	field(DG3P,DBF_MENU) {
+		prompt("DG 3 Parity")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erOPP)
+	}
+	field(DVME,DBF_MENU) {
+		prompt("Delayed IRQ Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+	}
+	field(DVMD,DBF_USHORT) {
+		prompt("Delayed IRQ Delay")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(DVMC,DBF_USHORT) {
+		prompt("Delayed IRQ Clock prescaler")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		initial(1)
+		interest(1)
+	}
+	field(RXVE,DBF_MENU) {
+		prompt("RX violation IRQ Enable")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(erTRG0)
+		}
+	field(RXVC,DBF_USHORT) {
+		prompt("RX violation counter")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(PLOK,DBF_MENU) {
+		prompt("PLL lock lost")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+		menu(menuYesNo)
+	}
+	field(FPS0,DBF_USHORT) {
+		prompt("Front Panel output 0 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(FPS1,DBF_USHORT) {
+		prompt("Front Panel output 1 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(FPS2,DBF_USHORT) {
+		prompt("Front Panel output 2 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(FPS3,DBF_USHORT) {
+		prompt("Front Panel output 3 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(FPS4,DBF_USHORT) {
+		prompt("Front Panel output 4 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(FPS5,DBF_USHORT) {
+		prompt("Front Panel output 5 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+	field(FPS6,DBF_USHORT) {
+		prompt("Front Panel output 6 select")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
+
+}
+
+
+

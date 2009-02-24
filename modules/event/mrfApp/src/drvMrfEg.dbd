@@ -1,0 +1,3 @@
+driver(drvMrf200Eg)
+registrar(drvMrfEgRegister)
+registrar(drvMrfRegister)

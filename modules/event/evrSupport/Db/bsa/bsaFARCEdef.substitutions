@@ -1,0 +1,48 @@
+#==============================================================================
+#
+# Abs:  Beam Synchronous Acquisition records for a single Toroid.
+#
+# Name: bsaFARCEdef.substitutions
+#
+# Note: Must follow the LCLS naming conventions.  
+#
+#==============================================================================
+# BSA Integration Note:
+# Each device attribute (such as width ) provides input to bsaEdefAvg.db.
+# The bsaEdefAvg.db provides the RMS and Avg -$(DEV):$(SECN)<edef id>, and history - 
+#   $(DEV):$(SECN)HST<edef id> for each device attribute for each of 20 edefs.
+#
+file bsaEdefAvg.db
+{
+#	      Device   Name                                                                                IOC    IOC    mod5  Init 
+#                                                                                                          loc'n  unit   bit  Event Code
+  pattern {   DEV ,SECN, INP           , DESC  , MD,MDID, EGU,HOPR ,  LOPR  ,PREC, ADEL ,MDEL  , LOCA  , UNIT ,BIT, EC}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  1    , 1,  1  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), A, 101}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  2    , 2,  2  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), B, 102}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  3    , 3,  3  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), C, 103}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  4    , 4,  4  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), D, 104}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  5    , 5,  5  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), E, 105}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  6    , 6,  6  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), F, 106}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  7    , 7,  7  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), G, 107}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  8    , 8,  8  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), H, 108}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  9    , 9,  9  ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), I, 109}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  10   ,10,  10 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), J, 110}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  11   ,11,  11 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), K, 111}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  12   ,12,  12 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), L, 112}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  13   ,13,  13 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), M, 113}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  14   ,14,  14 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), N, 114}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  15   ,15,  15 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), O, 115}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  1HZ  ,16,  1H ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), P, 116}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  10HZ ,17,  TH ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), Q, 117}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  FULL ,18,  BR ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), R, 118}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  FBCK1,19,  F1 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), S, 119}
+	  { $(DEVICE) ,CHRG, $(DEVICE):CHRG,  FBCK2,20,  F2 ,"nC","1.6","-0.067",  3 ,".001",".001", $(LOC), $(UN), T, 120}
+}
+
+file bsaEdefFanouts.db
+{
+#	      Device   Name
+  pattern {   DEV     ,SECN  ,  LOCA  , UNIT  ,   FLNK    }
+	  { $(DEVICE) ,CHRG  , $(LOC) , $(UN) , $(SLCLNK) }
+}
+

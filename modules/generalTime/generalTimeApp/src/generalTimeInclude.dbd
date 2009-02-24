@@ -1,0 +1,10 @@
+include "menuGlobal.dbd"
+include "menuConvert.dbd"
+
+include "aiRecord.dbd"
+include "boRecord.dbd"
+include "longinRecord.dbd"
+include "stringinRecord.dbd"
+
+include "generalTime.dbd"
+

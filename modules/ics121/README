@@ -1,0 +1,13 @@
+1. This function needs to be called once per board in st.cmd
+
+/* ****************************************************************************/
+/* ICS121_Register routine, which must be called once in st.cmd for each card */
+/*                                                                            */
+/* index        card number                     0~1                           */
+/* vmeA24       address mode                    0: A16; 1: A24                */
+/* baseaddr     VME A16/A24 base address                                      */
+/* channels     number of channels              2 ~ 32, must be even          */
+/* ****************************************************************************/
+ICS121_Register(index, vmeA24, baseaddr, channels)
+
+

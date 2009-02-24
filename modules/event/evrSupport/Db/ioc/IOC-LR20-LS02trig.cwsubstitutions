@@ -1,0 +1,30 @@
+# Channel Watcher Trigger records
+#
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+# 
+file evrDevTrig.cwConfig {
+#      Device	      
+ pattern { DEV            }
+	 { TRIG:LR20:LS01:}
+	 { TRIG:LR20:LS02:}
+	 { TRIG:LR20:LS03:}
+	 { TRIG:LR20:LS04:}
+	 { TRIG:LR20:LS05:}
+	 { TRIG:LR20:LS06:}
+	 { TRIG:LR20:LS07:}
+	 { TRIG:LR20:LS08:}
+	 { TRIG:LR20:LS09:}
+	 { SCOP:LR20:LS01:}
+	 { TRIG:LR20:LS10:}
+	 { TRIG:LR20:LS11:}
+	 { TRIG:LR20:LS12:}
+	 { TRIG:LR20:LS13:}
+	 { TRIG:LR20:LS14:}
+	 { TRIG:LR20:LS15:}
+	 { TRIG:LR20:LS16:}
+}
+file evrIocTrig.cwConfig {
+#      Device	      
+ pattern { DEV            }
+	 { IOC:LR20:LS02  }
+}

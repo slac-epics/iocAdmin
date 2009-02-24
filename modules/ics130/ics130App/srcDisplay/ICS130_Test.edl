@@ -1,0 +1,205 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 377
+y 373
+w 1000
+h 400
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+ctlFont "courier-bold-r-14.0"
+ctlFontAlign "right"
+btnFont "courier-medium-r-8.0"
+fgColor index 10
+bgColor index 3
+textColor index 10
+ctlFgColor1 index 25
+ctlFgColor2 index 30
+ctlBgColor1 index 5
+ctlBgColor2 index 10
+topShadowColor index 5
+botShadowColor index 10
+pvType "EPICS"
+endScreenProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 812
+y 96
+w 158
+h 37
+fgColor index 40
+bgColor index 33
+topShadowColor index 5
+botShadowColor index 10
+font "courier-medium-r-18.0"
+buttonLabel "ICS130"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ics130Brd.edl"
+}
+menuLabel {
+  0 "ICS130 Board"
+}
+symbols {
+  0 "DEV=ICS130,SEC=FEE,LOC=666"
+}
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 6
+y 31
+w 776
+h 333
+fgColor index 10
+bgColor index 5
+topShadowColor index 5
+botShadowColor index 10
+displaySource "menu"
+filePv "LOC\\$(!W)ADCch=i:0"
+file "singleCh.edl"
+sizeOfs 5
+numDsps 32
+displayFileName {
+  0 "singleCh.edl"
+  1 "singleCh.edl"
+  2 "singleCh.edl"
+  3 "singleCh.edl"
+  4 "singleCh.edl"
+  5 "singleCh.edl"
+  6 "singleCh.edl"
+  7 "singleCh.edl"
+  8 "singleCh.edl"
+  9 "singleCh.edl"
+  10 "singleCh.edl"
+  11 "singleCh.edl"
+  12 "singleCh.edl"
+  13 "singleCh.edl"
+  14 "singleCh.edl"
+  15 "singleCh.edl"
+  16 "singleCh.edl"
+  17 "singleCh.edl"
+  18 "singleCh.edl"
+  19 "singleCh.edl"
+  20 "singleCh.edl"
+  21 "singleCh.edl"
+  22 "singleCh.edl"
+  23 "singleCh.edl"
+  24 "singleCh.edl"
+  25 "singleCh.edl"
+  26 "singleCh.edl"
+  27 "singleCh.edl"
+  28 "singleCh.edl"
+  29 "singleCh.edl"
+  30 "singleCh.edl"
+  31 "singleCh.edl"
+}
+symbols {
+  0 "DEV=ICS130ADC,SEC=FEE,LOC=001"
+  1 "DEV=ICS130ADC,SEC=FEE,LOC=002"
+  2 "DEV=ICS130ADC,SEC=FEE,LOC=003"
+  3 "DEV=ICS130ADC,SEC=FEE,LOC=004"
+  4 "DEV=ICS130ADC,SEC=FEE,LOC=005"
+  5 "DEV=ICS130ADC,SEC=FEE,LOC=006"
+  6 "DEV=ICS130ADC,SEC=FEE,LOC=007"
+  7 "DEV=ICS130ADC,SEC=FEE,LOC=008"
+  8 "DEV=ICS130ADC,SEC=FEE,LOC=009"
+  9 "DEV=ICS130ADC,SEC=FEE,LOC=010"
+  10 "DEV=ICS130ADC,SEC=FEE,LOC=011"
+  11 "DEV=ICS130ADC,SEC=FEE,LOC=012"
+  12 "DEV=ICS130ADC,SEC=FEE,LOC=013"
+  13 "DEV=ICS130ADC,SEC=FEE,LOC=014"
+  14 "DEV=ICS130ADC,SEC=FEE,LOC=015"
+  15 "DEV=ICS130ADC,SEC=FEE,LOC=016"
+  16 "DEV=ICS130ADC,SEC=FEE,LOC=017"
+  17 "DEV=ICS130ADC,SEC=FEE,LOC=018"
+  18 "DEV=ICS130ADC,SEC=FEE,LOC=019"
+  19 "DEV=ICS130ADC,SEC=FEE,LOC=020"
+  20 "DEV=ICS130ADC,SEC=FEE,LOC=021"
+  21 "DEV=ICS130ADC,SEC=FEE,LOC=022"
+  22 "DEV=ICS130ADC,SEC=FEE,LOC=023"
+  23 "DEV=ICS130ADC,SEC=FEE,LOC=024"
+  24 "DEV=ICS130ADC,SEC=FEE,LOC=025"
+  25 "DEV=ICS130ADC,SEC=FEE,LOC=026"
+  26 "DEV=ICS130ADC,SEC=FEE,LOC=027"
+  27 "DEV=ICS130ADC,SEC=FEE,LOC=028"
+  28 "DEV=ICS130ADC,SEC=FEE,LOC=029"
+  29 "DEV=ICS130ADC,SEC=FEE,LOC=030"
+  30 "DEV=ICS130ADC,SEC=FEE,LOC=031"
+  31 "DEV=ICS130ADC,SEC=FEE,LOC=032"
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 818
+y 240
+w 146
+h 43
+controlPv "LOC\\$(!W)ADCch=i:0"
+fgColor index 25
+fgAlarm
+bgColor index 5
+fill
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 819
+y 189
+w 145
+h 42
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Channel Number"
+  "(0~31)"
+}
+autoSize
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 858
+y 325
+w 60
+h 25
+fgColor index 25
+bgColor index 45
+topShadowColor index 5
+botShadowColor index 10
+label "EXIT"
+font "courier-bold-r-14.0"
+3d
+exitProgram
+endObjectProperties
+

@@ -1,0 +1,19 @@
+1. This function should be called once per card in st.cmd
+
+/* ****************************************************************************/
+/* ICS130_Register routine, which must be called once in st.cmd for each card */
+/*                                                                            */
+/* index        card number                     0~1                           */
+/* vmeA32       address mode                    0: A24; 1: A32                */
+/* baseaddr     VME A32/A24 base address                                      */
+/* irq_level    VME interrupt level             1~6                           */
+/* int_vector   VME interrupt vector            0~255                         */
+/* ext_trigger  trigger source select           1(external)/0(internal)       */
+/* channels     number of channels              2 ~ 32, must be even          */
+/* samples      samples per channel per trigger                               */
+/* steps        number of triggers to get IRQ, must be 1 if internal trigger  */
+/*              channels * samples * steps must be <= 1M                      */
+/* clockFreqHz  Sampling clock freq in Hz.      32000 ~ 1200000               */
+/* ****************************************************************************/
+ICS130_Register(index, vmeA32, baseaddr, irq_level, int_vector, ext_trigger, channels, samples, steps, clockFreqHz)
+

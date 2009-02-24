@@ -1,0 +1,48 @@
+record(bi, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG1)") {
+  field(DESC, "Digital Channel 1 Readback")
+  field(SCAN, "$(SIG1.SCAN)")
+  field(DTYP, "Bx9000_KL1104")
+  field(INP,  "@$(COUPLER):$(SLOT):R_DIG_IN_1")
+  field(ZNAM, "$(SIG1.ZNAM)")
+  field(ONAM, "$(SIG1.ONAM)")
+  field(ZSV,  "$(SIG1.ZSV)")
+  field(OSV,  "$(SIG1.OSV)")
+  field(COSV, "$(SIG1.COSV)")
+}
+
+record(bi, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG2)") {
+  field(DESC, "Digital Channel 2 Readback")
+  field(SCAN, "$(SIG2.SCAN)")
+  field(DTYP, "Bx9000_KL1104")
+  field(INP,  "@$(COUPLER):$(SLOT):R_DIG_IN_2")
+  field(ZNAM, "$(SIG2.ZNAM)")
+  field(ONAM, "$(SIG2.ONAM)")
+  field(ZSV,  "$(SIG2.ZSV)")
+  field(OSV,  "$(SIG2.OSV)")
+  field(COSV, "$(SIG2.COSV)")
+}
+
+record(bi, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG3)") {
+  field(DESC, "Digital Channel 3 Readback")
+  field(SCAN, "$(SIG3.SCAN)")
+  field(DTYP, "Bx9000_KL1104")
+  field(INP,  "@$(COUPLER):$(SLOT):R_DIG_IN_3")
+  field(ZNAM, "$(SIG3.ZNAM)")
+  field(ONAM, "$(SIG3.ONAM)")
+  field(ZSV,  "$(SIG3.ZSV)")
+  field(OSV,  "$(SIG3.OSV)")
+  field(COSV, "$(SIG3.COSV)")
+}
+
+record(bi, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG4)") {
+  field(DESC, "Digital Channel 4 Readback")
+  field(SCAN, "$(SIG4.SCAN)")
+  field(DTYP, "Bx9000_KL1104")
+  field(INP,  "@$(COUPLER):$(SLOT):R_DIG_IN_4")
+  field(ZNAM, "$(SIG4.ZNAM)")
+  field(ONAM, "$(SIG4.ONAM)")
+  field(ZSV,  "$(SIG4.ZSV)")
+  field(OSV,  "$(SIG4.OSV)")
+  field(COSV, "$(SIG4.COSV)")
+}
+

@@ -1,0 +1,14 @@
+# BSA records
+#
+# One per device:
+# Please check the HOPR,LOPR,PREC,ADEL,MDEL values provided in bsaBPMSEdef.template!
+file bsaBPMSEdef.db {
+#           Device        ,loc'n , IOC unit, timing system
+  pattern { DEVICE        , LOC ,  UN  , SYS , SLCLNK                  }
+	  { BPMS:IN20:221, IN20 , BP01 , SYS0, BPMS:IN20:221:FANOUTSLC }
+	  { BPMS:IN20:235, IN20 , BP01 , SYS0, BPMS:IN20:235:FANOUTSLC }
+	  { BPMS:IN20:371, IN20 , BP01 , SYS0, BPMS:IN20:371:FANOUTSLC }
+	  { BPMS:IN20:425, IN20 , BP01 , SYS0, BPMS:IN20:425:FANOUTSLC }
+	  { BPMS:IN20:511, IN20 , BP01 , SYS0, BPMS:IN20:511:FANOUTSLC }
+	  { BPMS:IN20:821, IN20 , BP01 , SYS0, BPMS:IN20:821:FANOUTSLC }
+}

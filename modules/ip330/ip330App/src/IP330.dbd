@@ -1,0 +1,3 @@
+# Acromag IP330 ADC driver and device support
+device(ai, INST_IO, devAiIP330, "IP330")
+driver(drvIP330)

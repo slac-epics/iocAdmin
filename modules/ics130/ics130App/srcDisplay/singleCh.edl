@@ -1,0 +1,337 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 490
+y 350
+w 753
+h 300
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+ctlFont "courier-bold-r-14.0"
+ctlFontAlign "right"
+btnFont "courier-medium-r-8.0"
+fgColor index 10
+bgColor index 3
+textColor index 10
+ctlFgColor1 index 25
+ctlFgColor2 index 30
+ctlBgColor1 index 5
+ctlBgColor2 index 10
+topShadowColor index 5
+botShadowColor index 10
+pvType "EPICS"
+endScreenProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+# Geometry
+x 4
+y 6
+w 519
+h 270
+# Appearance
+border
+graphTitle "Data Waveform"
+fgColor index 19
+bgColor index 5
+gridColor index 10
+font "courier-bold-r-12.0"
+# Operating Modes
+nPts 2
+# X axis properties
+showXAxis
+xAxisSrc "AutoScale"
+xMax 1
+xShowLabelGrid
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+yShowLabelGrid
+# Y2 axis properties
+showY2Axis
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 3
+yPv {
+  0 "$(DEV):$(SEC):$(LOC):1PulseData"
+  1 "$(DEV):$(SEC):$(LOC):60PulseIntegralData"
+  2 "$(DEV):$(SEC):$(LOC):600PulseIntegralData"
+}
+useY2Axis {
+  1 1
+  2 1
+}
+plotColor {
+  0 index 19
+  1 index 26
+  2 index 33
+}
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 544
+y 35
+w 200
+h 25
+controlPv "$(DEV):$(SEC):$(LOC):1PulsePeakData"
+precision 3
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 544
+y 73
+w 201
+h 25
+controlPv "$(DEV):$(SEC):$(LOC):1PulseTotalData"
+precision 3
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 565
+y 13
+w 73
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Peak Data@"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 565
+y 59
+w 62
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Total Data"
+}
+autoSize
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 541
+y 202
+w 206
+h 36
+controlPv "$(DEV):$(SEC):$(LOC):ConvRatio"
+precision 6
+fgColor index 25
+fgAlarm
+bgColor index 5
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 544
+y 187
+w 101
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Conversion Ratio"
+}
+autoSize
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 660
+y 6
+w 83
+h 25
+controlPv "$(DEV):$(SEC):$(LOC):1PulsePeakDataTime"
+precision 3
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 544
+y 116
+w 201
+h 25
+controlPv "$(DEV):$(SEC):$(LOC):60PulsesTotalData"
+precision 3
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 563
+y 102
+w 123
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "60 Pulses Total Data"
+}
+autoSize
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 544
+y 157
+w 201
+h 25
+controlPv "$(DEV):$(SEC):$(LOC):600PulsesTotalData"
+precision 3
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 562
+y 143
+w 130
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "600 Pulses Total Data"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 542
+y 243
+w 74
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Gain Setting"
+}
+autoSize
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 566
+y 260
+w 152
+h 23
+fgColor index 25
+bgColor index 5
+inconsistentColor index 10
+topShadowColor index 5
+botShadowColor index 10
+controlPv "$(DEV):$(SEC):$(LOC):Gain"
+font "courier-bold-r-12.0"
+endObjectProperties
+

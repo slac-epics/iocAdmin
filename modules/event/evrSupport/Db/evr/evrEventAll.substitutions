@@ -1,0 +1,99 @@
+#==============================================================================
+#
+# Abs:  EVR Event Records
+#
+# Name: evrEventAll.substitutions
+#
+#==============================================================================
+#
+file evrPatternProc.db {
+pattern { DEV       }
+	{ $(DEVICE) }
+}
+file evrEventCtrl.db
+{
+#
+#	  Device      Card  <-----------------------------  Event -------------------------->
+pattern { DEV       , CARD , NAME    , ID ,P0,P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,P13,VME}
+	{ $(DEVICE) ,   0  , FIDUCIAL,  1 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+}
+file evrEvent.db
+{
+#                            Event  Delay in             Alarm
+#	 Location            Code   Clock Ticks Priority Limits   Long Name
+pattern { DEV      , NAME    , ID , DELY      , PRIO ,HIHI ,LOLO , LNAME          }
+	{$(DEVICE) , FIDUCIAL, 1  ,0          , HIGH ,360.5,359.5, "Fiducial"     }
+	{$(DEVICE) , LCLSBEAM, 140,11900      , LOW  ,120.5,  -1 , "Full Rate"    }
+	{$(DEVICE) , LCLS_60_, 141,11901      , LOW  , 60.5,  -1 , "Beam & 60Hz"  }
+	{$(DEVICE) , LCLS_30_, 142,11902      , LOW  , 30.5,  -1 , "Beam & 30Hz"  }
+	{$(DEVICE) , LCLS_10_, 143,11903      , LOW  , 10.5,  -1 , "Beam & 10Hz"  }
+	{$(DEVICE) , LCLS_5_ , 144,11904      , LOW  ,  5.5,  -1 , "Beam & 5Hz"   }
+	{$(DEVICE) , LCLS_1_ , 145,11905      , LOW  ,  1.5,  -1 , "Beam & 1Hz"   }
+	{$(DEVICE) , LCLSHALF, 146,11906      , LOW  ,  1.0,  -1 , "Beam & 0.5Hz" }
+	{$(DEVICE) , LCLS_N-1, 147,11907      , LOW  ,120.5,  -1 , "Full N-1"     }
+	{$(DEVICE) , LCLS_N-2, 148,11908      , LOW  ,120.5,  -1 , "Full N-2"     }
+# LCLS Specialized Event Codes
+	{$(DEVICE) , LCLSTCAV, 149,11909      , LOW  ,120.5,  -1 , "TCAV"         }
+	{$(DEVICE) , LCLSBURS, 150,11910      , LOW  ,120.5,  -1 , "Burst"        }
+	{$(DEVICE) , LCLS_ACC, 151,11911      , LOW  ,120.5,  -1 , "Klys Accel"   }
+	{$(DEVICE) , LCLSSHUT, 152,11912      , LOW  ,120.5,  -1 , "Shutter"      }
+	{$(DEVICE) , LCRFONLY, 153,11913      , LOW  ,120.5,  -1 , "Klys StdBy No TCAV"}
+	{$(DEVICE) , LCACC_10, 154,11914      , LOW  , 10.5,  -1 , "Klys Accel at 10Hz"}
+	{$(DEVICE) , STRAIGHT, 155,11915      , LOW  ,120.5,  -1 , "Straight Ahead" }
+	{$(DEVICE) , LCLSTBD6, 156,11916      , LOW  ,120.5,  -1 , "Beam TBD6"    }
+	{$(DEVICE) , LCLSTBD7, 157,11917      , LOW  ,120.5,  -1 , "Beam TBD7"    }
+# Beam-Independent Time Slot Triggers
+#   360Hz
+	{$(DEVICE) , TSX_360_ , 9 ,12950      , LOW  ,360.5,359.5, "360Hz"        }
+#   Modulo36 base event code
+	{$(DEVICE) , TSXMOD36 ,201,13000      , LOW  , 10.5,  9.5, "Modulo 36"    }
+#   120Hz
+	{$(DEVICE) , TS1_120_, 10 ,13001      , LOW  ,120.5,119.5, "TS1 120Hz"    }
+	{$(DEVICE) , TS2_120_, 20 ,13002      , LOW  ,120.5,119.5, "TS2 120Hz"    }
+	{$(DEVICE) , TS3_120_, 30 ,13003      , LOW  ,120.5,119.5, "TS3 120Hz"    }
+	{$(DEVICE) , TS4_120_, 40 ,13004      , LOW  ,120.5,119.5, "TS4 120Hz"    }
+	{$(DEVICE) , TS5_120_, 50 ,13005      , LOW  ,120.5,119.5, "TS5 120Hz"    }
+	{$(DEVICE) , TS6_120_, 60 ,13006      , LOW  ,120.5,119.5, "TS6 120Hz"    }
+#    60Hz
+	{$(DEVICE) , TS1_60_ , 11 ,13011      , LOW  , 60.5, 59.5, "TS1 60Hz"     }
+	{$(DEVICE) , TS2_60_ , 21 ,13012      , LOW  , 60.5, 59.5, "TS2 60Hz"     }
+	{$(DEVICE) , TS3_60_ , 31 ,13013      , LOW  , 60.5, 59.5, "TS3 60Hz"     }
+	{$(DEVICE) , TS4_60_ , 41 ,13014      , LOW  , 60.5, 59.5, "TS4 60Hz"     }
+	{$(DEVICE) , TS5_60_ , 51 ,13015      , LOW  , 60.5, 59.5, "TS5 60Hz"     }
+	{$(DEVICE) , TS6_60_ , 61 ,13016      , LOW  , 60.5, 59.5, "TS6 60Hz"     }
+#    30Hz
+	{$(DEVICE) , TS1_30_ , 12 ,13021      , LOW  , 30.5, 29.5, "TS1 30Hz"     }
+	{$(DEVICE) , TS2_30_ , 22 ,13022      , LOW  , 30.5, 29.5, "TS2 30Hz"     }
+	{$(DEVICE) , TS3_30_ , 32 ,13023      , LOW  , 30.5, 29.5, "TS3 30Hz"     }
+	{$(DEVICE) , TS4_30_ , 42 ,13024      , LOW  , 30.5, 29.5, "TS4 30Hz"     }
+	{$(DEVICE) , TS5_30_ , 52 ,13025      , LOW  , 30.5, 29.5, "TS5 30Hz"     }
+	{$(DEVICE) , TS6_30_ , 62 ,13026      , LOW  , 30.5, 29.5, "TS6 30Hz"     }
+#    10Hz
+	{$(DEVICE) , TS1_10_ , 13 ,13031      , LOW  , 10.5,  9.5, "TS1 10Hz"     }
+	{$(DEVICE) , TS2_10_ , 23 ,13032      , LOW  , 10.5,  9.5, "TS2 10Hz"     }
+	{$(DEVICE) , TS3_10_ , 33 ,13033      , LOW  , 10.5,  9.5, "TS3 10Hz"     }
+	{$(DEVICE) , TS4_10_ , 43 ,13034      , LOW  , 10.5,  9.5, "TS4 10Hz"     }
+	{$(DEVICE) , TS5_10_ , 53 ,13035      , LOW  , 10.5,  9.5, "TS5 10Hz"     }
+	{$(DEVICE) , TS6_10_ , 63 ,13036      , LOW  , 10.5,  9.5, "TS6 10Hz"     }
+#     5Hz
+	{$(DEVICE) , TS1_5_  , 14 ,13041      , LOW  ,  5.5,  4.5, "TS1 5Hz"      }
+	{$(DEVICE) , TS2_5_  , 24 ,13042      , LOW  ,  5.5,  4.5, "TS2 5Hz"      }
+	{$(DEVICE) , TS3_5_  , 34 ,13043      , LOW  ,  5.5,  4.5, "TS3 5Hz"      }
+	{$(DEVICE) , TS4_5_  , 44 ,13044      , LOW  ,  5.5,  4.5, "TS4 5Hz"      }
+	{$(DEVICE) , TS5_5_  , 54 ,13045      , LOW  ,  5.5,  4.5, "TS5 5Hz"      }
+	{$(DEVICE) , TS6_5_  , 64 ,13046      , LOW  ,  5.5,  4.5, "TS6 5Hz"      }
+#     1Hz
+	{$(DEVICE) , TS1_1_  , 15 ,13051      , LOW  ,  1.5,  0.5, "TS1 1Hz"      }
+	{$(DEVICE) , TS2_1_  , 25 ,13052      , LOW  ,  1.5,  0.5, "TS2 1Hz"      }
+	{$(DEVICE) , TS3_1_  , 35 ,13053      , LOW  ,  1.5,  0.5, "TS3 1Hz"      }
+	{$(DEVICE) , TS4_1_  , 45 ,13054      , LOW  ,  1.5,  0.5, "TS4 1Hz"      }
+	{$(DEVICE) , TS5_1_  , 55 ,13055      , LOW  ,  1.5,  0.5, "TS5 1Hz"      }
+	{$(DEVICE) , TS6_1_  , 65 ,13056      , LOW  ,  1.5,  0.5, "TS6 1Hz"      }
+#   0.5Hz
+	{$(DEVICE) , TS1_HALF, 16 ,13061      , LOW  ,  1.0,  0.0, "TS1 0.5Hz"    }
+	{$(DEVICE) , TS2_HALF, 26 ,13062      , LOW  ,  1.0,  0.0, "TS2 0.5Hz"    }
+	{$(DEVICE) , TS3_HALF, 36 ,13063      , LOW  ,  1.0,  0.0, "TS3 0.5Hz"    }
+	{$(DEVICE) , TS4_HALF, 46 ,13064      , LOW  ,  1.0,  0.0, "TS4 0.5Hz"    }
+	{$(DEVICE) , TS5_HALF, 56 ,13065      , LOW  ,  1.0,  0.0, "TS5 0.5Hz"    }
+	{$(DEVICE) , TS6_HALF, 66 ,13066      , LOW  ,  1.0,  0.0, "TS6 0.5Hz"    }
+}

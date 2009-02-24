@@ -1,0 +1,34 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+file evrDevTrig.cwConfig {
+#      Device
+  pattern { DEV       }
+{ BPMS:IN20:221:      }
+{ BPMS:IN20:235:      }
+{ BPMS:IN20:371:      }
+{ BPMS:IN20:425:      }
+{ BPMS:IN20:511:      }
+{ BPMS:IN20:821:      }
+{ BPMS:IN20:221:CALB  }
+{ BPMS:IN20:235:CALB  }
+{ BPMS:IN20:371:CALB  }
+{ BPMS:IN20:425:CALB  }
+{ BPMS:IN20:511:CALB  }
+{ BPMS:IN20:821:CALB  } 
+# spare triggers FP 1-4 (VME)
+{ TRIG:IN20:BP01:}
+{ TRIG:IN20:BP02:}
+{ TRIG:IN20:BP03:}
+{ TRIG:IN20:BP04:}
+# spare triggers 6-7; for TTB6, TTB13
+{ TRIG:IN20:BP06:}
+{ TRIG:IN20:BP07:}
+}
+file evrIocTrig.cwConfig {
+#      Device	      
+ pattern { DEV            }
+	 { IOC:IN20:BP01  }
+}
+

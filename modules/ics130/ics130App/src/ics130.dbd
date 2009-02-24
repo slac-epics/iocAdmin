@@ -1,0 +1,8 @@
+device(ai, VME_IO, devAiICS130, "ICS130")
+device(ao, VME_IO, devAoICS130, "ICS130")
+device(bo, VME_IO, devBoICS130, "ICS130")
+device(mbbi, VME_IO, devMbbiICS130, "ICS130")
+device(longout, VME_IO, devLoICS130, "ICS130")
+device(waveform, VME_IO, devWfICS130, "ICS130")
+driver(drvICS130)
+

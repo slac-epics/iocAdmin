@@ -1,0 +1,59 @@
+Instructions for dbRestore users                    Last Updated 08/09/2007
+--------------------------------
+
+I - Adding the restore package to your IOC application:
+-------------------------------------------------------
+
+(1) Add RESTORE to configure/RELEASE and clean/rebuild configure:
+
+RESTORE=/afs/slac/g/lcls/build/epics/modules/restore/<version>
+
+(2) Link the restore library into your app by adding to xxxApp/src/Makefile:
+
+   xxx_LIBS += restore
+
+(3) Add the following .dbd files to xxxApp/src/Makefile 
+    or to xxxApp/src/xxxInclude.dbd:
+
+   xxx_DBD += dbRestore.dbd
+
+II - Modifying your IOC databases:
+----------------------------------
+
+(1) In your database files, for the setpoint records (ao, bo, mbbo, etc)
+    that will be restored,replace "DOL" fields with "VAL" fields for  default 
+    values.  Note that DOL will overwrite the restored value, VAL will not.  
+
+(2) If restoring fields of a calc or sub record, replace constant "INPA" 
+    fields with "A" fields for default values.
+
+(3) Set "PINI=YES" for all setpoint records so that records are not invalid
+    after iocInit is finished.
+
+III - Setting up ChannelWatcher to Save Setpoints
+-------------------------------------------------
+(1) Follow instructions in $(TOOLS)/ChannelWatcher/README to add setpoints
+    to ChannelWatcher for monitoring and restore file update.
+
+IV - Adding dbRestore to your IOC startup file:
+-----------------------------------------------
+
+(1) For RTEMS IOCs, add this nfsMount command to your startup file after 
+    epicsEnvSet<Dev,Dmz,Prod> is invoked:
+
+   nfsMount(getenv("NFS_FILE_SYSTEM"),getenv("NFS_IOC_DATA"),"/dat")
+
+(2) For scaler setpoint restore, in your ioc startup file, add this line 
+    after databases are loaded and before iocInit:
+   
+    Soft IOC:
+   dbRestore("${IOC_DATA}/<ioc-name>/<iocname>.sav", "<iocname>", -1)
+    RTEMS IOC:
+   dbRestore("/dat/<ioc-name>/<iocname>.sav",0,-1)
+
+   The second argument is the ioc name.  For soft IOCs, it must be provided.
+   For RTEMS IOCs, it is set to 0 so the host name is used.
+   The third argument is the time allowed to retry until the file open and
+   read is successful.  -1 means retry forever.  0 means try only once.  
+
+(3) For waveform restore, TBD.

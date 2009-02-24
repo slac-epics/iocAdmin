@@ -1,0 +1,54 @@
+# This creates the module's TOP file in opiCommon
+# This file should be in snsMachine/configure/RULES_BUILD
+# The user must define MODULE_NAME in RELEASE.
+
+# Several pre-conditions must be met:
+# We must be building with OPI set to anything.
+# We must be building with T_A==the host arch
+# We must be building one level below where RELEASE is,
+# i.e. configure/O.linux-x86
+# We must have a definition for MODULE_NAME
+
+
+# We use the following line in startmap to define EDMDATAFILES
+# EDMDATAFILES=.:`cat $OPI_COMMON/*.opi | tr '\n' '@' | sed -e ' s%@%/opi:%'`
+
+#OPI_COMMON=$(HOME)/opiCommon
+
+ESTIMATED_TOP=$(shell cd ../.. ; pwd )
+
+
+# Precondition 1
+ifneq ($(OPI),)
+
+# Precondition 2
+ifeq ($(T_A),$(EPICS_HOST_ARCH))
+
+# Precondition 3
+ISRELEASEHERE=$(wildcard ../RELEASE)
+ifneq ($(ISRELEASEHERE),)
+
+
+# Precondition 4
+ifeq ($(MODULE_NAME),)
+
+install:
+	@ echo "Failed to create module file in $(OPI_COMMON)."
+	@ echo "Please define MODULE_NAME in:"
+	@ echo "    $(ESTIMATED_TOP)/configure/RELEASE!"
+	exit -1;
+
+else # Do it
+# This does it:
+install: $(OPI_COMMON)/$(MODULE_NAME).opi
+
+.PHONY: $(OPI_COMMON)/$(MODULE_NAME).opi
+$(OPI_COMMON)/$(MODULE_NAME).opi:
+	@ rm $@
+	@ echo Installing $@
+	@ echo $(ESTIMATED_TOP) >$@
+
+endif # MODULE_NAME
+endif # ISRELEASEHERE
+endif # T_A=EPICS_HOST_ARCH
+endif # OPI

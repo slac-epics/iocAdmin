@@ -1,0 +1,35 @@
+    loops, vmin, vtime all part of persistent structure
+
+
+    double timeout;
+
+    loops = 1;
+    if (timeout > 0) {
+        vtime = (timeout + .099999) * 10;
+        if (vtime == 0)
+            vtime = 1;
+        loops = 1 + (vtime / 256);
+        vtime /= loops;
+        vmin = 0;
+    }
+    else if (timeout == 0) {
+        vtime = vmin = 0;
+    }
+    else {
+        vtime = 0;
+        if (nchars <= 255)
+            vmin = nchars;
+        else
+            vmin = 255;
+    }
+    tcsetattr(fd, TCSANOW, termios);
+
+
+    for(;;) {
+        n = read(xxx);
+        if (n == 0) {
+            if (++l >= loops)
+                timeout
+        }
+    }
+

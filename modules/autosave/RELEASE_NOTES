@@ -1,0 +1,24 @@
+autosave-R4-2-1-lcls1:
+Steve fixed up EDM screens
+More cleanup to morph into lcls style template.
+Built against EPICS R3.14.9 and RTEMS 4.7.1
+
+
+autosave-R1-0-2:
+No functional change:
+Built against EPICS R3.14.9 and RTEMS 4.7.1
+
+
+autosave-R1-0-1:
+No functional change:
+Built against EPICS R3.14.8.2 and RTEMS 4.7.1
+
+
+R1-0-0: Initial Release obtained from APS.
+
+autosave-R1-0-0:
+No changes except to beautify the configure/RELEASE file
+Also follow the tag naming convention.
+
+
+

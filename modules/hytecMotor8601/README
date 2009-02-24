@@ -1,0 +1,7 @@
+This is a driver for the Hytec 8601 4-channel Industry Pack (IP) motor controller card.
+It has currently been tested at SLAC with EPICS 3.14.8.2 and uses OSI support in EPICS
+with version 5.9 of the Motor Record, but we haven't tested encoder support or home limit
+switch options.  It has only been tested under RTEMS.  Also, the concurrent motion
+option is not currently implemented.
+
+Written by Doug Murray, Mimetic Software Systems under contract with the Stanford Linear Accelerator Center.

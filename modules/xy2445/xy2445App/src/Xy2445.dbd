@@ -1,0 +1,16 @@
+# Xy2445 Binary Output Module Device Support
+device(bo,         INST_IO, devBoXy2445,         "XYCOM-2445")
+device(mbbo,       INST_IO, devMbboXy2445,       "XYCOM-2445")
+device(mbboDirect, INST_IO, devMbboDirectXy2445, "XYCOM-2445")
+
+
+# Acromag IP445 Binary Output Module Device Support
+device(bo,         INST_IO, devBoXy2445,         "ACROMAG-IP445")
+device(mbbo,       INST_IO, devMbboXy2445,       "ACROMAG-IP445")
+device(mbboDirect, INST_IO, devMbboDirectXy2445, "ACROMAG-IP445")
+
+
+
+# Xy2445 Binary Output Module Driver Support
+driver(drvXy2445)
+registrar(drvXy2445Registrar)

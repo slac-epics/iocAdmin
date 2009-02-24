@@ -1,0 +1,41 @@
+# Simulation files :
+file bsaBPMSTest.db {
+  pattern { DEVICE       , S           }
+	  { BPMS:XX05:1  , Passive     }
+	  { BPMS:XX05:2  , Passive     }
+	  { BPMS:XX05:3  , Passive     }
+	  { BPMS:XX05:4  , Passive     }
+	  { BPMS:XX05:5  , Passive     }
+	  { BPMS:XX05:6  , Passive     }
+}
+file bsaTOROTest.db {
+  pattern { DEVICE       , S           }
+	  { TORO:XX05:1  , Passive     }
+	  { TORO:XX05:2  , Passive     }
+}
+file bsaPMTTest.db {
+  pattern { DEVICE       , S           }
+	  { PMT:XX05:1   , Passive     }
+	  { PMT:XX05:2   , Passive     }
+	  { PMT:XX05:3   , Passive     }
+	  { PMT:XX05:4   , Passive     }
+	  { PMT:XX05:5   , Passive     }
+	  { PMT:XX05:6   , Passive     }
+}
+file bsaBLENTest.db {
+  pattern { DEVICE       , S           , ATB }
+	  { BLEN:XX05:1  , ".1 second" , A   }
+	  { BLEN:XX05:2  , ".1 second" , B   }
+	  { BLEN:XX05:3  , ".1 second" , C   }
+}
+file bsaWIRETest.db {
+  pattern { DEVICE       , S           }
+	  { WIRE:XX05:1  , Passive     }
+	  { WIRE:XX05:2  , Passive     }
+	  { WIRE:XX05:3  , Passive     }
+	  { WIRE:XX05:4  , Passive     }
+}
+file devTestFanouts.db {
+  pattern { DEV          , LOCA        }
+	  { IOC:XL05:EV01, XX05        }
+}

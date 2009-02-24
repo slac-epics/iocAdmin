@@ -1,0 +1,44 @@
+The last release is R1-2-6.
+Please use blow command to get it:
+cvs co -P -d R1-2-6 -r R1-2-6 Bx9000_MBT
+
+History:
+
+R1-1-6 --> R1-1-7:
+Add support of KL9505, KL3064, KL4002 for Alan Justics
+Apply more accurate conversion to devKL4132.c
+
+R1-1-7 --> R1-1-8:
+Add PINI macro to all output module templates
+
+R1-1-8 --> R1-1-9:
+Add re-process output on re-connect feature
+
+R1-1-9 --> R1-2-0:
+Remove unnecessary SEVERITY set when init output record
+
+R1-2-0 --> R1-2-1:
+Add extern "C"
+Add iocsh register function
+Build for both vxWorks and OSI
+Add soft IOC example
+Fix ID order issue for softIOC
+
+R1-2-1 --> R1-2-2:
+Add support for KL3468
+
+R1-2-2 --> R1-2-3:
+Add support for KL3408
+
+R1-2-3 --> R1-2-4:
+Remove path to self
+Move test of vxWorks to SNS07 T2-2
+Fix typo which might prevent from writing to digital output
+Add pointer check for slot terminal type report
+
+R1-2-4 --> R1-2-5:
+Use better way to check RVAL range for AO record to avoid cut-off or wrap-around because of variable size
+
+R1-2-5 --> R1-2-6:
+Change term_r32_value from UINT32 to UINT16
+Modify version string

@@ -1,0 +1,31 @@
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem:  This file contains the release notes for genSub 
+#        record pertains to the LCLS release format and procedures.
+#        
+#        The author of this software is Andy Foster.
+#
+#  Side: see docs/genSubManual.pdf
+#
+#  Auth: 02-Jun-2007, K. Luchini         (LUCHINI)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        08-Oct-2007, K. Luchini         (LUCHINI):
+#          add release genSub-R1-6-lcls2
+#          add release genSub-R1-6-lcls1
+#        26-Sep-2007, E. Williams        (ERNESTO):
+#          add release genSub-R1-0-1
+#
+#==============================================================
+#
+genSub-1-6-lcls2: Build with base-R3-14-9-lcls1 (RTEMS 4.7.1)
+
+genSub-1-6-lcls1: Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+
+genSub-R1-0-1: Allow build for rtems 
+               Build with base-R3-14-8-2-lcls1 (RTEMS 4.7)
+
+genSub-R1-0-0: Initial release used in LCLS Injector and BC1.

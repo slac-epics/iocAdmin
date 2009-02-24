@@ -1,0 +1,3 @@
+device(mbbo, VME_IO, devMbboICS121, "ICS121")
+driver(drvICS121)
+

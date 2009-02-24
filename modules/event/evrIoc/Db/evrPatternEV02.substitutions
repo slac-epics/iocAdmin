@@ -1,0 +1,13 @@
+#
+# Pattern records
+file evrPatternAll.db {
+#	    Device        ,  SLC Pattern Check LNK       ,  EVR/Trigger    
+#	                                                    Links          
+  pattern { DEVICE        ,        LINK4                 ,LINK5,        LINK6              , TREF , TS1ST, TS2ND }
+	  { IOC:IN20:EV02 , "IOC:IN20:EV02:FANOUTSLC PP" , ""  , "IOC:IN20:EV02:FANOUT PP" , 1E06 ,   1  ,   4   }
+}
+# Event records
+file evrEventAll.db {
+  pattern { DEVICE        }
+	  { IOC:IN20:EV02 }
+}

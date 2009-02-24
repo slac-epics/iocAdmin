@@ -1,0 +1,20 @@
+#CONFIG
+include $(TOP)/configure/CONFIG_APP
+# Add any changes to make definitions here
+
+# The default "host" build is linux-x86.
+# Let's build for the MVM2101 "target" by default.
+# The Tornado 2.0.2 (i.e. vxWorks 5.4.2 target) is vxWorks-ppc603
+# The Tornado 2.2.1 (i.e. vxWorks 5.5.1 target) is vxWorks-ppc603_T2-2
+# CROSS_COMPILER_TARGET_ARCHS = vxWorks-ppc603 vxWorks-ppc603_long vxWorks-ppc603_T2-2 vxWorks-ppc604_T2-2
+
+
+
+
+# Use this when your IOC and the host use different paths
+# to access the application. Typically this will be 
+# used with the Microsoft FTP server or with NFS mounts. Use
+# is indicated by failure of the cdCommands script on
+# vxWorks. You must rebuild in the iocBoot directory 
+# before this takes effect.
+#IOCS_APPL_TOP = <the top of the application as seen by the IOC>

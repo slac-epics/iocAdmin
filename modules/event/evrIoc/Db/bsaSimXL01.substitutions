@@ -1,0 +1,48 @@
+# Simulation files :
+file bsaBPMSTest.db {
+  pattern { DEVICE       , S           }
+	  { BPMS:XX01:1  , ".1 second" }
+	  { BPMS:XX01:2  , ".1 second" }
+	  { BPMS:XX01:3  , ".1 second" }
+	  { BPMS:XX01:4  , ".1 second" }
+	  { BPMS:XX01:5  , ".1 second" }
+	  { BPMS:XX01:6  , ".1 second" }
+}
+file bsaTOROTest.db {
+  pattern { DEVICE       , S           }
+	  { TORO:XX01:1  , ".1 second" }
+	  { TORO:XX01:2  , ".1 second" }
+}
+file bsaPMTTest.db {
+  pattern { DEVICE       , S           }
+	  { PMT:XX01:1   , ".1 second" }
+	  { PMT:XX01:2   , ".1 second" }
+	  { PMT:XX01:3   , ".1 second" }
+	  { PMT:XX01:4   , ".1 second" }
+	  { PMT:XX01:5   , ".1 second" }
+	  { PMT:XX01:6   , ".1 second" }
+}
+file bsaBLENTest.db {
+  pattern { DEVICE       , S           , ATB }
+	  { BLEN:XX01:1  , ".1 second" , A   }
+	  { BLEN:XX01:2  , ".1 second" , B   }
+	  { BLEN:XX01:3  , ".1 second" , C   }
+}
+file bsaWIRETest.db {
+  pattern { DEVICE       , S           }
+	  { WIRE:XX01:1  , ".1 second" }
+	  { WIRE:XX01:2  , ".1 second" }
+	  { WIRE:XX01:3  , ".1 second" }
+	  { WIRE:XX01:4  , ".1 second" }
+}
+# ESIM Pattern records (from EVG) to EVR:
+file evrPatternTest.db {
+  pattern {  EIOC       ,DEVICE       }
+	  { IOC:XX01:1  ,ESIM:XX01:1  }
+}
+
+# EVG EDEF checking simulation for Modifier5/ bsa enable/disable:
+file bsaProcTestAll.db {
+  pattern {  DEVICE    , LOC     }
+	  { ESIM:XX01:1, SYS0    }
+}

@@ -1,0 +1,4 @@
+# xycom VME bus carrier board
+# Note: the Xycom Xy9660 driver works for the acromag avme9660
+# and the avme9670
+registrar(xy9660Registrar)

@@ -1,0 +1,3 @@
+include "drvMrfEg.dbd"
+include "egRecord.dbd"
+device (eg, VME_IO, devEg, "MRF Event Generator")

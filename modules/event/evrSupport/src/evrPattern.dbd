@@ -1,0 +1,6 @@
+function(evrPatternProcInit)
+function(evrPatternProc)
+function(evrPatternRate)
+function(evrPatternCount)
+function(evrPatternState)
+function(evrPatternSim)

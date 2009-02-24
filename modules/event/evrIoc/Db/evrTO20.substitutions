@@ -1,0 +1,13 @@
+#==============================================================================
+#
+# Abs:  LCLS EVR IOC records for TO20 IM01 development ioc
+#
+# Name: IOC-TO20-IM01evr.substitutions
+#
+#==============================================================================
+#
+file evrIMXX.db
+{   
+pattern { DEVICE        }
+	{ EVR:TO20:IM01 }
+}

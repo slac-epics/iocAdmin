@@ -1,0 +1,56 @@
+#####################
+# BSA functionality for devices
+# load these for sim or real data
+####################
+# BSA records
+# One per device:
+#
+file bsaBPMSEdef.db {
+  pattern {DEVICE  , LOC  , UN, SYS, SLCLNK}
+	  { BPMS:XX02:1, XX02 , 1 , SYS0, ""}
+	  { BPMS:XX02:2, XX02 , 1 , SYS0, ""}
+	  { BPMS:XX02:3, XX02 , 1 , SYS0, ""}
+	  { BPMS:XX02:4, XX02 , 1 , SYS0, ""}
+	  { BPMS:XX02:5, XX02 , 1 , SYS0, ""}
+	  { BPMS:XX02:6, XX02 , 1 , SYS0, ""}
+}
+
+file bsaTOROEdef.db {
+  pattern {DEVICE  , LOC  , UN, SYS, SLCLNK}
+	  { TORO:XX02:1 ,XX02 , 1, SYS0, ""}
+	  { TORO:XX02:2 ,XX02 , 1, SYS0, ""}
+}
+file bsaPMTEdef.db {
+  pattern {DEVICE  , LOC  , UN, SYS, SLCLNK}
+	  { PMT:XX02:1 , XX02 ,  1, SYS0, ""}
+	  { PMT:XX02:2 , XX02 ,  1, SYS0, ""}
+	  { PMT:XX02:3 , XX02 ,  1, SYS0, ""}
+	  { PMT:XX02:4 , XX02 ,  1, SYS0, ""}
+	  { PMT:XX02:5 , XX02 ,  1, SYS0, ""}
+	  { PMT:XX02:6 , XX02 ,  1, SYS0, ""}
+}
+file bsaBLENEdef.db {
+  pattern {DEVICE   , LOC  , UN, SYS, SLCLNK , ATB}
+	  { BLEN:XX02:1 , XX02,  1, SYS0, ""     , A }
+	  { BLEN:XX02:2 , XX02,  1, SYS0, ""     , B }
+	  { BLEN:XX02:3 , XX02,  1, SYS0, ""     , C }
+}
+file bsaWIREEdef.db {
+  pattern {DEVICE   , LOC  , UN, SYS, SLCLNK}
+	  { WIRE:XX02:1 , XX02 ,  1, SYS0, ""}
+	  { WIRE:XX02:2 , XX02 ,  1, SYS0, ""}
+	  { WIRE:XX02:3 , XX02 ,  1, SYS0, ""}
+	  { WIRE:XX02:4 , XX02 ,  1, SYS0, ""}
+}
+#
+# Pattern records
+file evrPatternAll.db {
+#	    Device    ,  SLC Pattern Check LNK     ,  EVR/Trigger       
+#	                                                 Links          
+  pattern { DEVICE     ,        LINK4              , LINK5 ,   LINK6 , TREF , TS1ST, TS2ND }
+	  { IOC:XX02:1 , "IOC:XX02:1:FANOUTSLC PP" ,  ""   ,    ""   , 1E06 ,   1  ,   4   }
+}
+file evrPatternProc.db {
+  pattern { DEV }
+	  { IOC:XX02:1}
+}

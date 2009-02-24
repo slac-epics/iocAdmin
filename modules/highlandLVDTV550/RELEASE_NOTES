@@ -1,0 +1,25 @@
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem: This files describes release notes for
+#       the Highland VDT V550 driver and device support.      
+#
+#  Auth: 29-Aug-2007, Matt Bickley      
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        30-Aug-2007, K. Luchini         (LUCHINI):
+#          release highlandLVDTV550-R1-0-2
+#          release highlandLVDTV550-R1-0-1
+#
+#==============================================================.
+#
+highlandLVDTV550-R1-0-2: Built with base-R3-14-9-lcls1 (RTEMS 4.7.1)
+
+highlandLVDTV550-R1-0-1: Built with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+                         Added standard header to this file.
+
+highlandLVDTV550-R1-0:   Initial version. No functional changes
+                         Version 1  received from Matt Bickley at JLab.
+                

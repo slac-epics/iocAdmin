@@ -1,0 +1,40 @@
+record(ai, "$(IOC):GTIM_CURTIME") {
+  field(DESC, "Get Time")
+  field(SCAN, ".5 second")
+  field(PINI, "NO")
+  field(DTYP, "generalTime")
+  field(PREC, "6")
+  field(INP,  "@TIME")
+  field(LINR, "NO CONVERSION")
+  field(EGU,  "second")
+}
+
+record(bo, "$(IOC):GTIM_RSTERR") {
+  field(DESC, "Reset ErrorCounts")
+  field(DTYP, "generalTime")
+  field(OUT,  "@RSTERRCNT")
+  field(ZNAM, "Reset")
+  field(ONAM, "Reset!")
+}
+
+record(longin, "$(IOC):GTIM_ERRCNT") {
+  field(DESC, "Get ErrorCounts")
+  field(DTYP, "generalTime")
+  field(INP,  "@GETERRCNT")
+  field(SCAN, ".5 second")
+}
+
+record(stringin, "$(IOC):GTIM_BESTTCP") {
+  field(DESC, "Best Time-Current-Provider")
+  field(DTYP, "generalTime")
+  field(INP,  "@BESTTCP")
+  field(SCAN, ".5 second")
+}
+
+record(stringin, "$(IOC):GTIM_BESTTEP") {
+  field(DESC, "Best Time-Event-Provider")
+  field(DTYP, "generalTime")
+  field(INP,  "@BESTTEP")
+  field(SCAN, ".5 second")
+}
+

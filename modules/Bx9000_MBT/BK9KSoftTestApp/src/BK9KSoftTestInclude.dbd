@@ -1,0 +1,6 @@
+include "base.dbd"
+include "ModBusTCPClnt.dbd"
+include "Bx9000_MBT.dbd"
+#registrar(mySubRegistrar)
+#variable(mySubDebug)
+#registrar(sncExampleRegistrar)

@@ -1,0 +1,221 @@
+record(ai, "$(user):RESOLUTION") {
+  field(DESC, "resolution")
+  field(PINI, "YES")
+  field(VAL, "$(RESOLUTION)")
+  field(EGU,  "um")
+  field(PREC, "3")
+}
+
+record(bo, "$(user):SAVE_IMG")
+{
+  field(DESC, "saveImage")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(OUT,  "@$(CAMERA):SaveImage")
+  field(ZNAM, "FreeRun")
+  field(ONAM, "Save")
+}
+
+record(longin, "$(user):N_OF_COL") {
+  field(DESC, "n of col")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):NumOfCol")
+  field(PINI, "YES")
+  field(EGU,  "pixels")
+}
+
+record(longin, "$(user):N_OF_ROW") {
+  field(DESC, "n of row")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):NumOfRow")
+  field(PINI, "YES")
+  field(EGU,  "pixels")
+}
+
+record(longin, "$(user):N_OF_BITS") {
+  field(DESC, "n of bits")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):NumOfBits")
+  field(PINI, "YES")
+  field(EGU,  "bits")
+}
+
+record(longin, "$(user):FRAME_RATE") {
+  field(DESC, "frame rate")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):FrameRate")
+  field(SCAN, "1 second")
+  field(EGU,  "fps")
+  field(PHAS, "0")
+}
+
+record(longout, "$(user):ROI_X_SET") {
+  field(DESC, "startPixelXSet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(OUT,  "@$(CAMERA):StartPixelX")
+  field(EGU,  "pixel")
+  field(HOPR, "1391")
+  field(DRVH, "1391")
+  field(LOPR, "0")
+  field(DRVL, "0")
+  field(FLNK, "$(user):ROI_X")
+}
+
+record(longin, "$(user):ROI_X") {
+  field(DESC, "startPixelXGet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):StartPixelX")
+  field(EGU,  "pixel")
+  field(PINI, "YES")
+}
+
+record(longout, "$(user):ROI_Y_SET") {
+  field(DESC, "startPixelYSet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(OUT,  "@$(CAMERA):StartPixelY")
+  field(EGU,  "pixel")
+  field(HOPR, "1039")
+  field(DRVH, "1039")
+  field(LOPR, "0")
+  field(DRVL, "0")
+  field(FLNK, "$(user):ROI_Y")
+}
+
+record(longin, "$(user):ROI_Y") {
+  field(DESC, "startPixelYGet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):StartPixelY")
+  field(EGU,  "pixel")
+  field(PINI, "YES")
+}
+
+record(longout, "$(user):ROI_XNP_SET") {
+  field(DESC, "nPixelsXSet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(OUT,  "@$(CAMERA):NumPixelsX")
+  field(EGU,  "pixels")
+  field(HOPR, "1392")
+  field(DRVH, "1392")
+  field(LOPR, "1")
+  field(DRVL, "1")
+  field(FLNK, "$(user):ROI_XNP")
+}
+
+record(longin, "$(user):ROI_XNP") {
+  field(DESC, "nPixelsXGet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):NumPixelsX")
+  field(EGU,  "pixels")
+  field(PINI, "YES")
+}
+
+record(longout, "$(user):ROI_YNP_SET") {
+  field(DESC, "nPixelsYSet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(OUT,  "@$(CAMERA):NumPixelsY")
+  field(EGU,  "pixels")
+  field(HOPR, "1040")
+  field(DRVH, "1040")
+  field(LOPR, "1")
+  field(DRVL, "1")
+  field(FLNK, "$(user):ROI_YNP")
+}
+
+record(longin, "$(user):ROI_YNP") {
+  field(DESC, "nPixelsYGet")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):NumPixelsY")
+  field(EGU,  "pixels")
+  field(PINI, "YES")
+}
+
+record(waveform, "$(user):IMAGE") {
+  field(DESC, "Image")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):CurImage")
+  field(TSE,  "-2")
+  field(FTVL, "USHORT")
+  field(NELM, "1447680")
+  field(EGU,  "units")
+  field(SCAN, "1 second")
+  field(PHAS, "2")
+}
+
+record(longout, "$(user):IMG_BUF_IDX") {
+  field(DESC, "hisImageIndex")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(OUT,  "@$(CAMERA):HisIndex")
+  field(FLNK, "$(user):BUFD_IMG")
+}
+
+record(waveform, "$(user):BUFD_IMG") {
+  field(DESC, "Image")
+  field(DTYP, "EDTCL_UP900_12B")
+  field(INP,  "@$(CAMERA):HisImage")
+  field(TSE,  "-2")
+  field(FTVL, "USHORT")
+  field(NELM, "1447680")
+  field(EGU,  "units")
+}
+
+record(bi, "$(user):X_ORIENT")
+{
+  field(DESC, "Image X Orient")
+  field(VAL,  "$(XORIENT)")
+  field(PINI, "YES")
+  field(ZNAM, "Positive")
+  field(ONAM, "Negative")
+}
+
+record(bi, "$(user):Y_ORIENT")
+{
+  field(DESC, "Image Y Orient")
+  field(VAL,  "$(YORIENT)")
+  field(PINI, "YES")
+  field(ZNAM, "Positive")
+  field(ONAM, "Negative")
+}
+
+record(ai, "$(user):X_BM_CTR") {
+  field(DESC, "X beam center")
+  field(VAL, "$(X_BM_CTR)")
+  field(EGU,  "mm")
+  field(PREC, "5")
+}
+
+record(ai, "$(user):Y_BM_CTR") {
+  field(DESC, "Y beam center")
+  field(VAL, "$(Y_BM_CTR)")
+  field(EGU,  "mm")
+  field(PREC, "5")
+}
+
+record(ai, "$(user):X_AM_CTR") {
+  field(DESC, "X alignment center")
+  field(VAL, "$(X_AM_CTR)")
+  field(EGU,  "mm")
+  field(PREC, "5")
+}
+
+record(ai, "$(user):Y_AM_CTR") {
+  field(DESC, "Y alignment center")
+  field(VAL, "$(Y_AM_CTR)")
+  field(EGU,  "mm")
+  field(PREC, "5")
+}
+
+record(ai, "$(user):X_RTCL_CTR") {
+  field(DESC, "X reticle center")
+  field(VAL, "$(X_RTCL_CTR)")
+  field(PINI, "YES")
+  field(EGU,  "pixels")
+  field(PREC, "2")
+}
+
+record(ai, "$(user):Y_RTCL_CTR") {
+  field(DESC, "Y reticle center")
+  field(VAL, "$(Y_RTCL_CTR)")
+  field(PINI, "YES")
+  field(EGU,  "pixels")
+  field(PREC, "2")
+}
+

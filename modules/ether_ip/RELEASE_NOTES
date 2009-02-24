@@ -1,0 +1,27 @@
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem:  This file contains the release notes for ether_ip as
+#        pertains to the LCLS release format and procedures.
+#
+#
+#  Auth: 03-Jul-2007, A. Alarcon         (ALARCON)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        08-Oct-2007, K. Luchini          (LUCHINI):
+#          add release ether_ip-R2-5-lcls2
+#          add release ether_ip-R2-5-lcls1
+#
+#==============================================================
+#
+ether_ip-R2-15-lcls1: Import V2.15 from SNS
+                      Build with base-R3-14-9-lcls1
+
+ether_ip-R2-5-lcls2:  Build with base-R3-14-9-lcls1
+
+ether_ip-R2-5-lcls1:  Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+
+ether_ip-R1-0-0: Initial release used in LCLS Injector and BC1.
+                 Build with base-R3-14-8-2-lcls1 (RTEMS 4.7)

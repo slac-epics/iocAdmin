@@ -1,0 +1,13 @@
+typedef unsigned short Ushort;
+int init_lvdt(void);
+int lvdt_get_position(int card, int iLVDTNo);
+int lvdt_get_scancounter(int card);
+int lvdt_get_amplitude(int card, int iLVDTNo);
+Ushort lvdt_get_sample(int card, int iLVDTNo);
+void lvdt_set_sample(int card, int iLVDTNo, Ushort sample);
+Ushort lvdt_get_magnify(int card, int iLVDTNo);
+void lvdt_set_magnify(int card, int iLVDTNo, Ushort YesNo);
+Ushort lvdt_get_ratio(int card, int iLVDTNo);
+void lvdt_set_ratio(int card, int iLVDTNo, Ushort YesNo);
+Ushort lvdt_get_skip(int card, int iLVDTNo);
+void lvdt_set_skip(int card, int iLVDTNo, Ushort YesNo);

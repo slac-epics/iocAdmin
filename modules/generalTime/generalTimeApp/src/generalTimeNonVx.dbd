@@ -1,0 +1,6 @@
+device(ai,	INST_IO,devAiGeneralTime,"generalTime")
+device(bo,	INST_IO,devBoGeneralTime,"generalTime")
+device(longin,	INST_IO,devLiGeneralTime,"generalTime")
+device(stringin,INST_IO,devSiGeneralTime,"generalTime")
+driver(drvGeneralTime)
+

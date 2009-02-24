@@ -1,0 +1,57 @@
+include $(EPICS_BASE)/configure/RULES_TOP
+INSTALL_EDL	= $(INSTALL_LOCATION)/opi
+INSTALL_EDLS += $(addprefix $(INSTALL_EDL)/,$(notdir $(EDLS))) 
+#build : $(INSTALL_EDL) $(INSTALL_EDLS) $(LISTS)
+
+
+INSTALL_GIF	= $(INSTALL_LOCATION)/opi
+INSTALL_GIFS += $(addprefix $(INSTALL_GIF)/,$(notdir $(GIFS))) 
+#build : $(INSTALL_GIF) $(INSTALL_GIFS)
+
+INSTALL_PNG	= $(INSTALL_LOCATION)/opi
+INSTALL_PNGS += $(addprefix $(INSTALL_PNG)/,$(notdir $(PNGS))) 
+
+build : $(INSTALL_EDL) $(INSTALL_EDLS) $(LISTS) $(INSTALL_GIF) $(INSTALL_GIFS) $(INSTALL_PNG) $(INSTALL_PNGS) 
+
+
+install : build
+clean : 
+	rm -rf $(LISTS)
+
+
+
+
+
+
+$(LISTS) : %.list : ../Makefile 
+	@echo "Linking to list file $@"
+	@$(RM) $@
+	@ln -s $(EPICS_EXTENSIONS)/pref/edm/$@ $@
+	@echo "	@cp -d $@ $(INSTALL_EDL)"
+	@cp -d $@ $ $(INSTALL_EDL)
+
+
+INSTALL_DISPLAYLIST = $(INSTALL)
+INSTALL = $(PERL) $(TOOLS)/installEpics.pl
+
+$(INSTALL_EDLS):$(INSTALL_EDL)/%.edl : %.edl  
+	@echo "Installing edl file $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_EDL)
+
+$(INSTALL_EDL) :
+	$(MKDIR) $(INSTALL_EDL)
+
+
+$(INSTALL_GIFS):$(INSTALL_GIF)/%.gif : %.gif  
+	@echo "Installing gif file $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_GIF)
+
+$(INSTALL_GIF) :
+	$(MKDIR) $(INSTALL_GIF)
+
+$(INSTALL_PNGS):$(INSTALL_PNG)/%.png : %.png  
+	@echo "Installing png file $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_PNG)
+
+$(INSTALL_PNG) :
+	$(MKDIR) $(INSTALL_PNG)

@@ -1,0 +1,17 @@
+record(fanout, "$(DEV):FANOUT") {
+  field(DESC, "Test Fanout")
+  field(LNK1, "BPMS:$(LOCA):131:FANOUT PP")
+  field(LNK2, "BPMS:$(LOCA):161:FANOUT PP")
+  field(LNK3, "BPMS:$(LOCA):201:FANOUT PP")
+  field(LNK4, "BPMS:$(LOCA):233:FANOUT PP")
+  field(LNK5, "BPMS:$(LOCA):278:FANOUT PP")
+  field(LNK6, "BPMS:$(LOCA):301:FANOUT PP")
+  field(SDIS, "$(DEV):FIDUCIAL.L")
+  field(FLNK, "$(DEV):FANOUT1")
+}
+
+record(fanout, "$(DEV):FANOUT1") {
+  field(DESC, "Test Fanout")
+  field(LNK1, "BPMS:$(LOCA):315:FANOUT PP")
+}
+

@@ -1,0 +1,47 @@
+1. Consideration of development
+
+ A. What are NOT supported by this driver:
+   a. FPDP is not supported
+   b. Diagnostic Mode is useless and not supported
+   c. Continuous Mode is not supported
+   d. Pre-trigger for capture mode is not supported
+   e. Cluster Mode could be used but not tested
+
+ B. Why does cexp md(0x9f550000,16) cause VME IRQ but mm does NOT?
+   a. Somehow "md" causes LBERR* which causes VMSTR_IRQ. Write 0 to DCSR should clear it.
+      See SCV_UM App A-6 for detail.
+   b. Because of this, if we do use SCV64 DMA engine,
+      we have to judge it is DMA_DONE or BUS_ERROR.
+
+ C. How to get ADC IRQ?
+   a. It seems soft tigger twice will cause a ADC IRQ. Then we found ACQ_CNT should be no minus 1.
+
+ D. INT in SCV64 VINT and IMR
+   a. We have to re-enable INT every time we got IRQ since IACK clears it automatically.
+   b. Do we enable VMSTR_IRQ even not using DMA? Yes to catch bus error.
+   c. We don't have to temperarily mask VMSTR_IRQ since we clear DCSR.
+   d. Reset ADC in ISR. No, just mask it then reset ADC/re-enable IRQ in DataProcTask.
+
+ E. How to clear interrupt?
+   a. Read out FIFO seems not clear interrupt
+   b. Stop/Re-start ACQ does NOT clear interrupt
+   c. Reset ADC does clear interrupt TODO
+
+ F. Do we reest ADC or stop/restart Acq after each Acq?
+   a. Reset ADC to clear IRQ and line up FIFO. No need to stop/re-start Acq.
+
+ G. Data from ADC seems 16-bit signed
+
+ H. Add bytesToTran, fatalError?, event number, historySzie, phyVmeAddr
+   a. TODO
+
+ I. RTEMS and OSI issues:
+   a. OSI epicsAtReboot
+   b. OSI cacheDmaMalloc
+   c. Fine delay and time measurement
+   d. OSI watchdog
+   e. epicsInterruptContextMessage does NOT work
+   f. OSI sysLocalToBusAdrs
+
+ J. Measure FPU and DMA performance
+  a. TODO

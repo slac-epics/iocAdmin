@@ -1,0 +1,14 @@
+File: /afs/slac/g/lcls/site/src/event/evrSupport/README
+
+This directory contains all the EPICS databases and subroutines
+for the EVR iocs that are OSI. This area  builds a library 
+that contains lcls beam-synchronous acquisition (bsa) as well as 
+all evr support (pattern pipelineing, etc). 
+It creates libevrSupport and installs dbd and db files.
+
+evrSupport library (<INSTALL_LOCATION>/lib/<arch>/libevrSupport.a) contents:
+src:    functions for subroutine records and evr driver support.
+Db/bsa: low-level beam-synchronous-acquisition (BSA) databases.
+Db/evr: low-level event receiver (EVR) databases
+Db/ioc: EVR IOC substitution files.
+

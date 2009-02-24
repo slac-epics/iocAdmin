@@ -1,0 +1,31 @@
+# Where to install configuration files for various ca clients
+INSTALL_PLC = $(INSTALL_LOCATION)/plc
+
+INSTALL_PLCS= $(PLCS:%=$(INSTALL_PLC)/%)
+
+all::   install
+
+plcs::   $(INSTALL_PLCS)
+
+inc:: plcs
+
+rebuild:: clean install
+
+install:: plcs
+
+buildInstall:: $(INSTALL_CFGS)
+
+clean::
+	@echo "Cleaning"
+
+INSTALL = $(PERL) $(TOOLS)/installEpics.pl
+
+$(INSTALL_PLC)/%: %
+	@echo "Installing plc file $@"
+	@$(INSTALL) -d -m 644 $< $(@D)
+
+$(INSTALL_PLC)/%: ../%
+	@echo "Installing plc file $@"
+	@$(INSTALL) -d -m 644 $< $(@D)
+
+

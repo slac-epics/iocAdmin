@@ -1,0 +1,266 @@
+#!/usr/bin/perl
+#
+# makeRegistrar 
+#
+# Takes [ansi vanilla] function prototypes and produces EPICS registrar 
+# function.
+#
+
+# output is to be inserted into code containing functions to be registered.
+# Note the registrar function and its export call both use the program name 
+# "xxx", which you need to change by hand.  
+
+#
+# be sure to include "iocsh.h" and "epicsExport.h" in the file.
+#
+
+# Example prototypes from autoSaveRestore:
+#  
+#    Clip these and use as test input if desired.  Remove the ^#
+#
+#int set_savefile_name(char *filename, char *save_filename);
+#int create_periodic_set(char *filename, int period, char *macrostring);
+#int create_triggered_set(char *filename, char *trigger_channel,
+#        char *macrostring);
+#int create_monitor_set(char *filename, int period, char *macrostring);
+#int create_manual_set(char *filename, char *macrostring);
+#int fdbrestore(char *filename);
+#void fdblist(int verbose);
+#
+#int set_requestfile_path(char *path, char *pathsub);
+#int set_savefile_path(char *path, char *pathsub);
+#int set_saveTask_priority(int priority);
+#int remove_data_set(char *filename);
+#int reload_periodic_set(char *filename, int period, char *macrostring);
+#int reload_triggered_set(char *filename, char *trigger_channel,
+#        char *macrostring);
+#int reload_monitor_set(char * filename, int period, char *macrostring);
+#int reload_manual_set(char * filename, char *macrostring);
+#int fdbrestoreX(char *filename);
+#
+
+
+#
+# input
+#
+$i = 0;
+while (<>) {
+#  chomp();
+   @inlist[$i] = $_;
+   $i++;
+}
+
+#
+# combine broken lines
+#
+$i = 0;$untermed=0;
+foreach (@inlist) {
+   if (!/;$/) {
+      chomp;
+      @outlist[$i] = $_;
+      $untermed = 1;
+   }
+   else {
+      if ($untermed == 1) {
+         $untermed = 0; 
+         @outlist[$i] = join("",@outlist[$i],$_);   
+      }  else {
+         @outlist[$i] = $_;
+      }
+      $i++;
+   }
+}
+#print @outlist;
+
+#get args 
+
+$i = 0;
+foreach (@outlist) {
+   ($junk, $arglist) = split("[(]",$_);
+   ($arglist, $junk) = split("[)]",$arglist);
+   @allargs[$i] = $arglist . "\n";
+   $i++;
+}
+
+#
+# produce argument descriptors, arg lists, funcdefs, callfuncs
+#
+
+   $i = 0;
+   $funcfound = 0;
+   foreach (@allargs) {
+      #
+      # note that is block of code is repeated below, to catch last
+      # member of list.  
+      #
+      if ($funcfound == 1) {
+         $funcfound = 0;
+         print "static const iocshArg * const ".$funcname."Args\[" . $j ."\] = {\n";
+         for ($k = 0; $k < $j; $k++) {
+            print "       &" . $funcname . "Arg" . $k;
+            if (($k + 1) < $j) {
+                print ",\n"; 
+            } else { print "\};\n"}
+         }
+         print "static const iocshFuncDef " . $funcname . "FuncDef = {";
+         print "\"". $funcname ."\"," . $j . "\," . $funcname."Args};\n";
+         print "static void " . $funcname . "CallFunc\(const iocshArgBuf *args)\n";
+         print "{\n";
+         print "    " . $funcname . "\(";
+         for ($k = 0; $k < $j; $k++) {
+            print "args\[" . $k . "\]\.";
+            if (@types[$k] eq "iocshArgInt") {
+               print "ival"; }
+            if (@types[$k] eq "iocshArgString") {
+               print "sval"; }
+            if (@types[$k] eq "iocshArgDouble") {
+               print "dval"; }
+            if (($k + 1) < $j) {
+                print ","; 
+            } else { print "\);\n"}
+         }
+         print "}\n";
+      }
+      ($type, $funcname) = split(/\s+/,@outlist[$i]);
+      ($funcname, $junk) = split(/\(/,$funcname);
+      $i++;
+      @names = "";
+      @types = "";
+      $j = 0;
+      @args = split;
+      $typefound = 0;
+      $charfound = 0;
+      foreach (@args) {
+         if ($charfound == 2) {
+            $charfound = 0;
+            @types[$j] = "iocshArgString";
+            if (/,$/) { chop($_); }
+            @names[$j] = $_;
+            $funcfound = 1;
+            print "static const iocshArg " . $funcname . "Arg" . $j . " = { ";
+            print "\"". @names[$j] . "\",". @types[$j] . " };\n";
+            $j++;
+            next;
+         }
+         if ($charfound == 1 && /\*/ && length($_) == 1) { 
+            $charfound = 2;
+            next;
+         }
+         if ($charfound == 1 && /\*/ ) { 
+            s/\*//;
+            $charfound = 0;
+            @types[$j] = "iocshArgString";
+            if (/,$/) { chop($_); }
+            @names[$j] = $_;
+            $funcfound = 1;
+            print "static const iocshArg " . $funcname . "Arg" . $j . " = { ";
+            print "\"". @names[$j] . "\",". @types[$j] . " };\n";
+            $j++;
+            next;
+         }
+         if ($charfound == 1) {
+            $charfound = 0;
+            @types[$j] = "iocshArgInt";
+            if (/,$/) { chop($_); }
+            @names[$j] = $_;
+            $funcfound = 1;
+            print "static const iocshArg " . $funcname . "Arg" . $j . " = { ";
+            print "\"". @names[$j] . "\",". @types[$j] . " };\n";
+            $j++;
+            next;
+         }
+         if (/char/) {
+            $charfound = 1;
+            next;
+         }
+         if (/unsigned/) {
+            $unsfound = 1;
+            next;
+         }
+         if ($intfound == 1) {
+            $intfound = 0;
+            @types[$j] = "iocshArgInt";
+            if (/,$/) { chop($_); }
+            @names[$j] = $_;
+            $funcfound = 1;
+            print "static const iocshArg " . $funcname . "Arg" . $j . " = { ";
+            print "\"". @names[$j] . "\",". @types[$j] . " };\n";
+            $j++;
+            next;
+         }
+         if ($unsfound == 1 || /char|int|long|short/) {
+            $unsfound = 0;
+            $intfound = 1;
+            next;
+         }
+         if ($doublefound ==1) {
+            $doublefound = 0;
+            @types[$j] = "iocshArgDouble";
+            if (/,$/) { chop($_); }
+            @names[$j] = $_;
+            $funcfound = 1;
+            print "static const iocshArg " . $funcname . "Arg" . $j . " = { ";
+            print "\"". @names[$j] . "\",". @types[$j] . " };\n";
+            $j++;
+            next;
+         }
+         if (/double|float/) {
+            $doublefound = 1;
+            next;
+         }
+      }
+   }
+#
+# this needs to be done one more time for the last function...
+#
+
+      if ($funcfound == 1) {
+         $funcfound = 0;
+         print "static const iocshArg * const ".$funcname."Args\[" . $j ."\] = {\n";
+         for ($k = 0; $k < $j; $k++) {
+            print "       &" . $funcname . "Arg" . $k;
+            if (($k + 1) < $j) {
+                print ",\n"; 
+            } else { print "\};\n"}
+         }
+         print "static const iocshFuncDef " . $funcname . "FuncDef = {";
+         print "\"". $funcname ."\"," . $j . "\," . $funcname."Args};\n";
+         print "static void " . $funcname . "CallFunc\(const iocshArgBuf *args)\n";
+         print "{\n";
+         print "    " . $funcname . "\(";
+         for ($k = 0; $k < $j; $k++) {
+            print "args\[" . $k . "\]\.";
+            if (@types[$k] eq "iocshArgInt") {
+               print "ival"; }
+            if (@types[$k] eq "iocshArgString") {
+               print "sval"; }
+            if (@types[$k] eq "iocshArgDouble") {
+               print "dval"; }
+            if (($k + 1) < $j) {
+                print ","; 
+            } else { print ");\n"}
+         }
+         print "}\n";
+      }
+#
+#  end of last function work
+
+#
+# produce registrar function
+#
+print "\n";
+print "void xxxRegister(void)\n";
+print "{\n";
+
+
+foreach (@outlist) {
+      ($type, $funcname) = split(/\s+/,$_);
+      ($funcname, $junk) = split(/\(/,$funcname);
+
+   print "   iocshRegister(&" . $funcname . "FuncDef, " . $funcname . "CallFunc)\;\n";
+}
+
+print "}\n";
+
+print "epicsExportRegistrar(xxxRegister)\;\n";
+

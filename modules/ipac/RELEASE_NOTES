@@ -1,0 +1,38 @@
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem:  This file contains the release notes for ipac as
+#        pertains to the LCLS release format and procedures.
+#
+#        The initial version of this software written 
+#        by Andrew Johnson at APS.
+#
+#  Auth: 22-May-2007, K. Luchini         (LUCHINI)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        08-OCt-2007, K. Luchini         (LUCHINI):
+#          release ipac-R2-8-lcls2
+#          release ipac-R2-8-lcls1
+#          release ipac-R1-0-2
+#        30-Aug-2007, K. Luchini         (LUCHINI):
+#          release ipac-R1-0-2
+#        28-Aug-2007, K. Luchini         (LUCHINI):
+#          release ipac-R1-0-1
+#
+#==============================================================
+#
+ipac-R2-8-lcls2: Build with base-R2-14-9-lcls1
+
+ipac-R2-8-lcls1: Retag with new naming convention
+
+ipac-R1-0-3: Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+
+ipac-R1-0-2: Fix drvH8002.c compilewarnings
+
+ipac-R1-0-1: Add Hytec 8002 carrier card support
+             Add Xycom 9660 carrier card support
+
+ipac-R1-0-0: Initial release used in LCLS Injector and BC1.
+

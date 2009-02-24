@@ -1,0 +1,17 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+file evrDevTrig.cwConfig {
+#      Device	      
+  pattern { DEV             }
+	  { BLEN:LI21:265:  }
+	  { BLEN:LI21:280:  }
+	  { TRIG:LI21:BL01: }
+}
+file evrIocTrig.cwConfig {
+#      Device
+ pattern { DEV            }
+         { IOC:LI21:BL01  }
+}
+

@@ -1,0 +1,7 @@
+include "drvMrfEr.dbd"
+include "erRecord.dbd"
+include "ereventRecord.dbd"
+include "eventRecord.dbd"
+device (er, VME_IO, devMrfEr, "MRF Event Receiver")
+device (erevent, VME_IO, devMrfErevent, "MRF Event Receiver")
+device (event,VME_IO, devMrfErEpicsEvent, "MRF Event Receiver")

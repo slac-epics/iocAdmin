@@ -1,0 +1,407 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 132
+y 87
+w 320
+h 400
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+ctlFont "courier-bold-r-14.0"
+ctlFontAlign "right"
+btnFont "courier-medium-r-8.0"
+fgColor index 10
+bgColor index 50
+textColor index 10
+ctlFgColor1 index 25
+ctlFgColor2 index 30
+ctlBgColor1 index 5
+ctlBgColor2 index 10
+topShadowColor index 5
+botShadowColor index 10
+pvType "EPICS"
+endScreenProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 240
+y 339
+w 60
+h 25
+fgColor index 25
+bgColor index 45
+topShadowColor index 5
+botShadowColor index 10
+label "EXIT"
+font "courier-bold-r-14.0"
+3d
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 162
+y 30
+w 115
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 25
+bgColor index 3
+useDisplayBg
+value {
+  "-$(DEV):$(SEC):$(LOC)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 15
+y 11
+w 176
+h 21
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 3
+useDisplayBg
+value {
+  "ICS130 Expert Panel"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 10
+y 50
+w 300
+h 0
+lineColor index 10
+fillColor index 5
+lineWidth 2
+numPoints 2
+xPoints {
+  0 10
+  1 310
+}
+yPoints {
+  0 50
+  1 50
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 89
+y 120
+w 150
+h 0
+lineColor index 10
+fillColor index 5
+numPoints 2
+xPoints {
+  0 89
+  1 239
+}
+yPoints {
+  0 120
+  1 120
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 89
+y 182
+w 150
+h 0
+lineColor index 10
+fillColor index 5
+numPoints 2
+xPoints {
+  0 89
+  1 239
+}
+yPoints {
+  0 182
+  1 182
+}
+endObjectProperties
+
+# (Textentry)
+object TextentryClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 109
+y 142
+w 110
+h 33
+controlPv "$(DEV):$(SEC):$(LOC):Decimation"
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 112
+y 87
+w 104
+h 26
+controlPv "$(DEV):$(SEC):$(LOC):ActSmplRate"
+displayMode "decimal"
+precision 3
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 83
+y 68
+w 162
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Sampling Clock Rate (KHz)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 114
+y 256
+w 100
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "ADC Digital Filter"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 89
+y 312
+w 150
+h 0
+lineColor index 10
+fillColor index 5
+numPoints 2
+xPoints {
+  0 89
+  1 239
+}
+yPoints {
+  0 312
+  1 312
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 101
+y 189
+w 126
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Digitizer Trigger Rate"
+}
+autoSize
+endObjectProperties
+
+# (RegTextupdate)
+object RegTextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 118
+y 207
+w 92
+h 24
+controlPv "$(DEV):$(SEC):$(LOC):TriggerRate"
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+# Additional properties
+beginObjectProperties
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 129
+y 125
+w 70
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "Decimation:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 134
+y 322
+w 61
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+useDisplayBg
+value {
+  "ADC Mode"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 89
+y 239
+w 150
+h 0
+lineColor index 10
+fillColor index 5
+numPoints 2
+xPoints {
+  0 89
+  1 239
+}
+yPoints {
+  0 239
+  1 239
+}
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 105
+y 277
+w 119
+h 28
+fgColor index 25
+bgColor index 10
+selectColor index 15
+inconsistentColor index 10
+topShadowColor index 5
+botShadowColor index 10
+controlPv "$(DEV):$(SEC):$(LOC):Filter"
+font "courier-medium-r-14.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 112
+y 338
+w 104
+h 26
+controlPv "$(DEV):$(SEC):$(LOC):ADCMode"
+displayMode "decimal"
+fgColor index 15
+bgColor index 10
+fill
+font "courier-bold-r-12.0"
+fontAlign "center"
+endObjectProperties
+

@@ -1,0 +1,6 @@
+device(ai,		VME_IO,devAiVHSx0x,"VHSx0x")
+device(ao,		VME_IO,devAoVHSx0x,"VHSx0x")
+device(bo,		VME_IO,devBoVHSx0x,"VHSx0x")
+device(mbbiDirect,	VME_IO,devMbbiDVHSx0x,"VHSx0x")
+device(stringin,	VME_IO,devSiVHSx0x,"VHSx0x")
+driver(drvVHSx0x)

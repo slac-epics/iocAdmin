@@ -1,0 +1,238 @@
+Instructions for RTEMS EVR users                    Last Updated 08/17/2007
+--------------------------------
+
+I - Adding the event package to your IOC application:
+-----------------------------------------------------
+
+(1) Add EVENT, GENERALTIME, SSUBRECORD, and RESTORE to configure/RELEASE and 
+clean/rebuild configure:
+
+EVENT=/nfs/slac/g/lcls/build/epics/modules/event/<version>
+GENERALTIME=/nfs/slac/g/lcls/build/epics/modules/generalTime/<version>
+SSUBRECORD=/nfs/slac/g/lcls/build/epics/modules/sSubRecord/<version>
+RESTORE=/nfs/slac/g/lcls/build/epics/modules/restore/<version>
+
+(2) Link event libraries into your app by adding to xxxApp/src/Makefile:
+
+   xxx_LIBS += evrSupport
+   xxx_LIBS += sSubRecord
+   xxx_LIBS += generalTime
+   xxx_LIBS += devMrfEr
+   xxx_LIBS += mrfVme64x
+   xxx_LIBS += restore
+
+Note that the order of the above libraries is important.
+
+(3) Add the following .dbd files to xxxApp/src/Makefile 
+    or to xxxApp/src/xxxInclude.dbd:
+
+   xxx_DBD += evrSupport.dbd
+   xxx_DBD += devMrfEr.dbd
+   xxx_DBD += dbRestore.dbd
+
+(4) Install the following applicable ioc-specific database 
+    files from the event package to your application by adding to 
+    xxxApp/Db/Makefile:
+
+   DB_INSTALLS += $(EVENT)/db/IOC-<area>-<xxyy>evr.db
+   DB_INSTALLS += $(EVENT)/db/IOC-<area>-<xxyy>pattern.db
+   And for IOCs that support beam-synchronous acquisition:
+   DB_INSTALLS += $(EVENT)/db/IOC-<area>-<xxyy>bsa.db
+   And for IOCs that have triggers:
+   DB_INSTALLS += $(EVENT)/db/IOC-<area>-<xxyy>trig.db
+
+   where area = LR20, IN20, LI21, etc
+   and   xx = subsystem ID (AM, BL, BP, IM, LS, MG, MP, PM, RF, WS)
+         yy = unique number per area and subSystem ID (01, 02, 03, etc)
+
+(5) For IOCs with triggered devices, add the trigger setpoints to the IOC's
+    ChannelWatcher configuration file.  Copy IOC-<area>-<xxyy>trig.cwConfig
+    from <event>/db to $TOOLS/ChannelWatcher/config and commit it.  Add
+    the file to $TOOLS/ChannelWatcher/Master.<xx> and commit it.  Restart
+    ChannelWatcher using that master file.
+
+(6) For IOCs with triggered devices, add the trigger delays to the Channel
+    Archiver.
+
+(7) For IOCs with triggered devices which use event codes that are generated 
+    at a "slow" rate (rate slower than beam full rate like a 10Hz event code), 
+    if records for your devices process or finish processing 8.3 msec beyond
+    the time of the trigger (ie, profile monitors), set the TSE field of those 
+    records to the event code.  The records will then be timestamped at the
+    time that the event code was received instead of the time of the last 
+    fiducial.  The records can then be correlated with other records on other
+    IOCs (ie, BPMs) that were acquired on the same pulse.  Make sure that
+    the event code IRQ for all possible TSE values is enabled in 
+    IOC-<area>-<xxyy>evr.db.
+
+II - Adding event databases and EVR configuration to your IOC startup file:
+--------------------------------------------------------------------------
+These instructions assume that your IOC has already been set up using 
+instructions in /afs/slac/g/lcls/epics/ioc/iocBoot/README.
+
+(1) If you have one or more VME EVRs and your IOC is using an early version 
+    of RTEMS (ie, version "4.7" instead of "4.7.1"), then add these 
+    instructions early in the startup file, before any EPICS commands:
+
+    # Carve a slice out of A32 space for the CR/CSR
+    # First, make the A32 space smaller...
+    BSP_VMEOutboundPortCfg(0,0xd,0x20000000,0x9<<28,0x0e000000)
+    # Then, make the CSR space in the freed up space (from 0x9e000000 to 0x9f000000)
+    BSP_VMEOutboundPortCfg(3,0x2f,0,0x9e000000,0x01000000)
+
+(2) If your IOC supports beam-synchronous acquisition, it will need to support
+    large waveforms for channel access.  After running the
+    appropriate epicsEnvSet<Dev,Dmz,Prod> file to set up the epics environment
+    (see /afs/slac/g/lcls/epics/ioc/iocBoot/README), add the following command 
+    (before iocInit):
+
+    epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "30000")
+
+    If your IOC already supports waveforms larger than 30000 bytes for other
+    reasons, then this command is not needed. 
+
+(3) For RTEMS IOCs with triggers, add this nfsMount command to your startup 
+    file after epicsEnvSet<Dev,Dmz,Prod> is invoked:
+
+    nfsMount(getenv("NFS_FILE_SYSTEM"),getenv("NFS_IOC_DATA"),"/dat")
+
+(4) Add database templates to st.cmd (before iocInit): 
+
+    dbLoadRecords("db/IOC-<area>-<xxyy>evr.db")
+    dbLoadRecords("db/IOC-<area>-<xxyy>pattern.db")
+    And for IOCs that support beam-synchronous acquisition:
+    dbLoadRecords("db/IOC-<area>-<xxyy>bsa.db")
+    And for IOCs that have triggers:
+    dbLoadRecords("db/IOC-<area>-<xxyy>trig.db")
+
+(5) Add ErConfigure for each EVR (before iocInit).
+
+    VME: ErConfigure(<instance>,<address>,<vector>,<level>,0)
+    PMC: ErConfigure(<instance>,    0    ,    0   ,   0   ,1)
+
+    where instance = EVR instance, starting from 0, incrementing by 1
+                     for each subsequent card
+    and   address  = VME card address, starting from 0x300000, 
+                     incrementing by 0x100000 for each subsequent card
+                     (0 for PMC)
+    and   vector   = VME interrupt vector, starting from 0x60, 
+                     incrementing by 0x02 for each subsequent card
+                     (0 for PMC)
+    and   level    = VME interrupt level (set to 4 - can be the same 
+                     for all EVRs)
+                     (0 for PMC)
+    and   0        = VME
+       or 1        = PMC
+
+(6) For IOCs with triggers, add this line after databases are loaded and
+    before iocInit:
+
+    dbRestore("/dat/<ioc-name>/IOC-<area>-<xxyy>trig.sav")
+
+III - Hardware Setup:
+---------------------
+
+(1) Installation instructions for the PMC EVR are here:
+    http://www.slac.stanford.edu/grp/lcls/controls/global/subsystems/timing/PMC-EVR_install_inst_v1d0.pdf
+
+(2) Connect fiber from a nearby timing fiber fanout module to each EVR.  These 
+    fanout modules are identified in the timing system block diagram by 
+    Mike Browne:
+    https://sharepoint.slac.stanford.edu/sites/LCLS%20Document%20Storage/
+    01%20-%20LCLS%20Systems/electronbeamsys/controls/Shared%20Documents/
+    Timing/TIMING%20System%20BD.pdf
+
+    If the fiber has just the receive cable, connect the single cable to the
+    top spigot of the transceiver (bottom when the black lock is on the
+    right).
+
+IV - Special One-Time PMC Setup:
+--------------------------------
+
+The PMC EVRs, as delivered, have incorrect device and vendor IDs in their 
+EEPROMs.  These IDs must be corrected before the module can be configured 
+by the software.  Use the following one-time procedure to burn in the
+correct values for each PMC EVR.  
+
+WARNING - WARNING - WARNING:
+IF THERE ARE OTHER PMCS CONNECTED TO YOUR CPU, IT'S POSSIBLE THIS
+PROCEDURE WILL WRITE TO THE WRONG PMC AND RUIN IT!!  REMOVE 
+NON-EVR PMCS BEFORE RUNNING THIS PROCEDURE TO BE SAFE.
+
+(1) Boot the CPU with an IOC application that includes the event package.
+    The "ErConfigure" command for each PMC EVR will fail if it hasn't yet 
+    been corrected.
+
+(2) Type the following command to read the vendor and device ID for 
+    PMC instance 0 or 1:
+
+    Cexp>evrEEPROMFixup(<0 or 1>,0)
+
+    Look for these results:
+
+    PLX 9030 found at 0xe110<0or1>000, EEPROM present
+    Subsytem vendor ID 0x10b5, device ID 0x9030
+
+    > Sanity check passed...
+    > Informational mode only; EEPROM contents unmodified.
+    ==> Call again with nonzero 'doit' argument to apply change.
+    0x00000000 
+
+(3) If the results are as expected, type the following command to correct
+    the vendor and device ID:
+
+    Cexp> evrEEPROMFixup(<0 or 1>,1)
+
+    Look for these results:
+
+    PLX 9030 found at 0xe110<0or1>000, EEPROM present
+    Subsytem vendor ID 0x10b5, device ID 0x9030
+
+    > Sanity check passed...
+    > Writing MRF id (0x1a3e) to EEPROM SSVID
+    > Writing EVR id (0x10c8) to EEPROM SSDID
+    ==> EEPROM successfully fixed
+    0x00000000 (0)
+
+(4) Reboot the CPU and check that the ErConfigure commands are successful.
+
+V - Checkout Instructions
+-------------------------
+
+(1) Errors when loading event databases, contact drogind.
+(2) Errors from ErConfigure, contact saa.
+(3) ErConfigure is successful but EVR has red LEDs, contact jedu to make 
+sure your fiber is connected properly from EVG through fanout modules to
+your EVR.
+(4) Unexpected or ominous messages at your console, contact saa. 
+(5) Once the IOC is up and configured successfully, type "dbcar()" at the 
+Cexp prompt and make sure there are no disconnected channels.  Contact drogind
+if there are.
+(6) From the home LCLS EDM display (lclshome) on a production machine, select 
+"Event".  Under "EVR IOCs", select the button containing your IOC.  Select 
+each display next to your IOC name (all channels must be connected):
+  * EVR display - look for non-zero FPGA, and "YES" for Phase Lock and 0 for 
+    "Rx Fail".  
+  * "Triggers..." display - check that all the event codes that you expect
+    to use on your IOC are set.  Check that the proper channels are enabled
+    for the proper event code(s).  If any records on your IOC use a non-zero
+    TSE, check that the event codes used by your TSEs have the IRQ enabled.
+  * "Events..." display - check that the rate for event code 1 is exactly 
+    360Hz.  For event codes that have the IRQ set, check that their rates
+    are as expected.
+  * "Pattern..." display - check that data is changing every 2 seconds.  From 
+    the main Event display, select "EVG Diags...".  
+    The data on your EVR pattern display and the EVG pattern display must 
+    match.  If the pattern data is all magenta, the fiber to your EVR is 
+    probably not connected properly.  Select "General Time" and check that
+    the "Best Time Event Provider" is evrTimeGet.
+  * "Devices..." display - check that all your triggered devices are 
+    available and the polarity, pulse width, delay (TDES), and control (TCTL)
+    are properly set.
+  * Contact saa and drogind if any problem.
+(7) If the timestamps of your records are not reasonable, contact saa.
+(8) Check that the polarity, pulse width, delay, and control of your devices
+    are being monitored and updated by your IOC's ChannelWatcher and are 
+    properly restored on reboot.  Contact drogind if problems.
+(9) Check that the Channel Archiver is recording all your trigger delays and
+    that there are no disconnected channels.

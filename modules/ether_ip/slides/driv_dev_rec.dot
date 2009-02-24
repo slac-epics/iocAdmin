@@ -1,0 +1,21 @@
+ 
+digraph DrivDevRec
+{
+#	size="7.5,10";
+#	ratio=fill;
+#	rankdir = LR;
+	node [ fontname=Helvetica ];
+	edge [ fontname=Helvetica ];
+	PLC   [ shape=polygon,sides=4,peripheries=2 ];
+	Table [ shape=box,style=bold,label="Tag Table" ];
+
+	Driver -> PLC [ style=dashed, label="read/write\ncommands" ];
+	PLC -> Driver [ style=dashed, label="status/data" ];
+
+	Driver -> Table [ label="updates\ntag values" ];
+	Table -> Driver [ label="checks for\nwrite requests" ];
+
+	Device [ label="Device\nSupport" ];
+	Device -> Table [ label="registers tags" ];
+	Table -> Device [ label="current data" ];
+}

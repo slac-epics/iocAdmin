@@ -1,0 +1,20 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+# Must also have pattern records
+# Note: WID, DES, TEC are in terms of nSec and are unique per device
+# 
+file evrDevTrig.db {
+#      Device	      , Description   , EVR  ,  width ,desired  , EC delay   , EVR  , EVR,  IOC          , slope 
+#			                            Trigger       wrt TREF   wrt fiducial loca   unit                 1/119Mhz
+  pattern { DEV       ,  DESC         , POL  ,  WID   , DES     , TEC        , LOCA , UNIT, IOC          , ESLO 
+                      ,  PREC         , EGU  ,  DRVL  , DRVH    , EVG        , TCTL , TPOL, TWID, TDES, CTL}           
+	  { YAGS:IN20:351:,  "YAG03"      , 1    ,20000000, 10      , LCLS_10_   , IN20 , PM02, IOC:IN20:PM02, 8.40336692324359
+                      ,  0            ,"nSec", -2.8E06, 2.8E06  , IN20:EV01  , DG0E , DG0P, DG0W, DG0D, 0}
+	  { YAGS:IN20:465:,  "YAG04"      , 1    ,2000000 , 10      , LCLS_10_   , IN20 , PM02, IOC:IN20:PM02, 8.40336692324359
+                      ,  0            ,"nSec", -2.8E06, 2.8E06  , IN20:EV01  , DG1E , DG1P, DG1W, DG1D, 0}
+	  { TRIG:IN20:PM02:,  "Spare Trig 2",1   ,2000000 , 10      , LCLS_10_   , IN20 , PM02, IOC:IN20:PM02, 8.40336692324359
+                      ,  0            ,"nSec", -2.8E06, 2.8E06  , IN20:EV01  , DG2E , DG2P, DG2W, DG2D, 0}
+}
+

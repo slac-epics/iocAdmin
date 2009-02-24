@@ -1,0 +1,37 @@
+record(mbbo, "$(DEV):$(SEC):$(LOC):Gain") {
+  field(DESC, "Gain")
+  field(DTYP, "ICS121")
+  field(OUT,  "#C$(card) S$(chnl) @Gain")
+
+  field(ZRVL, "0")
+  field(ZRST, "-12dB")
+
+  field(ONVL, "1")
+  field(ONST, "-6dB")
+
+  field(TWVL, "2")
+  field(TWST, "0 dB")
+
+  field(THVL, "3")
+  field(THST, "+6 dB")
+
+  field(FRVL, "4")
+  field(FRST, "+12 dB")
+
+  field(FVVL, "5")
+  field(FVST, "+18 dB")
+
+  field(SXVL, "6")
+  field(SXST, "+24 dB")
+
+  field(SVVL, "7")
+  field(SVST, "+30 dB")
+
+  field(EIVL, "8")
+  field(EIST, "+36 dB")
+
+  field(NIVL, "9")
+  field(NIST, "+42 dB")
+}
+
+

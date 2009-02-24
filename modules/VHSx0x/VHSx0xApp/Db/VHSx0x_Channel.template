@@ -1,0 +1,151 @@
+# EPICS Template for ISEG VHSx0x module
+
+# Macro Definitions
+# S              - System
+# SS             - Subsystem
+# DVC            - Device
+# N              - System Instance
+# DI             - Device Instance
+# CARD           - VHSx0x Card Number (0, 1, 2, ...)
+# SIGNAL         - VHSx0x Signal on Card (0..5)
+
+# HV.DRVH        - High Voltage High Setting Range (DRVH)
+# HV.DRVL        - High Voltage Low Setting Range (DRVL)
+# HV.HOPR        - High Voltage High Operating Range (HOPR)
+# HV.LOPR        - High Voltage Low Operating Range (LOPR)
+
+# HV.HIHI
+# HV.HIGH
+# HV.LOW
+# HV.LOLO
+# HV.ADEL
+# HV.MDEL
+# HV.SMOO
+# HV.HYST
+
+record(mbbiDirect, "$(S)_$(SS):$(DVC)$(N)$(DI):ChannelStatus") {
+  field(DESC, "Channel Status")
+  field(SCAN, ".1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S$(SIGNAL) @ChannelStatus")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):ChannelControlEMCY") {
+  field(DESC, "Channel Off")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S$(SIGNAL) @ChannelControlEMCY")
+  field(ZNAM, "Off")
+  field(ONAM, "Off")
+  field(FLNK, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageSet0")
+}
+
+record(ao, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageSet0") {
+  field(DESC, "VoltageSet 0")
+  field(VAL,  "0")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+  field(OUT,  "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageSet PP")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):ChannelControlOnOff") {
+  field(DESC, "Channel OnOff")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S$(SIGNAL) @ChannelControlOnOff")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+}
+
+record(ao, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageSet") {
+  field(DESC, "VoltageSet")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S$(SIGNAL) @VoltageSet")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+  field(DRVH, "$(HV.DRVH)")
+  field(DRVL, "$(HV.DRVL)")
+  field(HOPR, "$(HV.HOPR)")
+  field(LOPR, "$(HV.LOPR)")
+  field(HIHI, "$(HV.HIHI)")
+  field(HIGH, "$(HV.HIGH)")
+  field(LOW,  "$(HV.LOW)")
+  field(LOLO, "$(HV.LOLO)")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+}
+
+record(ao, "$(S)_$(SS):$(DVC)$(N)$(DI):CurrentTrip") {
+  field(DESC, "CurrentTrip")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S$(SIGNAL) @CurrentSet")
+  field(PREC, "8")
+  field(EGU,  "Amps")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageMeasure") {
+  field(DESC, "VoltageMeasure")
+  field(SCAN, ".1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S$(SIGNAL) @VoltageMeasure")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+  field(HOPR, "$(HV.HOPR)")
+  field(LOPR, "$(HV.LOPR)")
+  field(HIHI, "$(HV.HIHI)")
+  field(HIGH, "$(HV.HIGH)")
+  field(LOW,  "$(HV.LOW)")
+  field(LOLO, "$(HV.LOLO)")
+  field(ADEL, "$(HV.ADEL)")
+  field(MDEL, "$(HV.MDEL)")
+  field(SMOO, "$(HV.SMOO)")
+  field(HYST, "$(HV.HYST)")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):CurrentMeasure") {
+  field(DESC, "CurrentMeasure")
+  field(SCAN, ".1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S$(SIGNAL) @CurrentMeasure")
+  field(PREC, "8")
+  field(EGU,  "Amps")
+}
+
+record(ao, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageBounds") {
+  field(DESC, "VoltageBounds")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S$(SIGNAL) @VoltageBounds")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+}
+
+record(ao, "$(S)_$(SS):$(DVC)$(N)$(DI):CurrentBounds") {
+  field(DESC, "CurrentBounds")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S$(SIGNAL) @CurrentBounds")
+  field(PREC, "8")
+  field(EGU,  "Amps")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageNominal") {
+  field(DESC, "VoltageNominal")
+  field(SCAN, ".1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S$(SIGNAL) @VoltageNominal")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):CurrentNominal") {
+  field(DESC, "CurrentNominal")
+  field(SCAN, ".1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S$(SIGNAL) @CurrentNominal")
+  field(PREC, "3")
+  field(EGU,  "Amps")
+}
+

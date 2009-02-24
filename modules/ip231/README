@@ -1,0 +1,24 @@
+#==============================================================
+#
+#  Name: README
+#
+#  Rem:  This is a driver for the Acromag IP231 16-channel 
+#        Industry Pack (IP) analog output card. 
+#
+#  Auth: 29-Aug-2007, Sheng Peng         (PENGS)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        dd-mmm-yyyy, First Lastname     (USERNAME):
+#          comment
+#
+#==============================================================
+#
+EPICS Verions:
+--------------
+This driver has currently been built and tested at SLAC with EPICS 3.14.8.2.
+This driver has implimented EPICS OSI function calls and is OSI complient.
+
+Operating System:
+-------------------
+This driver has only been tested  under RTEMS. 

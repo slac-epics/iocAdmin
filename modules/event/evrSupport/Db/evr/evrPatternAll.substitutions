@@ -1,0 +1,53 @@
+#==============================================================================
+#
+# Abs:  LCLS IOC records for Pattern Pipeline advancing
+#
+# Name: evrPatternAll.substitutions
+#
+# Macros:
+# Set DEVICE to PRIM:LOCA:UNIT where
+#   PRIM is "IOC".
+#   LOCA is 4 char location name.
+#   UNIT is xxyy. where xx = subsystem ID and 
+#                       yy = index of that subsystem in LOCA.
+#
+#==============================================================================
+#
+file evrPattern.db
+{
+#                             Input
+#     Location   ,pattern#, pattern#      
+pattern { DEV    , N      , NINP    , TSE ,         FLNK           ,         SDIS           }
+      {$(DEVICE) , ""     , "N-1"   ,  0  , ""                     , "$(DEVICE):FIDUCIAL.L" }
+      {$(DEVICE) , "360HZ", "N-1"   , -2  , "$(DEVICE):PATTERNN-1" , ""                     }
+      {$(DEVICE) , "N-1"  , "N-2"   ,  0  , "$(DEVICE):PATTERNN-2" , ""                     }
+      {$(DEVICE) , "N-2"  , "N-3"   ,  0  ,  ""                    , ""                     }
+# Note N-3 instantiated in mpgPatternProc.db or evrPatternProc.db
+}
+
+#Instantiate a full pattern processed at slower rate for diagnostics
+
+file evrPattern.db
+{
+#                             Input
+#     Location   ,pattern#, pattern#      
+pattern { DEV    , N      , NINP    , TSE ,         FLNK             ,SDIS}
+      {$(DEVICE) , "D"    , "360HZ" ,  0  , "$(DEVICE):PATTERND-1"   , "" }
+      {$(DEVICE) , "D-1"  , "N-1"   ,  0  , "$(DEVICE):PATTERND-2"   , "" }
+      {$(DEVICE) , "D-2"  , "N-2"   ,  0  , "$(DEVICE):PATTERND-3"   , "" }
+      {$(DEVICE) , "D-3"  , "N-3"   ,  0  , "$(DEVICE):PATTERNSTATE" , "" }
+}
+
+file evrFiducial.db
+{
+#     Location     ,         PATTERNFO links            1st and 2nd time slots
+pattern { DEV      ,    LNK4 ,    LNK5 ,    LNK6 ,   VAL  ,   TS1   ,   TS2   }
+	{ $(DEVICE), $(LINK4), $(LINK5), $(LINK6), $(TREF), $(TS1ST), $(TS2ND)}
+}
+
+file generalTimeNonVx.template
+{
+#     Location  , Unit       
+pattern { IOC         }
+	{ $(DEVICE) }
+}

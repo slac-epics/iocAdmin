@@ -1,0 +1,48 @@
+#==============================================================================
+#
+# Abs:  Beam Synchronous Acquisition records for a single Toroid.
+#
+# Name: bsaTOROEdef.substitutions
+#
+# Note: Must follow the LCLS naming conventions.  
+#
+#==============================================================================
+# BSA Integration Note:
+# Each device attribute (such as width ) provides input to bsaEdefAvg.db.
+# The bsaEdefAvg.db provides the RMS and Avg -$(DEV):$(SECN)<edef id>, and history - 
+#   $(DEV):$(SECN)HST<edef id> for each device attribute for each of 20 edefs.
+#
+file bsaEdefAvg.db
+{
+#	      Device   Name                                                                           IOC    IOC   mod5  Init 
+#                                                                                                     loc'n  unit  bit   Event Code
+  pattern {   DEV ,SECN,            INP ,DESC   , MD,MDID, EGU ,HOPR  ,LOPR  ,PREC, ADEL, MDEL  , LOCA  , UNIT ,BIT, EC}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  1    , 1,  1  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), A, 101}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  2    , 2,  2  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), B, 102}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  3    , 3,  3  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), C, 103}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  4    , 4,  4  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), D, 104}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  5    , 5,  5  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), E, 105}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  6    , 6,  6  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), F, 106}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  7    , 7,  7  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), G, 107}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  8    , 8,  8  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), H, 108}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  9    , 9,  9  , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), I, 109}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  10   ,10,  10 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), J, 110}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  11   ,11,  11 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), K, 111}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  12   ,12,  12 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), L, 112}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  13   ,13,  13 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), M, 113}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  14   ,14,  14 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), N, 114}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  15   ,15,  15 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), O, 115}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  1HZ  ,16,  1H , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), P, 116}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  10HZ ,17,  TH , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), Q, 117}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  FULL ,18,  BR , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), R, 118}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  FBCK1,19,  F1 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), S, 119}
+	  { $(DEVICE) ,TMIT,  $(DEVICE):TMIT,  FBCK2,20,  F2 , ""  ,"3E10","1E10",  3 ,"1E7","1E7"  , $(LOC), $(UN), T, 120}
+}
+
+file bsaEdefFanouts.db
+{
+#	      Device   Name
+  pattern {   DEV     ,SECN  ,  LOCA  , UNIT  ,   FLNK    }
+	  { $(DEVICE) ,TMIT  , $(LOC) , $(UN) , $(SLCLNK) }
+}
+

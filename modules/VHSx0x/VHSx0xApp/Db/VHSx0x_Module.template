@@ -1,0 +1,166 @@
+# EPICS Template for ISEG VHSx0x module
+
+# Macro Definitions
+# S              - System
+# SS             - Subsystem
+# DVC            - Device
+# N              - System Instance
+# DI             - Device Instance
+# CARD           - VHSx0x Card Number (0, 1, 2, ...)
+
+record(mbbiDirect, "$(S)_$(SS):$(DVC)$(N)$(DI):ModuleStatus") {
+  field(DESC, "Module Status")
+  field(SCAN, ".1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @ModuleStatus")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):ModuleControlKILena") {
+  field(DESC, "Enable Kill")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S0 @ModuleControlKILena")
+  field(ZNAM, "Disable")
+  field(ONAM, "Enable")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):ModuleControlCLEAR") {
+  field(DESC, "Clear Kill")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S0 @ModuleControlCLEAR")
+  field(ZNAM, "Clear")
+  field(ONAM, "Clear")
+}
+
+record(ao, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageRampSpeed") {
+  field(DESC, "VoltageRampSpeed")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S0 @VoltageRampSpeed")
+  field(PREC, "3")
+  field(DRVH, "20")
+  field(DRVL, "1")
+  field(HOPR, "20")
+  field(LOPR, "1")
+  field(EGU,  "%NominalV")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageMax") {
+  field(DESC, "VoltageMax")
+  field(SCAN, "1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @VoltageMax")
+  field(PREC, "3")
+  field(HOPR, "100")
+  field(LOPR, "0")
+  field(EGU,  "%NominalV")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):CurrentMax") {
+  field(DESC, "CurrentMax")
+  field(SCAN, "1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @CurrentMax")
+  field(PREC, "3")
+  field(HOPR, "100")
+  field(LOPR, "0")
+  field(EGU,  "%NominalI")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):SupplyP5") {
+  field(DESC, "Supply +5V")
+  field(SCAN, "1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @SupplyP5")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+  field(HOPR, "10")
+  field(LOPR, "0")
+  field(HIHI, "7")
+  field(HIGH, "6")
+  field(LOW,  "4")
+  field(LOLO, "3")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):SupplyP12") {
+  field(DESC, "Supply +12V")
+  field(SCAN, "1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @SupplyP12")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+  field(HOPR, "18")
+  field(LOPR, "0")
+  field(HIHI, "16")
+  field(HIGH, "14")
+  field(LOW,  "10")
+  field(LOLO, "8")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):SupplyN12") {
+  field(DESC, "Supply -12V")
+  field(SCAN, "1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @SupplyN12")
+  field(PREC, "3")
+  field(EGU,  "Volts")
+  field(HOPR, "-18")
+  field(LOPR, "0")
+  field(HIHI, "-8")
+  field(HIGH, "-10")
+  field(LOW,  "-14")
+  field(LOLO, "-16")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+}
+
+record(ai, "$(S)_$(SS):$(DVC)$(N)$(DI):Temperature") {
+  field(DESC, "Temperature")
+  field(SCAN, "1 second")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @Temperature")
+  field(PREC, "3")
+  field(EGU,  "C")
+  field(HOPR, "80")
+  field(LOPR, "-40")
+  field(HIHI, "60")
+  field(HIGH, "40")
+  field(LOW,  "0")
+  field(LOLO, "-20")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+  field(LSV,  "MINOR")
+  field(LLSV, "MAJOR")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):AllChannelEMCY") {
+  field(DESC, "All Channel Off")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S0 @AllChannelEMCY")
+  field(ZNAM, "Off")
+  field(ONAM, "Off")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):AllChannelOnOff") {
+  field(DESC, "All Channel OnOff")
+  field(DTYP, "VHSx0x")
+  field(OUT,  "#C$(CARD) S0 @AllChannelOnOff")
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+}
+
+record(stringin, "$(S)_$(SS):$(DVC)$(N)$(DI):DeviceInfo") {
+  field(DESC, "DeviceInfo")
+  field(DTYP, "VHSx0x")
+  field(INP,  "#C$(CARD) S0 @DeviceInfo")
+  field(PINI, "YES")
+}
+

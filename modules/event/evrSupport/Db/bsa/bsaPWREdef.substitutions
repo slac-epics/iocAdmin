@@ -1,0 +1,49 @@
+#==============================================================================
+#
+# Abs:  Beam Synchronous Acquisition records for a single power readout from
+#       laser steering.
+#
+# Name: bsaPWREdef.substitutions
+#
+# Note: Must follow the LCLS naming conventions.  
+#
+#==============================================================================
+# BSA Integration Note:
+# Each device attribute (such as width ) provides input to bsaEdefAvg.db.
+# The bsaEdefAvg.db provides the RMS and Avg -$(DEV):$(SECN)<edef id>, and history - 
+#   $(DEV):$(SECN)HST<edef id> for each device attribute for each of 20 edefs.
+#
+file bsaEdefAvg.db
+{
+#	      Device   Name                                                                           IOC    IOC   mod5  Init 
+#                                                                                                     loc'n  unit  bit   Event Code
+  pattern {   DEV     ,SECN,            INP ,DESC   , MD,MDID, EGU ,HOPR  ,LOPR  ,PREC, ADEL, MDEL  , LOCA  , UNIT ,BIT, EC}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  1    , 1,  1  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), A, 101}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  2    , 2,  2  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), B, 102}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  3    , 3,  3  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), C, 103}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  4    , 4,  4  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), D, 104}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  5    , 5,  5  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), E, 105}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  6    , 6,  6  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), F, 106}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  7    , 7,  7  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), G, 107}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  8    , 8,  8  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), H, 108}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  9    , 9,  9  , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), I, 109}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  10   ,10,  10 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), J, 110}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  11   ,11,  11 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), K, 111}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  12   ,12,  12 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), L, 112}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  13   ,13,  13 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), M, 113}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  14   ,14,  14 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), N, 114}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  15   ,15,  15 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), O, 115}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  1HZ  ,16,  1H , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), P, 116}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  10HZ ,17,  TH , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), Q, 117}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  FULL ,18,  BR , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), R, 118}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  FBCK1,19,  F1 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), S, 119}
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR ,  FBCK2,20,  F2 , "uJ",  5   ,  0   ,  3 ,  0  ,  0    , $(LOC), $(UN), T, 120}
+}
+
+file bsaEdefFanouts.db
+{
+#	      Device   Name
+  pattern {   DEV     ,SECN  ,  LOCA  , UNIT  ,   FLNK    }
+	  { $(DEVICE) ,PWR   , $(LOC) , $(UN) , $(SLCLNK) }
+}
+

@@ -1,0 +1,12 @@
+#
+# Pattern records
+file evrPatternAll.db {
+#	    Device        ,  SLC Pattern, EVR/Trigger     
+#	                                    Links       
+  pattern { DEVICE        ,  LINK4      , LINK5 , LINK6 , TREF    , TS1ST, TS2ND }
+	  { IOC:IN20:MC01 ,   ""        ,  ""   ,  ""   , 1.03E06 ,   1  ,   4   }
+}
+file evrEventAll.db {
+  pattern { DEVICE        }
+	  { IOC:IN20:MC01 }
+}

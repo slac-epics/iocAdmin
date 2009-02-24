@@ -1,0 +1,52 @@
+This file is trying to guide you to add new device support for new beckhoff
+bus terminal(NBBT).
+
+1. Check Bx9000_MBTApp/src/Bx9000_MBT_Common.h, make sure the NBBT is defined
+   in "enum BUSTERM_TYPE". If it's not, add the definition;
+
+2. Add the image description to Bx9000_MBTApp/src/Bx9000_BTDef.h;
+
+3. Add the function description to Bx9000_MBTApp/src/Bx9000_SigDef.h;
+
+4. Write the new device support C file such as devKLxxxx.c, you can use
+   exsiting one as the template;
+
+5. Edit Bx9000_MBTApp/src/Makefile to add new line such as
+	Bx9000_MBT_SRCS += devKLxxxx.c
+
+6. Edit Bx9000_MBTApp/src/Bx9000_MBT.dbd to add new line such as
+	device(ai,INST_IO,devAiKLxxxx,"Bx9000_KLxxxx")
+
+7. Add new db template such as KLxxxx.template to Bx9000_MBTApp/Db;
+
+8. Edit Bx9000_MBTApp/Db/Makefile to add line such as
+	DB += KLxxxx.template
+
+9. If you want to edit shared screen such as adding more slots to
+   Bx9000_MBTApp/srcOpi/Bx9000InstalledBTs.edl, do it;
+
+10. Download pdf manual file from www.beckhoff.com, and save to
+    documentation/KLxxxxe.pdf;
+
+11. Edit README file to tell user how to use your new beckhoff bus terminal
+    support;
+
+12. Edit Release and configure/RELEASE if you are changing release tag;
+
+Now you are successfully add you new support.
+
+If you want to add your new support to test application in BK9KVxTestApp,
+you might have to do couple more things:
+
+1. Edit BK9KVxTestApp/srcOpi/Beckhoff-test.edl to cover new bus terminals;
+
+2. Edit iocBoot/iocBK9KVxTest/Bx9000Info-test.instance and
+   iocBoot/iocBK9KVxTest/KLxxxx-test.instance because you slot assignment
+   may be changed;
+
+3. Add iocBoot/iocBK9KVxTest/KLxxxx-test.instance for new bus terminals;
+
+4. Edit iocBoot/iocBK9KVxTest/st.cmd to change slot assignment and load new
+   bus terminals;
+5. Do same thing to BK9KSoftTest
+

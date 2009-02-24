@@ -1,0 +1,125 @@
+Release Notes for the event package
+-----------------------------------
+
+Note: The file called "CHANGES" has only changes in mrfApp.  This file 
+(RELEASE_NOTES) lists changes for ALL directories.
+
+event-R2-4-8: Oct 11, 2007
+	* configure/RELEASE - change to EPICS R3.14.9 and RTEMS 4.7.1
+	* README - change afs to nfs.
+	* evrIoc/src/Makefile - replace EVR_IOC_LIBS macro with library names
+	* mrfApp/src/MRF_CONFIG_SITE - R3.14.9 does not support CR/CSR addressing.
+	* mrfApp/src/os/RTEMS/vmeCSRMemProbeB.c - corrections.
+event-R2-4-7:
+Built against EPICS R3.14.8.2 and RTEMS 4.7.1
+
+
+event-R2-4-6: Aug 31, 2007
+	* evrSupport/Db/evr/evrEvent.db, evrEventAll.substitutions:
+	  - Use PRIO macro to set the priority of the event RATE record so 
+	    that FIDUCIALRATE can be processed at a higher priority and won't 
+	    have to wait for other high priority tasks (like on the prof mon 
+	    iocs).  FIDUCIALRATE uses a counter which updates at 360Hz and 
+	    needs to process within 2.7msec of the updating event.  
+	  - Add alarm limits to RATE so that FIDUCIALRATE can be alarmed when 
+	    it isn't exactly 360Hz.
+	  - Add NAME record for a longer, more descriptive name associated
+	    with the event.
+	* mrfApp/src/drvMrfEr.c - remove kluge added in previous version.
+	  Correct the order of the FIFO register reads instead.
+event-R2-4-5: Aug 21, 2007
+	* README - Add instructions for channel watcher and archiver.
+	  Add instructions for setting the TSE fields for trigger devices 
+	  that take time to process.  Correct checkout instructions.
+	* evrSupport/Db/ioc/IOC-IN20-RF01bsa.substitutions - correct laser 
+	  inputs, uncomment PCAV:IN20:365 amplitude. 
+	* evrSupport/Db/ioc/IOC-IN20-RF01evr.substitutions,
+	  IOC-IN20-RF01trig.substitutions - Move scope 1 trigger to 
+	  TS 3, 30Hz (event code 32). 
+	* evrIoc/Db - Corrections for test stands.
+	* evrSupport/src/evrTime.*, evrPattern.c - support timestamp per 
+	  event code.  The TSE field of records can now be set to an
+	  event code so that the record's timestamp is now the time of the 
+	  event code instead of the time of the last fiducial.
+	* evrSupport/src/evrModifier.c - evrPattern subroutine now gets
+	  current time from the pipeline table when TSE is -2.  This time
+	  updates at 360hz and is needed by MPS.  
+	* evrSupport/Db/evr/evrEvent.db - the priority and processing order
+	  of the event code records, which process every time an event code 
+	  IRQ goes off, are set to high so that these records processes ASAP
+	  after the IRQ.  These records now update the event code timestamp 
+	  which needs to be done before records that use TSE are processed.
+	* evrSupport/Db/evr/evrPattern.db, evrPatternAll.substitutions,
+	  evrFiducial.db - add PATTERN360HZ for 360hz pattern update needed 
+	  by MPS (PATTERN only updates at 120hz).  Make PATTERN records 
+	  forward link to the next one to avoid having another fanout.
+	  Set TSE to -2 for PATTERN360HZ to get the current pipeline time.
+	  Get rid of MOD720 fanout in place of FLNKs.
+	* mrfApp/src/drvMrfEr.c - add kluge in interrupt handler for VME EVR.
+          When the event FIFO is read at interrupt level, the first event
+	  has to be thrown away (it's the same as the last event read the
+	  last time the fifo was processed) and an extra read has to be done
+	  after the FIFO is "empty".  Hopefully, this kluge can be removed
+	  when the event FIFO is read at task level - otherwise, this is a
+	  firmware bug and the kluge remains until the firmware is fixed.
+event-R2-4-4: Aug 10, 2007
+    * evrSupport/Db/ioc/IOC-LI21-BL01pattern.substitution - change
+      TS1ST = 0 from 1 to give BLEN more time after trigger
+event-R2-4-3: Aug 8, 2007
+	* evrSupport/Db/ioc/IOC-IN20-RF01evr.substitutions - use
+	  beam/10hz for PH1 (PCAV) instead of klys accelerate.
+	* evrSupport/Db/ioc/IOC-IN20-RF01trig.substitutions - correct
+	  event code name for each trigger.
+	* evrSupport/Db/ioc/IOC-IN20-MP01evr.substitutions - add trigger
+	  for shutter.
+	* evrSupport/Db/evr/evrEventAll.substitutions - change LCLSTBD4 to
+	  LCACC_10 (klystron accel at 10hz max).
+	* evrSupport/Db/ioc/IOC-IN20-RF01bsa.substitutions - correct GUN
+	  inputs.
+	* evrSupport/Db/ioc/IOC-LI21-RF01bsa.substitutions - correct PCAV
+	  input.
+event-R2-4-2: Aug 2, 2007
+	* evrSupport/Db/ioc/IOC-IN20-RF01bsa.substitutions - correct typo
+	  ACCL:IN20:400:L0B_P* BSA pvs.
+	* evrSupport/Db/bsa/bsaBLENEdef.substitutions to correct the name 
+	  of the BLEN BSA pv attributes.
+	* evrSupport/Db/ioc/IOC-IN20-RF01evr.substitutions - use 10hz
+	  event codes (43 and 154) for most LLRF PADs since the LLRF system
+	  cannot handle 30hz triggers.
+event-R2-4-1: July 16, 2007
+	* Use generalTime-R1-2-0.
+event-R2-4-0: July 02, 2007
+	* Moved drvSupport files to evrSupport and MpgApp and removed
+	  drvSupport from Makefile.  libdrvSupport no longer exists.
+	  Correct README file.
+	* Moved test evr images and databases from evrSupport to new
+	  directory, evrIoc.  evrIoc created but left commented out of
+	  production event/Makefile - it is only built for development
+	  purposes.
+	* Correct configure/RELEASE for R1-0-0 of miscUtils and
+	  sSubRecord.
+	* evrSupport/src/drvEvr.c - make sure pattern and fiducial are 
+	  processed in the correct order if both are ready at the same time.
+	* evrSupport/Db/bsa/bsaPHASEdef.substitutions - fix typo.
+	* evrSupport/Db/bsa/bsaBLENEdef.substitutions - changed WIDTH to 
+	  (ATB)_ZRAW, where ATB can be A-E
+	* evrSupport/Db/ioc/IOC-LI21-BL01trig.substitutions - correct trigger
+	  order.
+	* evrSupport/Db/ioc/IOC-LI21-BL01bsa.substitutions - added ATB macro 
+	  for use with new bsaBLENEdef pv names.
+	* Add this file.
+	* mrfApp/src/mrfVme64x.* - add check for VME EVR 230 if EVR 200 is not 
+	  found.
+	* mrfApp/src/erRecord.c - dorrect monitor logic for the taxi field 
+	  (loss of receiver).
+	* mrfApp/src/devMrfEr.c - remove rxvc field support.  It is replaced 
+	  by the taxi field.  Remove ERROR_LOST_PLL logic - this bit no longer 
+	  exists in the CSR (for EVR 200 and up).
+	* mrfApp/src/drvMrfEr.* - remove EVR_CSR_PLL_LOST bit - it's no longer 
+	  supported in the CSR.  Remove ErCheckPhaseLock.
+	  Correct logic to allow VME and PMC EVRs on the same IOC.
+	  And new registers to the register map for the VME EVR 230.  
+	  Support for these registers will come in another release.
+
+event-R2-3-8: June 21, 2007
+	See CVS log for this release and all prior releases.	

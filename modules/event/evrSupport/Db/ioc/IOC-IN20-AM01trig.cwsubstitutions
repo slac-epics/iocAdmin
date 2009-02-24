@@ -1,0 +1,17 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+file evrDevTrig.cwConfig {
+#      Device
+  pattern { DEV             }
+	  { CRAD:IN20:237:  }
+	  { CRAD:IN20:842:  }
+	  { TRIG:IN20:AM01: }
+}
+file evrIocTrig.cwConfig {
+#      Device	      
+ pattern { DEV            }
+	 { IOC:IN20:AM01  }
+}
+

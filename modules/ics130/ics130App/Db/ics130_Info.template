@@ -1,0 +1,49 @@
+record(ai, "$(DEV):$(SEC):$(LOC):ActSmplRate") {
+  field(DESC, "Get Actual Sample Rate")
+  field(PINI, "YES")
+  field(DTYP, "ICS130")
+  field(PREC, "6")
+  field(INP, "#C$(card) S0 @ActSmplRate")
+  field(EGU, "KHz")
+}
+
+record(ai, "$(DEV):$(SEC):$(LOC):TriggerRate") {
+  field(DESC, "trigger rate")
+  field(SCAN, "10 second")
+  field(DTYP, "ICS130")
+  field(PREC, "2")
+  field(INP, "#C$(card) S0 @TriggerRate")
+  field(EGU, "Hz")
+}
+
+record(longout, "$(DEV):$(SEC):$(LOC):Decimation") {
+  field(DESC, "set baseline chnl")
+  field(DTYP, "ICS130")
+  field(OUT, "#C$(card) S0 @Decimation")
+  field(DRVL, "1")
+  field(DRVL, "256")
+}
+
+record(bo, "$(DEV):$(SEC):$(LOC):Filter") {
+  field(DESC, "Filter Sel")
+  field(PINI, "YES")
+  field(DTYP, "ICS130")
+  field(OUT,  "#C$(card) S0 @Filter")
+  field(ZNAM, "LPF")
+  field(ONAM,  "BPF")
+}
+
+record(mbbi, "$(DEV):$(SEC):$(LOC):ADCMode") {
+  field(DESC, "Set Interesting Evts")
+  field(DTYP, "ICS130")
+  field(SCAN, "1 second")
+  field(INP,  "#C$(card) S0 @ADCMode")
+  field(ZRVL, "0x0")
+  field(ONVL, "0x1")
+  field(TWVL, "0x3")
+  field(ZRST, "32x, BPF")
+  field(ONST, "32x, LPF")
+  field(TWST, "16x, LPF")
+}
+
+

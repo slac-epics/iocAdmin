@@ -1,0 +1,9 @@
+record(bo, $(DEV) ) {
+  field(DESC, "$(DESC)")
+  field(DTYP, "XYCOM-2445")
+  field(OUT, "@$(CARD) P$(PORT) B$(CH)")
+  field(ZNAM, "$(ZNAM)")
+  field(ONAM, "$(ONAM)")
+}
+
+

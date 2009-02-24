@@ -1,0 +1,13 @@
+#==============================================================================
+#
+# Abs:  LCLS EVR IOC records for LI21 BP01 development, called BP21
+#
+# Name: evrBP21.substitutions for testing development LI21 BP01
+#
+#==============================================================================
+#
+file evrBPXX.db
+{   
+pattern { DEVICE        }
+	{ EVR:BP21:BP01 }
+}

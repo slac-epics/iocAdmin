@@ -1,0 +1,55 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+file evrDevTrig.cwConfig {
+#      Device	      
+  pattern { DEV           }
+#EVR:IN20:BP02
+	 { BPMS:IN20:525: }
+	 { BPMS:IN20:581: }
+	 { BPMS:IN20:631: }
+	 { BPMS:IN20:651: }
+	 { BPMS:IN20:731: }
+	 { BPMS:IN20:771: }
+	 { BPMS:IN20:781: }
+	 { BPMS:IN20:525:CALB }
+	 { BPMS:IN20:581:CALB }
+	 { BPMS:IN20:631:CALB }
+	 { BPMS:IN20:651:CALB }
+	 { BPMS:IN20:731:CALB }
+	 { BPMS:IN20:771:CALB }
+	 { BPMS:IN20:781:CALB }
+# spare triggers 8-11, FP (VME)
+	 { TRIG:IN20:BP08:}
+	 { TRIG:IN20:BP09:}
+	 { TRIG:IN20:BP10:}
+	 { TRIG:IN20:BP11:}
+#EVR:IN20:BP03 
+	 { BPMS:IN20:925: }
+	 { BPMS:IN20:945: }
+	 { BPMS:IN20:981: }
+	 { BPMS:IN20:925:CALB }
+	 { BPMS:IN20:945:CALB }
+	 { BPMS:IN20:981:CALB }
+# spare triggers 13-16, FP (VME)
+	 { TRIG:IN20:BP13:}
+	 { TRIG:IN20:BP14:}
+	 { TRIG:IN20:BP15:}
+	 { TRIG:IN20:BP16:}
+# spare triggers 18-25, TTB 3-6; 10-13
+	 { TRIG:IN20:BP18:}
+	 { TRIG:IN20:BP19:}
+	 { TRIG:IN20:BP20:}
+	 { TRIG:IN20:BP21:}
+	 { TRIG:IN20:BP22:}
+	 { TRIG:IN20:BP23:}
+	 { TRIG:IN20:BP24:}
+	 { TRIG:IN20:BP25:}
+}
+file evrIocTrig.cwConfig {
+#      Device	      
+ pattern { DEV            }
+	 { IOC:IN20:BP02  }
+}
+

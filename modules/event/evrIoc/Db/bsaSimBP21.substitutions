@@ -1,0 +1,16 @@
+# Simulation files :
+file bsaBPMSTest.db {
+  pattern { DEVICE       , S           }
+	  { BPMS:BP21:131 , Passive     }
+	  { BPMS:BP21:161 , Passive     }
+	  { BPMS:BP21:201 , Passive     }
+	  { BPMS:BP21:233 , Passive     }
+	  { BPMS:BP21:278 , Passive     }
+	  { BPMS:BP21:301 , Passive     }
+	  { BPMS:BP21:315 , Passive     }
+}
+
+file devBP21TestFanouts.db {
+  pattern { DEV          , LOCA        }
+	  { IOC:BP21:BP01, BP21        }
+}

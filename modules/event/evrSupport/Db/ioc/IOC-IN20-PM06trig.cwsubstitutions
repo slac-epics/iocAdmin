@@ -1,0 +1,17 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+file evrPMXXTrig.cwConfig {
+#      Device	      
+  pattern { DEV             }          
+	  { YAGS:IN20:921:  }
+	  { YAGS:IN20:995:  }
+	  { TRIG:IN20:PM06: }
+}
+file evrIocTrig.cwConfig {
+#      Device
+ pattern { DEV            }
+         { IOC:IN20:PM06  }
+}
+

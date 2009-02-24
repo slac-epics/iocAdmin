@@ -1,0 +1,11 @@
+# ESIM Pattern records (from EVG) to EVR:
+file evrPatternTest.db {
+  pattern { EIOC  ,  DEVICE }
+	  { IOC:XX04:1  ,ESIM:XX04:1  }
+}
+
+# EVG EDEF checking simulation for Modifier5/ bsa enable/disable:
+file bsaProcTestAll.db {
+  pattern {  DEVICE,     LOC     }
+	      { ESIM:XX04:1, SYS0    }
+}

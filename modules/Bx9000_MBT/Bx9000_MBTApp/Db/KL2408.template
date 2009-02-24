@@ -1,0 +1,98 @@
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG1)") {
+  field(DESC, "Digital Channel 1 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_1")
+  field(ZNAM, "$(SIG1.ZNAM)")
+  field(ONAM, "$(SIG1.ONAM)")
+  field(PINI, "$(SIG1.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG2)") {
+  field(DESC, "Digital Channel 2 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_2")
+  field(ZNAM, "$(SIG2.ZNAM)")
+  field(ONAM, "$(SIG2.ONAM)")
+  field(PINI, "$(SIG2.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG3)") {
+  field(DESC, "Digital Channel 3 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_3")
+  field(ZNAM, "$(SIG3.ZNAM)")
+  field(ONAM, "$(SIG3.ONAM)")
+  field(PINI, "$(SIG3.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG4)") {
+  field(DESC, "Digital Channel 4 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_4")
+  field(ZNAM, "$(SIG4.ZNAM)")
+  field(ONAM, "$(SIG4.ONAM)")
+  field(PINI, "$(SIG4.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG5)") {
+  field(DESC, "Digital Channel 5 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_5")
+  field(ZNAM, "$(SIG5.ZNAM)")
+  field(ONAM, "$(SIG5.ONAM)")
+  field(PINI, "$(SIG5.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG6)") {
+  field(DESC, "Digital Channel 6 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_6")
+  field(ZNAM, "$(SIG6.ZNAM)")
+  field(ONAM, "$(SIG6.ONAM)")
+  field(PINI, "$(SIG6.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG7)") {
+  field(DESC, "Digital Channel 7 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_7")
+  field(ZNAM, "$(SIG7.ZNAM)")
+  field(ONAM, "$(SIG7.ONAM)")
+  field(PINI, "$(SIG7.PINI)")
+}
+
+record(bo, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG8)") {
+  field(DESC, "Digital Channel 8 Set")
+  field(DTYP, "Bx9000_KL2408")
+  field(OUT,  "@$(COUPLER):$(SLOT):W_DIG_OUT_8")
+  field(ZNAM, "$(SIG8.ZNAM)")
+  field(ONAM, "$(SIG8.ONAM)")
+  field(PINI, "$(SIG8.PINI)")
+}
+
+# We put SIG1 macro in the name just to avoid name overlaping
+record(fanout, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG1)ReProc") {
+  field(DESC, "FANOUT Reproc")
+  field(SCAN, "Event")
+  field(EVNT, "$(REPROCEVT)")
+  field(SELM, "All")
+  field(LNK1, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG1)")
+  field(LNK2, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG2)")
+  field(LNK3, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG3)")
+  field(LNK4, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG4)")
+  field(PINI, "NO")
+}
+
+# We put SIG5 macro in the name just to avoid name overlaping
+record(fanout, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG5)ReProc") {
+  field(DESC, "FANOUT Reproc")
+  field(SCAN, "Event")
+  field(EVNT, "$(REPROCEVT)")
+  field(SELM, "All")
+  field(LNK1, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG5)")
+  field(LNK2, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG6)")
+  field(LNK3, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG7)")
+  field(LNK4, "$(S)_$(SS):$(DVC)$(N)$(DI):$(SIG8)")
+  field(PINI, "NO")
+}
+

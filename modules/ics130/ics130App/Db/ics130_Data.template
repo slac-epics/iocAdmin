@@ -1,0 +1,113 @@
+record(ai, "$(DEV):$(SEC):$(LOC):1PulsePeakData") {
+  field(DESC, "Get Single Pulse Peak Data")
+  field(PINI, "NO")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(PREC, "6")
+  field(INP,  "#C$(card) S$(chnl) @1PlsPk")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)")
+}
+
+record(ai, "$(DEV):$(SEC):$(LOC):1PulsePeakDataTime") {
+  field(DESC, "Single Pulse Peak Data Time")
+  field(PINI, "NO")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(PREC, "6")
+  field(INP,  "#C$(card) S$(chnl) @1PlsPkT")
+  field(TSE,  "-2")
+  field(EGU,  "ms")
+}
+
+record(ai, "$(DEV):$(SEC):$(LOC):1PulseTotalData") {
+  field(DESC, "Get Single Pulse Total Data")
+  field(PINI, "NO")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(PREC, "6")
+  field(INP,  "#C$(card) S$(chnl) @1PlsTtl")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)*sec")
+#  field(FLNK, "$(DEV):$(SEC):$(LOC):TotalDataAvg60")
+}
+
+#record(compress, "$(DEV):$(SEC):$(LOC):TotalDataAvg60") {
+#  field(DESC, "60 pulses average")
+#  field(INP,  "$(DEV):$(SEC):$(LOC):1PulseTotalData")
+#  field(ALG,  "N to 1 Average")
+#  field(N,    "60")
+#  field(NSAM, "1")
+#  field(PREC, "6")
+#}
+
+record(ai, "$(DEV):$(SEC):$(LOC):60PulsesTotalData") {
+  field(DESC, "60 Plses Total Data")
+  field(PINI, "NO")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(PREC, "6")
+  field(HHSV, "MAJOR")
+  field(LLSV, "MINOR")
+  field(HSV, "MINOR")
+  field(LSV, "MINOR")
+#  field(SMOO, "0.8")
+  field(INP,  "#C$(card) S$(chnl) @MPlsTtl_60Pls")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)*sec")
+}
+
+record(ai, "$(DEV):$(SEC):$(LOC):600PulsesTotalData") {
+  field(DESC, "600 Plses Total Data")
+  field(PINI, "NO")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(PREC, "6")
+  field(INP,  "#C$(card) S$(chnl) @MPlsTtl_600Pls")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)*sec")
+}
+
+record(waveform, "$(DEV):$(SEC):$(LOC):1PulseData") {
+  field(DESC, "Single Pulse Data")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(INP,  "#C$(card) S$(chnl) @1Pls")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)")
+  field(NELM, "$(samples)")
+  field(FTVL, "FLOAT")
+}
+
+record(waveform, "$(DEV):$(SEC):$(LOC):60PulseIntegralData") {
+  field(DESC, "60 Pulses Data")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(INP,  "#C$(card) S$(chnl) @MPlsTtl")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)*sec")
+  field(NELM, "60")
+  field(FTVL, "FLOAT")
+}
+
+record(waveform, "$(DEV):$(SEC):$(LOC):600PulseIntegralData") {
+  field(DESC, "600 Pulses Data")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "ICS130")
+  field(INP,  "#C$(card) S$(chnl) @MPlsTtl")
+  field(TSE,  "-2")
+  field(EGU,  "$(UNIT)*sec")
+  field(NELM, "600")
+  field(FTVL, "FLOAT")
+}
+
+record(ao, "$(DEV):$(SEC):$(LOC):ConvRatio") {
+  field(DESC, "Conv Ratio")
+  field(PINI, "YES")
+  field(DTYP, "ICS130")
+  field(OUT,  "#C$(card) S$(chnl) @ConvRatio")
+  field(PREC, "6")
+  field(EGU,  "")
+}
+
+

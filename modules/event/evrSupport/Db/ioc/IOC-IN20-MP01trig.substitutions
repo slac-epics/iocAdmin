@@ -1,0 +1,16 @@
+# Trigger records
+# 
+# refer to Sharepoint document: Controls | Timing | timingTriggers.xls
+#
+# Must also have pattern records
+# Note: WID, DES, TEC are in terms of nSec and are unique per device
+# 
+file evrDevTrig.db {
+#           Device	   , Description   ,polarity,width,delay,event   , EVR  , EVR,  IOC 
+#			                                         code    ,location,unit
+  pattern { DEV            ,  DESC          ,POL, WID , DES , TEC        , LOCA , UNIT, IOC          ,  DRVL  ,  DRVH   , TCTL , TPOL, TWID, TDES, CTL}
+	  { MPS:IN20:1:SHUTTER_,"MPS Shutter",0 , 100 ,-1030000,LCLSSHUT , IN20 , MP01, IOC:IN20:MP01, -2.8E06, 2.8E06  , DG0E , DG0P, DG0W, DG0D, 1  }
+	  { TRIG:IN20:MP01:, "Spare Trig 1" , 0 , 100 , 10  , LCLSBEAM   , IN20 , MP01, IOC:IN20:MP01, -2.8E06, 2.8E06  , DG1E , DG1P, DG1W, DG1D, 1  }
+	  { TRIG:IN20:MP02:, "Spare Trig 2" , 0 , 100 , 10  , LCLSBEAM   , IN20 , MP01, IOC:IN20:MP01, -2.8E06, 2.8E06  , DG2E , DG2P, DG2W, DG2D, 1  } 
+}
+
