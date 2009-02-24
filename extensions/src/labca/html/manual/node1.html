@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Introduction</TITLE>
+<META NAME="description" CONTENT="Introduction">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node2.html">
+<LINK REL="previous" HREF="manual.html">
+<LINK REL="up" HREF="manual.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html22"
+  HREF="node2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
+<A NAME="tex2html20"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
+<A NAME="tex2html14"
+  HREF="manual.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html23"
+  HREF="node2.html">Supported EZCA Calls</A>
+<B> Up:</B> <A NAME="tex2html21"
+  HREF="manual.html">labCA   An</A>
+<B> Previous:</B> <A NAME="tex2html15"
+  HREF="manual.html">labCA   An</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000">
+Introduction</A>
+</H1>
+The <I>labCA</I> package provides an interface to the
+EPICS channel access client library which can be
+integrated with the <I>scilab</I> or <I>matlab</I> applications.
+Both, <I>scilab</I> and <I>matlab</I> feature an API for interfacing
+to user binaries written in a programming language such
+as C or Fortran. <I>labCA</I> properly wraps the essential
+channel access routines and makes them accessible
+from the <I>scilab</I><A NAME="tex2html1"
+  HREF="#foot625"><SUP>1</SUP></A>command line.
+
+<P>
+<I>labCA</I> actually uses an extra layer, the <I>ezca</I> library
+which transparently manages and caches channel access 
+connections. A modified version of <I>ezca</I> comes with
+<I>labCA</I>, adding thread-safety and hence EPICS 3.14 fitness.
+
+<P>
+A very convenient feature of <I>labCA</I> is the ability
+to execute <I>ezca</I> calls on groups of PVs, simply by
+passing the respective <I>labCA</I> routine a column vector
+of PV names.
+
+<P>
+<I>labCA</I> has been tested with EPICS 3.13, 3.14, <I>scilab</I>-2.7 .. <I>scilab</I>-4.0,
+<I>matlab</I>-6.5, <I>matlab</I>-7 on <I>linux</I>, <I>solaris</I> and
+<I>win32</I>. Note that while some of these combinations have been
+tested and been known working in the past, only the latest
+versions of the respective components have been tested
+and verified to build and run successfully with the
+current version of <I>labCA</I>. Modifications to the <TT>Makefile</TT>s
+might be necessary to build older versions. Note also
+that support for EPICS&nbsp;3.13 is being deprecated. Future
+versions of <I>labCA</I> will have the old <TT>Makefile</TT>s removed.
+
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot625">...scilab</A><A
+ HREF="node1.html#tex2html1"><SUP>1</SUP></A></DT>
+<DD>throughout this text, references to <I>scilab</I>
+usually mean <I>scilab</I> or <I>matlab</I>.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html22"
+  HREF="node2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
+<A NAME="tex2html20"
+  HREF="manual.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
+<A NAME="tex2html14"
+  HREF="manual.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html23"
+  HREF="node2.html">Supported EZCA Calls</A>
+<B> Up:</B> <A NAME="tex2html21"
+  HREF="manual.html">labCA   An</A>
+<B> Previous:</B> <A NAME="tex2html15"
+  HREF="manual.html">labCA   An</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Till Straumann
+2006-04-16
+</ADDRESS>
+</BODY>
+</HTML>

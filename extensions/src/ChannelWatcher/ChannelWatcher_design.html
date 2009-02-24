@@ -1,0 +1,115 @@
+<p><b>Channel Watcher Software Using Object Oriented Plug-Ins</b></p>
+<p>Jeff Hill suggests we design the Channel Watcher software using object
+oriented plug-ins so installations can choose between the different features and
+file formats available.&nbsp; If an EPICS installation chooses to use the
+Channel Watcher they will have to choose between the available plug-ins in the
+Channel Watcher's Makefile.Host.&nbsp; If an EPICS installation requires a
+format that hasn't been implemented, such as burt, a software engineer can write
+a C++ class that inherits the abstract base class for that plug-in.&nbsp; For
+example, CWlogmsg_cmlog.cc inherits and implements the CWlogmsg class in
+CWlogmsgABC.hh.</p>
+<p>Here is a nice picture of the available choices:</p>
+<p align="center"><a href="http:///www.slac.stanford.edu/comp/unix/package/epics/extensions/ChannelWatcher/CWplug-inStage1.gif"><img border="0" src="CWplug-inStage1.gif" width="484" height="507"></a></p>
+<p align="center">&nbsp;</p>
+<p align="center"><font size="4">The following two tables list the Channel Group
+and Repository Formats available or <i><u>planned</u></i>:</font></p>
+<div align="center">
+  <center>
+  <table border="1" width="100%">
+    <tr>
+      <td width="16%" align="center"><b>Channel Group Formats</b></td>
+      <td width="16%" align="center"><b>/log option available</b></td>
+      <td width="16%" align="center"><b>/nowrite option available</b></td>
+      <td width="16%" align="center"><b>channel alias available</b></td>
+      <td width="16%" align="center"><b>macro substitution available</b></td>
+    </tr>
+    <tr>
+      <td width="16%" align="center">SLAC's save/restore V1.91</td>
+      <td width="16%" align="center">yes</td>
+      <td width="16%" align="center">yes</td>
+      <td width="16%" align="center">yes</td>
+      <td width="16%" align="center">no</td>
+    </tr>
+    <tr>
+      <td width="16%" align="center">SLAC's caGet</td>
+      <td width="16%" align="center">no</td>
+      <td width="16%" align="center">no</td>
+      <td width="16%" align="center">no</td>
+      <td width="16%" align="center">no</td>
+    </tr>
+    <tr>
+      <td width="16%" align="center">Tim Mooney's autoSaveRestore V2.6</td>
+      <td width="16%" align="center">no</td>
+      <td width="16%" align="center">no</td>
+      <td width="16%" align="center">no</td>
+      <td width="16%" align="center">yes</td>
+    </tr>
+    <tr>
+      <td width="16%" align="center">SLAC's save/restore V2.0</td>
+      <td width="16%" align="center">yes</td>
+      <td width="16%" align="center">yes</td>
+      <td width="16%" align="center">yes</td>
+      <td width="16%" align="center">yes</td>
+    </tr>
+    <tr>
+      <td width="16%" align="center"><i>Oracle</i></td>
+      <td width="16%" align="center"><i>yes</i></td>
+      <td width="16%" align="center"><i>yes</i></td>
+      <td width="16%" align="center"><i>yes</i></td>
+      <td width="16%" align="center"><i>yes</i></td>
+    </tr>
+  </table>
+  </center>
+</div>
+<p>&nbsp;</p>
+<div align="center">
+  <center>
+  <table border="1" width="100%">
+    <tr>
+      <td width="25%" align="center"><b>Repository Formats</b></td>
+      <td width="25%" align="center"><b>Supports channel access native data type</b></td>
+      <td width="25%" align="center"><b>Supports waveform channels</b></td>
+      <td width="25%" align="center"><b>Supports ENUMs as both DBR_STRING and
+        DBR_ENUM</b></td>
+    </tr>
+    <tr>
+      <td width="25%" align="center">SLAC's save/restore V1.91</td>
+      <td width="25%" align="center">no</td>
+      <td width="25%" align="center">no</td>
+      <td width="25%" align="center">yes</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center">SLAC's caPut</td>
+      <td width="25%" align="center">no</td>
+      <td width="25%" align="center">yes</td>
+      <td width="25%" align="center">no</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center">to Debug log</td>
+      <td width="25%" align="center">yes</td>
+      <td width="25%" align="center">yes</td>
+      <td width="25%" align="center">yes</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center">Tim Mooney's autoSaveRestore V2.6</td>
+      <td width="25%" align="center">no</td>
+      <td width="25%" align="center">no</td>
+      <td width="25%" align="center">no</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center">SLAC's save/restore V2.0</td>
+      <td width="25%" align="center">yes</td>
+      <td width="25%" align="center">yes</td>
+      <td width="25%" align="center">yes</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center"><i>Oracle</i></td>
+      <td width="25%" align="center"><i>yes</i></td>
+      <td width="25%" align="center"><i>yes</i></td>
+      <td width="25%" align="center"><i>yes</i></td>
+    </tr>
+  </table>
+  </center>
+</div>
+<p><i>Last Update 19-Sep-2002, Mike Zelazny <a href="mailto:zelazny@slac.stanford.edu">zelazny@NOSPAMslac.stanford.edu</a>
+Remove the <b>NOSPAM </b>or follow the link.</i></p>

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Build</TITLE>
+<META NAME="description" CONTENT="Build">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00031000000000000000">
+Build</A>
+</H2>
+<EM>NOTE: If the binaries distributed with <B>labCA</B> work for you then there is
+no need to build anything. If you want/need to build your own version then read on
+otherwise proceed to <A HREF="Using.html#usingsca">Using <B>labCA</B></A>.</EM>
+
+<P>
+<B>labCA</B> comes with a `<TT>configure</TT>' subdirectory and Makefiles conforming to the
+EPICS build system. Following a configuration step which involves editing
+two small files, '<TT>make</TT>' is executed to install the generated libraries
+and scripts.
+
+<P>
+Prior to invoking the <B>scilab</B> or <B>matlab</B> application, the system
+must be properly set up in order for the applications to locate the
+<B>labCA</B> and channel access libraries.
+
+<P>
+
+<H3><A NAME="SECTION00031100000000000000">
+Prerequisites</A>
+</H3>
+<B>labCA</B> needs an EPICS BASE installation that was built <B>with shared
+libraries enabled</B><A NAME="tex2html10"
+  HREF="#foot808"><SUP>9</SUP></A>.
+The main reason being that <B>matlab</B>'s <B>mex</B> files cannot
+have multiple entry points. Hence, when statically linking multiple <B>mex</B>
+files against <B>ezca, ca, Com</B> etc. multiple copies of those libraries
+would end up in the running <B>matlab</B> application with possible adverse
+effects. It should be possible to build and use the <B>scilab</B> interface
+with static libraries -- minor tweaks to the Makefiles might be necessary.
+
+<P>
+<B>labCA</B> has been tested with <B>matlab</B>-6.5, <B>matlab</B>-7.0 and <B>scilab</B>-2.7 .. <B>scilab</B>-4.1
+under a variety of EPICS releases up to 3.14.9 on <B>linux-x86</B>,
+<B>linux-ppc</B>, <B>solaris-sparc-gnu</B>,
+<B>linux-x86_64</B>, <B>solaris-sparc</B>, <B>solaris-sparc64</B>
+and <B>win32</B><A NAME="tex2html11"
+  HREF="#foot809"><SUP>10</SUP></A>.
+
+<P>
+Note that the binary distribution of <B>labCA</B> usually ships with the
+necessary EPICS base libraries so there is no need to download anything
+besides <B>labCA</B>.
+
+<P>
+
+<H3><A NAME="SECTION00031200000000000000">
+Configuration</A>
+</H3>
+Two files, `<TT>configure/CONFIG</TT>' and `<TT>configure/RELEASE</TT>' need to
+be adapted to the user's installation:
+<DL>
+<DT><STRONG><TT>CONFIG:</TT></STRONG></DT>
+<DD>A handful of configuration parameters must be defined
+in this file.
+<DL>
+<DT><STRONG><TT>MAKEFOR:</TT></STRONG></DT>
+<DD>Setting the <TT>MAKEFOR</TT> variable
+determines the target application program the interface library is
+built for. Valid settings are <TT>MAKEFOR=SCILAB</TT> or <TT>MAKEFOR=MATLAB</TT>.
+Any setting other than <TT>MATLAB</TT> is treated like <TT>SCILAB</TT>.
+
+<P>
+</DD>
+<DT><STRONG><TT>CONFIG_USE_CTRLC:</TT></STRONG></DT>
+<DD>Set this to <TT>YES</TT> or <TT>NO</TT> to enable
+or disable, respectively, code for handling ``Ctrl-C'' keystroke sequences.
+When enabled, <B>labCA</B> operations (<EM>except for</EM> <TT>lcaDelay</TT>) may be aborted
+by hitting ``Ctrl-C''.
+Note that <B>labCA</B> polls for an ``abort condition'' with a granularity of the
+<A HREF="lcaGetTimeout.html#timeout"><B>ezca</B> timeout parameter</A>.
+Unfortunately, neither <B>matlab</B> nor <B>scilab</B> feature a documented API for handling
+Ctrl-C events and therefore Ctrl-C support -- the implementation using undocumented
+features of <B>scilab</B> and <B>matlab</B> -- must be considered ``experimental''
+i.e., it might cause problems on certain operating system and/or <B>scilab</B>/<B>matlab</B>
+versions.
+
+<P>
+</DD>
+<DT><STRONG><TT>INSTALL_LOCATION:</TT></STRONG></DT>
+<DD>Set this variable to install in a location
+different from the <B>labCA</B> top directory.
+
+<P>
+<EM>NOTE: This method has been
+deprecated. Use <TT>INSTALL_LOCATION_APP</TT> in the <TT>RELEASE</TT> file
+instead.</EM>
+</DD>
+</DL>
+</DD>
+<DT><STRONG><TT>RELEASE:</TT></STRONG></DT>
+<DD>In this file, paths to the EPICS base (`<TT>EPICS_BASE</TT>'
+variable) and <B>scilab</B> (`<TT>SCILABDIR</TT>' variable) or <B>matlab</B> (`<TT>MATLABDIR</TT>'
+variable) installations must be specified.
+
+<P>
+Under <B>win32</B>, an additional variable
+`<TT>MATLIB_SUBDIR</TT>' must be set directing the build process to select the correct
+<TT>libmx.lib</TT> and <TT>libmex.lib</TT> library variants. The setting of this variable
+is compiler dependent.
+<DL>
+<DT><STRONG><TT>INSTALL_LOCATION_APP=&lt;path&gt;</TT></STRONG></DT>
+<DD><TT>&lt;path&gt;</TT> defining the
+install location of the <B>labCA</B> package. If unset, the <B>labCA</B> <TT>TOP</TT>
+directory will be used.
+</DD>
+<DT><STRONG><TT>MATLABDIR=&lt;path&gt;</TT></STRONG></DT>
+<DD><TT>&lt;path&gt;</TT> defining the <B>matlab</B> installation
+directory where the `<TT>extern</TT>' subdirectory can be found (e.g.
+<TT>/opt/matlabR14beta2</TT>).
+</DD>
+<DT><STRONG><TT>SCILABDIR=&lt;path&gt;</TT></STRONG></DT>
+<DD><TT>&lt;path&gt;</TT> defining the <B>scilab</B> installation
+directory where the `<TT>routines</TT>' subdirectory can be found (e.g.
+<TT>/usr/lib/scilab-2.7</TT>).
+</DD>
+<DT><STRONG><TT>MATLIB_SUBDIR=&lt;pathelem&gt;</TT></STRONG></DT>
+<DD><TT>&lt;pathelem&gt;</TT> chosing the subdirectory
+corresponding to the C-compiler that is used for the build. (e.g. 
+<TT>win32/microsoft/msvc60</TT> for the microsoft visual c++ 6.0 compiler).
+The <TT>libmex.lib</TT> and <TT>libmx.lib</TT> files for the applicable compiler
+are found there.
+</DD>
+</DL>
+</DD>
+</DL>
+Any irrelevant variables (such as <TT>MATLABDIR</TT> if <TT>MAKEFOR=SCILAB</TT>)
+are ignored.
+
+<P>
+Note that the EPICS build system has problems with path names containing
+white space as they are commonly used on <B>win32</B>. Although I have
+tried to work around this, you still might encounter problems. I found
+that setting the environment variable <TT>MATLAB</TT> to point to the <B>matlab</B>
+directory helped (<B>cygwin</B>). It is best to avoid white space in path
+names, however.
+
+<P>
+
+<H3><A NAME="SECTION00031300000000000000">
+Building <B>labCA</B></A>
+</H3>
+After setting the
+`<TT>EPICS_HOST_ARCH</TT>' environment variable, <B>GNU</B> make is invoked from the <B>labCA</B> top 
+directory. Note that the compiler toolchain must be found in the system
+<TT>PATH</TT><A NAME="tex2html12"
+  HREF="#foot812"><SUP>11</SUP></A>.
+
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot808">... enabled</A><A
+ HREF="Build.html#tex2html10"><SUP>9</SUP></A></DT>
+<DD>
+To be precise: only <B>labCA</B> needs to be a shared library (but must then have
+EPICS BASE linked in); we recommend an EPICS BASE installation with
+shared libraries enabled because modifications to the EPICS Makefiles
+are required to build a shared <B>labCA</B> library that is linked against
+static versions of EPICS BASE.
+
+</DD>
+<DT><A NAME="foot809">...win32</A><A
+ HREF="Build.html#tex2html11"><SUP>10</SUP></A></DT>
+<DD>
+Note that not all possible combinations have been tested with the latest <B>labCA</B> release
+but rather the latest versions of the respective components on the platforms
+that are in the distribution.
+
+</DD>
+<DT><A NAME="foot812">...<TT>PATH</TT></A><A
+ HREF="Build.html#tex2html12"><SUP>11</SUP></A></DT>
+<DD>
+Under <B>win32</B>, the <B>msvc</B> compiler features a <TT>.BAT</TT> file for
+setting up the necessary environment.
+
+
+</DD>
+</DL>
+<BR><HR>
+<ADDRESS>
+for EPICS management
+2007-11-16
+</ADDRESS>
+</BODY>
+</HTML>

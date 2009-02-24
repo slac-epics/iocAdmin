@@ -1,0 +1,20 @@
+# Example for dotting & viewing:
+# dot -Tpng -o x.png man_data2.dot && eog x.png &
+
+digraph RTree
+{
+	node [shape = record, height=.1];
+	node4404 [ label="<f0>4-8|<f1>8-10|<f2>0-0"];
+	node4404:f0->node4116:f0;
+	node4404:f1->node4327:f0;
+	node4116 [ label="<f0>4-6|<f1>6-8|<f2>0-0"];
+	node4116:f0->id4219;
+	id4219 [ label="'FileB' \r@ 0x10 \r",style=filled ];
+	node4116:f1->id4246;
+	id4246 [ label="'FileB' \r@ 0x20 \r",style=filled ];
+	node4327 [ label="<f0>8-9|<f1>9-10|<f2>0-0"];
+	node4327:f0->id4273;
+	id4273 [ label="'FileB' \r@ 0x30 \r",style=filled ];
+	node4327:f1->id4300;
+	id4300 [ label="'FileB' \r@ 0x40 \r",style=filled ];
+}

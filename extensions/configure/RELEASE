@@ -1,0 +1,12 @@
+# RELEASE,v 1.2 2003/08/27 15:00:38 soliday Exp
+
+# If you don't want to install into $(TOP) dir then
+# define INSTALL_LOCATION_EXTENSIONS here
+#INSTALL_LOCATION_EXTENSIONS=<fullpathname>
+
+# Location of external products
+EPICS_BASE=/afs/slac/g/lcls/epics/base
+#EPICS_EXTENSIONS = /usr/local/epics/extensions
+EPICS_EXTENSIONS=$(TOP)
+
+#OAG_APPS=$(TOP)/../../oag/apps

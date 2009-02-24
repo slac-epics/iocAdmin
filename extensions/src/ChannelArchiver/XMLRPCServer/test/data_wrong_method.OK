@@ -1,0 +1,14 @@
+Status: 200 OK
+Content-length: 294
+
+<?xml version="1.0" encoding="UTF-8"?>
+<methodResponse>
+<fault>
+<value><struct>
+<member><name>faultCode</name>
+<value><i4>-602</i4></value></member>
+<member><name>faultString</name>
+<value><string>Invalid how=99</string></value></member>
+</struct></value>
+</fault>
+</methodResponse>

@@ -1,0 +1,480 @@
+6/17/96 changes
+     Fixed maximum length of filename on include line.
+
+     Added global alarm acknowledgement.
+
+
+Thu Aug 22 14:59:41 CDT 1996
+
+     Bug fix:
+     "Save as" now writes out ALARMCOUNTFILTER data
+
+Thu Jan  9 08:36:21 CST 1997
+
+     In this new alh version, the alarm log file has been changed to a circular log
+     file with maximum records in the circular file defaulting to 2000. This means
+     that after 2000 records exist in the alarm log file, the oldest alarm records
+     will be overwritten when new alarms occur, thus keeping the file size a constant
+     2000 records. The maximum number of records can be changed using a command line
+     option m, e.g. "alh -m 5000" will make the alarm log file a circular file with a
+     maximum of 5000 records.  The command "alh -m 0" can be used to allow the alarm
+     log file to have an infinite number of records.
+
+Thu Jan 16 10:35:16 CST 1997
+
+     Bug fix to ALARMCOUNTFILTER
+
+Fri Feb 28 17:26:13 CST 1997
+
+     Fixed INCLUDE file bug which caused counts and alarms to be incorrect.
+
+
+Mon Mar 31 10:41:19 CST 1997
+
+     Bug fix to SEVRCOMMAND for UP_ANY and DOWN_ANY.
+     Bug fix to ALARMCOUNTFILTER.
+
+Fri Sep 12 16:25:02 CDT 1997
+
+	Modified Help menu items.
+	Removed libUnix dependancy (product description shell)
+	Fixed calloc for SEVRCOMMAND string.
+	Fixed calloc for treeSym.
+	Bug fix for $BEEPSEVERITY line.
+	Alarm Configuration Tool (alh -c ) changes
+		Removed Undo from Edit menu - more confusing than helpful.
+		Many changes to get properties window working.
+		Changes to get cut/paste working.
+		Bug fixes for Save and SaveAs.
+		Bug fixes for tree and group window views.
+
+Mon Oct 27 12:28:36 CST 1997
+
+	Write of sevr to sevrPVs now done even if acknowledgement not
+	necessary and now write is done only when sevr has changed.
+
+
+May - June 1998
+	Changes made to allow alh to build using Exceed on WIN95/NT
+	Added new icon
+	Removed references to getopt
+	Created Makefile.Host and modified Makefile
+
+date: 1997/09/12 21:23:53
+	Bug fix for beep severity line placement.
+
+date: 1998/06/01 18:33:21
+	Modified the icon.
+
+date: 1998/06/02 19:40:43;  author: evans;  state: Exp;  lines: +2 -1
+	Changed from using Fgmgr to using X to manage events and file
+	descriptors.  (Fdmgr didn't work on WIN32.)  Uses XtAppMainLoop,
+	XtAppAddInput, and XtAppAddTimeOut instead of Fdmgr routines.
+	Updating areas is now in alCaUpdate, which is called every caDelay ms
+	(currently 100 ms).  Added a general error message routine (errMsg)
+	and an exception handler (alCAException).  Is working on Solaris and
+	WIN32.
+
+date: 1998/06/04 17:31:58;
+	Changed system("command &") to _spawnl("command") for WIN32 in
+	processSpawn_callback.  Added test.win32.alhConfig.
+
+date: 1998/06/09 17:10:48;  author: evans;  state: Exp;  lines: +5 -1
+	Fixed a typo in the exception handler.
+
+Mon Jun 22 12:50:36 CDT 1998
+	Bug fixes for command line option handling.
+	Modified debug options in Makefile.Host
+
+Mon Jun 22 13:34:09 CDT 1998
+	Merged the new alh-options created at DESY MKS group:
+
+	-D Disable Writing  --- allows running alh without creating/modifying 
+                        	alarmLog and alarmOpMod files.
+	-S Passive Mode     --- means that operator can't acknowledge alarms 
+                        	and can't save alarmLog and alarmOpMod files.
+	-T AlarmLogDated    --- 1) alarmLog files will have "date" extensions 
+                           	like YYYY-MM-DD, and automatical switching 
+                           	this files in midnight.
+	
+                        	2)  We add FSbox for search LogFiles in 
+                            	View->"Alarm Log File Window" and 
+	
+                        	3) We add search button for finding string at LogFile.
+				
+                        	4) We add "Find from <t1> to <t2> with <String>" 
+                             	widget, which allow search <String> from
+                             	all AlLog-files at some directory
+                       	 
+	-P Printing         --- simultaneously printing Alarm to TCP printer
+                        	(socket connection and so on). Now we print it
+                        	asynchronous, so we add additional task "alh_printer"
+                        	and modificate Makefile.Unix.
+
+Wed Jul  1 15:02:21 CDT 1998
+        Bug fix for STATCOMMAND.
+
+date: 1998/07/07 20:49:01;  author: jba;  state: Exp;  lines: +9 -2
+	Removed unused variable timeout.
+	Added alh versioning file version.h.
+
+date: 1998/07/16 17:45:17;  author: jba;  state: Exp;  lines: +2 -1
+	Moved productDescriptionShell code from libUnix to alh. (libUnix removed)
+	Changed some XmStringCreateSimple to XmStringCreateLtoR in dialog.c.
+	Allowed alh to startup with no filename on command line.
+
+date: 1998/07/23 18:22:34;  author: jba;  state: Exp;  lines: +7 -6
+	Log the connection and access rights changes to alarm log file
+	Exit routine changes for alarm configuration tool.
+
+Wed Jul 29 12:27:09 CDT 1998
+	Added "Unacknowledged Alarms Only" display filter.
+
+Mon Aug  3 13:04:40 CDT 1998
+	Increased config file max line size to 500 chars.
+
+Wed Aug  5 13:10:12 CDT 1998
+	Added silenceOneHour button.
+	Moved silenceForever button to Setup menu.
+	Added logging for operator silence changes.
+	Reading config file modified to compare whole word of command 
+	(GROUP,CHANNEL,$GUIDANCE,...)instead of first letter. 
+	GUIDANCE modified to display urls. (on netscape browser).
+        The alhConfig file specification is now either URL guidance -
+            $GUIDANCE  http://www.aps.anl.gov/asd/controls
+        or text guidance -
+            $GUIDANCE
+            This is the first line of text guidance.
+            This is the second line of text guidance.
+            $END
+
+Fri Aug  7 17:30:14 CDT 1998
+	Alh now quits when invalid config file is specified on command line.
+
+Thu Sep  3 14:11:17 CDT 1998
+	Added new version of browser.c with WIN32 support.
+	Removed unused variables from file.c.
+	Made changes for WIN32 build (using Exceed5)
+	Added url help.
+	Initial version is 1.1.1, added Albert to credits
+
+Wed Sep 9 11:06:51 CDT 1998
+	Merged the new alh code changes from CEBAF:
+	Removed the old -DACCESS_SECURITY tests (pre baseR3.11).
+
+Thu Jan 19 14:14:01 CST 1999
+	Start of code cleanup. No functional changes. Modified comments, removed
+	unused code, used c beautifier, etc.
+
+Thu Jan 28 16:57:39 CST 1999
+	Added silenceForever command line option.
+	Modified silenceForever menu item to actually silence forever instead
+	        of silencing only for current file.
+	Modified the url help location.
+
+Thu Mar 11 10:12:06 CST 1999
+	Added the following alh modifications which were created at DESY MKS group.
+	
+	New alh-options:
+	
+	-D Disable Writing  --- allows work with alh without possibility 
+	                        create/modify alarmLog and alarmOpMod files.
+	-S Passive Mode     --- means that operator can't acknowledge alarms 
+	                        and can't save alarmLog and alarmOpMod files.
+	-T AlarmLogDated    --- 1) alarmLog and OpMod files will have "date" extensions 
+	                           like YYYY-MM-DD, and automatical switching 
+	                           this files in midnight.
+	
+	                        2)  We add FSbox for search LogFiles in 
+	                            View->"Browser for Alarm Log" and 
+	
+	                        3) We add search button for finding string at LogFile.
+				
+	                        4) We add "Find from <t1> to <t2> with <String>" 
+	                             widget, which allow search <String> from
+	                             all AlLog-files at some directory
+	                        
+	-P Printing         --- simultaneously printing Alarm to TCP printer
+	                        (socket connection and so on). Now we print it
+	                        asynchronous, so we add additional task "alh_printer"
+	                        and modificate Makefile.Unix.
+	
+	-L locking          --- allow multiple work with the same config files,
+							only one process is real master and write to alhLog
+							other is slave and they wait until master will not killed 
+	
+	-0 Database(Oracle) --- simultaneously runtime add Alarm to Database.
+							it works asynchronous, so we add additional task "alh_DB"
+	
+	-B - message broadcasting -- allow send messages between operators work with the
+	                            same config file. Most important case: "REBOOT MESSAGE":
+							    allow don't save alarm during reboot time.
+							   (NOT IMPLEMENTED YET ;)  )	
+	                               	
+Mon Mar 15 08:57:01 CST 1999
+	ANSI c changes to eliminate warning messages on Linux build.
+
+Tue May 18 10:24:41 CDT 1999
+	Bug fix for reversed parameters in alLogChanChangeMasks.
+	Added Silence Forever status to message area.
+
+Fri May 28 15:08:18 CDT 1999
+	Bug fix for forcePV. Removed alInitialize.c.
+
+Wed Jun  2 13:16:33 CDT 1999
+	Bug fix for area reinitialization after a new config file opened
+	which sometimes caused a core dump.
+	Removed alAllocGroup/alAllocChan (alCreateGroup/alCreateChannel used).
+	Current Alarm History data no longer global, now part of area structure.
+
+Mon Jun  7 09:20:02 CDT 1999
+	Modified definition of netscape path.
+
+date: 1999/07/08 14:35:02;  author: lange;
+	+= CMLOG support
+
+Mon Jun 21 15:15:03 CDT 1999
+	Start cleanup of axRunW.c file.
+
+Tue Jun 22 11:12:51 CDT 1999
+	Some cleanup of line.h and line.c files.
+
+Wed Jul 14 16:24:06 CDT 1999
+	Updates to handle global acks and ackt fields and related changes.
+	Created version 1.2.1
+
+date:1999/07/21 23:02:10
+	Cdev and Exceed changes.
+	Bug fixes for command line options.
+	Corrected cmlog function names.
+
+date: 1999/07/22 21:30:42
+	Fixed usage text.
+	Two CMLOG fixes
+	Fixed the context setting for value.
+	Force new alarm processing when channel is initally disconnected.
+
+date: 1999/07/23 14:38:52;  author: lange;
+	+= -filter, -mainwindow; fixed cmdline option error output
+
+date: 1999/07/26 15:32:25;  author: lange;
+	Small CMLOG related changes
+	Changed CMLOG browser call to allow args
+	GetChannelLine() bugfix
+	Update current mask string
+
+date: 1999/07/28 21:26:19;  author: jba; 
+	Message area text changes.
+	Don't log the initial connection.
+
+date: 1999/08/13 19:43:46;  author: lange; cmlogrc.ALH 
+	changed host tag, added more tags
+
+date: 1998/06/01 18:33:24;  author: evans; alh.ico
+	Modified the icon.
+
+Wed Oct  6 16:13:50 CDT 1999
+	Process forcePV ca value event only if value has changed.
+
+Thu Oct 14 10:11:23 CDT 1999
+	Fixed alarm channel count for INCLUDE files.
+	Fix for ca put of ACKT values when config file is read.
+	Fix for alarm sevr of initially canceled and disabled channels.
+	Created version 1.2.2
+	
+Tue Oct 26 09:14:53 CDT 1999
+	Run window now displays color of highest unack alarm.
+	Process initial alarm event for ALARMCOUNTFILTER channels.
+
+Tue Nov  2 14:10:45 CST 1999
+	Don't do caput for acknowledgment if channel is not connected.
+	Wait for a 1 second period with no connections before writing
+	config file ackt settings.
+
+Fri Nov 12 16:27:37 CST 1999
+	Don't set unack global sevr from alarm events if curMask.Ack==true
+	Created version 1.2.3
+
+1999/12/08 19:41:11;  author: jba
+	Changed win32 compile option to start with slash for consistancy.
+	Initialized parent_link to null.
+
+Mon Apr 24 09:40:43 CDT 2000 -  V1.2.4
+	Simplified alHighestSystemSeverity calculation.
+	Added new alarm event error checking.
+	Created version 1.2.4
+
+Wed Aug  9 09:16:57 CDT 2000 - V1.2.5
+	Fixed some memory leaks in scroll.c and dialog.c and file.c.
+	Removed change to group curSevr in alView.c. Added CMLOG_BIN
+	definition and added -R ld option for cmlog in Makefile.Host.
+	Added acks and ackt fields to countFilter structure in alLib.h.
+	Modified the handling of new events when a count Filter exists,
+	see comment table in alLib.c (near line 630 ).
+	Created version 1.2.5
+
+2000/08/15 17:00:20;  author: lange
+	Added startup code for HP C++-Linker
+
+Tue Sep 26 10:30:55 CDT 2000
+	Added audio for WIN32 and fixed some memory leaks.
+
+Thu Oct  5 14:49:17 CDT 2000 - V1.2.6
+	Added audio for solaris.
+	Created version 1.2.6
+
+2000/10/09 21:06:33;  author: jba
+	Made changes for building with solaris 6.
+
+Tue Oct 17 14:08:17 CDT 2000 - V1.2.7
+	Change to build with baseR3.14.
+	Created version 1.2.7
+
+Tue Oct 24 16:01:07 CDT 2000 - V1.2.8
+	More changes to build with baseR3.14.
+	Created version 1.2.8
+
+Tue Feb 13 09:24:37 CST 2001 - V1.2.9
+	Fixed bug in new alarm event filtering.
+	Removed update of current alarm history when window not displayed.
+
+Tue Feb 20 09:42:46 CST 2001 - V1.2.9
+	Reinstated update of current alarm history when window not displayed.
+	Created version 1.2.9
+
+2001/10/09 18:07:47;  author:  evans
+	Fixed code to not use ALH_Pixmap as XmNiconPixmap for WIN32, since Exceed
+	trashes it.
+
+2002/01/17 22:00:04;  author: jba
+	Changed HOST_ARCH to OS_CLASS in Makefile.Host
+
+2002/02/04 19:56:15;  author: jba
+	Set ellNext parm cast to ELLNODE* to avoid compiler warnings.
+
+2002/05/17 20:51:09;  author: jba
+	Added const to avoid compiler warnings.
+
+Tue Jul 23 16:21:37 CDT 2002
+	Added license information to source files. Added LICENSE file.
+	Created version 1.2.10
+
+Wed Sep 11 10:20:10 CDT 2002
+	Added missing notes to alh.notes file.
+	Initialized FILE fl and fo to zero to avoid compiler warnings.
+
+Mon Jan 20 09:18:18 CST 2003
+	Add ability to set and change beep severity for channels and groups.
+
+Tue Jan 21 15:53:59 CST 2003
+	Simplify Beep Severity dialog: set value immediately and remove Apply and Ok.
+	Add ability to set group/channel ack/noAck masks to noAck for one hour.
+	Add ability to disable a group/channel forcePV.
+
+Mon Jan 27 13:52:29 CST 2003
+	More changes for noAck for one hour timer.
+	Allow "NE" for forcePV reset value ( NE forcePV force value).
+
+Tue Feb 11 15:28:34 CST 2003  ALH_1_2_11Beta1
+	More changes for noAck for one hour timer. New Action menu item
+	"NoAck for One Hour". Channel have Ack mask set to reset value
+	after one hour. Ability to permanently noAck/Ack a group or
+	channel. Groups or channels with 1 hour timer will display an
+	'H' in Ack mask field. A new no-Ack timer will cancel existing
+	timers in subgroups and channels.  When timer expires it will
+	not reset any subgroups or channels that have an existing (i.e.
+	more recent) timer.
+
+	The text "ALH" has been added to the old Setup Beep Severity
+	menu item and to the Beep Severity line in the main window message
+	area to show that it is not a group or channel beep severity.
+
+	Now when a channel is enabled after being disabled and it is not
+	in an alarm state but does have unacknowledged transient alarms, an
+	automatic acknowlegment is sent to the channel and the auto acknowledge-
+	ment is logged in the opMod file.
+
+Fri Feb 14 16:24:03 CST 2003  ALH_1_2_11Beta2
+	Added H indicator in mask for noAck 1hr timer 
+	Added a config file heartbeatPV.
+
+Thu Feb 27 10:59:56 CST 200   ALH_1_2_11Beta3
+	ForcePV variables removed grom gcData and forcePV structure created.
+	Added NE as a valid value for forcePV resetValue.
+	Added CALC facility to forcePV. This allows algebraic, relational, and 
+	logical operations on up to 6 pvs. The result of the operations is then
+	compared to the forcePV forceValue and resetValue to determine whether
+	to set group/channel masks to the forceMask or resetMask.
+
+Fri Feb 28 16:38:19 CST 2003 ALH_1_2_11Beta4
+	Changed opMod file output. Now contains top group name followed by
+	group or channel name each followed by a colon or just a colon if
+	the name is not available.
+
+Mon Mar  3 09:24:38 CST 2003 ALH_1_2_11Beta5
+	Moved channel beepSevr modified indicators to preceed possible return.	
+	Added code for display of highest existing beepSevr in sub groups and channels. 
+	Modified alarm log file output. Now calculate alarmLogFileStringLength.
+	Changed fopen of alarm log file from r+ to w+(truncate or create).
+	Modified forcePV opMod log messages text.
+
+Wed Sep  ? 12:55:31 ALH_1_2_12
+	Created tag ALH_1_2_12 for a requested distribution tar file.
+
+Wed Oct  8 16:01:03 CDT 2003 ALH_1_2_13
+	Code changed to reduce warning messages.
+	Write "N/A" to cmlog when blink string is missing.
+	Fixes made to Force Mask popup.
+	Removed old sccs id variable.
+
+Wed Feb 25 22:28:56 CDT 2004 ALH_1_2_14
+	Change conditional from WIN32 to HAVE_SYSV_IPC.  Add appropriate conditional
+	to alh.h to define HAVE_SYSV_IPC as appropriate.  Ensure that alh.h is
+	included before conditionals depending on HAVE_SYSV_IPC.
+
+Tue Jun  1 15:41:38 CDT 2004 ALH_1_2_15
+	Added -desc_field option. - Albert Kagarmanov
+	Added acknowledge PV support  - Albert Kagarmanov
+	Portablility change for darwin-ppc - Eric Norum
+
+Fri Jul 16 16:22:32 CDT 2004 ALH_1_2_16
+	Added comments and void return value for getDescriptionRecord.
+	Saved ca alarm event data and added a ca reconnection event (for R3.14.6).
+
+Thu Jul 22 11:02:33 CDT 2004 ALH_1_2_17
+	Removed menu tearoff feature. Tornoff menus cannot be closed.
+
+Mon Aug  2 09:24:36 CDT 2004 ALH_1_2_18
+	Modified save of ca alarm event data to save only at a disconnect event.
+
+Tue Aug 10 10:48:18 CDT 2004 ALH_1_2_19beta1
+	Skip restoring saved alarm data at initial connection.
+	Popup error msg for unconnected SEVRPV, FORCEPV, ACKPV, HEARTBEATPV
+	Popup error msg when no read access for FORCEPV
+	Popup error msg when no write access for SEVRPV, ACKPV, HEARTBEATPV
+	Popup error msg when no read or write  access for alarm channels
+	Added ca clear channel for Acknowledge PV.
+	Popup error msg for invalid SEVRPV, FORCEPV, ACKPV, HEARTBEATPV input
+
+Fri Oct 29 14:54:00 CDT 2004  ALH_1_2_19beta2
+	Set main window background color grey if Silence For One Hour is active.
+
+Tue Apr  5 10:06:27 CDT 2005
+	Added "ALH" to popup dialogs and added timestamp to popup error dialog.
+
+Tue Jun 21 13:23:04 CDT 2005 ALH_1_2_20
+	Silence One Hour:
+		Set color of newly created row widgets to color of parent widget.
+		Change color of ALL widget children except ack button, sevr indicator,
+		and name push button.
+	Write errMsg text to opMod log file when errors occur.
+	Remove extra carriage returns in opMod log file.
+	Remove group and channel data from opMod log message if they do not exist.
+	Print "Setup Config File" to opMod log before config file error messages.
+	Open file for scroll window reading as r. Removed comments. Cleaned code.
+	Set cursor position to last line written, even in circular files.
+	Create new dialog when a dialog is requested. Destroy dialog when closed.
+
+Mon Dec  5 10:23:24 CST 2005
+	Added alh_printer libraries socket & nsl for R3.14.8 build to Makefile.Host.
+

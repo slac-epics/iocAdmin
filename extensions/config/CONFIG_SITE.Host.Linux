@@ -1,0 +1,84 @@
+#
+# CONFIG_SITE.Host.Linux
+#
+# Site Specific Configuration Information
+# Only the local epics system manager should modify this file
+
+-include $(TOP)/config/CONFIG_SITE.Host.UnixCommon
+
+# This is the absolute path to INSTALL_LOCATION_EXTENSIONS, for SHARED_LIBRARY searches.
+#SHRLIB_SEARCH_DIRS += /usr/local/epics/R3.14.1/extensions
+
+# Following 3 for SDDS
+#USE_GD_LIBRARY=1
+#USE_RUNCONTROL=1
+#USE_LOGDAEMON=1
+
+# Where to find utilities/libraries
+#	If you do not have a certain product,
+#	leave the line empty.
+#
+
+X11_LIB=/usr/X11R6/lib
+X11_INC=/usr/X11R6/include/X11
+MOTIF_LIB=/usr/X11R6/lib
+MOTIF_INC=/usr/X11R6/include
+#MOTIF_LIB=/usr/X11R6/LessTif/Motif2.1/lib
+#MOTIF_INC=/usr/X11R6/LessTif/Motif2.1/include
+# needed by EDM (ungif and png)
+GIF_LIB=/usr/lib
+GIF_INC=/usr/include
+PNG_LIB=/usr/lib
+PNG_INC=/usr/include
+
+#IV_INC=/usr/local/interviews/include
+#IV-2_6_INC=/usr/local/interviews/include/IV-2_6
+#IV_BIN=/usr/local/interviews/bin/O.Linux
+#IV_LIB=/usr/local/interviews/lib/O.Linux
+
+#OPENWIN = 
+#WINGZ_INC =
+#WINGZ_LIB =
+#MATHEMATICA = 
+
+# Define XRTGRAPH_EXTENSIONS = YES only if using XRT/graph 3.x
+#   and you want the extensions for MEDM
+#XRTGRAPH_EXTENSIONS = YES
+#XRTGRAPH = /opt/local/xrtgraph
+
+#SCIPLOT = YES
+#QUESTWIN = 
+
+CMLOG = /afs/slac/g/lcls/cmlog
+CMLOG_INC = $(CMLOG)/include
+CMLOG_LIB = $(CMLOG)/lib/Linux-i386
+CMLOG_BIN = $(CMLOG)/bin/Linux-i386
+
+MATLAB = /afs/slac/package/matlab/linux/14.3
+MATLAB_ARCH_EXT = glx
+
+TK_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
+TK_INC = /afs/slac/package/tcl/common/8.0/include
+TCL_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
+TCL_INC = /afs/slac/package/tcl/common/8.0/include
+#DP_LIB = /usr/lib
+#DP_INC = /usr/include
+BLT_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
+BLT_INC = /afs/slac/package/tcl/common/8.0/include
+
+JAVA_DIR = /afs/slac/package/java/i386_linux2/jdk1.5
+JAVA_INC=$(JAVA_DIR)/include
+JAVA_INCLUDES = -I$(JAVA_INC) -I$(JAVA_INC)/linux
+
+# added XPM for StripTool
+XPM_LIB = /usr/X11R6/lib
+XPM_INC = /usr/X11R6/include
+
+# Needed for R3.14.2 when SHARED_LIBRARIES=YES
+# Prefix Runtime ldflags with fullpath name to INSTALL_LIB.
+ifdef BASE_3_14
+FULL_PATH_INSTALL_LIB = $(shell perl $(TOP)/config/fullPathName.pl $(INSTALL_LIB)) \
+      $(shell perl $(TOP)/config/fullPathName.pl $(EPICS_BASE_LIB))
+RUNTIME_LDFLAGS := $(FULL_PATH_INSTALL_LIB:%=-Wl,-rpath,%) $(RUNTIME_LDFLAGS)
+endif
+

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lcaGetTimeout, lcaSetTimeout</TITLE>
+<META NAME="description" CONTENT="lcaGetTimeout, lcaSetTimeout">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION000212000000000000000"></A>
+<A NAME="timeout"></A>
+<BR>
+lcaGetTimeout, lcaSetTimeout
+</H2>
+
+<H3><A NAME="SECTION000212100000000000000">
+Calling Syntax</A>
+</H3>
+<PRE>
+currentTimeout = lcaGetTimeout()
+lcaSetTimeout(newTimeout)
+</PRE>
+<H3><A NAME="SECTION000212200000000000000">
+Description</A>
+</H3>
+Retrieve / set the <I>ezca</I> library timeout parameter (consult the <I>ezca</I>
+documentation for more information). Note that the timeout parameter is
+actually the <EM>minimum</EM> timeout the library pends for activity. The
+<EM>maximal</EM> time spent waiting for connections and/or data equals the
+timeout multiplied by the
+<A HREF="lcaGetRetryCount.html#retrycnt">retry count</A>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Till Straumann
+2006-04-16
+</ADDRESS>
+</BODY>
+</HTML>

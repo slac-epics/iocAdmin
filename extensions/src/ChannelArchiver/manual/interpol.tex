@@ -1,0 +1,283 @@
+% interpol.tex
+\section{Time Stamp Correlation} \label{sec:timestampcorr}
+We have stressed more than once that the Channel Archiver preserves
+the original time stamps as sent by the CA servers.  This commonly
+leads to difficulties when comparing values from different
+channels. The following subsections investigate the issue in more
+detail and show several ways of manipulating the data in order to
+allow data reduction and cross-channel comparisons.
+In short, the options described in the following subsections are:
+\begin{description}
+\item[\sffamily Raw Data:]
+  Provides every archived sample ``as is''.
+\item[\sffamily Spreadsheet:]
+  Staircase interpolation/filling to form a spreadsheet.
+\item[\sffamily Averaging, Linear Interpolation:]
+  Maps the raw data onto specific time stamps.
+\item[\sffamily Plot Binning:]
+  Reduces the number of samples for plotting.
+\end{description}
+
+\subsection{``Raw'' Data} \label{sec:rawdata}
+Even when two channels were served by the same IOC, and originating from
+records on the same scan rate, their time stamps will slightly differ
+because a single CPU cannot scan several channels at exactly the same
+time.  Tab.~\ref{tab:ABtimes} shows one example.
+
+\begin{table}[htbp]
+  \begin{center}
+    \begin{minipage}[t]{0.49\textwidth}
+      \sffamily
+      \begin{tabular}[t]{l|l}
+        Time               & A         \\
+        \hline
+        17:02:28.700986000 & 0.0718241 \\
+        17:02:37.400964000 & 0.0543581 \\
+        ...
+      \end{tabular}
+    \end{minipage}%
+    \begin{minipage}[t]{0.49\textwidth}
+      \sffamily
+      \begin{tabular}[t]{l|l}
+        Time               & B         \\
+        \hline
+        17:02:28.701046000 & -0.086006 \\
+        17:02:37.510961000 & -0.111776 \\
+        ...
+      \end{tabular}
+    \end{minipage}%
+    \caption{Example Time Stamps for two Channels A and B.}
+    \label{tab:ABtimes}
+  \end{center}
+\end{table}
+
+\noindent When we try to export this data in what we call \INDEX{raw
+spreadsheet format}, a problem arises: Even though the two channels'
+time stamps are close, they do not match, resulting in a spreadsheet
+as shown in Tab.~\ref{tab:ABraw}. Whenever one channel has a value,
+the other channel has none and vice versa.  This spreadsheet does
+not yield itself to further analysis; calculations like $A-B$ will
+always yield \INDEX{'\#N/A'} since either A or B is undefined.
+
+\begin{table}[htbp]
+  \begin{center}
+    \sffamily
+    \begin{tabular}[t]{l|l|l}
+      Time                         & A         & B         \\
+      \hline
+      3/22/2000 17:02:28.700986000 & 0.0718241 & ---       \\
+      3/22/2000 17:02:28.701046000 & ---       & -0.086006 \\
+      3/22/2000 17:02:37.400964000 & 0.0543581 & ---       \\
+      3/22/2000 17:02:37.510961000 & ---       & -0.111776 \\
+      ...
+    \end{tabular}
+    \caption{Spreadsheet for raw Channels A and B.}
+    \label{tab:ABraw}
+  \end{center}
+\end{table}
+
+\subsection{``Before or at'' Interpretation of Start Times}
+ \label{sec:starttime}
+When you invoke a retrieval tool with a certain start time, the
+archive will rarely contain a sample for that exact start time. As an
+example, you might ask for a start time of ``07:00:00'' on some date. Not
+because you expect to find a sample with that exact time stamp, but
+because you want to look at data from the beginning of that day's
+operations shift, which nominally began at 7am.
+
+The software underlying all retrieval tools anticipates this scenario
+by interpreting all start times as ``before or at''. Given a start time
+of ``07:00:00'', it returns the last sample before that start
+time, unless an exact match is found. So in case a sample for the
+exact start time exists, it will of course be returned. But if the
+archive contains no such sample, the previous sample is returned.
+
+Applied to Tab.~\ref{tab:ABraw}, channel A, you would get the samples
+shown in there not only if you asked for ``17:02:28.700986000'', the
+exact start time, but also if you asked for ``17:02:30''.
+It is left to the end user to decide whether that previous sample is
+still useful at the requested start time, if it's ``close enough'', or
+if it needs to be ignored.
+
+\subsection{Spreadsheet Generation} \label{sec:filling}
+There are several ways of mapping channels onto matching time
+stamps. One is what we call \INDEX{Staircase Interpolation} or
+\INDEX{Filling}: Whenever there is no current value for a channel, we
+re-use the previous value. This is often perfectly acceptable because
+the CA server will only send updates whenever a channel changes beyond
+the configured deadband. So if we monitored a channel and did not
+receive a new value, this means that the previous value is still valid
+--- at least within the configured deadband. In the case of scanned
+channels we have no idea how a channel behaved in between scans, but
+if we e.g.\ look at water temperatures, it might be safe to assume
+that the previous value is still ``close enough''.
+Table~\ref{tab:ABstair} shows the previously discussed data subjected
+to staircase interpolation. Note that in this example there is no
+initial value for channel B, resulting in one empty spreadsheet
+cell. From then on, however, there are always values for both
+channels, because any missing samples are filled by repeating the
+previous one.  Because of the interpretation of start times explained
+in section \ref{sec:starttime}, you would get the result in
+ Tab.\ \ref{tab:ABstair} not only if you asked for values beginning
+``3/22/2000 17:02:28.700986000'', but also when you asked for
+e.g. ``17:02:30'': Since neither channel A nor B have a sample for that
+exact time stamp, the retrieval library would select the
+preceding sample for each channel, resulting in the output shown in 
+Tab.\ \ref{tab:ABstair}.
+
+\NOTE While table~\ref{tab:ABstair} marks the filled values by
+printing them in italics, spreadsheets generated by archive retrieval
+tools will not accent the filled values in any way, so care must be
+taken: Those filled values carry artificial time stamps. If you depend
+on the original time stamps in order to synchronize certain events,
+you must not use any form of interpolation but always retrieve the raw
+data. 
+
+\begin{table}[htbp]
+  \begin{center}
+    \sffamily
+    \begin{tabular}[t]{l|l|l}
+      Time                         & A         & B         \\
+      \hline
+      3/22/2000 17:02:28.700986000 & 0.0718241 & ---       \\
+      3/22/2000 17:02:28.701046000 & \textit{0.0718241}      & -0.086006 \\
+      3/22/2000 17:02:37.400964000 & 0.0543581 & \textit{-0.086006} \\
+      3/22/2000 17:02:37.510961000 & \textit{0.0543581} & -0.111776 \\
+      ...
+    \end{tabular}
+    \caption{Spreadsheet for Channels A and B with Staircase
+      Interpolation; ``filled'' values shown in italics.}
+    \label{tab:ABstair}
+  \end{center}
+\end{table}
+
+You did of course notice that the staircase interpolation does not
+reduce the amount of data. Quite the opposite: In the above examples,
+channels A and B each had 2 values. With staircase interpolation, we
+don't get a spreadsheet with 2 lines of data but 4 lines of data.  The
+main advantage of filling lies is the preservation of original time stamps.
+
+\subsection{Averaging, Linear Interpolation}  \label{sec:lininterpol}
+Both averaging and linear interpolation generate artificial values from the raw
+data. This can be used to reduce the amount of data: For a summary of
+the last day, it might be sufficient to look at one value every 30
+minutes, even though the archive could contain much more data.
+Another aspect is partly cosmetic and partly a matter of convenience:
+When we look at Tab.~\ref{tab:ABstair}, we find rather odd looking
+time stamps. While these reflect the real time stamps that the
+ArchiveEngine received from the ChannelAccess server, it is often
+preferable to deal with data that has time stamps which are nicely
+aligned, for example every 10 seconds: 11:20:00, 11:20:10, 11:20:20,
+11:20:30 and so on.
+
+\begin{figure}[htb]
+\begin{center}
+\medskip
+\InsertImage{width=\textwidth}{interpol}
+\end{center}
+\caption{\label{fig:interpol}Averaging and Linear Interpolation, see text.}
+\end{figure}
+
+\noindent To accomplish this, the data is binned. For example, the
+time span of one day, 24~hours, can be divided into 2880 sections,
+each of which covers 30 seconds. Each of those sections is called a
+``Bin''. The raw samples for the day are then investigated as follows:
+\begin{itemize}
+\item When we select \INDEX{Averaging}, the average over all the
+  samples that fall into a bin is returned. The center of the bin is
+  used as a time stamp.
+\item When we select \INDEX{Linear Interpolation}, the value of the
+  channel at the border of each bin is determined via linear
+  interpolation between the last sample before and the first sample
+  after the border of the bin.
+  The border of each bin determines the time stamp.
+\end{itemize}
+
+\noindent Fig.~\ref{fig:interpol} compares the result of retrieving
+the raw data with averaging and linear interpolation over
+10-second-bins.  Averages are determined for the center of each bin,
+i.e. 08:48:35, 08:48:45, ..., while linear interpolation generates
+values for the bin-borders at 08:48:40, 08:48:50, ...  The linearly
+interpolated values do in fact exactly fall onto the connecting lines
+between raw samples if you consider the full time stamps, but the
+plotting program chosen to produce fig.~\ref{fig:interpol} rounds down
+to full seconds.
+
+Note the gap just before 08:49:30: Since the channel was disconnected,
+no average is returned for the bin from 08:49:20 to 08:49:30. 
+Averaging and linear interpolation are further limited to scalar, numeric
+samples of type double, float or int. Arrays or strings will not be
+interpolated.
+
+\NOTE Averaging and linear interpolation must be used with caution.
+Both methods can hide important details in the raw data, and it is up
+to the user to determine when to use them and with what bin size.
+If for example you want to compare several water tank temperatures
+and you know that the water temperature can only change slowly, linear
+interpolation for e.g.\ every 60 seconds might be a reasonable
+approach.
+
+On the other hand, consider a channel that monitors radiation counts
+per minute. The raw data will mostly reflect the fairly constant background
+radiation. Of interest are probably only temporary 'spikes' in the data,
+since they indicate radiation incidents that need to be correlated
+with e.g.\ beam loss.
+Interpolation of this type of data over 5 minutes will yield
+useless results. Most temporary increases in radiation within a bin are
+lost, you will only see values close to the background radiation as
+they were measured around the bin borders.
+Averaging will show a slight increase for those bins that contain a
+radiation incident, but the magnitude of those 'spikes' will not at
+all compare to the raw data.
+
+\subsection{Plot-Binning} \label{sec:plotbinning}
+\begin{figure}[htb]
+\begin{center}
+\medskip
+\InsertImage{width=\textwidth}{plotbin}
+\end{center}
+\caption{\label{fig:plotbin}Plot-Binning, see text.}
+\end{figure}
+
+This method is meant for plotting, providing data that --- when
+plotted --- looks very much if not exactly like the raw data, albeit
+significantly reducing the number of data points and hence speeding up
+the plot.  To accomplish this, the data is binned as described in the
+previous section. The following is then applied to each bin:
+\begin{itemize}
+\item If there is no sample for the time span of a bin, the bin
+  remains empty.
+\item If there is one sample, it is placed in the bin.
+\item If there are two samples, they are placed in the bin.
+\item If there are more than two samples, the first and last one
+  are placed in the bin. In addition, two artificial samples are
+  created with a time stamp right between the first and last sample.
+  One contains the minimum, the other the maximum of all raw samples
+  who's time stamps fall into the bin. They are presented to the user
+  in the sequence initial, minimum, maximum, final.
+\end{itemize}
+
+\noindent Fig.~\ref{fig:interpol} compares the raw data of a Klystron
+test run, 2400 samples, with the result of plot-binning, bin size 600
+seconds, yielding around 280 samples. While plot binning significantly
+reduced the sample count, the overall shape of the klystron output as
+well as the outliers are well preserved.
+
+Note that the ``before or at'' interpretation of start times does not
+apply for Plot-Binning: The exact start time of the request is used to
+determine the beginning of the first bin, and only samples within each
+bin are considered, there is no interpolation onto bin-boundaries.  In
+general, the use of $N$ bins can result in up to 4$N$ data points,
+since each bin might provide an initial, minimum, maximum and final
+value.  In most cases, this results in a significant data
+reduction. As long as we plot this such that the width of the plot in
+pixels is close to the number of bins, there is little visual
+difference between the raw data plot and the binned plot.  Typical
+numbers for $N$ are around the width of a computer screen in pixels,
+that is 800\ldots 1200.  For the special case were 3 raw values happen
+to fall into every bin, we will get 4$N$ instead of 4$N$ data
+points. For typical $N$, that is a slight but not dramatic increase in
+retrieval or plotting time. It is neglectable compared to the fact
+that binning guarantees an upper limit of 4$N$ data points, no matter
+how many raw
+samples there are.

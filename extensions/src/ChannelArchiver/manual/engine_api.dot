@@ -1,0 +1,41 @@
+# Example for dotting & viewing:
+# dot -Tpng -o engine_api.png engine_api.dot && open engine_api.png &
+
+digraph Engine
+{
+    Engine [ shape=box ];
+
+    ProcessVariableContext [ shape=box ];
+    Engine -> ProcessVariableContext;
+
+    ScanList [ shape=box ];
+    Engine -> ScanList [ label="  has a" ];
+
+    Group [ shape=box ];
+    Engine -> Group [ label="  has many" ];
+ 
+    ArchiveChannel [ shape=box ];
+    Group -> ArchiveChannel [ label="  has many" ];
+    Engine -> ArchiveChannel;
+
+    SampleMechanism [ shape=box ];
+    ArchiveChannel -> SampleMechanism [ label="  has a" ];
+    SampleMechanism -> ScanList [ label="might\luse\l", style=dotted ]
+
+    {
+       rank=same;
+       TimeFilter [ shape=box ];
+       TimeFilter -> SampleMechanism [ style=dotted ];
+
+       RepeatFilter [ shape=box ];
+       RepeatFilter -> TimeFilter [ style=dotted ];
+    }
+
+    ProcessVariable [ shape=box ];
+    ProcessVariable -> RepeatFilter [ label="data", style=dotted ];
+    ProcessVariable -> ProcessVariableContext [ label="use", style=dotted ]
+
+    SampleMechanism -> ProcessVariable [ label="  has a" ];
+}
+
+

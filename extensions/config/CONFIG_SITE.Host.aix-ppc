@@ -1,0 +1,2 @@
+
+include $(TOP)/config/CONFIG_SITE.Host.AIX

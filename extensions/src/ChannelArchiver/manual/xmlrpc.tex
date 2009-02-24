@@ -1,0 +1,327 @@
+\section{\INDEX{XML-RPC Protocol}} \label{sec:xmlprotocol}
+The following is a description of the calls implemented by the archive
+data server based on the XML-RPC protocol.
+For details on XML-RPC,  including the specifications and examples of
+how to use it from within C,  C++, Java, perl, please refer to
+\href{http://www.xmlrpc.com}{http://www.xmlrpc.com}.
+
+Users of Java should probably utilize the Java archive data client
+library provided with the ChannelArchiver. Users of other programming
+environments need to refer to the following.
+
+\subsection{archiver.info} \label{sec:archiver:info} % ------------------- 
+This call returns version information. It will allow future
+compatibility if clients check for the correct version numbers.  In
+addition, it provides hints on how to decode the values served by this
+server.
+
+\begin{lstlisting}[keywordstyle=\sffamily]
+{ int32             ver,
+  string            desc,
+  string            how[],
+  string            stat[],
+  { int32 num,
+    string sevr,
+    bool has_value,
+    bool txt_stat
+  }                 sevr[]
+ } = archiver.info()
+\end{lstlisting}
+
+\begin{description}
+\item[\sffamily ver:]  Version number. The first released software uses '1'.
+\item[\sffamily desc:] Cute description that one can print.
+\item[\sffamily how:]  Array of strings with a description of the
+                       request methods supported for 'how' in the
+		       archiver.values() call described further below in
+                       section \ref{sec:archiver:values}.
+\item[\sffamily stat:] Array of strings with a description of the
+                       ``status'' part of the values returned by
+                       the archiver.values() call.     
+\item[\sffamily sevr:] Array of structures with a description of the
+                       ``severity'' part of the values returned by
+                       the archiver.values() call.     
+\end{description}
+
+\noindent The result is a structure with a numeric ``ver''
+member, a string ``desc'' member and so on as listed above.
+Implementations like perl will return a hash with members
+``ver'', ``desc'', etc.
+The strings in ``how'' describe the request method for how=0, how=1,
+and so on.
+The strings in ``stat'' describe the enumerated status values, the
+typical result is shown in table \ref{tab:stat}.
+
+The more important information is in the ``sevr'' array.
+It also lists severity numbers (``num'') and their associated string
+representation (``sevr''). In addition to the alarm severities defined
+by the EPICS base software, the archiver uses some special severity
+values which have the ``has\_value'' property set to false. They
+identify situations that have no value because the channel
+was disconnected or the archiver was turned off. Other special
+severities identify repeat counts which are used in the periodic
+scanning modes of the archive engine: If the channel did not change
+for N sample times, a repeat count of N is logged instead of logging
+the same value N times. In that case, the ``txt\_stat'' property is
+set to false because the status (stat) field no longer corresponds to
+a status string from table \ref{tab:stat}. Instead, it provides the
+repeat count N.
+Table \ref{tab:sevr} lists the typical content of the ``sevr'' array,
+table \ref{tab:statsevrexample} presents examples for decoding values
+based on their status and severity information.
+
+\begin{table}[htbp]
+  \begin{center}
+    \sffamily
+    \begin{tabular}[t]{l|l}
+    Array Element & String \\
+    \hline
+      0   & NO\_ALARM   \\
+      1   & READ ALARM   \\
+      2   & WRITE ALARM \\
+      3   & HIHI ALARM  \\
+      4   & HIGH ALARM  \\
+      5   & LOLO ALARM  \\
+      6   & LOW ALARM  \\
+      7   & STATE ALARM  \\
+      \ldots   & \ldots  \\
+      17   & UDF ALARM  \\
+      \ldots   & \ldots  \\
+    \end{tabular}
+    \caption{Alarm Status Values returned in the ``stat'' member of archiver.info()}
+    \label{tab:stat}
+  \end{center}
+\end{table}
+
+\begin{table}[htbp]
+  \begin{center}
+    \sffamily
+    \begin{tabular}[t]{l|l|l|l}
+     num & sevr             & has\_value & txt\_stat \\
+    \hline
+       0 & NO\_ALARM        & true       & true  \\
+       1 & MINOR            & true       & true  \\
+       2 & MAJOR            & true       & true  \\
+       3 & INVALID          & true       & true  \\
+    3968 & Est\_Repeat      & true       & false \\
+    3856 & Repeat           & true       & false \\
+    3904 & Disconnected     & false      & true  \\
+    3872 & Archive\_Off     & false      & true  \\
+    3848 & Archive\_Disabled& false      & true
+    \end{tabular}
+    \caption{Alarm Severity Values returned in the ``sevr'' member of archiver.info()}
+    \label{tab:sevr}
+  \end{center}
+\end{table}
+
+\begin{table}[htbp]
+  \begin{center}
+    \sffamily
+    \begin{tabular}[t]{l|l|l|l}
+    Severity (sevr) & Status (stat) & Value & Example Text \\
+    \hline
+                  0 &            0  &  3.14 & ``3.14'' \\
+                  1 &            6  &  3.14 & ``3.14 MINOR LOW'' \\
+               3856 &            6  &  3.14 & ``3.14 Repeat 6'' \\
+               3904 &            0  &  0    & ``Disconnected'' \\
+    \end{tabular}
+    \caption{Examples for decoding samples returned from the
+    archiver.values() call based on their Status and Severity}
+    \label{tab:statsevrexample}
+  \end{center}
+\end{table}
+
+\subsection{archiver.archives} % --------------------------------------------
+Returns the archives that this data server can access.
+
+\begin{lstlisting}[keywordstyle=\sffamily]
+{ int32 key, 
+  string name, 
+  string path }[] = archiver.archives()
+\end{lstlisting}
+
+\begin{description}
+\item[\sffamily key:] A numeric key that is used by the following
+                      routines to select the archive.
+\item[\sffamily name:] A description of the archive that one could
+                       e.g.\ use in a drop-down selector in a GUI
+                       application for allowing the user to select an archive.
+\item[\sffamily path:] The path to the index file,  valid on the file
+                       system where the data server runs.
+                       It might be meaningful to a few users who want to
+                       know exactly where the data resides,  but it is
+                       seldom essential for XML-RPC clients to look at this.
+\end{description}
+
+\noindent The result is an array of structures with a numeric ``key''
+member and strings ``name'' and ``path''.
+An example result could be:
+\begin{lstlisting}[keywordstyle=\sffamily]
+{ key=1,  name="Vacuum", path="/home/data/vac/index" },
+{ key=2,  name="RF",     path="/home/data/RF/index" }
+\end{lstlisting}
+
+\noindent So in the following one would then use key=1 to access
+vacuum data etc. One can expect the keys to be small,  positive
+numbers,  but they are not guaranteed to be consecutive as 1, 2, 3,
+... Since the keys could be something like 10,  20, 30 or 1, 17, 42,
+they are not useful as array indices.
+
+\subsection{archiver.names} % ------------------------------------------
+Returns channel names and start/end times.
+The key must be a valid key obtained from archiver.keys.
+Pattern is a \INDEX{regular expression};
+if left empty,  all names are returned.
+
+\NOTE The Time Stamps are \emph{not} the raw EPICS time stamps with 1990 epoch, 
+but use the time\_t data type based on a 1970 epoch.
+
+\begin{lstlisting}[keywordstyle=\sffamily]
+{string name, 
+ int32 start_sec,  int32 start_nano,
+ int32 end_sec,    int32 end_nano}[] 
+         = archiver.names(int32 key,  string pattern)
+\end{lstlisting}
+
+\noindent The result is an array of structures,  one structure
+per channel that matches the pattern.
+Start/end gives an idea of the time range that can
+be found in the archive for that channel.
+The archive might actually contain entries \emph{after}
+the reported end time because the index might not
+be up too date on the end times.
+
+\subsection{archiver.values} \label{sec:archiver:values} % -----------------
+This call returns values from the archive identified by the key for a
+given list of channel names and a common time range.
+
+\begin{lstlisting}[keywordstyle=\sffamily]
+result = archiver.values(
+         int key, 
+         string name[], 
+         int32 start_sec,  int32 start_nano,
+         int32 end_sec,  int32 end_nano, int32 count,
+         int32 how)
+\end{lstlisting}
+
+\noindent The parameter ''how'' determines how the raw values of the
+various channels get arranged to meet the requested time range and
+count.  For details on the methods mentioned in here refer to section
+\ref{sec:timestampcorr} and following, beginning on page
+\pageref{sec:timestampcorr}.
+\begin{description}
+\item[\sffamily how = 0 (raw):]
+  Get raw data from archive (see \ref{sec:rawdata}), starting w/ 'start',
+  up to either 'end' time or max. 'count' samples.
+\item[\sffamily how = 1 (spreadsheet):]
+  Get data that is filled or staircase-interpolated, starting
+  w/ 'start', up to either 'end' time or max. 'count' samples
+  (see \ref{sec:filling}).
+  For each channel, the same number of values is returned. The
+  time stamps of the samples match accross channels, so that one can
+  print the samples for each channel as columns in a spreadsheet.
+  If a spreadsheet cell is empty because the channel does not have any
+  useful value for that point in time, a status/severity of
+  UDF/INVALID is returned (Tables \ref{tab:sevr} and \ref{tab:stat}).
+\item[\sffamily how = 2 (averaged):]
+  Get averaged data from the archive, starting w/ 'start',
+  up to either 'end' time or max. 'count' samples
+  (see \ref{sec:lininterpol}).
+  The data is averaged within bins whose size is determined by 
+  of (end-start)/count, so you should expect to get close to 'count'
+  values which cover 'start' to 'end'.
+  Again refer to section \ref{sec:timestampcorr}.
+\item[\sffamily how = 3 (plot binning):]
+  Uses the plot-binning method based on 'count' bins
+  (see \ref{sec:plotbinning}).
+\item[\sffamily how = 4 (linear):]
+  Get linearly interpolated data from the archive, starting w/ 'start',
+  up to either 'end' time or max. 'count' samples
+  (see \ref{sec:lininterpol}).
+  The data is interpolated onto time slots which are multiples
+  of (end-start)/count, so you should expect to get close to 'count'
+  values which cover 'start' to 'end'.
+  Again refer to section \ref{sec:timestampcorr}.
+\end{description}
+
+\noindent The result is an array of structures,  one structure per
+requested channel:
+
+\begin{lstlisting}[keywordstyle=\sffamily]
+result := { string name,  meta, int32 type,
+            int32 count,  values }[]
+\end{lstlisting}
+
+\begin{description}
+\item[\sffamily name:]
+   The channel name.
+   Result[i].name should match name[i] of the request, 
+   so this is a waste of electrons,  but it's sure convenient
+   to have the name in the result,  and we're talking XML-RPC,
+   so forget about the electrons.
+\item[\sffamily meta:]
+   The meta information for the channel. This is itself a structure 
+   with the following entries:
+   \begin{lstlisting}[keywordstyle=\sffamily]
+meta := { int32 type;
+          type==0: string states[], 
+          type==1: double disp_high, 
+                   double disp_low, 
+	           double alarm_high, 
+                   double alarm_low, 
+                   double warn_high, 
+                   double warn_low, 
+                   int prec,  string units
+        }
+   \end{lstlisting}
+\item[\sffamily type:]
+   Describes the data type of this channel's values:
+  \begin{lstlisting}[frame=none, keywordstyle=\sffamily]
+  string   0
+  enum	   1 (XML int32)
+  int      2
+  double   3
+  \end{lstlisting}
+\item[\sffamily count:]
+  Describes the array size of this channel's values,  using 1 for
+  scalar values. Note that even scalar values are returned as an array
+  with one element!
+\item[\sffamily values:]
+  This is an array where each entry is a structure of the following
+  layout:
+  \begin{lstlisting}[frame=none, keywordstyle=\sffamily]
+  values := { int32 stat,  int32 sevr,
+              int32 secs,  int32 nano,
+              <type> value[] } []
+  \end{lstlisting}
+\end{description}
+
+\noindent The values for status and severity match in part those that
+the EPICS IOC databases use. The ArchiveEngine simply receives and
+stores them, they are passed on to the retrieval tools without
+change. In addition, the archiver toolset uses special severity values
+to indicate a disconnected channel or the fact that the ArchiveEngine
+was shut down.  For details refer to section \ref{sec:archiver:info}
+and the tables \ref{tab:stat}, \ref{tab:sevr} and
+\ref{tab:statsevrexample}.
+
+\subsection{Note about Tiny Numbers and Precision} \label{sec:xml:tiny} % -----------------
+Some systems deal with small numers. Vacuum readings often use numbers
+like $5 \times 10^{-8}$. The XML-RPC specification is unfortunately
+unclear as to how numbers should get serialized and parsed other than
+specifically prohibiting the exponential notation. The best one could
+serialize the example number would therefore be ``0.00000005''.
+
+When the ArchiveDataServer is build with the XML-RPC library for C/C++
+as described in the installation section, \ref{sec:install}, it will
+attempt to properly serialize small numbers.  When using another
+XML-RPC library, and this includes the XML-RPC library that your
+client program uses, small numbers might end up being serialized as
+zero. The Java Archive Client appears to handle small numbers, as does
+the ``Frontier'' XML-RPC library for perl.
+
+A similar issue applies to the precision of floating point numbers:
+The ArchiveDataServer serializes numbers with a fixed precision that
+is determined by the XML-RPC library for C/C++. You can patch the
+library to increase the precision.
+

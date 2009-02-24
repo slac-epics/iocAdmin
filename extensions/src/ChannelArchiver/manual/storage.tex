@@ -1,0 +1,15 @@
+\section{``Storage'' Library} \label{sec:javaclient}
+The INDEX{Storage library}, a C++ library, provides access to
+local archives. It is used by the ArchiveEngine to create archives,
+as well as by the ArchiveExport and Data Server programs for
+retrieval.
+In principle, your custom C++ code can use it as well.
+Read the header files, maybe run ``doxygen'' with the provided
+``ChannelArchiver.doxy'' configuration to obtain a more readable
+version.
+
+However, you also need to be aware of its shortcomings: Written
+primarily to support the archiver tools, its API might change more
+frequently than the network data server protocol. In addition, it is
+of course limited to accessing local data files, it cannot query the
+network data server.

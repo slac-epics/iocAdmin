@@ -1,0 +1,32 @@
+# =====================================================
+#       Makefile.cmlog
+#
+# File included in Makefile.Host. Used when logging 
+# messages to cmlog.
+
+# =====================================================
+
+USR_CXXFLAGS += -Wno-long-long
+
+#USR_CXXFLAGS += -D_CWLOGMSG_INCLUDE_DEF='"CWlogmsg_cmlog.hh"'
+
+SRCS += CWlogmsg_cmlog.cc
+USR_INCLUDES += -I$(CMLOG_INC)
+USR_CXXFLAGS += -D_CMLOG_BUILD_CLIENT 
+USR_LDFLAGS += -L$(CMLOG_LIB)
+
+# uncomment these 4 lines to use the threaded version of CMLOG throttling
+#ARCH_DEP_CFLAGS = -Dsolaris
+#USR_INCLUDES += -I$(CMLOG)/Thread -mt -D_CMLOG_USE_THREAD 
+#USR_CXXFLAGS += -I$(CMLOG)/Thread -mt -D_CMLOG_USE_THREAD 
+#USR_LDFLAGS += -lposix4 -lpthread -lthread
+
+PROD_LIBS += cmlog
+
+# =====================================================
+
+# How do you want your messages throttled? Choose one of
+# the following (use CWlogmsg_throttle_cmlog.cc for no throttling):
+
+SRCS += CWlogmsg_throttle_cmlog_SLAC.cc
+#SRCS += CWlogmsg_throttle_cmlog.cc

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lcaGetRetryCount, lcaSetRetryCount</TITLE>
+<META NAME="description" CONTENT="lcaGetRetryCount, lcaSetRetryCount">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html191"
+  HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
+<A NAME="tex2html189"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
+<A NAME="tex2html183"
+  HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html192"
+  HREF="node14.html">lcaGetTimeout, lcaSetTimeout</A>
+<B> Up:</B> <A NAME="tex2html190"
+  HREF="node2.html">Supported EZCA Calls</A>
+<B> Previous:</B> <A NAME="tex2html184"
+  HREF="node12.html">lcaGetUnits</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html193"
+  HREF="node13.html#SECTION000211100000000000000">Calling Syntax</A>
+<LI><A NAME="tex2html194"
+  HREF="node13.html#SECTION000211200000000000000">Description</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H2><A NAME="SECTION000211000000000000000"></A>
+<A NAME="retrycnt"></A>
+<BR>
+lcaGetRetryCount, lcaSetRetryCount
+</H2>
+
+<H3><A NAME="SECTION000211100000000000000">
+Calling Syntax</A>
+</H3>
+<PRE>
+currentRetryCount = lcaGetRetryCount()
+lcaSetRetryCount(newRetryCount)
+</PRE>
+<H3><A NAME="SECTION000211200000000000000">
+Description</A>
+</H3>
+Retrieve / set the <I>ezca</I> library retryCount parameter (consult the <I>ezca</I>
+documentation for more information). The retry count multiplied by the
+<A HREF="node14.html#timeout">timeout parameter</A>
+determines the maximum time the interface waits for connections and data
+transfers, respectively.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Till Straumann
+2006-04-16
+</ADDRESS>
+</BODY>
+</HTML>

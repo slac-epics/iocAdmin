@@ -1,0 +1,36 @@
+\chapter{Data Retrieval}  \label{chap:retrieval}
+Data retrieval requirements can cover a wide range.  One person might
+be interested in the temperature of a water tank during the last
+night. For this, it is probably sufficient to retrieve the raw data
+for the respective channel and plot it.  If, on the other hand, we
+want to look at the same temperature for the last 3 month, the raw
+data will amount to too many samples and some sort of data reduction
+or interpolation is helpful.  We already mentioned the problems of
+time stamp correlation that arise when comparing different channels in
+section \ref{sec:timestampcorr}.
+
+The Channel Archiver toolset includes some generic tools that can be
+used ``as is''. While those try to cover many data retrieval
+requirements, certain requests can only be handled in customized data
+mining programs (which might be e.g.\ perl scripts). For this, the
+archiver offers a network data server. In short, these are your
+fundamental options:
+
+\begin{itemize}
+\item Java Archive Client\\
+      This is meant to be \emph{the} data client. Use it to browse the
+      available data, generate plots, export data to spreadsheets,
+      from any computer on the network, by accessing the data server.
+\item ArchiveExport\\
+      A command-line tool. Less convenient to use, requires direct
+      access to the data files. Use this when the Java Archive Client
+      or network data server are not available.
+\item Archive Data Server\\
+      Serves data to the Java Archive Client. In addition, you can
+      access the documented XML-RPC protocol of the data server from
+      most programming languages. Use this method for customized data
+      mining programs.
+\item ``Storage'' Library\\
+      A C++ library for accessing local data files. Use for
+      specialized C++ code.
+\end{itemize}

@@ -1,0 +1,118 @@
+\section{Data Files} \label{sec:dataFileFormat}
+The data files store the actual data, that is the time stamps, values
+and the meta information like display limits, alarm limits and
+engineering units. 
+The archiver stores data for many channels in the same data
+file. There aren't separate data files per channel because that would
+produce too many files and slow the archiver down.  The names of the
+data files look like time stamps. They are somewhat related to the
+time stamps of the samples in there: The name reflects when the data
+file was created. We then continue to add samples until the engine
+decides to create a new data file. This means that a data file with a
+name similar to yesterday's date can still be filled today.
+
+\noindent{\bfseries Conclusion 1:} Ignore the names of the data files,
+they don't tell you anything of use about the time range of samples
+inside.
+
+\subsection{Implementation Details}
+
+\begin{table}[htbp]
+  \begin{center}
+    \sffamily
+    \begin{tabular}{ll}
+     Offset  & Content \\
+     \hline
+     0x0000  & 'ADF1' (\dag) \\
+     ...     & ... \\
+     0x0FFC  & 'INFO' (\dag) \\
+     0x1000  & \underline{Numeric CtrlInfo} \\
+             & display limits, units, ... \\
+     ...     & ... \\
+             & 'DATA', channel name (\dag) \\
+     0x2000  & \underline{Data Header} \\
+             & prev buffer: ````, 0 \\
+             & next buffer: ``X``, 0x4000 \\
+             & CtrlInfo: 0x1000 \\ 
+             & dbr\_type: dbr\_time\_double \\
+             & buffer size, amount used, ... \\
+             & \underline{Buffer:} dbr\_time\_double, dbr\_time\_double, ... \\
+     ...     & ... \\
+             & 'DATA', channel name (\dag) \\
+     0x4000  & \underline{Data Header} \\
+             & prev buffer: ``X``, 0x2000 \\
+             & next buffer: ``Y``, 0x4000 \\
+             & CtrlInfo: 0x1000 \\ 
+             & ... \\
+             & \underline{Buffer:} dbr\_time\_double, dbr\_time\_double, ... \\
+     ...     & ... \\  
+    \end{tabular}
+    \caption{Data file: Example layout for a data file ``X''.}
+    \label{tab:datafile}
+  \end{center}
+\end{table}
+
+\noindent Table~\ref{tab:datafile} shows the basic layout of a data
+file ``X'', with items marked by (\dag) only available since version
+2-1-1 of the ChannelArchiver toolset. The 'DATA' marker for the Data
+header at offset 0x2000 would start at\\
+\begin{center}
+   0x2000 - 4 - length(channel name) - 1
+\end{center}
+in order to allow for the string ``DATA'' and the null-terminated
+channel name.
+
+Most important, the data file primarily stores data. It does not need
+to know about the channel names to which the data belongs, except for
+the recently added (\dag) tags. The index would for example tell us
+that the data of interest for channel ``fred'' can be found in data
+file ``X'' at offset 0x2000. In there, the Data Header points to the
+preceding buffer (none in this case) and the following buffer (in this
+case: same file, offset 0x4000). It also provides the data type, size
+and number of samples to be found in the Data Buffer
+which immediately follows the Data Header.
+
+\noindent{\bfseries Conclusion 2:} A data file is nearly useless without the
+accompanying index file, so you should not separate them.
+
+\noindent The Data Buffer contains the raw dbr\_time\_xxx-type values
+as received from ChannelAccess. The meta information, that is: limits,
+engineering units or for enumerated channels the enumeration strings,
+are stored in a CtrlInfo block. Each Data Header contains a link to a
+CtrlInfo block, in this case one at offset 0x1000 which happens to
+contain numeric control information.
+Each buffer contains a certain number of samples. Whenever a buffer is
+full, a new one is added. The new buffer might be created at the end
+of the same data file, but the engine might also create a new data
+file after a certain time or whenever a data file gets too big.
+In the example from Table~\ref{tab:datafile}, the first buffer at offset
+0x2000 links to a next buffer at offset 0x4000 in the same file ``X'',
+and that buffer in turn points to another buffer in a different file
+``Y''. Note that both the buffer at offset 0x2000 and the one at
+offset 0x4000 share the same meta information at offset 0x1000,
+probably because the meta information has not changed.
+
+\noindent{\bfseries Conclusion 3:} Do not delete individual data
+files, because this will break the links between data files and result
+lost samples. Do not remove the index file. All the data files that were
+created in one directory together with an index file need to stay together.
+You can move the index and all data files into a different directory, but
+you must not remove or rename any single data file.
+
+\section{\INDEX{Index and Data File Repair}}
+Beginning with version 2-1-1 of the ChannelArchiver toolset, the items
+marked with (\dag) in Table~\ref{tab:datafile} were added.  A
+4-ASCII character magic ID at the start of the data file identifies
+the new file type. Each CtrlInfo if preceded by 'INFO' and each Data
+Header is preceded by 'DATA' followed by the null-terminated channel
+name.
+
+The ``RecoverIndex'' subdirectory contains a tool thankfully provided
+by Noboru Yamamoto which can be used to \INDEX{repair} a \INDEX{damaged or lost index file},
+by searching the data files for the 'INFO' and 'DATA' tags.
+See the Readme.txt in that subdirectory for details.
+
+As for \INDEX{data file repair}, one can use the Data Tool described in the following
+section to copy all the data that's still accessible in a damaged data file
+to a new archive.
+

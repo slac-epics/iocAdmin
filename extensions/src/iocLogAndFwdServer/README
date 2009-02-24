@@ -1,0 +1,14 @@
+This directory contains the epics product called iocLogAndFwdServer. It
+has been mofified from the standard extension version to also log to cmlog
+and/or Oracle.
+
+It also contains a test program called iocLogServerLogMsg.
+
+At the time this was put in CVS, the development environment was broken
+on LCLS.  So, the way you make it is non-standard.
+
+To make iocLogAndFwdServer, check the code out on lcls-builder and do gmake.
+
+To buld the test program called iocLogServerLogMsg, execute the script
+called build_iocLogServerLogMsg.prod.bash on lcls-builder.
+

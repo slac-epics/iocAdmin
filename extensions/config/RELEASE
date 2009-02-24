@@ -1,0 +1,7 @@
+#RELEASE Location of external products
+#
+
+EPICS_EXTENSIONS=$(TOP)
+
+EPICS_BASE=/afs/slac/g/lcls/epics/base
+

@@ -1,0 +1,177 @@
+\documentclass{report}
+
+\usepackage{color}
+
+% Index
+\usepackage{makeidx}
+\makeindex
+\newcommand\INDEX[1]{{#1}\index{#1}}
+
+% Switch mostly to Helvetica
+\usepackage{helvet}
+\usepackage{sectsty}
+\allsectionsfont{\sffamily}
+\renewcommand*\figurename{\sffamily Figure}
+\renewcommand*\tablename{\sffamily Table}
+
+% Source-Code Listings (Version 0.2)
+\usepackage{listings}
+\usepackage{lstpatch}
+\lstloadlanguages{C,C++,csh,Perl}
+\lstset{language=C++}
+\lstset{basicstyle=\sffamily,frame=trlb}
+\lstset{captionpos=b,xleftmargin=0cm,xrightmargin=0cm}
+\lstset{morekeywords={record},keywordstyle=\bfseries}
+\renewcommand*\lstlistingname{\sffamily Listing}
+
+% PDF Support
+\definecolor{rltred}{rgb}{0.75,0,0}
+\definecolor{rltgreen}{rgb}{0,0.5,0}
+\definecolor{rltblue}{rgb}{0,0,0.75}
+% Create a new ifpdf to allow conditional translation w/ and w/o PDF:
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+    \pdffalse          % we are not running PDFLaTeX
+\else
+    \pdfoutput=1       % we are running PDFLaTeX
+    \pdftrue
+\fi
+\ifpdf
+% PDF-only stuff
+\usepackage[pdftex,
+        colorlinks=true,
+        urlcolor=rltblue,       % \href{...}{...} external (URL)
+        filecolor=rltgreen,     % \href{...} local file
+        linkcolor=rltred,       % \ref{...} and \pageref{...}
+        pdftitle={Channel Archiver Manual},
+        pdfauthor={Kay-Uwe Kasemir},
+        pdfsubject={EPICS Channel Archiver},
+        pdfkeywords={EPICS, Archiver, ChannelAccess},
+        pagebackref,
+        pdfpagemode=None,
+        bookmarksopen=true]{hyperref}
+\usepackage[pdftex]{graphicx}
+\else
+% Non-PDF Stuff
+\usepackage[dvips]{graphicx}
+\fi
+
+%\DeclareGraphicsExtensions{.png}
+
+% InsertImage{width=...,height=...}{image basename}
+%% Trick: The minipage aligns top/center/bottom
+%% by aligning the baseline.
+%% With only the \includegraphics, that single line
+%% would be the baseline and thus [t] == [b].
+%% By adding zero-sized lines above and below \includegraphics,
+%% we can actually use [t] and [b].
+%% [From TUGBoat 17(1996)3 ]
+
+\newcommand\InsertImage[2]{
+  \vspace{-\baselineskip}
+  \includegraphics[#1]{#2}
+  \par\vspace{0pt}
+}
+
+\definecolor{red}{rgb}{0.5,0,0}
+\newcommand\NOTE[0]{\noindent{\bfseries\color{red}NOTE:~}}
+
+\hyphenation{re-cords phys-ics Ar-chive-En-gine Ar-chive-Da-ta-Ser-ver}
+
+\begin{document}
+\sffamily
+\title{\Huge Channel Archiver Manual\\[1cm]
+\includegraphics[width=3cm]{logo101}
+}
+\date{\today,\\ for R3.14.4 and higher}
+\maketitle
+\newpage
+
+\pagestyle{empty}
+
+\section*{Involvements}
+Bob Dalesio designed the original index file, data file layout,
+and implemented the first prototype.\\
+From then on, the following people have been involved at one
+time or another:\\
+\begin{center}
+Thomas Birke,\\
+Sergei Chevtsov,\\
+Kay-Uwe Kasemir,\\ 
+Chris Larrieu,\\
+Greg Lawson,\\
+Craig McChesney,\\
+Peregrine McGehee,\\
+Nick Pattengale,\\
+Ernest Williams,\\
+Noboru Yamamoto.
+\end{center}
+
+\section*{No Warranty}
+Although the programs and procedures described in this manual are
+meant to be helpful instruments for archiving, maintaining and
+retrieving control system data, there is no warranty, either expressed
+or implied, including, but not limited to, fitness for a particular
+purpose. The entire risk as to the quality and performance of the
+programs and procedures is with you.  Should the programs or
+procedures prove defective, you assume the cost of all necessary
+servicing, repair or correction.
+
+In no event will anybody, including the persons listed above, be
+liable to you for damages, including any general, special, incidental
+or consequential damages arising out of the use or inability to use
+the programs (including but not limited to loss of data or data being
+rendered inaccurate or losses sustained by you or third parties or a
+failure of the programs to operate with any other programs).
+
+\newpage
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagestyle{headings}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{overview}
+\input{background}
+\input{interpol}
+
+\input{engine}
+
+\input{retrieval}
+\input{javaclient}
+\input{export}
+\input{dataserver}
+
+\input{xmlrpc}
+\input{perlclient}
+% \clearpage
+\input{storage}
+\input{striptool}
+\input{matlab}
+
+\input{indices.tex}
+\input{indextool}
+
+\input{examplesetup}
+
+\input{install}
+
+\chapter{Data Format Details} \label{chap:storage}
+\input{rtree}
+\input{binary}
+\input{datatool}
+\input{stats}
+
+\input{err_faq}
+
+\input{legacy}
+
+\input{changes}
+
+\chapter{Index, Bibliography}
+\printindex
+\input{bib}
+
+\end{document}

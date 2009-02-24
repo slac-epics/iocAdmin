@@ -1,0 +1,270 @@
+\section{\INDEX{Data Server}} \label{sec:dataserver}
+The archiver toolset includes a network data server.
+By running this data server on a computer that has
+physical access to your archived data, be it because the data resides
+on a local disk or an NFS-mapped volume, other machines
+on the network can get read-access to your data.
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=0.8\textwidth}{dataserver}
+\end{center}
+\caption{\label{fig:dataserver}Data Server, refer to text.}
+\end{figure}
+
+\noindent The data server is hosted by a web server, using the XML-RPC
+protocol to serve the data. This means that software running on
+disparate operating systems, running in different environments can
+access your data over the Internet via a URL. As an example, your data
+server might be a Linux machine on a subnet behind a firewall. After
+you configure the firewall to pass HTTP requests, any Linux, Win32,
+Macintosh computer both inside or outside of the firewall can access
+the data from within perl, python or tcl scripts, programs written in
+C, C++ or Java, actually pretty much any programming language. As
+illustrated in fig.~\ref{fig:dataserver}, the client program sends its
+requests to a web server, which forwards it to the data server that is
+running as a CGI tool under the web server. The dataserver accesses
+the relevant archives --- you determine which ones are available via a
+configuration file --- and returns the data though the web server to
+the client program.  You can configure access security via e.g.\ the
+Apache web server configuration.
+
+\NOTE The fact that the data server is hosted by a web server,
+accessible via a URL, does \emph{not} imply that you can use any web browser
+to retrieve data. You have to use the XML remote procedure call
+protocol described in section \ref{sec:xmlprotocol} on page
+\pageref{sec:xmlprotocol}. XML-RPC handles the network connections,
+data type conversions, and XML-RPC libraries are available for most
+programming languages.
+We provide the Java Archive Client (see section \ref{sec:javaclient})
+as a generic, interactive data client. 
+
+\subsection{Installation} % ---------------------------------------------
+After successful compilation in ChannelArchiver/XMLRPCServer, you should
+have a program
+``XMLRPCServer/O.\$EPICS\_HOST\_ARCH/\INDEX{ArchiveDataServer}''.
+You have to install it as a CGI tool under a web server, passing
+an environment variable ``SERVERCONFIG'' to it which points
+to a configuration file. This means
+
+\begin{itemize}
+\item You need a web server like \INDEX{Apache} running on a computer
+      with access to the archive data.
+\item You need to know how to start, stop and configure that
+      web server.
+\item You need to know how to install, configure and possibly
+      troubleshoot \INDEX{CGI} tools under that web server.
+\item You need to create a configuration file for the ArchiveDataServer.
+\end{itemize}
+
+\noindent With all but the last point you are very much on your own, because
+this manual cannot even try to describe all the possible configurations
+and errors.
+What follows is only an example setup for the Apache Web Server under Linux
+and Mac OS X. Your web server, even if it is also a version of Apache,
+is likely to be quite different.
+
+\begin{enumerate}
+\item Locate your web server configuration file. This is is often 
+  a variant of ``/etc/httpd/conf/httpd.conf''. For Mandrake 10, check
+  ``/etc/httpd/conf/commonhttpd.conf'',
+  for Mac OS X it's ``/etc/httpd/httpd.conf''.
+\item After each change to the configuration, you will have to restart the
+ web server. This is often done via 
+``/etc/rc.d/initd/httpd restart''
+or
+``/usr/sbin/apachectl restart''.
+\item Create a new web directory for the archiver with a CGI
+   sub-directory. This is typically done under /var/www/html,
+   except for Mac OS~X, where you would use /Library/WebServer/Documents.
+   Check the ``DocumentRoot'' variable in your web server configuration file
+   for the correct location and adjust the following accordingly.
+\begin{lstlisting}[keywordstyle=\sffamily]
+mkdir /var/www/html/archive
+mkdir /var/www/html/archive/cgi
+\end{lstlisting}
+   Change the permissions of those directories to your liking.
+   Usually, ``everybody'' needs read and execution access, because
+   the web server will run CGI programs as a low-priviledged user. 
+   Our main interest here is the CGI''cgi'' subdirectory.
+   You can use the ``archive'' directory to store e.g.\ the dtd files
+   or web pages with user information that relate to the archive setup
+   at your site.
+\item Copy the ArchiveDataServer binary into the cgi directory as
+  ``ArchiveDataServer.cgi''.
+   In this example, both the ``cgi'' directory and the ``.cgi''
+   extension of ``ArchiveDataServer.cgi'' are important,
+   because they identify the binary as a CGI program.
+\item Assert that the web server can execute the ArchiveDataServer,
+   that it recognizes it as a CGI tool, by
+   adding the following to the Apache config file:
+\begin{lstlisting}[keywordstyle=\sffamily]
+# Check that environment variables are available,
+# assert that this directive is not commented-out.
+# Your web server might use a different module name
+# or location, in my case it happened to be this:
+LoadModule env_module  libexec/httpd/mod_env.so
+AddModule mod_env.c
+
+# Check that CGI is enabled, i.e. assert that
+# these are not commented-out:
+LoadModule cgi_module    libexec/httpd/mod_cgi.so
+AddModule mod_cgi.c
+
+# This tells Apache that ArchiveDataServer.cgi
+# is a CGI program because of the .cgi extension:
+AddHandler cgi-script .cgi
+
+<Directory /var/www/html/archive>
+   Order Allow,Deny
+   Allow from All
+</Directory>
+
+# Allow cgi-scripts in the ..../cgi directory:
+<Directory /var/www/html/archive/cgi>
+   SetEnv EPICS_TS_MIN_WEST 300
+   SetEnv LD_LIBRARY_PATH  /usr/local/lib:...
+   SetEnv SERVERCONFIG \
+    /var/www/html/archive/cgi/serverconfig.xml
+
+   # I also like to enable perl-CGI, but that is
+   # unrelated to the archiver
+   PerlHandler Apache::Registry
+   PerlSendHeader On
+
+   # This directive enables CGI for this dir.:
+   Options +ExecCGI
+</Directory>
+\end{lstlisting}
+  The LD\_LIBRARY\_PATH needs to list all the directories that
+  contain shared libraries which your ArchiveDataServer.cgi uses.
+  In most cases, this includes the
+  \begin{itemize}
+  \item install location of the expat and XML-RPC
+        libraries, often /usr/local/lib,
+  \item ``lib'' subdirectories of EPICS base and EPICS extensions,
+        something like /ade/epics/supTop/base/R3.14.6/lib/linux-x86:...
+  \end{itemize}
+  The SERVERCONFIG variable needs to point to your server configuration
+  file, more about which next. The ExecCGI option is essential to
+  allow CGI functionality. You can skip the Perl configuration for the
+  data server.
+\end{enumerate}
+
+\subsection{Configuration}  % ---------------------------------------------
+You need to prepare an XML-formatted configuration file for the
+ArchiveDataServer that follows the DTD from listing
+\ref{lst:serverconfigdtd} (see section \ref{sec:dtdfiles} on DTD file
+installation). Note that the ArchiveDataServer might not verify your
+configuration file, so you are strongly encouraged to use a tool like
+'xmllint' on Linux to check your configuration against the
+DTD. Listing \ref{lst:serverconfigex} shows one example 
+\INDEX{serverconfig.xml} which lists two archives to be served. Client
+programs will internally use the respective 'key' to access them.
+
+\lstinputlisting[float=htb,keywordstyle=\sffamily,caption={XML DTD for the Data Server Configuration},label=lst:serverconfigdtd]{../XMLRPCServer/serverconfig.dtd}
+\lstinputlisting[float=htb,keywordstyle=\sffamily,caption={Example Data Server Configuration},label=lst:serverconfigex]{../XMLRPCServer/serverconfig.xml}
+
+\subsection{Testing, Debugging}  % ---------------------------------------------
+Section \ref{sec:perlclient} describes a perl client to the network
+data server. It can be used to see if all the archives you listed
+in the configuration are actually accessible and so on.
+
+In case that client tool gets nothing but errors, debugging of the
+CGI ArchiveDataServer can be difficult, since one cannot easily
+peek into the running (or failing to run) program when it is
+launched by the web server.
+
+The XMLRPCServer directory contains some self-tests in test.sh,
+where the ArchiveDataServer is run without an actual web server.
+If test.sh works, your ArchiveDataServer program is fundamentally
+functional.
+
+If it doesn't work from within your web server, try changing
+your user ID to 'guest' or 'nobody', somebody similar to the user ID
+used by the web server when it runs your CGI tool. Set the
+LD\_LIBRARY\_PATH as you set it for the web server cgi directory,
+and try test.sh again.
+
+\noindent You can also try this to see more of the web server response:
+
+\begin{lstlisting}[keywordstyle=\sffamily]
+telnet my_web_server_host 80
+GET /archive/cgi/ArchiveDataServer.cgi HTTP/1.0<RETURN>
+<RETURN>
+\end{lstlisting}
+
+\noindent You should see an error message about ``XML-RPC Fault: Expected HTTP method POST'',
+indicating that the data server was launched correctly and
+was looking for a proper XML-RPC request.
+If you see only pages of binary-looking garbage, your web server
+doesn't recognize ArchiveDataServer.cgi as a CGI program,
+and instead of running it, you get a copy of it.
+
+\subsection{Standalone Data Server} % ---------------------------------------------
+The preferred deployment of the network data server is within a
+standard web server as described in the previous sections.
+For experiments, however, there is a way to use a version of the 
+data server which combines the simple ``Abyss''
+web server and the network data server into one standalone program.
+
+\noindent Advantages:
+\begin{itemize}
+\item Easier to configure than a standard web server. No
+  serverconfig.xml, no serverconfig.dtd, no CGI setup trouble. When running
+  ``ArchiveDataServerStandalone'', you will see right away if e.g.\ a
+  shared library is missing, while the ``ArchiveDataServer''
+  CGI-plugin to a web server would simply not run for reasons harder
+  to diagnose.
+\item Ordinary users beyond ``root'' or ``Administrator''
+  can run the standalone data server.
+\end{itemize}
+
+\noindent Disadvantages:
+\begin{itemize}
+\item The Abyss HTTPD still requires some configuration.
+\item Compared to e.g.\ the Apache web server, there is much less
+  control over who can access the data.
+\item Currently limited to serving a single archive per running
+  instance of the standalone data server.
+  The 'key' of that archive is fixed to '1' and  the 'name' to 'Archive'.
+  Under a standard web server, one can run more than one
+  ArchiveDataServer and configure each one to serve multiple archives
+  with selected key and name.
+\end{itemize}
+
+\subsection{Running ArchiveDataServerStandalone} % ---------------------------------------------
+After successful compilation in ChannelArchiver/XMLRPCServer, you will
+have a program ``ArchiveDataServerStandalone''.
+
+\begin{enumerate}
+\item For starters, you can test in the ``ChannelArchiver/DemoData''
+      directory, but typically you would copy all ``abys*'' files and
+      directories from there into the directory where you intend to
+      run the standalone data server.
+\item Edit ``abyss.conf'' to suit your needs. Most users might only
+      have to adjust the ``Port'' option, which defaults to 8080,
+      and the ``ServerRoot'' variable.
+\item Run the data server with the abys config file and the path of
+      the archive's index. When inside DemoData, this would be an example:
+\begin{lstlisting}[keywordstyle=\sffamily]
+> ArchiveDataServerStandalone abyss.conf index 
+ ArchiveDataServerStandalone Running
+ Unless your 'abyss.conf' selects
+ a different port number,
+ the data should now be available via the XML-RPC URL
+    http://localhost:8080/RPC2
+\end{lstlisting}
+\end{enumerate}
+
+\noindent The data is now accessible via XML-RPC by
+pointing the ArchiveDataClient.pl test tool or the Java
+ArchiveViewer to the URL
+\begin{lstlisting}[keywordstyle=\sffamily]
+     http://<hostname>:<port>/RPC2
+\end{lstlisting}
+\noindent Example:
+\begin{lstlisting}[keywordstyle=\sffamily]
+    http://localhost:8080/RPC2
+\end{lstlisting}
+

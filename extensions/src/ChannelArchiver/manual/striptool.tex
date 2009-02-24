@@ -1,0 +1,34 @@
+\section{StripTool}
+StripTool is primarily a Channel Access client for taking ``live''
+samples from CA servers and plotting them over time.
+For information on the current version, refer to the section on Host
+Software: Clients under
+\href{http://www.aps.anl.gov/epics}{http://www.aps.anl.gov/epics}.
+A ``History'' module allows StripTool to access
+data from a Channel Archiver network data server.
+
+\NOTE This history module is incomplete. At the time, the StripTool API
+did not provide means for a history data plug-in to create a configuration
+GUI. There was also no support for asynchronous data retrieval,
+meaning StripTool freezes while archive data is requested.
+Use of the history module is discouraged except for testing.
+
+\medskip
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=\textwidth}{striptool}
+\end{center}
+\caption{\label{fig:striptool}StripTool accessing live and archived data.}
+\end{figure}
+
+\noindent Fig.~ \ref{fig:striptool} shows an example of Striptool after running
+for about 20 minutes. It displays those 20 minutes of live data as
+well as data retrieved from an archive data server, both types of data
+clearly separated by a gap of about 20 minutes where the archive was
+no longer and StripTool not yet running.
+There will always be a small gap as a result of the ArchiveEngine's
+buffering between writes to the archive.
+
+For configuration details, refer to the file README\_XMLRPC which is
+part of the XML-RPC history module for StripTool.

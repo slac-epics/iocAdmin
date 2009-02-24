@@ -1,0 +1,382 @@
+\chapter{Changes}
+
+This chapter describes the version numbers and changes since
+the beginning of the R3.14 port.
+
+% Compare: make.cfg, ArchiveDaemon.pl $version
+\begin{itemize}
+
+\item 07/10/2006 --- Version 2.9:\\
+In short:
+\begin{itemize}
+\item Very neat index recovery tool written by Nobory Yamamoto.
+\item Minor bugfixes to ExampleSetup.
+\item Major refactoring of the ArchiveEngine code.
+\end{itemize}
+
+During restarts, ArchiveDaemon.pl waits for an engine that was stopped
+to remove its lock file before starting a new one.
+
+Visible changes to the ArchiveEngine:
+\begin{itemize}
+\item Engine HTTPD displays ``Idle Time'' on its main page.
+\item The ``disabling'' mechanism now works better right at the start,
+      while all the channels get connected in an unpredictable order.
+      Before, the engine would like to log all disabled channels as DISABLED,
+      but couldn't for those which were not yet connected,
+      resulting in the ``Cannot add event...'' warning and no indication
+      in the data as to why there is no data.
+\item ArchiveEngine uses about 2\%-4\% more CPU and memory.
+\end{itemize}
+
+Internally, the class layout has been reorganized,
+unit tests have been added, and everything was tested
+extensively, both with valgrind and purify,
+under R3.14.8.2, resolving some bugs in the CA client library.
+
+Why? The class layout looked OK from a distance;
+there was an Engine, Group, ArchiveChannel, SampleMechanism,
+the latter derived into SampleMechanismMonitor etc.
+But while the SampleMechanism was supposed to handle
+the scanning, the ArchiveChannel held the Circular buffer
+into which the samples are placed,
+and the Engine handled the ChannelAccess 'flush' required
+for a 'get'. So there were several messy interactions,
+which made it impossible to test and debug for example a SampleMechanism
+as a Unit outside of the complete Engine.
+
+In the rework, more classes were added 'below' the SampleMechanism:
+ProcessVariable, ProcessVariableFilter, ProcessVariableContext,
+and 'Listener' interfaces for these and the existing classes.
+This way, the ProcessVariable can be tested without the Engine,
+the sample mechanisms can be tested with test data,
+and the rather confusing code inside the sample mechanisms
+has mostly been replaced with a 'pipe' of ProcessVariableFilter
+classes, which again can be tested individually.
+
+Semaphores use an ``OrderedMutex'' wrapper which helps
+to detect deadlocks. It also slows the engine down, because
+each 'lock' and 'unlock' now locates the mutex with a linear
+search. Compared to the  engine's main impact of disk-I/O, that
+CPU load seemed neglegible, so this error checking feature
+is per default enabled.
+
+\NOTE When running under Fedora Core 2 (Linux kernel 2.6.5,
+gcc 3.3.3), the ArchiveEngine leaked memory whenever its HTTPD
+was accessed. The memory leak was visible in the ``top'' command,
+and in fact the engine would crash after some time with out-of-memory messages
+from pthread\_create.
+
+Interestingly, ``valgrind'' did not indicate a \INDEX{memory leak} on that
+same architecture. Furthermore, I could also not detect a memory leak on RedHat WS 4
+nor Mac OS X, so I assume this was a freak behavior for only Fedora 2,
+some combination of its compiler and runtime library. 
+
+Also switched to using Eclipse as the IDE.
+Doesn't nearly work as nicely for C++ as it does for Java,
+but still better than ``vi''.
+Basic setup notes (please ignore if you don't plan to work
+on the sources):
+\begin{itemize}
+\item Unpack ChannelArchiver sources as usual.
+\item Open Eclipse, use the directory ``extensions/src'' as a
+      workspace directory.
+\item Create a new Standard C++ Makefile Project, using
+      ``ChannelArchiver'' as the name. It will parse the existing
+      sources, but with a few indexer errors.
+\item In ``Project/Properties/C/C++ Include Path and Symbols'',
+      select ChannelArchiver, ``Add Include .. from Workspace'',
+      and add Tools, Storage, LibIO, XML-RPC, Engine.
+\end{itemize}
+
+\item 03/27/2006 --- Version 2.8.1:\\
+Fix: The nanosecond check could cause a crash when receiving
+CA callback for 'disconnected' values.
+
+\item 03/24/2006 --- Version 2.8.0:\\
+Possibly the most visible change is in the ExampleSetup.
+Before, the ``ArchiveDaemon'' would run engines and perform indexing.
+The indexing has been moved into a different collection of scripts,
+meant to run on a ``serving'' computer, while the ``sampling'' machine
+runs only daemons and engines.
+Check the ``Example Setup'' in chapter \ref{ch:examplesetup} for details.
+It is probably not fully done, but has been running at the SNS for
+about two weeks, recently collecing 4 to 5GB of data per day,
+and serving a total of about 900GB of data for 2005 and 2006.
+
+The code has been changed back to using C++ exceptions, as it did in
+the versions for EPICS base R3.13.
+
+In this conversion process, many unit-tests have been added
+and checked under valgrind.
+
+When compiled with R3.14.8, the more rigorous checking of time stamps
+in EPICS base would result in 'assert'-aborts when the
+nanosecond-portion of time stamps was not normalized.
+This happened quite often at the SNS because of ongoing timing system driver
+development and last not least a bug in the Java data viewer.
+Guards have been added to the archiver code to hopefully avoid all
+such aborts.
+The Engine will ignore samples with problematic nanoseconds,
+while the retrieval tools will replace those nanoseconds with 0.
+
+The retrieval code used by ArchiveExport and the ArchiveDataServer can
+now follow several soft links. So if /a/link is a soft link to /b/link
+which in turn points to /c/index which refers to data in
+``20060110'', the tools will now use the data from 
+``/c/20060110'' and not ``/a/20060110''.
+
+Some of the messages logged by the engine are now throttled
+to reduce the log file size.
+
+\item 12/13/2005 --- Version 2.7.0:\\
+Error reporting: When a command-line tool failed,
+one could see a rather specific error message
+like "Cannot open DataFile 20040323".
+It also ended up in the log file of the network
+data server, but was not reported well via
+the XML-RPC protocol.
+
+Now an XML-RPC fault with the more specific error
+message is returned when an index or data file
+access fails.
+A request for a channel that is not found at all is now
+also considered an error by the network data server.
+When there is simply no data for the requested time,
+the meta information is returned without any
+actual samples, as before.
+
+\item 10/31/2005 --- Version 2.6.0:\\
+The toolset now compiles and runs on a 64~bit Linux system,
+specifically RedHat Enterprise Linux~WS release~4
+with gcc~3.4.4.
+
+The goal here was to keep binary compatibility,
+so that index and data files can be moved from
+32~bit computers to 64~bit machines and back.
+This means that the 32~bit limititations on
+file sizes still apply, even when running
+on a 64~bit computer.
+
+Several new self-tests were added to check
+the following on the 64~bit system as well
+as 32~bit Linux and Mac OS~X 10.3:
+\begin{itemize}
+\item All compiles with the 64~bit compiler, no warnings on the test system.
+\item 'Tools' library self-test passes.
+\item 'Storage' library self-test passes.
+\item ArchiveExport can dump demo data,
+      matching results on all architectures.
+\item ArchiveDataTool can copy demo data,
+      matching results on all architectures.
+\item DataServer runs from within shell script
+      that simulates a CGI environment.
+\item ArchiveEngine runs, HTTPD responds,
+      collected data passes simple tests.
+\end{itemize}
+
+\item 09/21/2005 --- Version 2.5.0:\\
+New engine URL
+\begin{verbatim}
+.... castatus?/tmp/x
+\end{verbatim}
+will cause the engine to dump the ca\_client\_status() output
+into the given file the next time it writes to the disk.
+
+\item 08/29/2005 --- Version 2.4.0:\\
+LinearReader rounds start time,
+because otherwise a request for multiple channels,
+all using linear interpolation, could loose
+lockstep, and when the result is put in a spreadsheet
+form, there are many more lines than expected
+from the per-channel view of the data,
+which confused the data viewer.
+
+XML-RPC, being XML, sends all numbers as strings.
+Unfortunately, XML-RPC also insists in the simple 'dot'
+notation and prohibits exponential notation.
+A number like 1e-300 would turn into
+"0.0000000..." with 300 zeroes,
+which is too long for the internal print buffer of
+the xml-rpc C library.
+Since such huge and tiny numbers can't be transferred,
+they are replaced by 0 with stat/sevr UDF/INVALID.
+
+The cut-off point is somewhat arbitrary.
+The XML-RPC library uses an internal print buffer
+of about 120 characters.
+Since PVs are usually scaled to be human-readable,
+with only vacuum readings using exp. notation for
+data like "1e-8 Torr", exponents of +-50 seemed
+reasonable.
+
+\item 07/18/2005 --- Version 2.3.0:\\
+Added ArchiveDataServerStandalone.
+
+\item 05/31/2005 --- Version 2.2.1:\\
+At the SNS with EPICS R3.14.7, there is an instance of an engine crashing in
+ipAddrToAsciiEnginePrivate.cpp in the transactionComplete callback while
+pCurrent was 0, which shouldn't happen:
+\begin{verbatim}
+if (!this->pCurrent)
+    continue;
+{
+    epicsGuardRelease < epicsMutex > unguard ( guard );
+     this->pCurrent->pCB->transactionComplete ( this->nameTmp );
+}
+\end{verbatim}
+
+In the process of debugging it, an uninitialized use of the HTTPD run duration
+variable and a scanlist memory leak on exit have been found by 'valgrind'.
+None of this should matter in the real world, but I prefer as little valgrind
+complaints as possible. Remaining memory leaks on exit are in the EPICS base
+code.
+
+\item 03/31/2005 --- Version 2.2.0:\\
+Added a "Write Duration" status to the main
+page of the Engine HTTPD.
+It is a running average of the time spent
+writing to the disk.
+ExampleSetup includes a new script,
+"engine\_write\_durations.pl",
+which queries all engines for their write duration.
+The intent is to get an idea of how much time
+is spent doing disk I/O, and to get a grasp on
+which engine is doing worst.
+
+\item 03/21/2005 --- Version 2.1.9:\\
+The ArchiveDaemon.pl script now creates a soft-link
+"current\_index" in the engine subdirectories,
+pointing to the currently used index.
+The idea is to have a common name for the active index
+in case the multi-index is broken or only updated
+slowly.
+
+The next issue was that the relation of an index
+to its data files must not change.
+If an index is in the same directory as its data files,
+OK, but this soft link was actually in a different location,
+so in order to still find the data files, the retrieval
+now follows sym-links to index files on level deep
+(not following arbitrary chains of soft links).
+
+\item 02/01/2005 --- Version 2.1.8:\\
+At the SNS, one ArchiveEngine running a configuration with
+'disabling' channels tended to hang up just after a channel
+'disabled' a group.
+While I was never able to capture this in the debugger or
+otherwise reproduce it, I did find a violation of the lock
+order in the code related to 'disabling' a group, so this
+might have been the reason.
+
+\item 10/26/2004 --- Version 2.1.7:\\
+In monitored mode, engine will always try to add two initial
+samples: One with the original time stamp, one with the host
+time stamp. This solves the restart problem:
+
+Assume a setpoint PV is 3 days old. When we start an engine today,
+it'll write that 3-day old value. When we then stop and restart tomorrow
+in a new directory, a "Disconnected" value will be added before shutdown
+and then the same happens in the new directory.
+When now looking at both days, you would get the 3-day old value,
+a disconnect/off value and nothing else.
+
+With this update, you will see one value with the host's time stamp
+each day in addition to the original time stamp, so even when viewed
+via a master-index, one sample per day should be visible.
+
+ArchiveDaemon.pl no longer complains about an undefined "opt\_i",
+thanks to Paul Sichta for pointing this out.
+
+\item 09/07/2004 --- Version 2.1.6:\\
+Added Enable/Disable code to ArchiveDaemon.
+``ListIndex'' bug fixes (sub-index was
+closed even though we're still accessing channels in the index).
+
+\item 08/26/2004 --- Version 2.1.5:\\
+Fixed bug in the engine code: PVs which never change
+were never written when sampling with period < get\_threshold.
+
+Working on a ``ListIndex'', allowing the retrieval
+tools to use an indexconfig.dtd-type list of
+sub-archives, querying them one by one.
+The result is slower than using a ``real'' index,
+but much easier to setup and maintain.
+
+\item 07/26/2004 --- Version 2.1.4:\\
+Bug in DataReader that affected all the retrieval code:
+The ``find'' uses the start time in an at-or-before sense,
+which is intentional for direct calls to find().
+This happened, too, when it was used internally for the purpose
+of switching to a new data block ref'ed by a (master) index.
+In that case, however, the start time given by the index must
+be observed in an at-or-after sense, otherwise we can go
+back in time.
+
+Added the weekly option to the ArchiveDaemon.
+Not detailed in manual until we get some milage on it.
+
+\item 07/23/2004 --- Version 2.1.3:\\
+Index update had a flaw:
+When an engine stops, that last value received via CA
+might have a time stamp of 10:00 and then we stop
+at 11:00, so the last stored value is the ``off'' value
+at 11:00.
+When now a new engine starts, the first data is still
+10:00, and that data is hidden under the last data block
+of the previous engine (...11:00).
+When then the new engine added more data, eventually
+beyond 11:00, that new data stayed hidden unless
+one rebuilt the master index from scratch.
+Hopefully fixed this.
+
+\item 06/30/2004 --- Version 2.1.2:\\
+Added tags and channel names to the Data files,
+so that in the future one could try to write
+a rescue tool.
+Patch for XML-RPC C/C++ lib.\ allows small numbers.
+DataTools' ``index2dir'' option now actually works.
+Matlab/Octave glue code can handle an array channel
+(when requesting a single channel, raw data).
+ArchiveDaemon generates indexupdate.xml for each re-index run;
+``-u'' option.
+
+When retrieval uses a "master" index and reaches
+its end, it will try to continue by following
+links of the last data block in the sub-archive.
+This will allow us to get closer to "now" between
+updates of the master index.
+The first attempt to implement this failed because
+of errors in the handling of the path names
+(master index has path to data files, but when
+we follow the links inside the sub-archive's data
+file, those are relative to where the sub-archive resides).
+Still not fully tested.
+
+\item 04/01/2004 --- Version 2.1.1:\\
+Many little updates have been checked into CVS
+while the tools reported "2.1.1".
+In the end, the engine supported sampling, monitoring
+and sampling-based-on-monitors, and ran without known problems
+under valgrind.
+The XML-RPC Data Server seemed to work fine, supporting
+raw data, plot-binning, spreadsheets, averaged and linear interpolation.
+Java Archive client is useable.
+Switched index file to CAI2, where the name hash includes a filename
+for the RTree. For now it's left empty, but the file format now
+allows for a further extension where certain RTrees are in separate
+files as soon as the index file gets too big.
+
+\item 01/27/2004 --- Version 2.1.0:\\
+Uses new RTree, initial XML-RPC Data Server, XML configuration files.
+
+\item 09/05/2003 --- Version 2.0.1:\\
+Some bug fixes:
+The  "scanned"  operation didn't work, and when all was monitored,
+the  empty  scan lists lead to a high CPU load. Still not perfect,
+the  ChannelInfo  code  should  be  split  into  really monitored,
+scanned using CA monitor and scanned using CA get.
+
+\item 04/04/2003 --- Version 2.0:\\
+Starting to work on R3.14 port.
+\end{itemize}

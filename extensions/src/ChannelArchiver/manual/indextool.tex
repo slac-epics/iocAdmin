@@ -1,0 +1,112 @@
+\section{Index Tool} \label{sec:indextool}
+The \INDEX{ArchiveIndexTool} is used to create \INDEX{Master Indices}
+by combining multiple indices into a new one.  When invoked without
+valid arguments, it will display a command description similar to
+this:
+
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+USAGE: ArchiveIndexTool [Options] <archive list file> \
+                                         <output index> 
+Options:
+  -help             Show Help
+  -M <3-100>        RTree M value
+  -verbose <level>  Show more info
+\end{lstlisting}
+
+\noindent The archive list file lists all the sub archives,
+that is the paths to each sub-archive's index file. It needs to be an
+XML file conforming to the DTD in listing \ref{lst:indexconfigdtd}
+(see section \ref{sec:dtdfiles} on DTD file installation).
+Listing \ref{lst:indexconfigex} provides an example.
+
+\lstinputlisting[float=htb,keywordstyle=\sffamily,caption={XML DTD for
+    the Archive Index Tool Configuration},label=lst:indexconfigdtd]{../IndexTool/indexconfig.dtd}
+
+\lstinputlisting[float=htb,keywordstyle=\sffamily,caption={Example
+    Archive Index Tool Configuration},label=lst:indexconfigex]{../IndexTool/indexconfig.xml}
+
+We refer to chapter \ref{ch:examplesetup} for an example of how to use
+the ArchiveIndexTool in collaboration with the other Channel Archiver
+tools.
+
+\subsection{make\_indexconfig.pl} \label{sec:makeindexconfig}
+As an aid to creating configuration files for the ArchiveIndexTool,
+you can use the perl script ``make\_indexconfig.pl'' that converts a
+list of index files into the appropriately formatted XML:
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+
+USAGE: make_indexconfig [-d DTD] index { index }
+ 
+This tool generates a configuration for the
+ArchiveIndexTool based on a DTD and a list
+of index files provided via the command line.
+\end{lstlisting}
+
+\subsection{Internals}
+The Index Tool allows creation of a master index
+that covers more than one sub archive. For example, we can create
+configuration files for the index tool to combine several vacuum
+sub-archives into one, then do the same for cooling data:
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+cd /data/vacuum
+make_indexconfig.pl 2004/02_19/index 2004/02_20/index \
+     >indexconfig.xml
+cd /data/cooling
+make_indexconfig.pl 2004/02_19/index 2004/02_20/index  \
+     > indexconfig.xml
+\end{lstlisting}
+
+\noindent After running ArchiveIndexTool in /data/vacuum and /data/cooling,
+we will have two new indices. One refers to all the vacuum data, the
+other to all the cooling data:
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+/data/vacuum/index
+/data/cooling/index
+\end{lstlisting}
+\noindent Note that these are only index files. There are no new data
+files because the new ``master'' index files will point to data blocks
+in the existing data files, e.g. the one under /data/vacuum/2004/02\_19. 
+It is also important to remember that the master index files include the
+paths to the data files as instructed in the indexconfig.xml files.
+According to the previous example,  
+/data/vacuum/index was created from
+/data/vacuum/indexconfig.xml which included the relative path
+``2004/02\_19/index''. The vacuum master index will therefore point to
+data files with a relative path like ``2004/02\_19/20040219''.
+Whenever we use ``/data/vacuum/index'', the retrieval tools will prepend
+the path to the index, ``/data/vacuum'', to the relative data 
+file path found in the index, for example ``2004/02\_19/20040219'', and thus
+find the data under its full path of
+ e.g.\ ``/data/vacuum/2004/02\_19/20040219''.
+We cannot move ``/data/vacuum/index'' to another location like
+``/tmp/index''. The retrieval tools would then try to access
+``/tmp/2004/02\_19/20040219'' and fail.
+
+Having said that, it \emph{is} possible to generate master indices
+that use the full, absolute paths to their data files by simply listing
+the full paths to the sub-archives in indexconfig.xml. This is,
+however, not recommended because it will increase the size of the
+index files simply because the full path names are longer than the
+relative paths. For the same reason it is advisable to use short path
+names: When an index file points to many data blocks in many data
+files, it makes quite some difference if you used a short-named
+directory tree with paths like ``/data/vac/...'' as opposed to
+``/user/data/channel-archiver/data/subsystems/vacuum-system/...''.
+
+As a second step, we can further combine the master indices for vacuum
+and cooling data into one index that covers all out data. By creating
+``/data/indexconfig.xml'' in which we list ``vacuum/index'' and
+``cooling/index'', and running the ArchiveIndexTool in
+``/data'', we create ``/data/index'' which points to all our data.
+Alternatively, we could have skipped the intermediate indices for
+vacuum and cooling and created ``/data/indexconfig.xml'' from the
+beginning like this:
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+cd data
+make_indexconfig.pl */2004/*/index  \
+                    >indexconfig.xml
+ArchiveIndexTool -v1 indexconfig index
+\end{lstlisting}
+
+\noindent In any case we end up with ``/data/index'' as an index for
+all our vacuum and cooling data.

@@ -1,0 +1,30 @@
+#
+# CONFIG
+#
+#  All EPICS options other than BUILD_TYPE
+#   may be overridden here.
+#
+# EXAMPLES
+# --------
+#  Build client objects statically ?  must be either YES or NO
+#STATIC_BUILD=NO
+#  Unix Optimization,   must be either YES or NO
+#UNIX_OPT=YES
+#  VxWorks Optimization,  must be either YES or NO
+#VX_OPT=YES
+#  Generate Verbose Compiler Warnings for Unix,  must be either YES or NO
+#UNIX_WARN=YES
+#  Generate Verbose Compiler Warnings for VxWorks,  must be either YES or NO
+#VX_WARN=YES
+#etc.
+#
+
+#ifneq ($(HOST_ARCH),WIN32)
+#INSTALL_PRODUCT=$(EPICS_EXTENSIONS)/bin/$(HOST_ARCH)/installVersionNoLink.pl
+##INSTALL_PRODUCT=$(EPICS_EXTENSIONS)/bin/$(HOST_ARCH)/installVersion.pl
+#INSTALL_LIBRARY=$(EPICS_EXTENSIONS)/bin/$(HOST_ARCH)/installVersion.pl
+#endif
+
+#CROSS_COMPILER_TARGET_ARCHS = 
+#SHARED_LIBRARIES = YES
+

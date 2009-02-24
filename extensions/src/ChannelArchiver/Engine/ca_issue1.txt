@@ -1,0 +1,71 @@
+Hi Jeff:
+
+I recompiled without optimization,
+added a memset(.., 0, ...) to the new() operators that
+allocate tcpiiu and ipAddrToAsciiTransactionPrivate on
+freelists to better see what gets initialized and what's
+left behind from previous uses of that same memory.
+I also added simple "debug_marker" members to hostNameCache
+and ipAddrToAsciiTransactionPrivate,
+setting it to 1 in the constructor, then to 2, 3, ... in various parts of
+the code. Example:
+
+hostNameCache::hostNameCache (
+    const osiSockAddr & addr, ipAddrToAsciiEngine & engine ) :
+    dnsTransaction ( engine.createTransaction() ), nameLength ( 0 )
+{
+    this->debug_marker = 1;
+    this->dnsTransaction.ipAddrToAscii ( addr, *this );
+    this->debug_marker = 2;
+}
+
+
+I ran into the same error:
+One thread, running ipAddrToAsciiEnginePrivate, is in gethostbyaddr,
+another other crashes in the tcpiiu() constructor:
+
+#0  0x0000000000000000 in ?? ()
+#1  0x0000002a965bd03b in hostNameCache::hostNameCache () at
+../msgForMultiplyDefinedPV.cpp:43
+#2  0x0000002a965a4b5a in tcpiiu (this=0x656610, cac=@0x56b2c0,
+mutexIn=@0x56b038, cbMutexIn=@0x56b040,
+    ctxNotifyIn=@0x56af70, connectionTimeout=30, timerQueue=@0x56c210,
+addrIn=@0x40103d10, comBufMemMgrIn=@0x56b4b8,
+    minorVersion=11, engineIn=@0x56b740, priorityIn=@0x40103c0c) at
+../tcpiiu.cpp:699
+#3  0x0000002a9658a097 in cac::transferChanToVirtCircuit (this=0x56b2c0,
+cid=2202298, sid=4294967295, typeCode=65535,
+    count=0, minorVersionNumber=11, addr=@0x40103d10, currentTime=@0x40103f50)
+at ../cac.cpp:524
+#4  0x0000002a965a10ef in udpiiu::searchRespAction (this=0x72bbc0,
+msg=@0x72bff0, addr=@0x40103fa0,
+    currentTime=@0x40103f50) at ../udpiiu.cpp:665
+#5  0x0000002a965a1541 in udpiiu::postMsg (this=0x72bbc0,
+net_addr=@0x40103fa0, pInBuf=0x72bff0 "\006", blockSize=96,
+    currentTime=@0x40103f50) at ../udpiiu.cpp:832
+#6  0x0000002a965a0b42 in udpRecvThread::run (this=0x73bff0) at
+../udpiiu.cpp:380
+
+The tcpiiu constructor doesn't get beyond the hostNameCacheInstance initialization,
+all the rest is 0.
+So it's in the hostNameCache constructor.
+Unclear why the debugger claims that's in msgForMultiplyDefinedPV.cpp:43.
+So something is clearly wrong.
+
+From the "debug_marker" I can tell that the
+dnsTransaction points to a ipAddrToAsciiTransactionPrivate
+for which the constructor has finished.
+The hostNameCache constructor is about to invoke
+   dnsTransaction.ipAddrToAscii()
+but never gets there.
+
+It's as if the vtbl for that ipAddrToAsciiTransactionPrivate
+is messed up.
+
+
+Changed the new/delete of ipAddrToAsciiTransactionPrivate to
+use malloc/free instead of the free list, and have not seen
+another crash since.
+
+
+

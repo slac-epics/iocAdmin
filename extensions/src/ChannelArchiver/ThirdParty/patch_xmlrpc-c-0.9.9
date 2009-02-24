@@ -1,0 +1,79 @@
+*** xmlrpc-c-0.9.9/src/Makefile	Wed Apr  7 17:41:58 2004
+--- patched/src/Makefile	Wed Apr  7 17:33:21 2004
+***************
+*** 198,202 ****
+  DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I..
+  CPPFLAGS = 
+! LDFLAGS = 
+  LIBS = 
+  libxmlrpc_cpp_a_LIBADD = 
+--- 198,202 ----
+  DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I..
+  CPPFLAGS = 
+! LDFLAGS = -lm
+  LIBS = 
+  libxmlrpc_cpp_a_LIBADD = 
+*** xmlrpc-c-0.9.9/src/XmlRpcCpp.h	Sun Mar 25 16:20:26 2001
+--- patched/src/XmlRpcCpp.h	Wed Apr  7 17:28:48 2004
+***************
+*** 47,51 ****
+  // Right Thing on most platforms.
+  #include <string>
+! // using namespace std;
+  
+  #include <xmlrpc.h>
+--- 47,51 ----
+  // Right Thing on most platforms.
+  #include <string>
+! using namespace std;
+  
+  #include <xmlrpc.h>
+*** xmlrpc-c-0.9.9/src/xmlrpc_serialize.c	Tue Mar 20 10:26:41 2001
+--- patched/src/xmlrpc_serialize.c	Wed Apr  7 17:29:18 2004
+***************
+*** 34,37 ****
+--- 34,38 ----
+  #include <stdio.h>
+  #include <string.h>
++ #include <math.h>
+  
+  #define  XMLRPC_WANT_INTERNAL_DECLARATIONS
+***************
+*** 346,352 ****
+--- 347,367 ----
+  
+  	case XMLRPC_TYPE_DOUBLE:
++ #ifdef ORIG
+  	    /* We must output a number of the form [+-]?\d*.\d*.
+  	    ** XXX - I think that '%f' should do roughly the right thing. */
+  	    format_out(env, output, "<double>%f</double>", value->_value.d);
++ #else
++         {
++             double d = value->_value.d;
++             int prec;
++             if (d < -0.000001  &&  d > 0.000001) 
++                 format_out(env, output, "<double>%.6f</double>", d);
++             else
++             {
++                 prec = -log10(fabs(d));
++                 format_out(env, output, "<double>%.*f</double>\n", prec+5, d);
++             }
++         }
++ #endif
+  	    XMLRPC_FAIL_IF_FAULT(env);
+  	    break;
+*** xmlrpc-c-0.9.9/examples/Makefile	Wed Apr  7 17:41:58 2004
+--- patched/examples/Makefile	Wed Apr  7 17:38:08 2004
+***************
+*** 158,162 ****
+  DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I..
+  CPPFLAGS = 
+! LDFLAGS = 
+  LIBS = 
+  synch_client_OBJECTS =  synch_client.o
+--- 158,162 ----
+  DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I..
+  CPPFLAGS = 
+! LDFLAGS = -lm
+  LIBS = 
+  synch_client_OBJECTS =  synch_client.o

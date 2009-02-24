@@ -1,0 +1,171 @@
+Last Modified: 08/01/2005 (saa)
+
+Introduction
+------------
+The extensions area contains CA clients, CA servers, and tools that support
+CA programs running on EPICS host nodes.  These packages are 
+either downloaded from other sites or developed here for LCLS.  The extensions
+area is not intended for EPICS IOC unbundled packages or applications which 
+are kept in the "site" and "ioc" directories parallel to extensions.
+
+Before working in the extensions area, set the following environment variables:
+
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    setenv EPICS_HOST_ARCH <arch>
+
+Also, email dayle@slac.stanford.edu if you are not in the AFS g-lcls ACL:
+
+    pts membership g-lcls
+
+
+Adding an Extension
+-------------------
+
+(1) Unpack the extension, cd to its topmost directory, remove any existing 
+    CVS and install directories delivered with the package, and import as-is
+    (make NO changes before the initial import!):
+
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    cd <unpacked package area w/o CVS or install directories>
+    cvs import -d epics/extensions/src/<package> <vendor_tag> <release_tag>
+
+    Set <package> to the package name WITHOUT version number. 
+    Set <vendor_tag> to the name of the extension in all uppercase.
+    Set <release_tag> the the name of the extension cocatenated with the
+    version number.  For example, to import EDM version 1-10-1zc:
+
+    cvs import -d epics/extensions/src/edm  EDM  EDM-1-10-1ZC
+
+    When importing the next version of EDM, the same vendor tag ("EDM") is 
+    used but the release tag changes (ie, "EDM-1-10-1ZD").  
+
+(2) Checkout the package in the reference area:
+
+    cd /afs/slac/g/lcls
+    cvs checkout -P epics/extensions/src/<package>
+
+(3) It is intended that all extensions use the same installation areas 
+    (extensions/bin, extensions/lib, extensions/include, extensions/javalib).  
+    If epics/extensions/src/<package>/configure/RELEASE exists, change it
+    to add the following line:
+
+    INSTALL_LOCATION_APP=$(TOP)/../..
+
+(4) If necessary, update and commit epics/extensions/src/Makefile to include 
+    the new package.
+
+
+Building an Extension
+---------------------
+
+To build an extension on Linux:
+ 
+    setenv HOST_ARCH       Linux       // for 3.13-style Makefiles
+    setenv EPICS_HOST_ARCH linux-x86   // for 3.14-style Makefiles
+    cd /afs/slac/g/lcls/epics/extensions/src/<package>
+    gmake clean (only if dependencies don't work correctly)
+    gmake
+
+To build an extension on the Mac:
+
+    TBD
+
+Modifying a Package
+-------------------
+To modify a package:
+
+(1) First discuss with EPICS collaborators.
+
+(2) Check it out in a personal area and build:
+
+    cd <personal_area>
+    cvs checkout -P epics/extensions/config    // for 3.13-style Makefiles
+    cvs checkout -P epics/extensions/configure // for 3.14-style Makefiles
+    cvs checkout -P epics/extensions/src/<package>
+    gmake
+
+(3) Commit/Release after changes are made and testing finished:
+
+    cd <personal_area>/epics/extensions/src/<package>
+    gmake clean
+    cvs commit
+    cd <personal_area>
+    cvs release epics/extensions/src/<package>
+    cvs release epics/extensions/config or configure
+
+(4) Update the reference area:
+
+    cd /afs/slac/g/lcls/epics/extensions/src/<package>
+    cvs update -P
+    gmake clean (only if dependencies don't work correctly)
+    gmake
+
+(5) Work with EPICS collaborators to get changes into the main distribution.
+
+
+Add Config Files, Env Vars, Executable Scripts, and Web Help for LCLS
+---------------------------------------------------------------------
+Many extensions require that site-unique configuration files and startup
+scripts be developed outside the site-independent package.  Also, many
+extensions use environment variables which must be set up for LCLS.
+
+(1) Add or change environment variables used by the extension:
+
+    If the extension uses just a few environment variables, add
+    them to the general epicsSetup files.
+
+    cd /afs/slac/g/lcls/epics/config
+    Change epicsSetup.bash and epicsSetup.csh files
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    cvs commit
+
+    If the extension uses many environment variables, create a separate
+    setup.bash and setup.csh in the config directory as described in the
+    next step.  Add the source of this setup file to the general
+    epicsSetup files as described above.
+
+    If the extension has just a few config or input files, add them to
+    the general epics/config area:
+
+    cd /afs/slac/g/lcls/epics/config
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    cvs add <config_files>
+    cvs commit
+
+(2) Add optional environment setup, standalone startup, and other 
+    config/input files:
+
+    For extensions with more complicated configuration needs,
+    create /afs/slac/g/lcls/tools/<package>/config directory.
+    Populate with files as needed.  Add a README file. 
+    The config directory normally contains a startup script for 
+    standalone programs.  It should also
+    contain the script that is run during EPICS host bootup.
+
+    cd /afs/slac/g/lcls/tools/<package>
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    cvs import -d tools/<package> <vendor_tag> <release_tag>
+
+    To change config files:
+
+    cd /afs/slac/g/lcls/tools/<package>
+    Make changes.
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    cvs commit
+
+(3) Add executable scripts for running the extension:
+
+    Add the scripts to /afs/slac/g/lcls/tools/script using the conventions
+    described in the README file of that directory.  This directory is
+    included in PATH when an epicsSetup file is sourced.
+
+    cd /afs/slac/g/lcls/tools/script
+    setenv CVSROOT /afs/slac/g/lcls/cvs
+    cvs add <executable_scripts>
+    cvs commit
+
+(4) Add usage and administration instructions to the LCLS controls web pages.
+    TBD
+
+
+

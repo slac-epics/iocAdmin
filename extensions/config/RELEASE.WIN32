@@ -1,0 +1,9 @@
+#RELEASE Location of external products
+#
+
+# R3.13 releases
+#EPICS_BASE=G:/epics/base_R3_13_1_branch
+
+# R3.14 releases
+#EPICS_BASE=G:/epics/base
+

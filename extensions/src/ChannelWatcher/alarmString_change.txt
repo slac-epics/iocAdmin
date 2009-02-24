@@ -1,0 +1,22 @@
+43,45d42
+< #ifdef __cplusplus
+< extern "C" {
+< #endif
+47c44
+< static const char *alarmStringhSccsId = "$Id: alarmString_change.txt,v 1.1.1.1 2002/05/15 23:09:56 luchini Exp $";
+---
+> static char *alarmStringhSccsId = "$Id: alarmString_change.txt,v 1.1.1.1 2002/05/15 23:09:56 luchini Exp $";
+49c46
+< const char * alarmSeverityString[]={
+---
+> char * alarmSeverityString[]={
+60c57
+< const char * alarmStatusString[]={
+---
+> char * alarmStatusString[]={
+84,85d80
+< #ifdef __cplusplus
+< }
+87,88d81
+< 
+< #endif

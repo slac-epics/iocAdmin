@@ -1,0 +1,18 @@
+# ORNL Xmtr test data, March 2004:
+# 6164 channels, 248261 datablocks,
+# a total of 635~MB in 27 data files.
+#
+# Built master index from 27 sub-indices,
+# each sub-index uses M=10, total 48MB.
+# Also: used sub-indices with M=50, total 165 MB.
+#   M, time(min), size (100000 bytes) for M=10 subs, time for M=50 subs
+    3 1.63  24.141436 4.05
+    5 1.30  21.069724 3.86
+   10 2.32  18.928151 3.96
+   15 1.25  19.951763 3.71
+   20 1.28  19.588717 2.8
+   30 1.30  19.638634 2.6
+   50 1.55  18.351877 2.8
+   70 1.90  20.484529 3.18
+  100 2.31  23.780466 3.56
+

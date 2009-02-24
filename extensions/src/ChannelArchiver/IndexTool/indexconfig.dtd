@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD for the ArchiveIndexTool Configuration  -->
+<!-- Lists all the indices of archives that      -->
+<!-- should be combined into the master index.   -->
+<!ELEMENT indexconfig (archive*)>
+<!ELEMENT archive (index)>
+<!ELEMENT index (#PCDATA)><!-- path -->
+

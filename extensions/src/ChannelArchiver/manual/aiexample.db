@@ -1,0 +1,15 @@
+record(ai, "aiExample")
+{
+    field(SCAN, ".1 second")
+    field(ADEL, "0.1")
+    field(EGU,  "Volts")
+    field(PREC, "2")
+    field(HOPR, "4095")
+    field(LOPR, "0")
+    field(HIHI, "10")
+    field(HIGH, "9")
+    field(LOW,  "1")
+    field(LOLO, "0")
+    field(HHSV, "MAJOR")
+    field(HSV,  "MINOR")
+}

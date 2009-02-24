@@ -1,0 +1,26 @@
+Status: 200 OK
+Content-length: 685
+
+<?xml version="1.0" encoding="UTF-8"?>
+<methodResponse>
+<params>
+<param><value><array><data>
+<value><struct>
+<member><name>key</name>
+<value><i4>1</i4></value></member>
+<member><name>name</name>
+<value><string>Demo</string></value></member>
+<member><name>path</name>
+<value><string>../DemoData/index</string></value></member>
+</struct></value>
+<value><struct>
+<member><name>key</name>
+<value><i4>2</i4></value></member>
+<member><name>name</name>
+<value><string>RF-LLRF</string></value></member>
+<member><name>path</name>
+<value><string>/home/data/llrf/index</string></value></member>
+</struct></value>
+</data></array></value></param>
+</params>
+</methodResponse>

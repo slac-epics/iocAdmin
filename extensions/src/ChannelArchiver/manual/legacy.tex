@@ -1,0 +1,101 @@
+\chapter{Legacy}
+The main difference between the current version of the Channel Archiver toolset
+and previous versions are:
+\begin{itemize}
+\item EPICS Base: Current toolset requires R3.14.4 or later.
+\item Index: Current toolset uses index files, previous toolset
+      used Directory files.
+\item Configurations: All configuration files are based on XML,
+      while they used to be generic ASCII files.
+\end{itemize}
+
+\section{Directory Files}
+In case you have existing archives based on Directory files,
+you can use the ArchiveDataTool to create an index file for each existing directory file
+and that way migrate to the new toolset.
+The ArchiveDataTool can also create Directory files from index files, in case you
+need to use an older tool to investigate data in new archives.
+
+\section{\INDEX{ArchiveManager}}
+The ArchiveManager command line tool for managing archives that use the
+older Directory files is still available.
+It does \emph{not} work with the new index files.
+After migrating the data to the new index format,
+ArchiveDataTool replaces the ArchiverManager. You can use the ArchiveDataTool
+to create index files for existing directory files.
+
+\section{\INDEX{CAManager}, \INDEX{CAbgManager}}
+The ArchiveDaemon offers the basic functionality of the CAbgManager:
+It monitors, starts and restarts ArchiveEngines and offers a web page
+for status information.
+There is no graphical configuration tool comparable to the CAManager,
+you have to create the XML configuration file for the ArchiveDaemon
+by hand.
+
+\section{Archive Engine ASCII Configurations} \label{sec:ASCIIConfig}
+The ChannelArchiver/Engine directory contains \INDEX{ConvertEngineConfig.pl},
+a perl script that attempts to convert old-style \INDEX{ASCII configuration}
+files for the previous ArchiveEngine into the new XML files:
+\begin{lstlisting}[keywordstyle=\sffamily]
+USAGE:
+ConvertEngineConfig [options] ASCII-config {ASCII-config}
+ 
+Options:
+  -d <DTD>       :  Specify DTD
+  -o <filename>  :  Set output file name
+ 
+This tool reads the ASCII configuration file
+for an Engine and converts it into the XML
+config file.
+ 
+One can use either one ASCII config file
+(with !group entries) or supply a list of
+ASCII files, where each one will then define
+a group.
+\end{lstlisting}
+
+\noindent Some sites might actually prefer to use the ASCII
+configuration files and convert them to the XML format with this tool,
+so here is a brief description of the ASCII format.
+
+Each ASCII file defines a group of channels.
+\begin{itemize}
+\item ``\# Comment''\\
+  Lines that start with '\#' are ignored. As are empty lines.
+\item ``!write\_period $<$seconds$>$''\\
+  Configures the write\_period parameter. Most of the global engine
+  parameters described in section \ref{sec:engineconfig} are allowed
+  via the format ``!$<$parameter$>$ $<$value$>$''.
+
+  Note that these are global engine parameters. The XML format makes
+  this fact somewhat obvious by listing them once in the header of the
+  configuration. In the ASCII format, you can specify them on any line
+  in any configuration file that is loaded by the engine. The
+  effective value that will be used by the engine for all channels is
+  the value found last, i.e. subsequent ``!...''  parameters replace
+  previous definitions. 
+\item ``!group $<$file-name$>$''\\
+  Read another group file.
+  To use this, you could create one ``main'' configuration file
+  that contains only ``!group ...'' lines.
+  Unfortunately, it used to be no syntax error to have a ``!group
+  ...'' inside a file which was itself included via ``!group ...''.
+  While that might suggest the possibility of creating nested groups,
+  it does not work that way. Each file creates a group, named after the
+  filename, and the engine maintains only one flat list of groups,
+  no sub-groups.
+
+  Preferably, do not use the ``!group ...'' command at all.
+  Simply create one ASCII file per group, and list all the group files
+  that you want one engine to handle on the ConvertEngineConfig
+  command line.
+\item ``$<$channel$>$ $<$period$>$''\\
+  Selects scanned sampling of the given channel.
+\item ``$<$channel$>$ $<$period$>$ Monitor''\\
+  Selects monitored sampling of the given channel.
+\item ``$<$channel$>$ $<$period$>$ Monitor Disable''\\
+  Selects monitored sampling of the given channel; channel disables
+  its group..
+\end{itemize}
+
+

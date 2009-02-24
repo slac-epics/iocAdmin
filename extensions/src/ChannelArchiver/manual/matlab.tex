@@ -1,0 +1,77 @@
+\section{Matlab}
+Programs like Matlab or Octave are ideally suited for the more
+sophisticated analysis of archived data.  The ChannelArchiver
+includes interface code for Matlab and Octave, allowing those two
+programs to access data from the ChannelArchiver's Network Data
+Server.  Refer to the file ChannelArchiver/Matlab/README for details
+on building, installing and using those extensions.
+
+\NOTE The Matlab/Octave support is experimental.
+Its use is discouraged except for testing.
+
+Figures \ref{fig:matlabtest}, \ref{fig:oildemo1},
+\ref{fig:oildemo2}, \ref{fig:oildemo3} and
+\ref{fig:oildemo4} showcase some examples and provide you with an
+excuse to print at least this section of the manual on a color printer.
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=\textwidth}{matlabtest}
+\end{center}
+\caption{\label{fig:matlabtest}Matlab Example: Input and Output power
+  of a Klystron for a two-day test run, combined with a scatter plot
+  of the computed Klystron Gain.}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=\textwidth}{oildemo1}
+\end{center}
+\caption{\label{fig:oildemo1}Matlab Example: One-month overview of
+  Klystron oil tank temperatures. The Plot-Binning request method as
+  described in section \ref{sec:plotbinning} was used to reduce the
+  amount of data. Interesting features like the noise on the DTL5
+  signal as well as occasional spikes (which probably result from
+  maintenance work on the oil tank) are preserved.
+}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=\textwidth}{oildemo2}
+\end{center}
+\caption{\label{fig:oildemo2}Matlab Example: One-month overview of
+  Klystron oil tank temperatures. The raw data was reduced by
+  averaging into 1000 bins as described in section
+  \ref{sec:lininterpol}, allowing for easier post-processing,
+  and temperatures were converted to Celsius.
+  Comparison with fig.\ \ref{fig:oildemo1} shows how many details can
+  be lost via averaging, so it must be applied with caution.
+}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=\textwidth}{oildemo3}
+\end{center}
+\caption{\label{fig:oildemo3}Matlab Example: The same data as
+in \ref{fig:oildemo2} displayed as a ``Waterfall'' plot.
+This type of display hides almost all the detail of the individual
+channels. Outliers, however, stand out like the possible sensor problem
+on DTL4, which is why this display method is well suited for an initial
+investigation of many channels. The example also shows gaps in the data
+caused by the many times when the archive engine was stopped during the
+ongoing tests of the new archive engine.
+}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=\textwidth}{oildemo4}
+\end{center}
+\caption{\label{fig:oildemo4}Matlab Example: Again the same data as
+in \ref{fig:oildemo2} displayed as a surface plot.
+Tools like Matlab allow the user to rotate this plot in real-time,
+which might be useful for the inspection of certain channels.
+}
+\end{figure}

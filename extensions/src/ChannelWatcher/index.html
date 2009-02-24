@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0063)http://www.slac.stanford.edu/grp/cd/soft/templates/master2.html -->
+<HTML><HEAD><TITLE>Channel Watcher Software Distribution</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="Microsoft FrontPage 5.0" name=GENERATOR></HEAD>
+<BODY>
+<BLOCKQUOTE>
+  <H2>ESD Software Engineering</H2>
+  <br>
+  <H3>Channel Watcher: Software Distribution</H3>This is the SLAC ESD page to
+  get the Channel Watcher software. The Channel Watcher replaces the 
+  <i>save</i> part of EPICS save/restore (bumpless reboot) with a channel 
+  access client task.  For a full description of the purpose, features, and 
+  usage of the Channel Watcher look <a href="ChannelWatcher.html">here</a>.
+  The current version of Channel Watcher writes restore files which may have
+  a different format than the one at your site.  You may first wish to 
+  inspect the restore software provided in the table below.
+  Please direct questions to <a href="mailto:zelazny@slac.stanford.edu">Mike
+  Zelazny.</a>
+  <p>
+  Links to past EPICS meeting presentations:
+  <br>
+  <a href="2002-11-CW.ppt">
+  Channel Watcher, Nov 2002 (ppt)</a>
+  <br>
+  <a href="http://www-csr.bessy.de/control/Epics02/WED-PM/pdf/ALH_and_CW.pdf">
+  Channel Watcher and ALH, May 2002 (pdf)</a>,
+  <a href="2002-05-CW_and_ALH.ppt">(ppt)</a>
+  <br>
+  <a href="http://www-group.slac.stanford.edu/cdsoft/icalepcs01/CW.pdf">
+  Channel Watcher, Nov 2001 (pdf)</a>,
+  <a href="2001-11-CW.ppt">(ppt)</a>
+  <p><a href="http://www.aps.anl.gov/xfd/SoftDist/custom.htm">Tim Mooney's
+  autoSaveRestore distribution</a>
+  <br>
+  <HR width="100%">
+
+  <H3>Where to find it</H3>
+  <blockquote>
+
+  <p>You can download the software via <b>ftp </b>from SLAC from the link
+  below:</p>
+    <table border="1" width="90%" height="62">
+      <tr>
+        <td width="21%" align="center" height="31"><b>Module Version</b></td>
+        <td width="13%" height="6" align="center"><b>Release Date</b></td>
+        <td width="19%" height="31" align="center"><b>EPICS Release</b></td>
+        <td width="25%" height="31" align="center"><b>Channel Watcher Filename</b></td>
+        <td width="24%" height="31" align="center"><b>IOC Restore Filename</b></td>
+      </tr>
+      <tr>
+        <td width="21%" align="center" height="19">V2.02</td>
+        <td width="18%" height="19" align="center">February 6, 2003</td>
+        <td width="19%" height="19" align="center">R3.13.x</td>
+        <td width="22%" height="19" align="center"><a href="ftp://ftp.slac.stanford.edu/groups/controls/soft/epics/ChannelWatcher.tar.gz">ChannelWatcher.tar.gz</td>
+        <td width="20%" height="19" align="center"><a href="ftp://ftp.slac.stanford.edu/groups/controls/soft/epics/restore.tar.gz">restore.tar.gz</td>
+      </tr>
+    </table>
+  </blockquote>
+  <H3>Tested Platforms</H3>
+  <blockquote>
+    <ul>
+      <li>Sun Microsystems UNIX with SunOS 5.8 and SUNWspro C++ compiler
+        with CMLOG version 2.1.  Linked to EPICS base R3.13.2 and R3.13.6 built with gcc.</li>
+      <li>Red Hat Linux Release 7.1, except for CMLOG plug-in.</li>
+    </ul>
+  </blockquote>
+  <p><font size="4"><b>Site Installation and Building</b></font></p>
+  <blockquote>
+    <ul>
+      <li>Download the Channel Watcher file to your host file system 
+        and unpack it under an already existing EPICS extensions/src area.</li>
+      <li>In your EPICS R3.13.x base/src/dbStatic directory, change 
+        alarmString.h as specified <a href="alarmString_change.txt">here</a> 
+        and rebuild to install the changed alarmString.h into base/include.</li>
+      <li>Edit extensions/src/ChannelWatcher/Makefile.Host to choose your 
+        Channel Watcher message destination.  If you choose to log your 
+        messages to CMLOG, <a href="http://www.jlab.org/cdev/cmlog.html">
+        CMLOG: Common Message Logging System</a> at JLAB provides software 
+        distribution and usage instructions.  Note that since both 
+        ChannelWatcher and CMLOG are C++, you must use the same compiler for 
+        both.</li>
+      <li>If you are using CMLOG and "CMLOG_LIB" and "CMLOG_INC" 
+        (the location of the installed CMLOG libraries and include files, 
+        respectively) are not defined in a config file (CONFIG_EXTENSIONS or 
+        a CONFIG_SITE file) used in building your extensions, either add them 
+        to the proper config file or edit 
+        extensions/src/ChannelWatcher/Makefile.cmlog to define them.</li>
+      <li>gmake</li>
+    </ul>
+  </blockquote>
+  <p>&nbsp;</p></BLOCKQUOTE>
+<BLOCKQUOTE>
+  <BLOCKQUOTE>
+    <BLOCKQUOTE>
+      <BLOCKQUOTE>
+        <CENTER>
+        <HR width="100%">
+        <BR><FONT size=-1><A 
+        href="http://www-group.slac.stanford.edu/cdsoft/home.html">ESD Software 
+        Engineering</A> | <A 
+        href="http://www.slac.stanford.edu/slac/compute.html">SLAC Computing</A> 
+        | <A href="http://www.slac.stanford.edu/detailed.html">SLAC Detailed 
+        Home</A></FONT> <BR><FONT size=-1><A 
+        href="http://www.slac.stanford.edu/comp/unix/package/epics/index.html">EPICS 
+        at SLAC </A>| <A 
+        href="http://www.slac.stanford.edu/grp/cd/soft/pepii/index.html">PEPII 
+        Controls </A>| <A 
+        href="http://www.slac.stanford.edu/grp/cd/soft/nlcdev/index.html">NLC 
+        Dev 
+  Controls</A></FONT></CENTER></BLOCKQUOTE></BLOCKQUOTE></BLOCKQUOTE><I>Owner:&nbsp;&nbsp;
+  Mike Zelazny</I> <BR><I>Last modified:&nbsp;&nbsp; February 6th, 2003</I></BLOCKQUOTE></BODY></HTML>

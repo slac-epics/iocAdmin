@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD for the XML-RPC Data Server Configuration -->
+<!ELEMENT serverconfig (archive+)>
+<!ELEMENT archive (key,name,path)>
+<!ELEMENT key (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT path (#PCDATA)>

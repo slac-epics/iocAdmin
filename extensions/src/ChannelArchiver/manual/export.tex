@@ -1,0 +1,81 @@
+\section{\INDEX{ArchiveExport}}
+ArchiveExport is a command-line tool for local tests, i.e.\ it does
+\emph{not} connect to the archive data server, but instead requires that
+you have read access to the index and data files.
+It is mostly meant for testing.
+
+When invoked without valid arguments, it will display a command
+description.
+
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+USAGE: ArchiveExport [Options] <index file> {channel}
+ 
+Options:
+  -verbose               Verbose mode
+  -list                  List all channels
+  -info                  Time-range info on channels
+  -start <time>          Format:
+                      "mm/dd/yyyy[ hh:mm:ss[.nano-secs]]"
+  -end <time>            (exclusive)
+  -text                  Include text column for
+                         status/severity
+  -match <reg. exp.>     Channel name pattern
+  -interpolate <seconds> interpolate values
+  -output <file>         output to file
+  -gnuplot               generate GNUPlot command file
+  -Gnuplot               generate GNUPlot output
+                         for Image
+\end{lstlisting}
+
+\noindent ArchiveExport produces spreadsheet-type output in
+TAB-separated ASCII text, suitable for import into most spreadsheet
+programs for further analysis. Per default, ArchiveExport uses
+Staircase Interpolation to map the data for the requested channels
+onto matching time stamps, but one can select Linear Interpolation via
+the ``-interpolate'' option. When GNUPlot output is selected, the
+Plot-Binning method is used, where the bin size is determined by the
+``-interpolate'' argument. See section \ref{sec:timestampcorr} on
+page~\pageref{sec:timestampcorr} for details.
+
+Assuming that your current working directory contains an
+archive index file that is aptly named ``index'', the following
+invocation will generate a spreadsheet file ``data.txt'' with the data
+of all channels that match the pattern ``IOC'' for the date of January
+27, 2003:
+
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+ArchiveExport index -m IOC \
+              -s "01/27/2003" \
+              -e "01/28/2003" >data.txt
+\end{lstlisting}
+
+\noindent To plot this in OpenOffice, you could create a new
+spreadsheet, then use the menu item Insert/Sheet/FromFile, select the
+file ``data.txt'' and configure the text import dialog to use
+``Separated by Tab''. You will notice that even though the original
+text file contains time stamps with nano-second resolution, for
+example ``01/27/2003 23:57:25.579346999'', the spreadsheet program
+might use a default representation of e.g. 
+``01/27/03 23:57 pm''.
+In order to see the full time stamp detail, one needs to reformat
+those spreadsheet columns with a user-defined format like
+``MM/DD/YYYY HH:MM:SS.000000000''.
+If you use Microsoft Excel, you might be limited to a format with
+millisecond resolution: ``MM/DD/YYYY HH:MM:SS.000''.
+For graphing the data, the most suitable option is often an
+``X-Y-Graph'', using the first row for labels, with the data series
+taken from the columns.
+
+The following call sequence will generate a GNUPlot data file ``data''
+together with a GNUPlot command file ``data.plt'' and execute it
+within GNUPlot:
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+ArchiveExport index -m IOC \
+              -s "01/27/2003" \
+              -e "01/28/2003" -o data -gnu
+gnuplot
+        G N U P L O T
+        Version 3.7 patchlevel 3
+....
+gnuplot> load 'data.plt'
+\end{lstlisting}

@@ -1,0 +1,35 @@
+#
+# CONFIG_SITE.Host.sun4
+#
+# Site Specific Configuration Information
+# Only the local epics system manager should modify this file
+
+-include $(TOP)/config/CONFIG_SITE.Host.UnixCommon
+
+X11_LIB = /usr/lib
+X11_INC = /usr/include/X11
+MOTIF_INC = /usr/local/Motif1.2.2/include
+MOTIF_LIB = /usr/local/Motif1.2.2/lib
+OPENWIN = /usr/local/openwin3
+INTERVIEWS_BIN=/usr/local/interviews/bin/O.sun4
+#WINGZ_INC = /usr/local/Wingz/Utilities/External 
+#WINGZ_LIB = /usr/local/Wingz/Utilities/External
+#WINGZ_VERSION = WINGZ1
+WINGZ_INC = /usr/local/Wingz2.sun4/incl
+WINGZ_LIB = /usr/local/Wingz2.sun4/lib/libiattools.a
+WINGZ_VERSION = WINGZ2
+MATHEMATICA = /usr/local/math
+XRTGRAPH = /usr/local/xrtgraph
+QUESTWIN = /usr/local/questwin
+TK_LIB = /usr/local/lib
+TK_INC = /usr/local/include
+TCL_LIB = /usr/local/lib
+TCL_INC = /usr/local/include
+DP_LIB = /usr/local/lib
+DP_INC = /usr/local/include
+BLT_LIB = /usr/local/lib
+BLT_INC = /usr/local/include
+JAVA_DIR=/usr/local/java
+JAVA_INC=$(JAVA_DIR)/include
+JAVA_INCLUDES = -I$(JAVA_INC) -I$(JAVA_INC)/sun4
+

@@ -1,0 +1,328 @@
+\chapter{Background} \label{ch:background}
+
+\section{What is a Channel?} % -----------------------------------------------
+The Channel Archiver deals with Channels that are served by EPICS
+ChannelAccess. It stores all the information available via ChannelAccess:
+\begin{itemize}
+\item Time Stamp
+\item Status/Severity
+\item Value
+\item Meta information:\\
+      Units, Limits, ... for numeric channels,
+      enumeration strings for enumerated channels.
+\end{itemize}
+
+\noindent The archiver stores the original \INDEX{time stamps} as it receives
+them from ChannelAccess. It cannot check if these time stamps are valid, except
+that it refuses to go ``back in time'' because it can only append new
+values to the end of the data storage. It is therefore imperative to
+properly configure the data sources, that is: the clocks on the CA
+servers. For more details on the EPICS time stamps refer to section
+\ref{sec:GMT}.
+
+\label{back:in:time}
+\NOTE If the CA server provides bad time stamps, for example stamps
+that are older than values which are already in the archive, or stamps
+that are unbelievably far ahead in the future, the ArchiveEngine will log
+a warning message and refuse to store the affected samples.
+This is a common reason for ``Why is there no data in my archive?''.
+(There is one more, hard to resolve reason for back-in-time warnings, see
+page \pageref{sec:back-in-timefaq}).
+
+As for the values themselves, the native data type of the channel as
+reported by ChannelAccess is stored. For those familiar with the
+ChannelAccess API, this means:
+Channels that report a native data type of DBR\_xxx\_ are stored as
+DBR\_TIME\_xxx after once requesting the full DBR\_CTRL\_xxx information.
+ The Archiver can therefore handle scalar and array numerics
+(double, int, ...), strings and enumerated types. 
+
+\section{Data Sources} \label{sec:datasource} % ------------------------------
+Before even considering the available \INDEX{sampling options}, it is
+important to understand the \INDEX{data sources}, the \INDEX{ChannelAccess
+servers} whose channels we intend to archive.
+In most cases we will archive channels served by an EPICS Input/Output
+Controller (\INDEX{IOC}) which is configured via a collection of EPICS
+\INDEX{records}.
+Alternatively, we can archive channels served by a custom-designed CA
+server that utilizes the portable CA library \INDEX{PCAS}.
+In those cases, one will have to contact the implementor of the custom
+CA server for details.
+In the following, we concentrate on the IOC scenario and use the
+analog input record from listing~\ref{lst:airecord} as an example.
+
+\lstinputlisting[float=htb,caption={``aiExample'' record},label=lst:airecord]{aiexample.db} 
+
+\noindent What happens when we try to archive the channel ``aiExample''?
+We will receive updates for the record's value field (VAL). In fact we
+might as well have configured the archiver to use ``aiExample.VAL''
+with exactly the same result.
+The record is scanned at 10~Hz, so we can expect 10 values per second.
+Almost: The archive dead band (ADEL) limits the values that we receive
+via CA to changes beyond 0.1. When archiving this channel, we could
+store at most 10 values per second or try to capture every change,
+utilizing the ADEL configuration to limit the network traffic.
+
+\NOTE The archiver has no knowledge of the scan rate nor the dead band
+configuration of your data source! You have to consult the IOC
+database or PCAS-based code to obtain these.
+
+With each value, the archiver stores the time stamp as well as the
+status and severity. For aiExample, we configured a high limit of 10
+with a MAJOR severity. Consequently we will see a status/severity of
+HIHI/MAJOR whenever the VAL field reaches the HIHI limit.
+In addition to the value (VAL field), the archiver also stores certain
+pieces of \INDEX{meta information}. For numeric channels, it will store the
+engineering units, suggested display precision, as well as limits for
+display, control, warnings, and alarms. For enumerated channels, it
+stores the enumeration strings.
+Applied to the aiExample record, the suggested display precision is
+read from the PREC field, the limits are derived from HOPR, LOPR,
+HIHI, ..., LOLO.
+
+\NOTE You will have to consult the record reference manual or even
+record source code to obtain the relations between record fields and
+channel properties. The analog input record's EGU field for example
+provides the engineering units for the VAL field. We could, however,
+also try to archive aiExample.SCAN, that is the SCAN field of the same
+record. That channel aiExample.SCAN will be an \emph{enumerated} type
+with possible values ``Passive'', ``.1 second'' and so on. The EGU
+field of the record no longer applies!
+Another example worth considering: While HOPR defines the upper
+control limit for the VAL field, what is the upper control limit if we
+archive the HOPR field itself?
+
+It is also important to remember that the archiver
+--- just like any other ChannelAccess client --- does {\bfseries not} know
+anything about the underlying EPICS record type of a channel. In fact
+the channel might not be based on any record at all if we use a
+PCAS-based server.
+Given the name of an analog input record, it will store the record's
+value, units and limits, that is: most of the essential record
+information. Given the name of a stepper motor record, the
+archiver will also store the record's value (motor position) with the
+units and limits of the motor position. It will not store the
+acceleration, maximum speed or other details that you might consider
+essential parts of the record. To archive those, one would have to
+archive them as individual channels.
+
+\section{Sampling Options} \label{sec:sampling} % -----------------------------
+The ArchiveEngine supports these sampling mechanisms:
+\begin{description}
+\item[\sffamily Monitor:]
+In this mode, the ArchiveEngine requests a CA monitor, i.e.\ it
+subscribes to changes and we store all the values that the server
+sends out. The CA server configuration determines when values are sent.
+
+\item[\sffamily Sampled:]
+In this mode, the ArchiveEngine periodically requests a value from
+the CA server, e.g.\ every 30 seconds.
+
+\item[\sffamily Sampled using monitors:]
+This mode is very similar to the previous one:
+The ArchiveEngine is again configured to store periodic samples,
+e.g. one sample every 5 seconds. But instead of actively requesting a
+value from the CA server at this rate, it establishes a monitor and
+only saves a value every 5 seconds.
+\end{description}
+
+\noindent The configuration of the engine in section
+\ref{sec:engineconfig} describes how one selects the sampling
+mechanism for each channel. 
+When selecting monitored operation, you will need to provide an
+estimate of how many monitors the channel emits, so that the engine
+can allocate appropriate buffer space (more on this in sections
+\ref{sec:reserve} and \ref{sec:period}).
+
+The difference between the two sampled modes is subtle but important
+for performance reasons. Assume our data source changes at 1~Hz. If
+we want to store a value every 30 seconds, it is most efficient to
+send a 'read'-request every 30 seconds. If, on the other hand, we want
+to store a value every 5 seconds, it is usually more effective to
+establish a monitor, so we automatically receive updates about every
+second, and simply \emph{ignore} 4 of the 5 values.
+
+When configuring a channel, the user only selects either ``Monitor''
+or ``Scan'' with a sampling rate.  The ArchiveEngine will
+automatically determine which mechanism to use for sampled operation,
+periodic reads or monitors (see the \emph{get\_threshold} configuration
+parameter, section \ref{sec:getthreshold}, for details).
+
+\NOTE The values dumped into the data storage will not offer much
+indication of the sampling method. In the end, we only see values with
+time stamps. If for example the time stamps of the stored values
+change every 20 seconds, this could be the result of a monitored
+channel that happened to change every 20 seconds. We could also face a
+channel that changed at 10~Hz but was only sampled every 20 seconds. 
+
+\section{Time Stamps}
+\begin{figure}[htb]
+\begin{center}
+\InsertImage{width=1.0\textwidth}{times}
+\end{center}
+\caption{\label{fig:times}Time Stamps and Sampling}
+\end{figure}
+
+\noindent Each ChannelAccess Server provides time-stamped data. An IOC for
+example stamps each value when the corresponding record is
+processed.  These time-stamps offer nano-second granularity. Most
+applications will not require the full accuracy, but some
+hardware-triggered acquisition, utilizing interrupts on a fast CPU,
+might in fact put the full time stamp resolution to good use.
+
+The ChannelArchiver as a generic tool does not know about the origin
+of the time stamps, but it tries to conserve them.
+Fig.~\ref{fig:times} shows the same channel, archived with different methods.
+When using the ``Monitor'' method for archiving, we capture all the
+changes of the channel, resulting in the data points marked by black
+diamonds.
+When we use scanned operation, e.g.\ every 30~seconds, the following
+happens: About every 30 seconds, the ArchiveEngine stores the current
+value of the channel \emph{with its original time stamp!}.
+So while the ArchiveEngine might take a sample at
+\begin{center}
+14:53:30, 14:54:00, 14:54:30, 14:55:00, ...,
+\end{center}
+it stores the time stamps that come with the values, and in the
+example from Fig.~\ref{fig:times} those happened to be
+\begin{center}
+14:53:29.091,  14:53:59.092, 14:54:29.094,  14:54:59.095, ...
+\end{center}
+
+\section{Sensible Sampling}
+The data source configuration and sampling need to be coordinated.  In
+fact the whole system needs to be understood. When we deal with water
+tank temperatures as one example, we have to understand that the
+temperature is unlikely to change rapidly. Let us assume that it only
+varies within 30...60 seconds. The analog input record that reads the
+temperature could be configured to scan every 2 seconds. Not because
+we expect the temperature to change that quickly but mostly to provide
+the operator with a warm and fuzzy feeling that we are still reading
+the temperature: The operator display will show minuscule variations
+in temperature every 2 seconds.  An ArchiveEngine that is meant to
+capture the long-term trend of the tank temperature could then sample
+the value every 60 seconds.
+
+On the other extreme could be channels for vacuum readings along linac
+cavities. The records that read them might be configured to scan as
+fast as the sensing devices permit, maybe beyond 10~Hz, so that
+interlocks on the IOC run as fast as possible. Their dead bands (ADEL
+and MDEL) on the other hand are configured to limit the data rate that
+is sent to monitoring CA clients: Only meaningful vacuum changes are
+sent out, significantly reducing the amount of data sent onto the
+network.  The ArchiveEngine can then be configured to monitor the
+channel: During normal operation, when the vacuum is fairly stable, it
+will only receive a few values, but whenever the vacuum changes
+because of a leak, it will receive a detailed picture of the event.
+
+Another example is a short-term archive that is meant to store
+beam position monitor (BPM) readings for every beam pulse. The records
+on the IOC can then be configured with ADEL=-1 and the ArchiveEngine
+to use monitors, resulting in a value being sent onto the network and
+stored in the archive even if the values did not change. The point
+here is to store the time stamps and beam positions for each beam
+pulse for later correlation. Needless to say that this can result in a
+lot of data if the engine is kept running unattended. The preferred
+mode of operation would be to run the engine only for the duration
+of a short experiment.
+
+\NOTE The scanning of the data source and the ArchiveEngine run in
+parallel, they are not synchronized.
+Example: If you have a record scanned every second and want to capture
+every change in value, configuring the ArchiveEngine to scan every
+second is {\bfseries not} advisable:
+Though both the record and the ArchiveEngine would scan every
+second, the two scans are not synchronized and rather unpredictable
+things can happen. Instead, the "Monitor" option for the ArchiveEngine
+should be used for this case.
+
+\section{Times: EPICS, Local, Greenwich, Daylight Saving} \label{sec:GMT}
+The EPICS base software that is used by the IOCs and also the archiver
+deals with time as seconds and nanoseconds since January 1, 1990.  This
+``\INDEX{EPICS Time}'' is using \INDEX{Greenwich Mean Time} (GMT),
+also known as Universal Time Coordinates (\INDEX{UTC}).  So the EPICS
+Time stamp 0 stands for 01/01/1990, 00:00:00 UTC.
+
+People living in Germany are typically in a time zone one hour east of
+UTC. For them, the EPICS Time stamp 0 translates into January 1, 1990,
+at 01:00:00 in the morning. This is one example of ``\INDEX{Local
+Time}''. Anybody living in the United States is of course familiar
+with time zone conversions ever since you tried to match what's in the
+TV Guide with what's actually on TV.
+
+The EPICS base software includes routines for converting EPICS Time
+into Local Time and vice versa. Before EPICS R3.14, these routines
+used an environment variable \INDEX{EPICS\_TS\_MIN\_WEST} which needed
+to be set to the minutes west of UTC. ``-60'' for Germany in the above
+example. Since R3.14, this environment variable is no longer
+used. The time stamp conversion code in EPICS base now relies on the
+operating system and the C/C++ runtime library to handle any time zone
+issues.
+
+It is important to remember that the data served by CA Servers is in
+EPICS time, that is based on UTC and \emph{not} your local time.  The
+ArchiveEngine stores that data as received, which is again in EPICS
+time based on UTC.  When the network data server is asked for samples,
+those are also based UTC, albeit with a slight shift from a 1990 \INDEX{epoch}
+to 1970, simply because this is more convenient to use in most
+programming languages. C, C++, Java and perl all include routines for
+converting 1970-epoch seconds to local time and back.
+
+Time stamps are only converted to local time when they are displayed
+or entered.  The ArchiveExport program will provide you with e.g.\ a
+spreadsheet that has a ``Time'' column in local time. The Java Archive
+Client will plot the data with a time axis in local time. Whenever you
+specify start and end times for a data request, this is done in local
+time.
+
+An example of possible consequences: Assume you live in San Francisco,
+California (UTC-8), and you receive a CD-ROM with archived data from the SNS
+in Oak Ridge, Tennessee (UTC-5). If you want to investigate what happened
+at noon, 12:00:00, on 01/01/2004 at the SNS, you will have to query for
+09:00:00 to adjust for the different time zones.
+
+The EPICS base code also relies on the operating system services for
+\INDEX{daylight saving time} (\INDEX{DST}). At least under RedHat Linux 9 this
+seems to work fine when you are inside the United States.
+Example: In the US, daylight saving time went into effect on
+04/04/2004, 02:00:00, and I archived a "stringin" record which had
+device support that converted the time stamp of the record into a string,
+including daylight savings information.
+The result looks like this when the data is exported again
+on the next day, that is at a time where DST is in effect:
+
+\medskip
+\begin{tabular}{lll}
+EPICS Seconds & Time     & Value \\
+\hline
+449917196     & 01:59:56 & 04/04/2004 01:59:56.805984000 \\
+449917197     & 01:59:57 & 04/04/2004 01:59:57.816036000 \\
+449917198     & 01:59:58 & 04/04/2004 01:59:58.826102000 \\
+449917199     & 01:59:59 & 04/04/2004 01:59:59.836110000 \\
+449917200     & 03:00:00 & 04/04/2004 03:00:00.846121000 (DST) \\
+449917201     & 03:00:01 & 04/04/2004 03:00:01.856196000 (DST) \\
+449917202     & 03:00:02 & 04/04/2004 03:00:02.867379000 (DST) \\
+449917203     & 03:00:03 & 04/04/2004 03:00:03.876315000 (DST) \\
+449917204     & 03:00:04 & 04/04/2004 03:00:04.886356000 (DST) 
+\end{tabular}
+
+\medskip
+\noindent The seconds of the raw EPICS time stamp simply continue to count up
+through the transition because UTC is not affected by DST.
+(This test was run in the US Mountain time zone, UTC-7, and the
+nanoseconds of the EPICS time stamp are omitted.)
+The Value of the string record, which contains the local time as the
+IOC saw it, jumps from what would have been 02:00:00 to 03:00:00 DST.
+When the time stamp is printed (at a later time when DST applies),
+the ``Time'' column matches the times in the value string.
+
+After changing the computer's clock to times in January 2004 and 2005,
+that is to times outside of DST before and after the data in the
+archive, the result is the exact same:
+The EPICS time stamp routines use the DST settings that apply for a
+given time stamp, not for the current time.
+
+Countries differ in their algorithms for switching to DST, and if your
+operating system does not follow the rules in your location, you might
+see sudden offsets in time between the wall clock and the archived
+data.

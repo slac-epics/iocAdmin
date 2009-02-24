@@ -1,0 +1,28 @@
+ifdef T_A
+ifeq ($(findstring Host,$(VALID_BUILDS)),Host)
+
+INSTALL_MATLAB     = $(INSTALL_LOCATION)/matlab
+DIRECTORY_TARGETS += $(INSTALL_MATLAB)
+
+ifneq ($(strip $(MATLABS_$(ARCH_CLASS))),)
+MATLABS += $(subst -nil-,,$(MATLABS_$(ARCH_CLASS)))
+else
+ifdef MATLABS_DEFAULT
+MATLABS += $(MATLABS_DEFAULT)
+endif
+endif
+
+INSTALL_MATLABS =$(MATLABS:%=$(INSTALL_MATLAB)/%)
+
+buildInstall : $(INSTALL_MATLABS)
+
+$(INSTALL_MATLAB)/%: %
+	@echo "Installing matlab program $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_MATLAB)
+
+$(INSTALL_MATLAB)/%: ../%
+	@echo "Installing matlab program $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_MATLAB)
+
+endif
+endif

@@ -1,0 +1,474 @@
+From SNSTESTS/core.24963
+
+*** Stack Trace of the crashed thread:
+#0  0x0000002a9659b42f in tsDLList<nciu>::remove (this=0x694380, item=@0x7281e0) at ../../../include/tsDLList.h:230
+#1  0x0000002a965a8e56 in tcpiiu::uninstallChan (this=0x694120, guard=@0x40ea5a80, chan=@0x7281e0) at ../tcpiiu.cpp:1916
+#2  0x0000002a9659c883 in nciu::destroy (this=0x7281e0, callbackControlGuard=@0x40ea5a90, mutualExclusionGuard=@0x40ea5a80) at ../nciu.cpp:96
+#3  0x0000002a965b28b8 in oldChannelNotify::destructor (this=0x5923e0, cbGuard=@0x40ea5a90, guard=@0x40ea5a80) at ../oldChannelNotify.cpp:72
+#4  0x0000002a965af0b3 in ca_client_context::destroyChannel (this=0x56b870, cbGuard=@0x40ea5a90, guard=@0x40ea5a80, chan=@0x5923e0) at ../ca_client_context.cpp:204
+#5  0x0000002a96593f85 in ca_clear_channel (pChan=0x5923e0) at ../access.cpp:375
+#6  0x000000000042561b in ProcessVariable::stop (this=0x581120, guard=@0x40ea5bb0) at ../ProcessVariable.cpp:366
+#7  0x000000000041f99c in SampleMechanism::stop (this=0x581100, guard=@0x40ea5c30) at ../SampleMechanism.cpp:119
+#8  0x0000000000416838 in ArchiveChannel::stop (this=0x577930, guard=@0x40ea5cb0) at ../ArchiveChannel.cpp:333
+#9  0x000000000040be89 in Engine::stop (this=0x56b240, engine_guard=@0x40ea5d30) at ../Engine.cpp:176
+#10 0x00000000004109aa in restart (connection=0x2a96d133a0, path=@0x40ea5db0, user_arg=0x56b240) at ../EngineServer.cpp:595
+#11 0x000000000041d304 in HTTPClientConnection::analyzeInput (this=0x2a96d133a0) at ../HTTPServer.cpp:565
+#12 0x000000000041cebb in HTTPClientConnection::handleInput (this=0x2a96d133a0) at ../HTTPServer.cpp:482
+#13 0x000000000041c9e6 in HTTPClientConnection::run (this=0x2a96d133a0) at ../HTTPServer.cpp:391
+
+*** Null pointer access:
+(gdb) fra 0
+#0  0x0000002a9659b42f in tsDLList<nciu>::remove (this=0x694380,
+item=@0x7281e0)
+    at ../../../include/tsDLList.h:230
+230             nextNode.pPrev = theNode.pPrev; 
+(gdb) print nextNode
+$1 = (tsDLNode<nciu> &) @0x0: Cannot access memory at address 0x0
+(gdb) print theNode
+$2 = (tsDLNode<nciu> &) @0x728200: {pNext = 0x0, pPrev = 0x0}
+
+
+
+********************** All the threads ********************************************************* 
+
+Thread 39 (process 24963):
+#0  0x000000323430b9c5 in __nanosleep_nocancel () from /lib64/tls/libpthread.so.0
+#1  0x0000002a96719722 in epicsThreadSleep (seconds=0.5) at ../../../src/libCom/osi/os/posix/osdThread.c:596
+#2  0x000000000040c2e6 in Engine::process (this=0x56b240) at ../Engine.cpp:235
+#3  0x0000000000409295 in main (argc=5, argv=0x7fbffff798) at ../main.cpp:105
+
+Thread 38 (process 24965):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x56c910, mutexId=0x56c8e8) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x56c8e0) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x56c6b8) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a9670ff52 in ipAddrToAsciiEnginePrivate::run (this=0x56c270) at ../../../src/libCom/misc/ipAddrToAsciiAsynchronous.cpp:244
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x56c6c8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x56cb80) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 37 (process 24967):
+#0  0x0000003234308acf in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a1f7 in condTimedwait (condId=0x56d440, mutexId=0x56d418, time=0x400c2f50) at ../../../src/libCom/osi/os/posix/osdEvent.c:68
+#2  0x0000002a9671a6bb in epicsEventWaitWithTimeout (pevent=0x56d410, timeout=0.016934999999999999) at ../../../src/libCom/osi/os/posix/osdEvent.c:163
+#3  0x0000002a9671315b in epicsEvent::wait (this=0x56d088, timeOut=0.016934999999999999) at ../../../src/libCom/osi/epicsEvent.cpp:72
+#4  0x0000002a967208f2 in timerQueueActive::run (this=0x56cfe0) at ../../../src/libCom/timer/timerQueueActive.cpp:70
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x56d098) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x56d6b0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 36 (process 24969):
+#0  0x000000323430b500 in __recvfrom_nocancel () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a0bf2 in udpRecvThread::run (this=0x7279f0) at ../udpiiu.cpp:354
+#2  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x727a10) at ../../../src/libCom/osi/epicsThread.cpp:59
+#3  0x0000002a96718caf in start_routine (arg=0x5840e0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#4  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#5  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#6  0x0000000000000000 in ?? ()
+
+Thread 35 (process 24991):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6afe80, mutexId=0x6afe58) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6afe50) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a96702cd9 in errlogThread () at ../../../src/libCom/error/errlog.c:468
+#4  0x0000002a96718caf in start_routine (arg=0x6b07c0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#5  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#6  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#7  0x0000000000000000 in ?? ()
+
+Thread 34 (process 25045):
+#0  0x00000032338bebe6 in __select_nocancel () from /lib64/tls/libc.so.6
+#1  0x000000000041b9d2 in HTTPServer::run (this=0x2a96b3f320) at ../HTTPServer.cpp:154
+#2  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x2a96b3f328) at ../../../src/libCom/osi/epicsThread.cpp:59
+#3  0x0000002a96718caf in start_routine (arg=0x2a96b3f590) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#4  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#5  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#6  0x0000000000000000 in ?? ()
+
+Thread 33 (process 7298):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x6920c8, pBuf=0x5d005c, nBytesInBuf=16384, stat=@0x40c1ffb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5d0040, wire=@0x692108, stat=@0x40c1ffb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x6921b0) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6921b8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x14d5020) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 32 (process 7300):
+#0  0x000000323430ad1b in __lll_mutex_lock_wait () from /lib64/tls/libpthread.so.0
+#1  0x00000000006cdda8 in ?? ()
+#2  0x0000000000000000 in ?? ()
+
+Thread 31 (process 7306):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x6956b0, pBuf=0x2a96c0806c, nBytesInBuf=16384, stat=@0x4060ffb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x2a96c08050, wire=@0x6956f0, stat=@0x4060ffb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x695798) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6957a0) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6d1fe0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 30 (process 7308):
+#0  0x0000003234308acf in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a1f7 in condTimedwait (condId=0x6a00c0, mutexId=0x6a0098, time=0x40ee6da0) at ../../../src/libCom/osi/os/posix/osdEvent.c:68
+#2  0x0000002a9671a6bb in epicsEventWaitWithTimeout (pevent=0x6a0090, timeout=30) at ../../../src/libCom/osi/os/posix/osdEvent.c:163
+#3  0x0000002a9671315b in epicsEvent::wait (this=0x6957c0, timeOut=30) at ../../../src/libCom/osi/epicsEvent.cpp:72
+#4  0x0000002a96711848 in epicsThread::exitWait (this=0x6957a0, delay=30) at ../../../src/libCom/osi/epicsThread.cpp:146
+#5  0x0000002a965a3931 in tcpRecvThread::exitWait (this=0x695798, delay=30) at ../tcpiiu.cpp:402
+#6  0x0000002a965a308b in tcpSendThread::run (this=0x6957f0) at ../tcpiiu.cpp:203
+#7  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6957f8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#8  0x0000002a96718caf in start_routine (arg=0x6ee700) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#9  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#10 0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#11 0x0000000000000000 in ?? ()
+
+Thread 29 (process 7314):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x695a48, pBuf=0x2a96c0002c, nBytesInBuf=16384, stat=@0x40389fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x2a96c00010, wire=@0x695a88, stat=@0x40389fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x695b30) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x695b38) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6aef60) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 28 (process 7316):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6e9da0, mutexId=0x6e9d78) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6e9d70) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x695da8) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x695b88) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x695b90) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6c8c20) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 27 (process 7318):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x694be8, pBuf=0x5e00dc, nBytesInBuf=16384, stat=@0x40205fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5e00c0, wire=@0x694c28, stat=@0x40205fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x694cd0) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694cd8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6e05a0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 26 (process 7320):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x70ac60, mutexId=0x70ac38) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x70ac30) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x694f48) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x694d28) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694d30) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x656870) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 25 (process 7322):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x691d30, pBuf=0x5c801c, nBytesInBuf=16384, stat=@0x4116cfb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5c8000, wire=@0x691d70, stat=@0x4116cfb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x691e18) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x691e20) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x14d5200) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 24 (process 7324):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6b26a0, mutexId=0x6b2678) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6b2670) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x692090) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x691e70) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x691e78) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6b2560) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 23 (process 7326):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x692f28, pBuf=0x61025c, nBytesInBuf=16384, stat=@0x404ccfb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x610240, wire=@0x692f68, stat=@0x404ccfb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x693010) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693018) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6ea040) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 22 (process 7328):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6e5870, mutexId=0x6e5848) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6e5840) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x693288) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x693068) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693070) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6cda20) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 21 (process 7330):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x693658, pBuf=0x61427c, nBytesInBuf=16384, stat=@0x40ca0fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x614260, wire=@0x693698, stat=@0x40ca0fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x693740) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693748) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x68bc50) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 20 (process 7332):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6ae940, mutexId=0x6ae918) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6ae910) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x6939b8) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x693798) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6937a0) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x650e50) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 19 (process 7334):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x6939f0, pBuf=0x5e811c, nBytesInBuf=16384, stat=@0x40d62fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5e8100, wire=@0x693a30, stat=@0x40d62fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x693ad8) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693ae0) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0xe5c810) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 18 (process 7336):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6dc310, mutexId=0x6dc2e8) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6dc2e0) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x693d50) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x693b30) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693b38) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6dc1d0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 17 (process 7338):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x694120, pBuf=0x5a7f1c, nBytesInBuf=16384, stat=@0x40998fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5a7f00, wire=@0x694160, stat=@0x40998fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x694208) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694210) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6dbb20) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 16 (process 7340):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6e5b60, mutexId=0x6e5b38) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6e5b30) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x694480) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x694260) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694268) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6ae670) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 15 (process 7342):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x694850, pBuf=0x6001dc, nBytesInBuf=16384, stat=@0x412b0fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x6001c0, wire=@0x694890, stat=@0x412b0fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x694938) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694940) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x68b630) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 14 (process 7344):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6aa4e0, mutexId=0x6aa4b8) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6aa4b0) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x694bb0) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x694990) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694998) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6aa3a0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 13 (process 7350):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x692460, pBuf=0x5b7f9c, nBytesInBuf=16384, stat=@0x40917fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5b7f80, wire=@0x6924a0, stat=@0x40917fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x692548) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x692550) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6d2320) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 12 (process 7352):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x69bbb0, mutexId=0x69bb88) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x69bb80) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x6927c0) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x6925a0) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6925a8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6aa120) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 11 (process 7354):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x6944b8, pBuf=0x6041fc, nBytesInBuf=16384, stat=@0x40690fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x6041e0, wire=@0x6944f8, stat=@0x40690fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x6945a0) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6945a8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x6d6ba0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 10 (process 7356):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x6e14a0, mutexId=0x6e1478) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x6e1470) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x694818) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x6945f8) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x694600) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x6e1360) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 9 (process 7362):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x6932c0, pBuf=0x5f417c, nBytesInBuf=16384, stat=@0x40184fb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5f4160, wire=@0x693300, stat=@0x40184fb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x6933a8) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6933b0) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x2a96d1b660) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 8 (process 7364):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x2a96d1af30, mutexId=0x2a96d1af08) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x2a96d1af00) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x693620) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x693400) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693408) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x2a96d1b350) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 7 (process 7366):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x6927f8, pBuf=0x5d809c, nBytesInBuf=16384, stat=@0x40b1cfb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5d8080, wire=@0x692838, stat=@0x40b1cfb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x6928e0) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6928e8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x2a96d1abd0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 6 (process 7368):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x2a96d1a9e0, mutexId=0x2a96d1a9b8) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x2a96d1a9b0) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x692b58) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x692938) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x692940) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x2a96d1a8a0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 5 (process 7370):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x694f80, pBuf=0x5f015c, nBytesInBuf=16384, stat=@0x4044bfb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x5f0140, wire=@0x694fc0, stat=@0x4044bfb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x695068) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x695070) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x2a96d1a1d0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 4 (process 7372):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x2a96d19fe0, mutexId=0x2a96d19fb8) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x2a96d19fb0) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x6952e0) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x6950c0) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x6950c8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x2a96d19ea0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 3 (process 7374):
+#0  0x000000323430b44a in recv () from /lib64/tls/libpthread.so.0
+#1  0x0000002a965a347a in tcpiiu::recvBytes (this=0x693d88, pBuf=0x2a96c0404c, nBytesInBuf=16384, stat=@0x40a9bfb0) at ../tcpiiu.cpp:307
+#2  0x0000002a965a934a in comBuf::fillFromWire (this=0x2a96c04030, wire=@0x693dc8, stat=@0x40a9bfb0) at ../comBuf.h:188
+#3  0x0000002a965a3bec in tcpRecvThread::run (this=0x693e70) at ../tcpiiu.cpp:473
+#4  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693e78) at ../../../src/libCom/osi/epicsThread.cpp:59
+#5  0x0000002a96718caf in start_routine (arg=0x2a96d14fd0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#6  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#7  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#8  0x0000000000000000 in ?? ()
+
+Thread 2 (process 7376):
+#0  0x00000032343088da in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/tls/libpthread.so.0
+#1  0x0000002a9671a23d in condWait (condId=0x2a96d148c0, mutexId=0x2a96d14898) at ../../../src/libCom/osi/os/posix/osdEvent.c:78
+#2  0x0000002a9671a591 in epicsEventWait (pevent=0x2a96d14890) at ../../../src/libCom/osi/os/posix/osdEvent.c:144
+#3  0x0000002a967130f5 in epicsEvent::wait (this=0x6940e8) at ../../../src/libCom/osi/epicsEvent.cpp:63
+#4  0x0000002a965a2c29 in tcpSendThread::run (this=0x693ec8) at ../tcpiiu.cpp:85
+#5  0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x693ed0) at ../../../src/libCom/osi/epicsThread.cpp:59
+#6  0x0000002a96718caf in start_routine (arg=0x2a96d14ca0) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#7  0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#8  0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#9  0x0000000000000000 in ?? ()
+
+Thread 1 (process 7402):
+#0  0x0000002a9659b42f in tsDLList<nciu>::remove (this=0x694380, item=@0x7281e0) at ../../../include/tsDLList.h:230
+#1  0x0000002a965a8e56 in tcpiiu::uninstallChan (this=0x694120, guard=@0x40ea5a80, chan=@0x7281e0) at ../tcpiiu.cpp:1916
+#2  0x0000002a9659c883 in nciu::destroy (this=0x7281e0, callbackControlGuard=@0x40ea5a90, mutualExclusionGuard=@0x40ea5a80) at ../nciu.cpp:96
+#3  0x0000002a965b28b8 in oldChannelNotify::destructor (this=0x5923e0, cbGuard=@0x40ea5a90, guard=@0x40ea5a80) at ../oldChannelNotify.cpp:72
+#4  0x0000002a965af0b3 in ca_client_context::destroyChannel (this=0x56b870, cbGuard=@0x40ea5a90, guard=@0x40ea5a80, chan=@0x5923e0) at ../ca_client_context.cpp:204
+#5  0x0000002a96593f85 in ca_clear_channel (pChan=0x5923e0) at ../access.cpp:375
+#6  0x000000000042561b in ProcessVariable::stop (this=0x581120, guard=@0x40ea5bb0) at ../ProcessVariable.cpp:366
+#7  0x000000000041f99c in SampleMechanism::stop (this=0x581100, guard=@0x40ea5c30) at ../SampleMechanism.cpp:119
+#8  0x0000000000416838 in ArchiveChannel::stop (this=0x577930, guard=@0x40ea5cb0) at ../ArchiveChannel.cpp:333
+#9  0x000000000040be89 in Engine::stop (this=0x56b240, engine_guard=@0x40ea5d30) at ../Engine.cpp:176
+#10 0x00000000004109aa in restart (connection=0x2a96d133a0, path=@0x40ea5db0, user_arg=0x56b240) at ../EngineServer.cpp:595
+#11 0x000000000041d304 in HTTPClientConnection::analyzeInput (this=0x2a96d133a0) at ../HTTPServer.cpp:565
+#12 0x000000000041cebb in HTTPClientConnection::handleInput (this=0x2a96d133a0) at ../HTTPServer.cpp:482
+#13 0x000000000041c9e6 in HTTPClientConnection::run (this=0x2a96d133a0) at ../HTTPServer.cpp:391
+#14 0x0000002a967113b9 in epicsThreadCallEntryPoint (pPvt=0x2a96d133a8) at ../../../src/libCom/osi/epicsThread.cpp:59
+#15 0x0000002a96718caf in start_routine (arg=0x2a96d21580) at ../../../src/libCom/osi/os/posix/osdThread.c:320
+#16 0x00000032343060aa in start_thread () from /lib64/tls/libpthread.so.0
+#17 0x00000032338c5b43 in clone () from /lib64/tls/libc.so.6
+#18 0x0000000000000000 in ?? ()

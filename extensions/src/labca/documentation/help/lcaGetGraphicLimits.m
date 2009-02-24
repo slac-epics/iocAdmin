@@ -1,0 +1,25 @@
+%
+%lcaGetGraphicLimits
+%
+%  Calling Syntax
+%
+%[lowLimit, hiLimit] = lcaGetGraphicLimits(pvs)
+%
+%  Description
+%
+%   Retrieve the graphic limits associated with a number of PVs.
+%
+%  Parameters
+%
+%   pvs
+%          Column vector (in matlab: m x 1 cell- matrix) of m strings.
+%
+%   lowLimit
+%          m x 1 column vector of the PV's low graphic limit.
+%
+%   hiLimit
+%          m x 1 column vector of the PV's high graphic limit.
+%     _________________________________________________________________
+%
+%
+%    for EPICS management 2007-11-16

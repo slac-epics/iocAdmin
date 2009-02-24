@@ -1,0 +1,43 @@
+ChannelArchiver/Matlab/README
+=============================
+
+There is some support for Matlab and Octave,
+allowing those two programs to access data
+from the ChannelArchiver's Network Data Server.
+
+Compilation
+-----------
+Building these extensions (MEX resp. OCT files)
+can be troublesome because
+- Your mex resp. mkoctfile needs to work
+- The result needs to be linked with numerous
+  other libraries: archiver, xml-rpc
+
+The Makefile might help with the building.
+Check if the paths in there match your setup.
+
+Installation
+------------
+The script "setup.octave" appends the necessary
+settings for accessing the binaries and compatibility
+scripts to the user's ~/.octaverc file.
+Every user who wants to run octave with the archiver
+needs to run this script once.
+
+Similarly, there's "setup.matlab" which creates
+~/matlab/startup.m.
+
+Usage
+-----
+See ArchiveData.txt for a description of the various
+ways to call the new ArchiveData() routine.
+The functionality of ArchiveData might only make sense
+after prior consultation of the XML-RPC specification in the 
+main ChannelArchiver manual,
+ChannelArchiver/manual/manual.pdf.
+
+The ChannelArchiver/Matlab/util subdir. contains some
+wrapper scripts for the ArchiveData routine, and then
+there are example Matlab scripts in ChannelArchiver/Matlab,
+some of which might also work with octave.
+

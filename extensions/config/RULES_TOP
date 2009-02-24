@@ -1,0 +1,19 @@
+#RULES_TOP
+include $(EPICS_BASE)/config/RULES_TOP
+
+uninstallDirs: uninstallJava uninstallIdl
+
+uninstallJava:
+	@$(RMDIR) $(INSTALL_JAVA)
+
+uninstallIdl:
+	@$(RMDIR) $(INSTALL_IDL)
+
+
+# tar rule now works only on unix type hosts (needs perl script)
+tar.%:
+	@echo "TOP: Creating $*.Tar file..."; \
+	cd ${TOP}/src; \
+	find $* -name CVS -prune -o ! -type d -print \
+		| grep -v "/O\..*$$" | xargs tar vcf ../$*.Tar
+

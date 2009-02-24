@@ -1,0 +1,57 @@
+\section{Perl Client} \label{sec:perlclient}
+The \INDEX{ArchiveDataClient.pl} perl script is provided as a starting point
+for users who want to write perl scripts that access the
+ArchiveDataServer via XML-RPC. It requires the installation of the
+``Frontier'' XML-RPC library for Perl.  The ArchiveDataClient script
+might also help you test your ArchiveDataServer setup because it
+offers a command-line interface that is very close to the underlying
+XML-RPC calls. What follows is an example session:
+
+\begin{lstlisting}[frame=none,keywordstyle=\sffamily]
+USAGE: ArchiveDataClient.pl [options] { channel names } 
+Options:
+  -u URL     : Set the URL of the DataServer
+  -i         : Show server info
+  -a         : List archives (name, key, path)
+  -k key     : Specify archive key.
+  -l         : List channels
+  -m pattern : ... that match a patten
+  -h how     : 'how' number; retrieval method
+  -s time    : Start time MM/DD/YYYY HH:MM:SS.NNNNNNNNN
+  -e time    : End time MM/DD/YYYY HH:MM:SS.NNNNNNNNN
+  -c count   : Count
+
+$ URL=http://localhost/cgi-bin/xmlrpc/ArchiveDataServer.cgi
+$ ArchiveDataClient.pl -u $URL -i
+Archive Data Server V 0
+Description:
+Channel Archiver Data Server V0
+Config '/var/www/cgi-bin/xmlrpc/serverconfig.xml'
+Supports how=0 (raw), 1 (spreadsheet),
+             2 (interpol/average), 3 (plot-binning)
+$ ArchiveDataClient.pl -u $URL -a
+Archives:
+Key 1: 'Xmtr 2002' in '/home/..../2002/index'
+Key 2: 'Xmtr 2003' in '/home/..../2003/index'
+$ ArchiveDataClient.pl -u $URL -k 1 -m IOC1:Load
+Channels:
+Channel Test_HPRF:IOC1:Load,
+   11/01/2002 17:09:37.616190999
+ - 12/31/2002 23:59:45.579346999
+$ ArchiveDataClient.pl -u $URL -k 1 \
+  -s "12/01/2002" -e "12/31/2002" \
+  -h 2 -c 31 Test_HPRF:IOC1:Load
+Result for channel 'Test_HPRF:IOC1:Load':
+Display : 0.000000 ... 100.000000
+Alarms  : 0.000000 ... 80.000000
+Warnings: 0.000000 ... 50.000000
+Units   : '%', Precision: 0
+Type: 3, element count 1.
+11/30/2002 23:11:36.774193571 11.820585
+12/01/2002 22:25:09.677419377 11.846808
+12/02/2002 21:38:42.580645183 12.310933
+12/03/2002 20:52:15.483870989 0.000000 ARCH_DISCONNECT
+12/04/2002 20:05:48.387096795 12.225621
+...
+12/29/2002 23:58:03.870967751 11.448704
+\end{lstlisting}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE engineconfig SYSTEM "engineconfig.dtd">
+<engineconfig>
+   <write_period>30</write_period>
+   <get_threshold>20</get_threshold>
+   <file_size>1.0</file_size>
+   <ignored_future>1.0</ignored_future>
+   <buffer_reserve>3</buffer_reserve>
+   <max_repeat_count>120</max_repeat_count>
+   <disconnect/>
+   <!-- fred disables Test and Test 2, but not Test3.
+        So 'janet' which is also in test3 should stay enabled.
+        Only 'jane' gets disabled.
+     -->
+   <group>
+      <name>Test</name>
+      <channel><name>fred</name> <period>5</period><scan/><disable/> </channel>
+      <channel><name>janet</name> <period>0.1</period><monitor/> </channel>
+   </group>
+   <group>
+      <name>Test2</name>
+      <channel><name>fred</name> <period>5</period><scan/><disable/> </channel>
+      <channel><name>jane</name> <period>0.1</period><monitor/> </channel>
+      <channel><name>janet</name> <period>0.1</period><monitor/> </channel>
+   </group>
+   <group>
+      <name>Test3</name>
+      <channel><name>fred</name> <period>5</period><scan/> </channel>
+      <channel><name>janet</name> <period>0.1</period><monitor/> </channel>
+   </group>
+   <group>
+      <name>Bad</name>
+      <channel><name>not_there</name>
+               <period>1</period><monitor/>
+      </channel>
+   </group>
+</engineconfig>

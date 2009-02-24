@@ -1,0 +1,43 @@
+
+NAME
+     dbreport - produce a report of  record  information  from  a
+     ".db" file
+
+SYNOPSIS
+     dbreport [ -tmax_type ]  [  -nmax_name  ]  [  -fdbname  ]  
+     [field.sizefield.field.sizefield.size...  ]
+
+AVAILABILITY
+     The tool in available under Unix from the EPICS add_on  sys-
+     tem.
+
+DESCRIPTION
+     Dbreport reads ".db" information from file dbname if the  "-
+     f"  option  is  used or from standard in and produces report
+     consisting of one line per record.  The information for each
+     record contains the record type and name, and the fields the
+     user specified on the command  line.   There  is  a  default
+     report  which  prints  the  type,  name, description, device
+     type, and input/output link fields.  Fields are specified as
+     field.size  where field is a valid EPICS database field name
+     in a record and size is the maximum width of  the  field  to
+     use  in  the  report.   Multiple fields can be placed in the
+     same    column    of    the    report    by    using     the
+     field1.field2.field3...size  option.   This  indicated  that
+     fields 1 through n of maximum size will be put  into  single
+     column  in  the  report.   This is useful for fields such as
+     INP/OUT.
+
+OPTIONS
+     -t max_type
+          This specifies the maximum  size  of  the  record  type
+          column  of  the  report.   If  this is not specified, a
+          default of 20 is used.
+
+     -n max_name
+          This specifies the maximum  size  of  the  record  name
+          column  of  the  report.   If  this is not specified, a
+          default of 30 is used.
+
+     -f dbname
+          Name of the ".db" file to report.

@@ -1,0 +1,17 @@
+2003-11-10
+
+     The source files in this directory that came from GNU have not
+been modified.  The original test directory and Makefiles have been
+deleted, but the original AUTHORS, COPYING, ChangeLog, NEWS and README
+files are included.  The only significant additions are an EPICS
+Makefile and Makefile.Host that allow regex.h and regex.c to be
+compiled using the EPICS build system.
+
+Note that the use of GPL software such as GNU Regex may make it
+illegal to distribute a binary file that contains both this code and
+any of the libraries from EPICS Base.  The two licenses are not
+compatible, which makes distribution of code which mixes the two a
+contravention of one license or the other.  However it is not illegal
+(providing you honor the terms of both licenses) to distribute the two
+separately as source and for the user to compile them into a binary at
+their destination site.

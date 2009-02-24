@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE archiveconfig SYSTEM "archiveconfig.dtd">
+<archiveconfig>
+  <root>/arch</root>
+
+  <serverconfig>/var/www/serverconfig.xml</serverconfig>
+
+  <mailbox>/arch/xfer</mailbox>
+
+  <daemon directory='RF'>
+    <run>archive1</run>
+    <desc>RF</desc>
+    <port>4900</port>
+    <dataserver>
+      <index type='binary' key='10'>RF</index>
+      <host>web2</host>
+    </dataserver>
+    <engine directory='llrf'>
+      <run>archive1</run>
+      <desc>LLRF</desc>
+      <port>4901</port>
+      <restart type='weekly'>We 10:20</restart>
+      <dataserver>
+        <current_index key='4901'>llrf</current_index>
+        <index type='binary'>LLRF data</index>
+        <host>web2</host>
+      </dataserver>
+    </engine>
+  </daemon>
+</archiveconfig>

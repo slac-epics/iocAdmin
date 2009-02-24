@@ -1,0 +1,23 @@
+# Example for dotting & viewing:
+# dot -Tpng -o dataserver.png dataserver.dot && eog dataserver.png &
+
+digraph DataServer
+{
+    client [ label="Data Client Program",shape=octagon ]; 
+    config [ label="Configuration File", shape=rectangle ];
+    config -> server [ style=dotted ];
+    httpd [ label="Web Server",shape=octagon ];
+    server [ label="Data Server", style=filled, shape=doubleoctagon ];
+    client->httpd [ label="1) Sends request" ];
+    httpd->client [ label="4) Forwards data" ];
+    httpd->server [ label="2) Forwards request" ];
+    server->httpd [ label="3) Gives data" ];
+    server->i1 [ arrowhead=inv,arrowtail=none,headport=n ];
+    server->i2 [ arrowhead=inv,arrowtail=none,headport=n ];
+    server->i3 [ arrowhead=inv,arrowtail=none,headport=n ];
+    
+      i1 [ label="Archive 1",shape=parallelogram ];
+      i2 [ label="Archive 2",shape=parallelogram ];
+      i3 [ label="Archive 3",shape=parallelogram ];
+    
+}

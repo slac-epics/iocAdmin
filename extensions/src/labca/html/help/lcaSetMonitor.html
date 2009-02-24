@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>lcaSetMonitor</TITLE>
+<META NAME="description" CONTENT="lcaSetMonitor">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION000216000000000000000"></A>
+<A NAME="lcasetmonitor"></A>
+<BR>
+lcaSetMonitor
+</H2>
+
+<H3><A NAME="SECTION000216100000000000000">
+Calling Syntax</A>
+</H3>
+<PRE>
+lcaSetMonitor(pvs, nmax, type)
+</PRE>
+<H3><A NAME="SECTION000216200000000000000">
+Description</A>
+</H3>
+Set a ``monitor'' on a set of PVs. Monitored PVs are automatically retrieved
+every time their value or status changes. <I>labCA</I> sets an internal flag when
+this happens. Monitors are especially useful under EPICS-3.14 which supports
+multiple threads. EPICS-3.14 transparently reads monitored PVs as needed.
+Older, single threaded versions of EPICS require periodic calls to <I>labCA</I>
+e.g., to <A HREF="lcaDelay.html#lcadelay"><TT>lcaDelay</TT></A>, in order to allow <I>labCA</I> to handle
+monitors.
+
+<P>
+Use the <A HREF="lcaNewMonitorValue.html#lcanewmonitorvalue"><TT>lcaNewMonitorValue</TT></A> call to check
+monitor status (local flag). If new data are available, they are retrieved using
+the ordinary <A HREF="lcaGet.html#lcaget"><TT>lcaGet</TT></A> call.
+
+<P>
+Note the difference between polling and monitoring a PV in combination with
+polling the local monitor status flag. In the first case, remote data are fetched
+on every polling cycle whereas in the second case, data are transferred only
+when they change.  Also, in the monitored case, <TT>lcaGet</TT> reads from a local
+buffer rather than from the network.
+
+<P>
+There is currently no possibility to selectively remove a monitor. Use
+the <A HREF="lcaClear.html#lcaclear"><TT>lcaClear</TT></A> call to disconnect a channel and as a side-effect,
+remove all monitors on that channel. Future access to a cleared channel
+simply reestablishes a connection (but no monitors).
+
+<H3><A NAME="SECTION000216300000000000000">
+Parameters</A>
+</H3>
+<DL>
+<DT><STRONG>pvs</STRONG></DT>
+<DD>Column vector (in matlab: <I>m x 1</I> <I>cell-</I> matrix)
+of <I>m</I> strings.
+
+</DD>
+<DT><STRONG>nmax</STRONG></DT>
+<DD>(<I>optional argument</I>) Maximum number of elements
+(per PV) to monitor/retrieve. If set to 0 (default), all elements are fetched.
+See <A HREF="lcaGet.html#nmaxarg">here</A> for more information.
+</DD>
+<DT><STRONG>type</STRONG></DT>
+<DD>(<I>optional argument</I>) A string specifying the
+data type to be used for the channel access data transfer. The
+native type is used by default.
+See <A HREF="lcaGet.html#typearg">here</A> for more information.
+
+<P>
+The type specified for the subsequent <TT>lcaGet</TT> for retrieving
+the data should match the monitor's data type. Otherwise, <TT>lcaGet</TT>
+will fetch a new copy from the server instead of using the data that
+was already transferred as a result of the monitoring.
+</DD>
+</DL>
+<H3><A NAME="SECTION000216400000000000000">
+Examples</A>
+</H3>
+<PRE>
+lcaSetMonitor('PV')
+// monitor 'PV'. Reduce network traffic by just have the
+// library retrieve the first 20 elements. Use DBR_SHORT
+// for transfer.
+lcaSetMonitor('PV', 20, 's')
+</PRE>
+
+<P>
+<BR><HR>
+<ADDRESS>
+Till Straumann
+2006-04-16
+</ADDRESS>
+</BODY>
+</HTML>

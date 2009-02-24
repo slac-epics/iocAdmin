@@ -1,0 +1,39 @@
+\chapter{Indices} \label{chap:indices}
+The archiver supports two types of indices:
+\begin{itemize}
+\item ``binary'':\\
+      This is the type of index that the engine creates for its data
+      files. The ArchiveIndexTool, described in \ref{sec:indextool},
+      allows the creation of new indices which combine data from
+      existing indices.
+
+      A \INDEX{binary index} contains information about all the data block for
+      each channel. It offers the best retrieval performance.  On the
+      downside, the creation of a binary index can take time, and the
+      size of an index file is limited to 2 GB. When the sub-archives
+      which are accessed via the index change, the index needs to be
+      updated or rebuild.
+\item ``list'':\\
+      This type of index simply lists the sub-archives which one would
+      like to access. Its format is the same as the indexconfig.xml
+      used by the ArchiveIndexTool to create a binary index.
+      When retrieving data, the first sub-archive in the list is
+      used. When the channel is not found, the next sub-archive is
+      used and so on.
+
+      A \INDEX{list index} takes virtually no time to create, and also
+      requires little disk space. The retrieval is not too bad when
+      only a few sub-archives are listed. It works very well for
+      maybe a dozen entries, but of course degrades with
+      the number of entries.
+
+      It will also fail when the sub-archives contain the same
+      channels but for different time ranges.
+\end{itemize}
+
+\noindent One should try to use binary indices as long as the size and update times
+are acceptable.
+Not available but clearly needed is a third index type which contains
+the channel names and time ranges of the sub-archives, without growing
+to the full binary index size which references each data block.
+

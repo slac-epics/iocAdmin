@@ -1,0 +1,6 @@
+# CONFIG,v 1.1 2003/07/01 20:52:24 jba Exp
+
+include $(TOP)/configure/CONFIG_EXTENSIONS
+# Add any changes to make rules here
+
+CROSS_COMPILER_TARGET_ARCHS =
