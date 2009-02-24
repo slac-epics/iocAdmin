@@ -1,0 +1,24 @@
+#
+# PV used to indicate local access
+# mode for a particular IOC, group of
+# devices, or specific device.
+#
+record( mbbo, "$(DEV):ACCESS")
+        {
+	field( DESC, "$(DEV) Acc Mode")
+        field( ASG,  "$(MANAGE)")
+        field( IVOA, "Don't drive outputs")
+        field( PINI, "YES")
+        field( ZRVL, "0")
+        field( ZRST,    "Running")
+        field( ZRSV,    "NO_ALARM")
+        field( ONVL, "1")
+        field( ONST,    "Maintenance")
+        field( ONSV,    "MINOR")
+        field( TWVL, "2")
+        field( TWST,    "Test")
+        field( TWSV,    "MINOR")
+        field( THVL, "3")
+        field( THST,    "OFFLINE")
+        field( THSV,    "MAJOR")
+        }
