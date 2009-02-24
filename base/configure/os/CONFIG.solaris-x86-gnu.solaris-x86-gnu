@@ -1,0 +1,20 @@
+# CONFIG.solaris-x86-gnu.solaris-x86-gnu
+#
+# CONFIG.solaris-x86-gnu.solaris-x86-gnu,v 1.4.2.7 2005/09/15 16:53:59 jba Exp
+# This file is maintained by the build community.
+#
+# Definitions for solaris-x86 gnu compiler host - solaris-x86 gnu compiler target builds
+# Sites may override these definitions in CONFIG_SITE.solaris-x86-gnu.solaris-x86-gnu
+#-------------------------------------------------------
+
+# Include common gnu compiler definitions
+include $(CONFIG)/CONFIG.gnuCommon
+
+AR = ar -rc
+RANLIB=
+LD = ld -r
+
+SHRLIB_LDFLAGS += -shared -fPIC -h $@  -z defs
+LOADABLE_SHRLIB_LDFLAGS += -shared -fPIC -h $@
+
+OP_SYS_LDFLAGS += -z ignore -z combreloc -z lazyload

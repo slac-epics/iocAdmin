@@ -1,0 +1,10 @@
+# CONFIG.solaris-sparc.solaris-sparc
+#
+# CONFIG.solaris-sparc.solaris-sparc,v 1.31.2.8 2005/09/15 16:07:51 jba Exp
+# This file is maintained by the build community.
+#
+# Definitions for solaris-sparc host - solaris-sparc target build
+# Sites may override these definitions in CONFIG_SITE.solaris-sparc.solaris-sparc
+#-------------------------------------------------------
+
+include $(CONFIG)/os/CONFIG.solarisCommon.solarisCommon

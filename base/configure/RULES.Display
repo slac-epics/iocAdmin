@@ -1,0 +1,36 @@
+# ================================================================
+# Where to install EDM Displays:
+# ================================================================
+
+INSTALL_EDL = $(INSTALL_LOCATION)/display
+INSTALL_EDLS = $(EDLS:%=$(INSTALL_EDL)/%)
+
+INSTALL_GIFS += $(addprefix $(INSTALL_GIF)/,$(notdir $(GIFS))) 
+
+INSTALL_PNGS += $(addprefix $(INSTALL_PNG)/,$(notdir $(PNGS))) 
+
+build:	$(INSTALL_EDLS) $(INSTALL_GIFS) $(INSTALL_PNGS) 
+
+
+rebuild:        clean install
+
+buildInstall:	$(INSTALL_EDLS) $(INSTALL_GIFS) $(INSTALL_PNGS)
+
+clean::
+	@echo "Cleaning"
+
+
+INSTALL = $(PERL) $(TOOLS)/installEpics.pl
+
+$(INSTALL_EDLS):	$(INSTALL_EDL)/%.edl:	%.edl  
+	@echo "Installing edl file $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_EDL)
+
+
+$(INSTALL_GIFS):	$(INSTALL_GIF)/%.gif:	%.gif 
+	@echo "Installing gif file $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_EDL)
+
+$(INSTALL_PNGS):	$(INSTALL_PNG)/%.png:	%.png  
+	@echo "Installing png file $@"
+	@$(INSTALL) -d -m 644 $< $(INSTALL_EDL)

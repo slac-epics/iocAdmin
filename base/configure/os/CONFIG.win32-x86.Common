@@ -1,0 +1,30 @@
+# CONFIG.win32-x86.Common
+#
+# CONFIG.win32-x86.Common,v 1.8.2.1 2004/11/09 14:45:01 jba Exp
+# This file is maintained by the build community.
+#
+# Definitions for win32-x86 host archs
+# Sites may override these definitions in CONFIG_SITE.win32-x86.Common
+#-------------------------------------------------------
+
+CP = $(PERL) $(CONFIG)/tools/cp.pl
+MV = $(PERL) $(CONFIG)/tools/mv.pl
+RM = $(PERL) $(CONFIG)/tools/rm.pl -f
+MKDIR = $(PERL) $(CONFIG)/tools/mkdir.pl
+RMDIR = $(PERL) $(CONFIG)/tools/rm.pl -rf
+ECHO = echo
+
+WIND_HOST_TYPE = x86-win32
+OSITHREAD_USE_DEFAULT_STACK = NO
+
+HOSTEXE=.exe
+
+# Does not work if using cygwin make
+# because HOME is always defined
+ifndef HOME
+HOME = $(HOMEDRIVE)$(HOMEPATH)
+endif
+
+# Needed to find dlls for base installed build tools (antelope,eflex,...)
+PATH := $(EPICS_BASE_TOOLS_BIN):$(PATH)
+

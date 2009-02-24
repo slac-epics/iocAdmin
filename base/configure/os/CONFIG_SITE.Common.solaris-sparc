@@ -1,0 +1,14 @@
+# CONFIG_SITE.Common.solaris-sparc
+#
+# CONFIG_SITE.Common.solaris-sparc,v 1.3.2.3 2005/02/04 20:18:44 jba Exp
+#
+# Site Specific definitions for solaris-sparc target
+# Only the local epics system manager should modify this file
+
+# If readline is installed uncomment the following macro definition
+# to include command-line editing and history support
+#
+#COMMANDLINE_LIBRARY = READLINE
+
+# APS site override
+GNU_DIR = /opt/gnu

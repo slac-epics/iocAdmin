@@ -1,0 +1,27 @@
+# =============================================================
+# RELEASE_NOTES
+# =============================================================
+
+CVS Release Tag:  base-R3-14-9-lcls1
+
+# Site specific Modfication ChangeLog
+# This will track any patches and site
+# configuration.  The original EPICS BASE R3.14.9
+# has been fully patched with all patches from the 
+# APS "Known Problems" web site.
+
+# In addition all SLAC related patches for RTEMS have
+# been applied.   Thanks to Till Strauman for supplying
+# The RTEMS related patches.  
+
+# We have also added LCLS templates under makeBaseApp as well.
+# This will support the way we build IOC applications for the
+# the LCLS.  
+# The new templates in conjunction with changes to
+# the make RULES provide two new product directories for IOC 
+# Apps:
+# (1) display -- stores edm screens
+# (2) restore -- stores save/restore config files.
+
+
+

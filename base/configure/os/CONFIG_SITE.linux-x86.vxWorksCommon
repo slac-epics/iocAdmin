@@ -1,0 +1,15 @@
+# CONFIG_SITE.linux-x86.vxWorksCommon
+#
+# CONFIG_SITE.linux-x86.vxWorksCommon,v 1.6 2001/01/30 16:00:45 jba Exp
+# This file is maintained by the build community.
+#
+# Definitions for linux-x86 host - vxWorks target builds
+#-------------------------------------------------------
+ 
+# JBA test override values
+
+#GNU_DIR=/home/phoebus/JBA/gnu
+#GNU_TARGET_INCLUDE_DIR=$(GNU_DIR)/$(GNU_TARGET)/include
+#CC = $(GNU_BIN)/$(CMPLR_PREFIX)gcc$(CMPLR_SUFFIX)
+#CCC = $(GNU_BIN)/$(CMPLR_PREFIX)gcc$(CMPLR_SUFFIX)
+

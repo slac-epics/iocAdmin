@@ -1,0 +1,52 @@
+## Example vxWorks startup file
+
+## The following is needed if your board support package doesn't at boot time
+## automatically cd to the directory containing its startup script
+#cd "_TOP_/iocBoot/_IOC_"
+
+< cdCommands
+#< ../nfsCommands
+
+
+# IOCs can load settings which are common
+# for all IOCs. Such as EPICS_CA_ADDR_LIST, etc...
+# The file: pre_st.cmd does the trick
+# </afs/slac/g/lcls/build/epics/iocCommon/All/pre_st.cmd
+
+
+cd topbin
+## You may have to change _APPNAME_ to something else
+## everywhere it appears in this file
+
+ld < _APPNAME_.munch
+
+## This drvTS initializer is needed if the IOC has a hardware event system
+#TSinit
+
+## Register all support components
+cd top
+dbLoadDatabase("dbd/_APPNAME_.dbd",0,0)
+_APPNAME__registerRecordDeviceDriver(pdbbase)
+
+## Load record instances
+dbLoadRecords("db/dbExample1.db","user=_USER_")
+dbLoadRecords("db/dbExample2.db","user=_USER_,no=1,scan=1 second")
+dbLoadRecords("db/dbExample2.db","user=_USER_,no=2,scan=2 second")
+dbLoadRecords("db/dbExample2.db","user=_USER_,no=3,scan=5 second")
+dbLoadRecords("db/dbSubExample.db","user=_USER_")
+
+## Set this to see messages from mySub
+#mySubDebug = 1
+
+cd startup
+iocInit()
+
+## Start any sequence programs
+#seq &sncExample,"user=_USER_"
+
+## Now we need to do a favor for the IRMIS crawler
+## All IOCs should dump some common info after initial
+## startup.
+## The file: post_st.cmd does the trick
+#</afs/slac/g/lcls/build/epics/iocCommon/All/post_st.cmd
+
