@@ -16,9 +16,22 @@ COMMANDLINE_LIBRARY = LIBTECLA
 
 
 # Where to find RTEMS and specify version as well:
-RTEMS_SITE_TOP=/usr/local/lcls/rtems
-RTEMS_VER=rtems-4.7.1
+# 2 cases:
+# RTEMS_SITE_TOP is defined: we use it
+# otherwise use /pcds/package/rtems
+RTEMS_SITE_TOP?=/pcds/package/rtems
+ifeq ($(shell if [ ! -d $(RTEMS_SITE_TOP) ]; then echo error; fi),error)
+$(error RTEMS_SITE_TOP="$(RTEMS_SITE_TOP)" does not exist)
+endif
 
+# 2 cases for the version:
+# RTEMS_SITE_TOP is an SVN or CVS directory: version is not defined
+# otherwise set RTEMS_VER if not already set
+ifeq ($(shell if [ -e $(RTEMS_SITE_TOP)/CVS -o -e $(RTEMS_SITE_TOP)/.svn ]; then echo 1; fi ),1)
+	RTEMS_VER=
+else
+	RTEMS_VER?=rtems-4.7.1
+endif
 
 #
 # T.S: we use a little bit more flexibility allowing for the

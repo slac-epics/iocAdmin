@@ -95,7 +95,7 @@
 #
 #CROSS_COMPILER_TARGET_ARCHS=
 #CROSS_COMPILER_TARGET_ARCHS=vxWorks6-ppc604_long
-CROSS_COMPILER_TARGET_ARCHS=RTEMS-beatnik RTEMS-uC5282 RTEMS-pc586
+CROSS_COMPILER_TARGET_ARCHS=RTEMS-beatnik
 
 #  If only a subset of the host architectures perform
 #  the build for the CROSS_COMPILER_TARGET_ARCHS
@@ -139,7 +139,7 @@ HDEPENDS=YES
 
 #  Host build optimization
 #	must be either YES or NO
-HOST_OPT=NO
+HOST_OPT=YES
 
 #  Cross build optimization
 #	must be either YES or NO
@@ -159,7 +159,7 @@ CROSS_WARN=YES
 #  NOTE: Set to YES only if you have existing R3.13 extensions to be
 #  built with this base
 #
-COMPAT_TOOLS_313=YES
+COMPAT_TOOLS_313=NO
 
 #  Create and/or install files for R3.13 ioc application and extension builds?
 #  must be either YES or NO
@@ -167,7 +167,7 @@ COMPAT_TOOLS_313=YES
 #  NOTE: Set to YES only if you have existing R3.13 ioc applications
 #  and extensions to be built with this base
 #
-COMPAT_313=YES
+COMPAT_313=NO
 
 #  Installation directory
 # If you don't want to install into $(TOP) dir then
@@ -179,5 +179,5 @@ USE_POSIX_THREAD_PRIORITY_SCHEDULING = YES
 
 #  Site version number, if set will append '-' and this string to the
 #  EPICS version number string that is reported by many tools
-EPICS_SITE_VERSION = lcls1
+EPICS_SITE_VERSION = pcds-r$(shell svnversion $(EPICS_SITE_TOP))
 

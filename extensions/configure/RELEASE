@@ -1,12 +1,58 @@
-# RELEASE,v 1.2 2003/08/27 15:00:38 soliday Exp
+#RELEASE Location of external products
+#
+# IF YOU MAKE ANY CHANGES to this file you MUST at least run
+# "gnumake" in this directory afterwards; you usually need
+# EPICS extensions main RELEASE file
+#
+# Host/target specific settings can be specified in files named
+#  RELEASE.$(EPICS_HOST_ARCH).Common
+#  RELEASE.Common.$(T_A)
+#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
 
-# If you don't want to install into $(TOP) dir then
-# define INSTALL_LOCATION_EXTENSIONS here
-#INSTALL_LOCATION_EXTENSIONS=<fullpathname>
+# Pickup the path to your EPICS top level directory
+# This is where EPICS lives at your site.
+ifndef EPICS_SITE_TOP
+$(error EPICS_SITE_TOP undefined)
+endif
 
-# Location of external products
-EPICS_BASE=/afs/slac/g/lcls/epics/base
-#EPICS_EXTENSIONS = /usr/local/epics/extensions
-EPICS_EXTENSIONS=$(TOP)
+# Site configuration, if it does not exist, no big deal
+include $(EPICS_SITE_TOP)/RELEASE_SITE
 
-#OAG_APPS=$(TOP)/../../oag/apps
+# =================================================================
+# Define EPICS_EXTENSIONS
+# EPICS_BASE usually appears last so other apps can override stuff:
+# =================================================================
+EPICS_EXTENSIONS=$(EPICS_SITE_TOP)/extensions/$(EXTENSIONS_MODULE_VERSION)
+
+# =================================================================
+# Define EPICS_BASE
+# EPICS_BASE usually appears last so other apps can override stuff:
+# =================================================================
+EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+
+# =============================================================
+# Define location of module tree with respect to
+# EPICS_SITE_TOP
+# =============================================================
+EPICS_MODULES=$(EPICS_SITE_TOP)/modules
+
+# ===============================================================
+# Define the version of modules needed by
+# IOC apps or other Support apps
+# Make sure that you look at the website to discover
+# the appropriate version dependencies
+# http://www-group.slac.stanford.edu/cdsoft/epics/swModules3.htm
+# ===============================================================
+# NOTE: do not set unless you want to use a released version
+
+# ============================================================
+# External Support
+# ============================================================
+# example: IPAC=$(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
+# NOTE: it is normal for IPAC_MODULE_VERSION not to be defined, it will
+# be inserted by the release script.
+
+# ========================================================================================
+#If using macro substitutions, point MSI at the binary:
+# ========================================================================================
+MSI=$(EPICS_EXTENSIONS)/bin/$(EPICS_HOST_ARCH)/msi

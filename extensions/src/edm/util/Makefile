@@ -7,7 +7,7 @@ EDMTOP = $(TOP)/src/edm
 USR_CFLAGS += -D__osf__=1
 
 
-INSTALL_INCLUDE = $(TOP)/include/edm
+INSTALL_INCLUDE = $(INSTALL_LOCATION)/include/edm
 
 SRC_DIRS += $(EDMTOP)/util/sys/$(OS_CLASS)
 INC += os.h

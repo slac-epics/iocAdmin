@@ -10,13 +10,14 @@
 # Makefile,v 1.2 2002/08/02 15:40:06 jba Exp
 #
 TOP = ../..
-ifneq ($(wildcard $(TOP)/config)x,x)
-  # New Makefile.Host config file location
-  include $(TOP)/config/CONFIG_EXTENSIONS
-  include $(TOP)/config/RULES_ARCHS
-else
-  # Old Makefile.Unix config file location
-  EPICS=../../..
-  include $(EPICS)/config/CONFIG_EXTENSIONS
-  include $(EPICS)/config/RULES_ARCHS
+include $(TOP)/configure/CONFIG
+#ts should not be built for base release R3.13
+#base release R3.13 has tsDefs.h and libCom contains tsSubr.c
+
+ifdef BASE_3_14
+INC = tsDefs.h
+LIBSRCS = tsSubr.c
+LIBRARY =  ts
 endif
+
+include $(TOP)/configure/RULES

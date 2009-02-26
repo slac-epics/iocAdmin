@@ -25,7 +25,7 @@ ifdef EPICS_HOST_ARCH
         cfcaa62e-8199-11d3-a77f-00104b8742df_SYS_LIBS_Linux = Xm Xt Xp Xtst X11 pthread dl
   endif
 
-  INSTALL_INCLUDE = $(TOP)/include/edm
+  INSTALL_INCLUDE = $(INSTALL_LOCATION)/include/edm
   INC += act_grf.h
   INC += act_win.h
   INC += app_pkg.h

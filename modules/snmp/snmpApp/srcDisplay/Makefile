@@ -23,7 +23,9 @@ include $(TOP)/configure/CONFIG
 #PNGS+=$(wildcard *.png)
 #GIFS+=$(wildcard *.gif)
 
-
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
+
+realclean:
+

@@ -1,0 +1,43 @@
+# This is the site configuration file
+# This file is custom for the PCDS EPICS
+# and should not be redistributed with
+# EPICS modules outside of PCDS build
+# environment and releases.
+
+# EPICS_HOST_ARCH is set here
+ifndef EPICS_HOST_ARCH
+	EPICS_HOST_ARCH=$(shell $(EPICS_BASE)/startup/EpicsHostArch.pl)
+	export EPICS_HOST_ARCH
+endif
+
+# =================================================================
+# EPICS Packages versions
+# =================================================================
+EXTENSIONS_MODULE_VERSION=
+BASE_MODULE_VERSION=
+
+# =================================================================
+# Define EPICS_EXTENSIONS
+# =================================================================
+EPICS_EXTENSIONS=$(EPICS_SITE_TOP)/extensions/$(EXTENSIONS_MODULE_VERSION)
+
+# =================================================================
+# Define EPICS_BASE
+# =================================================================
+EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+
+# =============================================================
+# Define location of module tree with respect to
+# EPICS_SITE_TOP
+# =============================================================
+EPICS_MODULES=$(EPICS_SITE_TOP)/modules
+
+# =================================================================
+# EPICS templates for config files
+# =================================================================
+TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
+
+# ========================================================================================
+# We need it for macro substitutions, point MSI at the binary:
+# ========================================================================================
+MSI=$(EPICS_EXTENSIONS)/bin/$(EPICS_HOST_ARCH)/msi

@@ -7,7 +7,7 @@ ifdef EPICS_HOST_ARCH
    # Add Debugging
    #USR_CXXFLAGS_Linux += -g -O0
 
-   INSTALL_INCLUDE = $(TOP)/include/edm
+   INSTALL_INCLUDE = $(INSTALL_LOCATION)/include/edm
    INC += pv.h
    INC += epicsPv.h
 

@@ -133,17 +133,22 @@ sub readRelease {
 	
 	# Expand all already-defined macros in the line:
 	while (my ($pre,$var,$post) = /(.*)\$\((\w+)\)(.*)/) {
-	    last unless (exists $Rmacros->{$var});
-	    $_ = $pre . $Rmacros->{$var} . $post;
-	}
+            if (exists $Rmacros->{$var}) {
+                $_ = $pre . $Rmacros->{$var} . $post;
+            } elsif (exists $ENV{$var}) {
+                $_ = $pre . $ENV{$var} . $post;
+            } else {
+                $_ = $pre . $post;
+            }
+        }
 	
 	# Handle "<macro> = <path>"
 	my ($macro, $path) = /^\s*(\w+)\s*=\s*(.*)/;
 	if ($macro ne "") {
-		$macro="TOP" if $macro =~ /^INSTALL_LOCATION/ ;
 		if (exists $Rmacros->{$macro}) {
 			delete $Rmacros->{$macro};
 		} else {
+			push @$Rapps, "TOP" if $macro =~ /^INSTALL_LOCATION/ ;
 			push @$Rapps, $macro;
 		}
 	    $Rmacros->{$macro} = $path;
