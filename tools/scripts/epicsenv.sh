@@ -12,50 +12,64 @@
 # -If EPICS_TOOLS_SITE_TOP is defined it will use it
 # -If not it will use EPICS_SITE_TOP
 
-
-EPICS_HOST_ARCH=$(${EPICS_SITE_TOP}/base/startup/EpicsHostArch.pl)
-PATH="${PATH}:/pcds/package/epics/base/base-R3-14-9-pcds1/bin/${EPICS_HOST_ARCH}"
-
-export PATH=${PATH}:${EPICS_SITE_TOP}/extensions/bin/${EPICS_HOST_ARCH}
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${EPICS_SITE_TOP}/extensions/lib/${EPICS_HOST_ARCH}
-if [ -z "${CLASSPATH}" ] ; then
-	CLASSPATH="${EPICS_EXTENSIONS}/javalib"
-else
-	CLASSPATH="${CLASSPATH}:${EPICS_EXTENSIONS}/javalib"
+if [ -z "${EPICS_TOOLS_SITE_TOP}" ]; then
+	# Until we have parsed RELEASE_SITE we can only guess where the tools are
+	# it is assumed that the very bare minimum required to read RELEASE_SITE will never
+	# be broken enough for this not to work
+	if [ -e ${EPICS_SITE_TOP}/tools/current ]; then
+		TMP_PCDS_TOOLS_DIR=${EPICS_SITE_TOP}/tools/current
+	else
+		TMP_PCDS_TOOLS_DIR=${EPICS_SITE_TOP}/tools
+	fi
+	EPICS_TOOLS_SITE_TOP=$(make -f ${TMP_PCDS_TOOLS_DIR}/lib/Makefile.displayvar EPICS_TOOLS_SITE_TOP)
+	if [ -z "${EPICS_TOOLS_SITE_TOP}" ]; then
+		EPICS_TOOLS_SITE_TOP=${EPICS_SITE_TOP}
+	fi
+	PCDS_TOOLS_DIR=$(make -f ${TMP_PCDS_TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} PCDS_TOOLS_DIR)
+	if [ -z "${PCDS_TOOLS_DIR}" ]; then
+		PCDS_TOOLS_DIR=${TMP_PCDS_TOOLS_DIR}
+	fi
 fi
+
+if [ ! -d ${EPICS_TOOLS_SITE_TOP} ]; then
+	echo "EPICS tools directory ${EPICS_TOOLS_SITE_TOP} does not exist."
+	exit 1
+fi
+
+if [ ! -d ${PCDS_TOOLS_DIR} ]; then
+	echo "PCDS tools directory ${PCDS_TOOLS_DIR} does not exist."
+	exit 1
+fi
+
+EPICS_BASE=$(make -f ${PCDS_TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} EPICS_BASE)
+EPICS_EXTENSIONS=$(make -f ${PCDS_TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} EPICS_EXTENSIONS)
+VDCT=$(make -f ${PCDS_TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} VDCT)
+
+EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch.pl)
+
+# Set path to utilities provided by EPICS and its extensions
+PATH="${PATH}:${EPICS_BASE}/bin/${EPICS_HOST_ARCH}:${PCDS_TOOLS_DIR}/bin"
+PATH="${PATH}:${EPICS_EXTENSIONS}/bin/${EPICS_HOST_ARCH}"
+export PATH
+
+# Set path to libraries provided by EPICS and its extensions (required by EPICS tools)
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${EPICS_BASE}/lib/${EPICS_HOST_ARCH}"
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${EPICS_EXTENSIONS}/lib/${EPICS_HOST_ARCH}"
+export LD_LIBRARY_PATH
+
+# Java is required by vdct
+CLASSPATH="${CLASSPATH}:${EPICS_EXTENSIONS}/javalib"
 export CLASSPATH
-if [ x$EPICS_HOST_ARCH = x ]
-then
-   ODIR=$HOST_ARCH
-else
-   ODIR=$EPICS_HOST_ARCH
-fi
-export EDMWEBBROWSER=mozilla
 
-# Tell it where to find fonts.list, calc.list, colors.list
-# Note: to fix a mistake in the code, where EDMFILES is used as the
-# envvar to find file "edmPrintDef", edmPrintDef needs to be in this dir, too.
-export EDMFILES=/pcds/package/tools/edm/config
-export EDMHELPFILES=$EPICS_EXTENSIONS/src/edm/helpFiles
-export EDMUSERLIB=$EPICS_EXTENSIONS/lib/$ODIR
+# The following setup is for EDM
+export EDMWEBBROWSER=mozilla
+export EDMFILES=${EPICS_EXTENSIONS}/src/edm/config
+export EDMHELPFILES=${EPICS_EXTENSIONS}/src/edm/helpFiles
+export EDMUSERLIB=${EPICS_EXTENSIONS}/lib/${EPICS_HOST_ARCH}
 export EDMOBJECTS=$EDMFILES
 export EDMPVOBJECTS=$EDMFILES
 export EDMFILTERS=$EDMFILES
-export EDM_DATA=$TOOLS_DATA/edm/data
-export EDMDUMPFILES=$TOOLS_DATA/edm/data
-#export EDMUSERS=$TOOLS_DATA/edm/display
-export EDM=/pcds/package/tools/edm/display
-export EDMDATAFILES=.:..:$EDM/mgnt:$EDM/slc:$EDM/event:$EDM/vac:$EDM/lcls:${EDM}/pps:${EDM}/bcs:${EDM}/mps:${EDM}/bpms:${EDM}/llrf:${EDM}/prof:${EDM}/laser:${EDM}/mc:${EDM}/ws:${EDM}/watr:${EDM}/temp:${EDM}/alh:${EDM}/blm:${EDM}/toroid:${EDM}/misc:${EDM}/fbck
 
-if [ ! -f $EDMPVOBJECTS/edmPvObjects ]
-then
-    edm -addpv $EDMUSERLIB/libEpics.so
-fi
-
-if [ ! -f $EDMOBJECTS/edmObjects ]
-then
-    edm -add $EDMUSERLIB/libEdmBase.so
-    edm -add $EDMUSERLIB/lib605432d2-f29d-11d2-973b-00104b8742df.so
-    edm -add $EDMUSERLIB/lib7e1b4e6f-239d-4650-95e6-a040d41ba633.so
-    edm -add $EDMUSERLIB/libPV.so
-fi
+# The following setup is for vdct
+# WARNING: java-1.6.0-sun must be installed on the machine running vdct!!!
+alias vdct='java -cp ${VDCT}/lib/VisualDCT.jar com.cosylab.vdct.VisualDCT'

@@ -1,0 +1,11 @@
+# Makefile.displayvar
+#
+# This Makefile display a make variable defined in RELEASE_SITE
+#
+# Remi Machet <rmachet@slac.stanford.edu>
+# Copyright 2009, SLAC National Accelerator Laboratory
+
+include $(EPICS_SITE_TOP)/RELEASE_SITE
+
+%:
+	@echo $($@)

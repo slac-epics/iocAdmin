@@ -15,6 +15,7 @@ endif
 # =================================================================
 EXTENSIONS_MODULE_VERSION=
 BASE_MODULE_VERSION=
+VDCT_MODULE_VERSION=
 
 # =================================================================
 # Define EPICS_EXTENSIONS
@@ -33,6 +34,11 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 EPICS_MODULES=$(EPICS_SITE_TOP)/modules
 
 # =================================================================
+# Define VDCT path
+# =================================================================
+VDCT=$(EPICS_SITE_TOP)/vdct/$(VDCT_MODULE_VERSION)
+
+# =================================================================
 # EPICS templates for config files
 # =================================================================
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
@@ -41,3 +47,17 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 # We need it for macro substitutions, point MSI at the binary:
 # ========================================================================================
 MSI=$(EPICS_EXTENSIONS)/bin/$(EPICS_HOST_ARCH)/msi
+
+# =============================================================
+# Location of the development tools that are part of Epics
+# They are in the repository but one usually want something
+# more stable...
+# =============================================================
+EPICS_TOOLS_SITE_TOP=$(EPICS_SITE_TOP)
+
+# =============================================================
+# Location of the PCDS development tools that are not part of 
+# EPICS (but are provided in this repository).
+# =============================================================
+PCDS_TOOLS_VERSION=
+PCDS_TOOLS_DIR=$(EPICS_TOOLS_SITE_TOP)/tools/$(PCDS_TOOLS_VERSION)
