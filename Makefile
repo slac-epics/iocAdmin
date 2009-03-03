@@ -10,9 +10,11 @@ endif
 include $(EPICS_SITE_TOP)/RELEASE_SITE
 
 DIRS=
+DIRS+=tools
 DIRS+=base
 DIRS+=extensions
 DIRS+=modules
+DIRS+=vdct
 
 all:
 

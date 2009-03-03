@@ -50,6 +50,7 @@ set EPICS_HOST_ARCH = `${EPICS_BASE}/startup/EpicsHostArch.pl`
 # Set path to utilities provided by EPICS and its extensions
 setenv PATH "${PATH}:${EPICS_BASE}/bin/${EPICS_HOST_ARCH}:${PCDS_TOOLS_DIR}/bin"
 setenv PATH "${PATH}:${EPICS_EXTENSIONS}/bin/${EPICS_HOST_ARCH}"
+setenv PATH "${PATH}:${VDCT}/bin"
 
 # Set path to libraries provided by EPICS and its extensions (required by EPICS tools)
 setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${EPICS_BASE}/lib/${EPICS_HOST_ARCH}"
@@ -73,4 +74,4 @@ setenv EDMFILTERS $EDMFILES
 
 # The following setup is for vdct
 # WARNING: java-1.6.0-sun must be installed on the machine running vdct!!!
-alias vdct 'java -cp ${VDCT}/lib/VisualDCT.jar com.cosylab.vdct.VisualDCT'
+#alias vdct 'java -cp ${VDCT}/lib/VisualDCT.jar com.cosylab.vdct.VisualDCT'
