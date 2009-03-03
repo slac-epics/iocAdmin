@@ -31,6 +31,7 @@
 #include <rebootLib.h>
 #include <memLib.h>
 #include <sysLib.h>
+#include <end.h>
 
 /* for fdStats */
 #include <private/iosLibP.h>

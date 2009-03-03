@@ -29,7 +29,6 @@
 #include "devIocStats.h"
 #include "epicsDynLink.h"
 
-#include <end.h>
 #ifdef END_MIB_2233 /* This is defined in end.h if 2233 drivers are suppored on the OS */
 #include <ipProto.h>
 #include <private/muxLibP.h>
