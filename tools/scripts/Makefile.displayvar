@@ -5,7 +5,11 @@
 # Remi Machet <rmachet@slac.stanford.edu>
 # Copyright 2009, SLAC National Accelerator Laboratory
 
-include $(EPICS_SITE_TOP)/RELEASE_SITE
+ifndef PARSEFILE
+	PARSEFILE=$(EPICS_SITE_TOP)/RELEASE_SITE
+endif
+
+include $(PARSEFILE)
 
 %:
 	@echo $($@)

@@ -1,0 +1,376 @@
+#!/usr/bin/python
+# This script release an EPICS package into the release area.
+# It is written to work on an SVN repository. For each package released
+# it will:
+#   Create a branch named <package>-<version> if it does not exist
+#   Import the RELEASE_SITE from the release area
+#   Hardcode in configure/RELEASE any MODULE_VERSION variable
+#   Check-in the changes
+#   Build the module with INSTALL_LOCATION pointing to release area
+#   	this will release the package in <package>/<version>-r<svnver>
+#   Update the release area RELEASE_SITE
+#
+# Copyright 2008, Stanford University
+# Author: Remi Machet <rmachet@slac.stanford.edu>
+#
+# Released under the GPLv2 licence <http://www.gnu.org/licenses/gpl-2.0.html>
+#
+
+import re
+import sys
+import shutil
+import traceback
+import tempfile
+import commands
+import stat
+import os
+
+def execute(cmd):
+	global dictConfig
+
+	iRetCode = os.system("/bin/bash -c '(" + cmd + ")' 1>2 2> " + dictConfig["tmpdir"] + "/cmd.log")
+	if iRetCode != 0:
+		strOutput=""
+		output = file(dictConfig["tmpdir"] + "/cmd.log")
+		for line in output.xreadlines():
+			strOutput += line
+		raise RuntimeError, "Execute error.\nCommand: %s\nReturn Code: %d\nOutput:\n%s" \
+					% (cmd, iRetCode, strOutput)
+
+def script_exit(retcode):
+	global dictConfig
+
+	if dictConfig["debug"]:
+		if retcode != 0:
+			traceback.print_tb(sys.exc_traceback)
+		print "%s exited with return code %d." % (sys.argv[0], retcode)
+	if dictConfig["lock"] != None:
+		print "Releasing release lock...",
+		try:
+			dictConfig["lock"].close()
+			os.unlink(dictConfig["prefix"] + "/lock")
+			print "done.\n"
+		except:
+			print "failed:\n%s." % (sys.exc_value)
+			print "Could not delete the lock file: %s" % (dictConfig["prefix"] + "/lock")
+			print "Please remove it manually!!!\n"
+	if dictConfig["keeptmp"]:
+		print "\n--keeptmp flag set. Remove the following directories manually:"
+		if os.path.exists(dictConfig["tmpdir"]):
+			print "\t%s" % (dictConfig["tmpdir"])
+		for cleanupdir in dictConfig["cleanupdirs"]:
+			if os.path.exists(cleanupdir):
+				print "\t%s" % (cleanupdir)
+	else:
+		print "Cleaning up temporary files...",
+		try:
+			sys.stdout.flush()
+			if os.path.exists(dictConfig["tmpdir"]):
+				shutil.rmtree(dictConfig["tmpdir"])
+			for cleanupdir in dictConfig["cleanupdirs"]:
+				if os.path.exists(cleanupdir):
+					shutil.rmtree(cleanupdir)
+			print "done.\n"
+		except:
+			print "failed:\n%s." % (sys.exc_value)
+			print "\nCould not remove the following directories, remove them manually:"
+			if os.path.exists(dictConfig["tmpdir"]):
+				print "\t%s" % (dictConfig["tmpdir"])
+			for cleanupdir in dictConfig["cleanupdirs"]:
+				if os.path.exists(cleanupdir):
+					print "\t%s" % (cleanupdir)
+	sys.exit(retcode)
+
+# Parse a Makefile using the Makefile.displayvar trick.
+# If Makefile.displayvar this fails which is ok because the tools
+# should always be released first (and are not an EPICS package).
+def makefile_parse(strFile, strVariable):
+	global dictConfig
+
+	# First we must find the path to Makefile.displayvar
+	fd = open(dictConfig["prefix"] + "/RELEASE_SITE")
+	for strLine in fdin:
+		regex = re.match("^[ ]*TOOLS_MODULE_VERSION[ ]*=[ ]*([^# ]*)#*.*$", strLine)
+		if regex != None:
+			strToolsVersion = regex.group()
+	fd.close()
+	strToolsDir = dictConfig["prefix"] + "/tools/" + strToolsVersion
+	strRet = commands.getoutput("make -C %s -f Makefile.displayvar PARSEFILE=%s %s" \
+			% (strToolsDir,	strFile, strVariable))
+	if strRet.len() == 0:
+		raise RuntimeError, "Make variable %s not found in %s" % (strVariable, strFile)
+	return strRet
+
+def package_release(strPackage, strVersion):
+	global dictConfig
+
+	# The release branch will be branches/releases/strPackage/strVersion
+	dictConfig["relbranch"] = dictConfig["svnrepo"] + "/branches/releases/" \
+					+ strPackage + "/" + strVersion
+	# Detect the path to release
+	if dictConfig["patch"]:
+		strBranch = dictConfig["relbranch"]
+	else:
+		strBranch = "%s/%s" % (dictConfig["svnrepo"], dictConfig["branch"])	
+	# Make sure the branch (or for a patch the release branch) exists
+	try:
+		execute("svn ls %s" % (strBranch))
+	except:
+		raise RuntimeError, "cannot access SVN repository %s." % (dictConfig["svnrepo"])
+	# Generate the check-in message and calculate the version of the
+	# caller selected HEAD
+	if dictConfig["svnrev"] == "HEAD":
+		print "Detecting revision to release...",
+		try:
+			execute("svn info %s" % (strBranch))
+			fd = open("%s/cmd.log" % (dictConfig["tmpdir"]))
+			for strLine in fd:
+				regex = re.match("^Revision:[\s]*([\S]*)$", strLine)
+				if regex != None:
+					dictConfig["svnrev"] = regex.group()
+					break
+			if dictConfig["svnrev"] == "HEAD":
+				raise RuntimeError, "could not determine SVN revision"
+			if dictConfig["patch"]:
+				print "done, patch revision %s release %s" \
+					% (dictConfig["svnrev"], strVersion)
+			else:
+				print "done, releasing %s revision %s" \
+					% (dictConfig["branch"], dictConfig["svnrev"])
+		except:
+			print "failed.\nERROR: %s." % (sys.exc_value)
+			script_exit(90)
+	strMessage="RELEASE EPICS\nPackage=%s\nVersion=%s\nBranch=%s\nRevision=%s\n" \
+			% (strPackage, strVersion, strBranch, dictConfig["svnrev"])
+	if dictConfig["patch"]:
+		strMessage += " (patch)"
+	# Create a branch named branches/releases/strPackage/strVersion if it is not a patch
+	if not dictConfig["patch"]:
+		print "Creating new branch for the release...",
+		try:
+			# Make sure the branch does not already exist
+			bFound = false
+			try:
+				execute("svn ls %s" % (dictConfig["relbranch"]))
+				bFound = true
+			except:
+				pass
+			if bFound:
+				raise RuntimeError, "already exist!"
+			strDir = dictConfig["relbranch"]
+			while strDir != dictConfig["relbranch"]:
+				regex = re.match(strDir + "/([^/]*)/.*", dictConfig["relbranch"])
+				strMatch = regex.group(0)
+				if strMatch == None:
+					raise RuntimeError, "unable to process branch %s." \
+								% (dictConfig["relbranch"])
+				strDir += "/%s" % (strMatch)
+				try:
+					execute("svn ls %s" % (strDir))
+				except:
+					execute("svn mkdir -m '%s' %s" % (strMessage, strDir))
+			execute("svn cp -r %s -m '%s' %s/%s %s" \
+					% (dictConfig["svnrev"], strMessage, dictConfig["svnrepo"],
+						dictConfig["branch"], dictConfig["relbranch"]))
+			print "done"
+		except:
+			print "failed.\nERROR: %s." % (sys.exc_value)
+			script_exit(100)
+	# Checkout the new branch
+	print "Checking out the release...",
+	try:
+		if dictConfig["patch"]:
+			execute("svn co -r %s %s %s" % (dictConfig["svnrev"],
+					dictConfig["relbranch"], dictConfig["tmpdir"]))
+		else:
+			execute("svn co %s %s" % (dictConfig["relbranch"], dictConfig["tmpdir"]))
+		print "done"
+	except:
+		print "failed.\nERROR: %s." % (sys.exc_value)
+		script_exit(105)	
+	# Only update configure/RELEASE if it isn't a patch
+	if not dictConfig["patch"]:
+		print "Importing release area parameters...",
+		try:
+			# Import the RELEASE_SITE from the release area if it exists
+			if os.path.exists(dictConfig["prefix"] + "/RELEASE_SITE"):
+				shutil.copyfile(dictConfig["prefix"] + "/RELEASE_SITE",
+							dictConfig["tmpdir"] + "/RELEASE_SITE")
+			if os.path.exists(dictConfig["tmpdir"] + "/" + strPackage + "/configure/RELEASE"):
+				# Hardcode in configure/RELEASE any MODULE_VERSION variable
+				fdin = open(dictConfig["tmpdir"] + "/" + strPackage + "/configure/RELEASE", "r")
+				fdout = open(dictConfig["tmpdir"] + "/" + strPackage + "/configure/RELEASE.tmp", "w")
+				for strLine in fdin:
+					regex = re.match("^([^\s]*)=.*$", strLine)
+					if regex != None:
+						strModule = regex.group(0)
+						try:
+							strModuleVersion = makefile_parse(dictConfig["tmpdir"] + "/RELEASE_SITE", 
+												strModule.upper() + "_MODULE_VERSION")
+						except:
+							strModuleVersion = None
+						if strModuleVersion == None:
+							fdout.write("%s_MODULE_VERSION=%s\n" % (strModule.upper(), strModuleVersion))
+					fdout.write(strLine + "\n")
+				fdin.close()
+				fdout.close()
+				shutil.copyfile(dictConfig["tmpdir"] + "/" + strPackage + "/configure/RELEASE.tmp",
+						dictConfig["tmpdir"] + "/" + strPackage + "/configure/RELEASE")
+			# Check-in the changes: we don't need to add the 2 files because they should already exist
+			execute("svn ci -m '%s' %s" % (strMessage, dictConfig["tmpdir"]))
+			# Update the checked out version
+			execute("svn up %s" % (dictConfig["tmpdir"]))
+			print "done"
+		except:
+			print "failed.\nERROR: %s." % (sys.exc_value)
+			script_exit(105)	
+	# Build the module with INSTALL_LOCATION pointing to release area
+	# this will release the package in strPackage/strVersion
+	# if it is a patch add -pr<svnrev>
+	strRelVersion = strVersion
+	if dictConfig["patch"]:
+		strRelVersion += "-pr" + dictConfig["svnrev"]
+	print "Building release...",
+	try:
+		strInstallLoc = dictConfig["prefix"] + "/" + strPackage + "/" + strRelVersion
+		execute("make -C %s all INSTALL_LOCATION=%s" \
+				% (dictConfig["tmpdir"] + "/" + strPackage, strInstallLoc))
+		print "done"
+	except:
+		print "failed.\nERROR: %s." % (sys.exc_value)
+		script_exit(110)		
+	# Update the release area RELEASE_SITE
+	print "Update release RELEASE_SITE file...",
+	try:
+		bWritten = false
+		if os.path.exists(dictConfig["prefix"] + "/RELEASE_SITE"):
+			shutil.copyfile(dictConfig["prefix"] + "/RELEASE_SITE",
+					dictConfig["tmpdir"] + "/RELEASE_SITE.prev")
+		else:
+			shutil.copyfile(dictConfig["tmpdir"] + "/RELEASE_SITE",
+					dictConfig["tmpdir"] + "/RELEASE_SITE.prev")
+		
+		fdout = open(dictConfig["prefix"] + "/RELEASE_SITE", "w")
+		fdin = open(dictConfig["tmpdir"] + "/RELEASE_SITE.prev", "r")
+		for strLine in fdin:
+			regex = re.match("^[\s]*(%s_MODULE_VERSION)[\s]*=" % (os.path.basename(strPackage).upper()), strLine)
+			if regex != None:
+				fdout.write("%s=%s\n" % (regex.group(), strRelVersion))
+				bWritten = true
+			else:
+				fdout.write(strLine + "\n")
+		if not bWritten:
+			fdout.write("%s_MODULE_VERSION=%s\n" % (os.path.basename(strPackage).upper(), strRelVersion))
+		
+		print "done"
+	except:
+		print "failed.\nERROR: %s." % (sys.exc_value)
+		script_exit(115)		
+	print "Package %s version %s released." % (strPackage, strRelVersion)
+
+# Entry point of the script. This is main()
+
+# Set default values
+dictConfig = {}
+dictConfig["branch"] = "trunk"
+dictConfig["svnrev"] = "HEAD"
+dictConfig["svnrepo"] = "file:///afs/slac/g/pcds/vol2/svn/epics"
+dictConfig["prefix"] = "/pcds/package/epics"
+dictConfig["patch"] = False
+dictConfig["debug"] = False
+dictConfig["keeptmp"] = False
+dictConfig["grpowner"] = "lab-admin"
+dictConfig["cleanupdirs"] = []
+dictConfig["tmpdir"] = tempfile.mktemp("epics-release")
+dictConfig["lock"] = None
+try:
+	strPackages = ""
+	
+	# Parse the arguments
+	i=1
+	while i < len(sys.argv):
+		if (sys.argv[i] == "--help") or (sys.argv[i] == "-h"):
+			print "%s: release EPICS packages." % (sys.argv[0])
+			print "Syntax: %s <package1>=<version> [ <package2>=<version> ... ] \\" % (sys.argv[0])
+			print "\t[ --rev <svnrev> ] [ --branch <branch> ] [ --repo <svnrepo> ] \\"
+			print "\t[ --release <release_area> ] [ --patch ] \\"
+			print "\t[ --debug ] [ --keeptmp ] \\"
+			print "\t| --help"
+			print "<packageX>: name of the package to release."
+			print "<version>: name/version under which the package should be released."
+			print "--rev <svnrev>: Which SVN revision to release."
+			print "\tNote that the released package will have a different SVN"
+			print "\trelease number because this attribute control only the"
+			print "\tversion of the source code being used, not the make system."
+			print "\t(default is %s)" % (dictConfig["svnrev"])
+			print "--branch <branch>: by default use the trunk, but you can release from"
+			print "\ta branch using this option."
+			print "\t(default is %s)" % (dictConfig["branch"])
+			print "--repo <svnrepo>: SVN repository address."
+			print "\t(default is %s)" % (dictConfig["svnrepo"])
+			print "--release <release_area>: path to the release area to use"
+			print "\t(where RELEASE_SITE is located)."
+			print "\t(default is %s)" % (dictConfig["prefix"])
+			print "--patch: tell the script the release already exists."
+			print "--help: display this message."
+			print "--debug: display more info when an error occurs."
+			print "--keeptmp: does not erase the temp directory being used.\n"
+			sys.exit(0)
+		elif sys.argv[i] == "--rev":
+			i += 1
+			dictConfig["svnrev"] = sys.argv[i]
+		elif sys.argv[i] == "--branch":
+			i += 1
+			dictConfig["branch"] = sys.argv[i]
+		elif sys.argv[i] == "--repo":
+			i += 1
+			dictConfig["svnrepo"] = sys.argv[i]
+		elif sys.argv[i] == "--release":
+			i += 1
+			dictConfig["prefix"] = sys.argv[i]
+		elif sys.argv[i] == "--debug":
+			dictConfig["debug"] = True
+		elif sys.argv[i] == "--keeptmp":
+			dictConfig["keeptmp"] = True
+		elif sys.argv[i] == "--patch":
+			dictConfig["patch"] = True
+		elif re.match("[^=]*=[^=]*", sys.argv[i]) != None:
+			strPackages = strPackages + sys.argv[i]
+		else:
+			raise RuntimeError, "invalid option or package %s. Try --help" % (sys.argv[i])
+		i += 1
+
+	# Check that we have something to do
+	if len(strPackages) == 0:
+		raise RuntimeError, "No package listed. Try --help"
+
+	# Configure the run
+	os.makedirs(dictConfig["tmpdir"], 0700)
+	lstPackages = [ (pkg.split("=")[0], pkg.split("=")[1]) for pkg in strPackages.split() ]
+	os.environ["EPICS_SITE_TOP"] = dictConfig["prefix"]
+	os.environ["EPICS_TOOLS_SITE_TOP"] = dictConfig["prefix"]
+	
+	# Setup a lock to make sure 2 release scripts are not running in //
+	print "Acquiring lock for release area %s... " % (dictConfig["prefix"])
+	try:
+		dictConfig["lock"] = os.open(dictConfig["prefix"] + "/lock", os.O_WRONLY | os.O_EXLOCK)
+	except:
+		if os.path.exists(dictConfig["prefix"] + "/lock"):
+			print "failed\nERROR: someone else has the lock, try again later."
+		else:
+			print "failed\nERROR: could not acquire the lock, check permissions."
+		script_exit(5)	
+	# Install each package
+	for (strPackage, strVersion) in lstPackages:
+		strPackageName = re.sub(".*/", "", strPackage)	# strPackage can be a path, strPackageName will always be a name
+		print "Releasing package %s version %s:" % (strPackageName, strVersion)
+		package_release(strPackage, strVersion)
+	script_exit(0)
+except KeyboardInterrupt:
+	print "\nERROR: interrupted by user."
+	script_exit(1)
+except SystemExit:
+	raise
+except:
+	print "ERROR: %s." % (sys.exc_value)
+	script_exit(2)
