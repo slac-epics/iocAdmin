@@ -2,7 +2,7 @@
 # This Makefile is not part of EPICS, it is only there to support
 # a make of the full repository from the top
 
-include $(EPICS_SITE_TOP)/RELEASE_SITE
+include $(EPICS_SITE_CONFIG)
 
 DIRS=
 DIRS+=restore

@@ -1,10 +1,10 @@
 # Makefile to install vdct
 
-ifndef EPICS_SITE_TOP
-$(error EPICS_SITE_TOP undefined)
+ifndef EPICS_SITE_CONFIG
+$(error EPICS_SITE_CONFIG undefined)
 endif
 
-include $(EPICS_SITE_TOP)/RELEASE_SITE
+include $(EPICS_SITE_CONFIG)
 
 ifndef INSTALL_LOCATION
 INSTALL_LOCATION=$(EPICS_SITE_TOP)/vdct

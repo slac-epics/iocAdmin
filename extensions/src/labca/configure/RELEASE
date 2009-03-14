@@ -1,61 +1,39 @@
 #RELEASE Location of external products
-# Run "gnumake clean uninstall install" in the application
-# top directory each time this file is changed.
 #
-# NOTE: The build does not check dependancies on files
-# external to this application. Thus you should run
-# "gnumake clean uninstall install" in the top directory
-# each time EPICS_BASE, SNCSEQ, or any other external
-# module defined in the RELEASE file is rebuilt.
-
-# If you don't want to install into $(TOP) then
-# define INSTALL_LOCATION_APP here
-#INSTALL_LOCATION_APP=<fullpathname>
-
-# Note: This file will be scanned to automatically generate
-#       include path definitions etc.
-#       The order of the following declarations will be retained
-#       within those definitions.
+# IF YOU MAKE ANY CHANGES to this file you MUST at least run
+# "gnumake" in this directory afterwards; you usually need
+# to run "gnumake rebuild" in the application's top level
+# directory each time this file is changed.
 #
-# Add your declarations here
+# NOTE: The build does not check dependencies against files
+# that are outside this application, thus you should run
+# "gnumake distclean install" in the top directory each time
+# EPICS_BASE, SNCSEQ, or any other external module defined
+# in the RELEASE file is rebuilt.
+#
+# Host/target specific settings can be specified in files named
+#  RELEASE.$(EPICS_HOST_ARCH).Common
+#  RELEASE.Common.$(T_A)
+#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
 
-##########################################
-## Tell us where EPICS base is installed
+# Check that you specified the EPICS config file
+ifndef EPICS_SITE_CONFIG
+$(error EPICS_SITE_CONFIG undefined)
+endif
 
-#EPICS_BASE=$(TOP)/base-3.14.8.2
-#EPICS_BASE=$(TOP)/../../../base
-#EPICS_BASE=/nfs/slac/g/lcls/build/epics/base/base-R3-14-8-2-lcls1
-EPICS_BASE=/usr/local/lcls/epics/base/base-R3-14-8-2-lcls2
+# Site configuration, if it does not exist, no big deal
+include $(EPICS_SITE_CONFIG)
 
-# If you don't want to install into $(TOP) then
-# define INSTALL_LOCATION_APP here
+# ===============================================================
+# Define the version of modules needed by
+# IOC apps or other Support apps
+# ===============================================================
+# NOTE: do not set, if you need a specific version it should be set
+# in RELEASE_SITE otherwise it will be set by release script.
 
-#INSTALL_LOCATION_APP=<fullpathname>
-INSTALL_LOCATION_APP=$(TOP)/../..
-
-##########################################
-# Tell us where SCILAB is installed (only
-# needed if MAKEFOR != MATLAB [in CONFIG])
-
-SCILABDIR=/usr/local/lcls/tools/scilab/scilab-4.0
-
-##########################################
-# Tell us where MATLAB is installed (only
-# needed if MAKEFOR=MATLAB [in CONFIG])
-
-#MATLABDIR=/afs/slac/package/matlab/linux/2007a
-MATLABDIR=/usr/local/matlab/matlab75
-
-##########################################
-# Finally, we need to know what compiler
-# you use to get the correct matlab libmx and
-# libmex versions. This points to the compiler
-# specific subdir (example for MS visual C 6.0)
-# ONLY NEEDED ON WINDOZE (setting is ignored on
-# other platforms)
-
-#MATLIB_SUBDIR=win32/microsoft/msvc70
-
-TEMPLATE_TOP=$(TOP)/../templates/makeBaseApp/top
-
-######### DELETE EVERYTHING BELOW HERE
+# ============================================================
+# External Support
+# ============================================================
+# example: IPAC=$(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
+# NOTE: it is normal for IPAC_MODULE_VERSION not to be defined, it will
+# be inserted by the release script.

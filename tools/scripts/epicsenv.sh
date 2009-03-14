@@ -9,8 +9,16 @@
 # on a development EPICS this script will try to detect 
 # the version to use using the following rules:
 # -If EPICS_TOOLS_SITE_TOP is defined it will use it
-# -If not it will use EPICS_SITE_TOP
+# -If not it will read it from EPICS_SITE_CONFIG
 
+TMP_EPICS_SITE_TOP=$(dirname ${EPICS_SITE_CONFIG})
+if [ -z "${EPICS_TOOLS_SITE_TOP}" ]; then
+	EPICS_TOOLS_SITE_TOP=${TMP_EPICS_SITE_TOP}
+fi
+
+# Now we detect the version of the tools and deduct the path from it
+TOOLS_MODULE_VERSION=$(grep -E '^[ ]*TOOLS_MODULE_VERSION[ ]*=' ${EPICS_SITE_CONFIG} | sed -e 's/^[ ]*TOOLS_MODULE_VERSION[ ]*=[ ]*\([^# ]*\)#*.*$/\1/')
+EPICS_SITE_TOP=$(make -f ${EPICS_TOOLS_SITE_TOP}/tools/${TOOLS_MODULE_VERSION}/lib/Makefile.displayvar EPICS_SITE_TOP)
 if [ -z "${EPICS_TOOLS_SITE_TOP}" ]; then
 	EPICS_TOOLS_SITE_TOP=${EPICS_SITE_TOP}
 fi
@@ -20,9 +28,7 @@ if [ ! -d ${EPICS_TOOLS_SITE_TOP} ]; then
 	exit 1
 fi
 
-# Now we detect the version of the tools and deduct the path from it
-TOOLS_MODULE_VERSION=$(grep -E '^[ ]*TOOLS_MODULE_VERSION[ ]*=' ${EPICS_TOOLS_SITE_TOP}/RELEASE_SITE | sed -e 's/^[ ]*TOOLS_MODULE_VERSION[ ]*=[ ]*\([^# ]*\)#*.*$/\1/')
-TOOLS_DIR=${EPICS_TOOLS_SITE_TOP}/tools/${TOOLS_MODULE_VERSION}
+TOOLS_DIR=$(make -f ${EPICS_TOOLS_SITE_TOP}/tools/${TOOLS_MODULE_VERSION}/lib/Makefile.displayvar EPICS_TOOLS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} TOOLS)
 
 if [ ! -d ${TOOLS_DIR} ]; then
 	echo "PCDS tools directory ${TOOLS_DIR} does not exist."

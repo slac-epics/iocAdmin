@@ -122,7 +122,9 @@ sub readRelease {
     my ($file, $Rmacros, $Rapps) = @_;
     # $Rmacros is a reference to a hash, $Rapps a ref to an array
     my ($pre, $var, $post, $macro, $path);
+    my ($makecmd);
     local *IN;
+    $makecmd = "make -s --no-print-directory -C `dirname $0` -f Makefile.displayvar PARSEFILE=$file";
     open(IN, $file) or die "Can't open $file: $!\n";
     while (<IN>) {
 	chomp;
@@ -138,20 +140,21 @@ sub readRelease {
             } elsif (exists $ENV{$var}) {
                 $_ = $pre . $ENV{$var} . $post;
             } else {
-                $_ = $pre . $post;
+                $_ = $pre . $var . $post;
             }
         }
-	
-	# Handle "<macro> = <path>"
+
+	# Handle "<macro> = <something>"
 	my ($macro, $path) = /^\s*(\w+)\s*=\s*(.*)/;
 	if ($macro ne "") {
 		if (exists $Rmacros->{$macro}) {
-			delete $Rmacros->{$macro};
+			next;
 		} else {
 			push @$Rapps, "TOP" if $macro =~ /^INSTALL_LOCATION/ ;
 			push @$Rapps, $macro;
 		}
-	    $Rmacros->{$macro} = $path;
+	    $Rmacros->{$macro} = `$makecmd $macro`;
+	    $Rmacros->{$macro} =~ tr/[\r\n]//d;
 	    next;
 	}
 	# Handle "include <path>" and "-include <path>" syntax

@@ -1,0 +1,1 @@
+$(error Unsupported architecture or undefined variable EPICS_HOST_ARCH)

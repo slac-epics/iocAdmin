@@ -16,14 +16,13 @@
 #  RELEASE.Common.$(T_A)
 #  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
 
-# Pickup the path to your EPICS top level directory
-# This is where EPICS lives at your site.
-ifndef EPICS_SITE_TOP
-$(error EPICS_SITE_TOP undefined)
+# Check that you specified the EPICS config file
+ifndef EPICS_SITE_CONFIG
+$(error EPICS_SITE_CONFIG undefined)
 endif
 
 # Site configuration, if it does not exist, no big deal
-include $(EPICS_SITE_TOP)/RELEASE_SITE
+include $(EPICS_SITE_CONFIG)
 
 # ===============================================================
 # Define the version of modules needed by

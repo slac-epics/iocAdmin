@@ -6,7 +6,7 @@
 # Copyright 2009, SLAC National Accelerator Laboratory
 
 ifndef PARSEFILE
-	PARSEFILE=$(EPICS_SITE_CONFIG)
+$(error PARSEFILE must be defined)
 endif
 
 include $(PARSEFILE)

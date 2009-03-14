@@ -1,10 +1,10 @@
 # This is the Makefile for the scripts
 
-ifndef EPICS_SITE_TOP
-$(error EPICS_SITE_TOP undefined)
+ifndef EPICS_SITE_CONFIG
+$(error EPICS_SITE_CONFIG undefined)
 endif
 
-include $(EPICS_SITE_TOP)/RELEASE_SITE
+include $(EPICS_SITE_CONFIG)
 
 ifndef INSTALL_LOCATION
 INSTALL_LOCATION=$(EPICS_SITE_TOP)/tools
@@ -13,7 +13,7 @@ endif
 INSTALL_BIN_DIR=$(INSTALL_LOCATION)/bin
 INSTALL_LIB_DIR=$(INSTALL_LOCATION)/lib
 
-TOOLS_BIN=epics-pkgconfig epics-release epicsenv.sh epicsenv.csh
+TOOLS_BIN=epicsenv.sh epicsenv.csh
 TOOLS_LIB=Makefile.displayvar
 
 all: install
