@@ -11,6 +11,11 @@
 # -If EPICS_TOOLS_SITE_TOP is defined it will use it
 # -If not it will read it from EPICS_SITE_CONFIG
 
+if ( ! ${?EPICS_SITE_CONFIG} ) then
+	echo "ERROR: EPICS_SITE_CONFIG must be defined."
+	exit 1
+endif
+
 set TMP_EPICS_SITE_TOP `dirname ${EPICS_SITE_CONFIG}`
 if ( ! ${?EPICS_TOOLS_SITE_TOP} ) then
 	set EPICS_TOOLS_SITE_TOP = ${TMP_EPICS_SITE_TOP}

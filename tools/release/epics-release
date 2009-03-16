@@ -28,7 +28,7 @@ import os
 def execute(cmd):
 	global dictConfig
 
-	iRetCode = os.system("/bin/bash -c '(" + cmd + ")'" + dictConfig["tmpdir"] + "/cmd.log 2>&1")
+	iRetCode = os.system("/bin/bash -c '(" + cmd + ")' > " + dictConfig["tmpdir"] + "/cmd.log 2>&1")
 	if iRetCode != 0:
 		strOutput=""
 		output = file(dictConfig["tmpdir"] + "/cmd.log")
@@ -46,6 +46,7 @@ def script_exit(retcode):
 		print "%s exited with return code %d." % (sys.argv[0], retcode)
 	if dictConfig["lock"] != None:
 		print "Releasing release lock ...",
+		sys.stdout.flush()
 		try:
 			os.close(dictConfig["lock"])
 			os.unlink(dictConfig["prefix"] + "/lock")
@@ -63,6 +64,7 @@ def script_exit(retcode):
 				print "\t%s" % (cleanupdir)
 	else:
 		print "Cleaning up temporary files ...",
+		sys.stdout.flush()
 		try:
 			sys.stdout.flush()
 			if os.path.exists(dictConfig["tmpdir"]):
@@ -93,7 +95,7 @@ def makefile_parse(strFile, strVariable):
 	for strLine in fdin:
 		regex = re.match("^[ ]*TOOLS_MODULE_VERSION[ ]*=[ ]*([^# ]*)#*.*$", strLine)
 		if regex != None:
-			strToolsVersion = regex.group()
+			strToolsVersion = regex.group(1)
 	fd.close()
 	strToolsDir = dictConfig["prefix"] + "/tools/" + strToolsVersion
 	strRet = commands.getoutput("make -C %s -f Makefile.displayvar PARSEFILE=%s %s" \
@@ -122,13 +124,14 @@ def package_release(strPackage, strVersion):
 	# caller selected HEAD
 	if dictConfig["svnrev"] == "HEAD":
 		print "Detecting revision to release ...",
+		sys.stdout.flush()
 		try:
 			execute("svn info %s" % (strBranch))
 			fd = open("%s/cmd.log" % (dictConfig["tmpdir"]))
 			for strLine in fd:
 				regex = re.match("^Revision:[\s]*([\S]*)$", strLine)
 				if regex != None:
-					dictConfig["svnrev"] = regex.group()
+					dictConfig["svnrev"] = regex.group(1)
 					break
 			if dictConfig["svnrev"] == "HEAD":
 				raise RuntimeError, "could not determine SVN revision"
@@ -148,6 +151,7 @@ def package_release(strPackage, strVersion):
 	# Create a branch named branches/releases/strPackage/strVersion if it is not a patch
 	if not dictConfig["patch"]:
 		print "Creating new branch for the release ...",
+		sys.stdout.flush()
 		try:
 			# Make sure the branch does not already exist
 			bFound = False
@@ -181,6 +185,7 @@ def package_release(strPackage, strVersion):
 			script_exit(100)
 	# Checkout the new branch
 	print "Checking out the release ...",
+	sys.stdout.flush()
 	try:
 		if dictConfig["patch"]:
 			execute("svn co -r %s %s %s" % (dictConfig["svnrev"],
@@ -194,6 +199,7 @@ def package_release(strPackage, strVersion):
 	# Only update configure/RELEASE if it isn't a patch
 	if not dictConfig["patch"]:
 		print "Importing release area parameters ...",
+		sys.stdout.flush()
 		try:
 			# Import the RELEASE_SITE from the release area if it exists
 			if os.path.exists(dictConfig["prefix"] + "/RELEASE_SITE"):
@@ -205,14 +211,14 @@ def package_release(strPackage, strVersion):
 				fdout = open(dictConfig["tmpdir"] + "/RELEASE_SITE.tmp", "w")
 				bWritten = False
 				for strLine in fdin:
-					regex = re.match("^[\s]*(EPICS_SITE_TOP)[\s]*=" % (strLine)
+					regex = re.match("^[\s]*(EPICS_SITE_TOP)[\s]*=",strLine)
 					if regex != None:
-						fdout.write("EPICS_SITE_TOP=%s" % (dictConfig["prefix"]))
+						fdout.write("EPICS_SITE_TOP=%s\n" % (dictConfig["prefix"]))
 						bWritten = True
 					else:
 						fdout.write(strLine)
 				if not bWritten:
-					fdout.write("EPICS_SITE_TOP=%s" % (dictConfig["prefix"]))
+					fdout.write("EPICS_SITE_TOP=%s\n" % (dictConfig["prefix"]))
 				fdin.close()
 				fdout.close()
 				shutil.copyfile(dictConfig["tmpdir"] + "/RELEASE_SITE.tmp",
@@ -224,7 +230,7 @@ def package_release(strPackage, strVersion):
 				for strLine in fdin:
 					regex = re.match("^([^\s]*)=.*$", strLine)
 					if regex != None:
-						strModule = regex.group(0)
+						strModule = regex.group(1)
 						try:
 							strModuleVersion = makefile_parse(dictConfig["tmpdir"] + "/RELEASE_SITE", 
 												strModule.upper() + "_MODULE_VERSION")
@@ -247,13 +253,16 @@ def package_release(strPackage, strVersion):
 			script_exit(105)	
 	# Build the module with INSTALL_LOCATION pointing to release area
 	# this will release the package in strPackage/strVersion
-	# if it is a patch add -pr<svnrev>
-	strRelVersion = strVersion
-	if dictConfig["patch"]:
-		strRelVersion += "-pr" + dictConfig["svnrev"]
 	print "Building release ...",
+	sys.stdout.flush()
 	try:
+		# if it is a patch add -pr<svnrev>
+		strRelVersion = strVersion
+		if dictConfig["patch"]:
+			strRelVersion += "-pr" + dictConfig["svnrev"]
 		strInstallLoc = dictConfig["prefix"] + "/" + strPackage + "/" + strRelVersion
+		if os.path.exists(strInstallLoc):
+			raise RuntimeError, "%s version %s already released" % (strPackage, strRelVersion)
 		execute("make -C %s all INSTALL_LOCATION=%s" \
 				% (dictConfig["tmpdir"] + "/" + strPackage, strInstallLoc))
 		print "done"
@@ -262,6 +271,7 @@ def package_release(strPackage, strVersion):
 		script_exit(110)		
 	# Update the release area RELEASE_SITE
 	print "Update release RELEASE_SITE file ...",
+	sys.stdout.flush()
 	try:
 		bWritten = False
 		if os.path.exists(dictConfig["prefix"] + "/RELEASE_SITE"):
@@ -276,17 +286,42 @@ def package_release(strPackage, strVersion):
 		for strLine in fdin:
 			regex = re.match("^[\s]*(%s_MODULE_VERSION)[\s]*=" % (os.path.basename(strPackage).upper()), strLine)
 			if regex != None:
-				fdout.write("%s=%s" % (regex.group(), strRelVersion))
+				fdout.write("%s=%s\n" % (regex.group(1), strRelVersion))
 				bWritten = True
 			else:
 				fdout.write(strLine)
 		if not bWritten:
-			fdout.write("%s_MODULE_VERSION=%s" % (os.path.basename(strPackage).upper(), strRelVersion))
+			fdout.write("%s_MODULE_VERSION=%s\n" % (os.path.basename(strPackage).upper(), strRelVersion))
 		
 		print "done"
 	except:
 		print "failed.\nERROR: %s." % (sys.exc_value)
-		script_exit(115)		
+		script_exit(115)
+	# Exception: if package is tools, update the 'current' link
+	if strPackage == "tools":
+		print "Updating current link ...",
+		sys.stdout.flush()
+		try:
+			if os.path.exists(dictConfig["prefix"] + "/" + strPackage + "/current"):
+				os.unlink(dictConfig["prefix"] + "/" + strPackage + "/current")
+			execute("ln -s %s %s" % (os.path.basename(strInstallLoc),
+					dictConfig["prefix"] + "/" + strPackage + "/current"))
+			execute("chgrp lab-admin %s; chmod 775 %s" \
+					% (dictConfig["prefix"] + "/" + strPackage + "/current",
+					dictConfig["prefix"] + "/" + strPackage + "/current"))
+			print "done"
+		except:
+			print "failed.\nERROR: %s." % (sys.exc_value)
+			script_exit(120)
+	print "Fixing permissions ...",
+	sys.stdout.flush()
+	try:
+		execute("chgrp -R lab-admin %s" % (strInstallLoc))
+		execute("chmod -R ugo-w %s" % (strInstallLoc))
+		print "done"
+	except:
+		print "failed.\nERROR: %s." % (sys.exc_value)
+		script_exit(120)
 	print "Package %s version %s released." % (strPackage, strRelVersion)
 
 # Entry point of the script. This is main()
@@ -374,6 +409,7 @@ try:
 	
 	# Setup a lock to make sure 2 release scripts are not running in //
 	print "Acquiring lock for release area %s ..." % (dictConfig["prefix"]),
+	sys.stdout.flush()
 	try:
 		dictConfig["lock"] = os.open(dictConfig["prefix"] + "/lock", os.O_CREAT | os.O_EXCL)
 		print "done."

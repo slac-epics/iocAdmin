@@ -11,6 +11,12 @@
 # -If EPICS_TOOLS_SITE_TOP is defined it will use it
 # -If not it will read it from EPICS_SITE_CONFIG
 
+# EPICS_SITE_CONFIG should be defined
+if [ -z "${EPICS_SITE_CONFIG}" ]; then
+	echo "ERROR: EPICS_SITE_CONFIG must be defined."
+	return 1
+fi
+
 TMP_EPICS_SITE_TOP=$(dirname ${EPICS_SITE_CONFIG})
 if [ -z "${EPICS_TOOLS_SITE_TOP}" ]; then
 	EPICS_TOOLS_SITE_TOP=${TMP_EPICS_SITE_TOP}
@@ -25,14 +31,14 @@ fi
 
 if [ ! -d ${EPICS_TOOLS_SITE_TOP} ]; then
 	echo "EPICS tools directory ${EPICS_TOOLS_SITE_TOP} does not exist."
-	exit 1
+	return 2
 fi
 
 TOOLS_DIR=$(make -f ${EPICS_TOOLS_SITE_TOP}/tools/${TOOLS_MODULE_VERSION}/lib/Makefile.displayvar EPICS_TOOLS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} TOOLS)
 
 if [ ! -d ${TOOLS_DIR} ]; then
 	echo "PCDS tools directory ${TOOLS_DIR} does not exist."
-	exit 1
+	return 3
 fi
 
 EPICS_BASE=$(make -f ${TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} EPICS_BASE)
