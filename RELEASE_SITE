@@ -14,11 +14,16 @@ ifndef EPICS_TOOLS_SITE_TOP
 endif
 
 # EPICS_HOST_ARCH is set here
-# The if statement speed up the build if EPICS_HOST_ARCH is already defined
-# (in a recursive build). We cannot use ifdef because otherwise make does not
-# resolve the value early enough.
-EPICS_HOST_ARCH=$(shell if [ -n "$${EPICS_HOST_ARCH}" ]; then echo $${EPICS_HOST_ARCH}; else $(EPICS_BASE)/startup/EpicsHostArch.pl; fi)
+# If we are building the base then use the local EpicsHostArch.pl, otherwise
+# use the released one.
+ifndef EPICS_HOST_ARCH
+ifeq ($(shell if [ -e $(TOP)/startup/EpicsHostArch.pl ]; then echo true; fi),true)
+EPICS_HOST_ARCH=$(shell $(TOP)/startup/EpicsHostArch.pl)
+else
+EPICS_HOST_ARCH=$(shell $(EPICS_BASE)/startup/EpicsHostArch.pl)
+endif
 export EPICS_HOST_ARCH
+endif
 
 # =================================================================
 # EPICS Packages versions

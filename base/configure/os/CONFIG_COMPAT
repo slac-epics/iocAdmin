@@ -23,7 +23,5 @@ ARCH_freebsd = freebsd-x86
 ifndef EPICS_HOST_ARCH
 ifdef HOST_ARCH
 EPICS_HOST_ARCH = $(firstword $(ARCH_$(HOST_ARCH)) $(HOST_ARCH))
-else 
-EPICS_HOST_ARCH = unsupported
 endif
 endif
