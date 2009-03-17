@@ -20,10 +20,12 @@ use Cwd qw(cwd abs_path);
 use Getopt::Std;
 use strict;
 
-use vars qw($cwd $arch $top $hostarch $iocroot $root $outfile $relfile);
+use vars qw($cwd $arch $top $hostarch $iocroot $root $outfile $relfile $localpath);
 use vars qw(%macros @apps);
 
 $cwd = UnixPath(cwd());
+$localpath = `dirname $0`;
+$localpath =~ tr/[\r\n]//d;
 
 our ($opt_a, $opt_h, $opt_t, $opt_T);
 getopt "ahtT";
@@ -124,7 +126,8 @@ sub readRelease {
     my ($pre, $var, $post, $macro, $path);
     my ($makecmd);
     local *IN;
-    $makecmd = "make -s --no-print-directory -C `dirname $0` -f Makefile.displayvar PARSEFILE=$file";
+    
+    $makecmd = "make -s --no-print-directory -C " . $localpath . " -f Makefile.displayvar PARSEFILE=$file";
     open(IN, $file) or die "Can't open $file: $!\n";
     while (<IN>) {
 	chomp;
