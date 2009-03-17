@@ -21,7 +21,8 @@ CONFIGS += $(subst ../,,$(wildcard ../os/CONFIG*))
 CONFIGS += $(subst ../,,$(wildcard ../RELEASE*))
 CONFIGS += $(subst ../,,$(wildcard ../RULES*))
 
-CONFIGS += $(subst ../,,$(wildcard ../tools/*.pl)) $(tools/Makefile.displayvar)
+CONFIGS += $(subst ../,,$(wildcard ../tools/*.pl))
+CONFIGS += tools/Makefile.displayvar
 
 TARGETS = CONFIG_APP_INCLUDE
 
