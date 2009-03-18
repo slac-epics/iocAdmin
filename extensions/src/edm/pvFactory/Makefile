@@ -50,7 +50,7 @@ ifdef EPICS_HOST_ARCH
    PROD_LIBS += ca Com
 
    USR_INCLUDES = -I../
-   USR_INCLUDES += -I$(TOP)/include/edm -I../../util -I../../pvlib -I../../lib
+   USR_INCLUDES += -I$(INSTALL_LOCATION)/include/edm -I../../util -I../../pvlib -I../../lib
 
    LIB_SRCS   += textupdate.cc
    LIB_SRCS   += SciPlot.cc
