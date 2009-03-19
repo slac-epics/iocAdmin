@@ -16,7 +16,7 @@
 vpath %.template $(patsubst %/dbd,%/db, $(filter %/dbd, $(RELEASE_DBDFLAGS)))
 vpath %.db $(patsubst %/dbd,%/db, $(filter %/dbd, $(RELEASE_DBDFLAGS)))
 RELEASE_DBFLAGS+=$(patsubst %/dbd,%/db, $(RELEASE_DBDFLAGS))
-RELEASE_DBFLAGS+=-I $(TOP)/db
+RELEASE_DBFLAGS+=-I $(INSTALL_LOCATION)/db
 
 
 # translate a a dbTemplate style substitution file.
