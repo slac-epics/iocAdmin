@@ -11,6 +11,9 @@ include $(TOP)/configure/CONFIG
 # is not defined, IDLE task usage is used. 
 #USR_CFLAGS += -DSECONDS_TO_BURN=5
 
+# Use CPU monitoring in ssrlApps misc utilities by Till Straumann.
+USR_CFLAGS_RTEMS += -DSSRLAPPSMISCUTILS
+
 #=============================
 
 # For DTYP="IOC stats"

@@ -80,6 +80,16 @@ typedef char * objName;
 #define CPU_ELAPSED_TIME(tc) ((double)(tc)->ticks_executed)
 #endif
 
+#if   (__RTEMS_MAJOR__ > 4) \
+   || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
+#ifdef SSRLAPPSMISCUTILS
+#define USE_SSRLAPPSMISCUTILS
+#include <ssrlAppsMiscUtils.h>
+static struct timespec prev_uptime   = {0};
+static struct timespec prev_idletime = {0};
+#endif
+#endif
+
 static int getMemInfo(memInfo *s)
 {
 #ifdef RTEMS_MALLOC_IS_HEAP
@@ -209,7 +219,9 @@ static void cpu_ticks(double *total, double *idle)
 static int getCpuUsageInit(void)
 {
      cpu_ticks(&prev_total, &prev_idle);
-
+#ifdef USE_SSRLAPPSMISCUTILS
+     miscu_cpu_load_percentage_init(&prev_uptime, &prev_idletime);
+#endif
      return 0;
 }
 
@@ -219,8 +231,11 @@ static double getCpuUsage(void)
      double   idle;
      double   delta_total;
      double   delta_idle;
-
-
+#ifdef USE_SSRLAPPSMISCUTILS
+     double load = miscu_cpu_load_percentage(&prev_uptime, &prev_idletime);
+     if (!isnan(load)) return load;
+#endif
+     
      cpu_ticks(&total, &idle);
 
      if (total >= prev_total) {
