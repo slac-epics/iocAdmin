@@ -79,6 +79,13 @@ record(ai, "$(IOCNAME):CA_CONN_CNT") {
   field(HSV, "MINOR")
 }
 
+record(ai, "$(IOCNAME):RECORD_CNT") {
+  field(DESC, "Number of Records")
+  field(PINI, "YES")
+  field(DTYP, "IOC stats")
+  field(INP, "@records")
+}
+
 record(ai, "$(IOCNAME):FD_MAX") {
   field(DESC, "Max File Descriptors")
   field(PINI, "YES")
@@ -167,6 +174,7 @@ record(ao, "$(IOCNAME):CA_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "15")
+  field(PINI, "YES")
 }
 
 record(ao, "$(IOCNAME):FD_UPD_TIME") {
@@ -178,6 +186,7 @@ record(ao, "$(IOCNAME):FD_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "20")
+  field(PINI, "YES")
 }
 
 record(ao, "$(IOCNAME):LOAD_UPD_TIME") {
@@ -189,6 +198,7 @@ record(ao, "$(IOCNAME):LOAD_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "10")
+  field(PINI, "YES")
 }
 
 record(ao, "$(IOCNAME):MEM_UPD_TIME") {
@@ -200,6 +210,7 @@ record(ao, "$(IOCNAME):MEM_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "10")
+  field(PINI, "YES")
 }
 
 record(stringin, "$(IOCNAME):ST_SCRIPT1") {
