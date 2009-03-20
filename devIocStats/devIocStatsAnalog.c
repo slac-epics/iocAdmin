@@ -72,6 +72,7 @@
                 sys_mbuf	 - number of system MBUFs
                 inp_errs	 - number of IF input  errors
                 out_errs	 - number of IF output errors
+		records	         - number of records
                 
 	ai (DTYP="IOC stats clusts"):
                 clust_info <pool> <index> <type> where:
@@ -112,6 +113,7 @@
 #include "taskwd.h"
 #include "rsrv.h"
 #include "dbAccess.h"
+#include "dbStaticLib.h"
 #include "dbScan.h"
 #include "devSup.h"
 #include "aiRecord.h"
@@ -212,6 +214,7 @@ static void statsDataMBuf(double*);
 static void statsSysMBuf(double*);
 static void statsIFIErrs(double *);
 static void statsIFOErrs(double *);
+static void statsRecords(double *);
 
 /* rate in seconds (memory,cpu,fd,ca) */
 /* statsPutParms[] must be in the same order (see ao_init_record()) */
@@ -235,6 +238,7 @@ static validGetParms statsGetParms[]={
 	{ "sys_mbuf",			statsSysMBuf,		STATIC_TYPE },
 	{ "inp_errs",			statsIFIErrs,		MEMORY_TYPE },
 	{ "out_errs",			statsIFOErrs,		MEMORY_TYPE },
+	{ "records",			statsRecords,           STATIC_TYPE },
 	{ NULL,NULL,0 }
 };
 
@@ -259,6 +263,7 @@ static scanInfo scan[TOTAL_TYPES] = {{0}};
 static cpuUsageInfo cpuUsage = {0};
 static int fdinfo = 0;
 static int suspendedTasks = 0;
+static int recordnumber = 0;
 static clustInfo clustinfo = {{{0}}};
 static int mbufnumber[2] = {0,0};
 static int iferrors[2]   = {0,0};
@@ -450,6 +455,18 @@ static long ai_init(int pass)
 #ifdef USE_TASKFAULT
         taskwdAnyInsert(NULL, taskFault, NULL);
 #endif
+        recordnumber = 0;
+        if(pdbbase) {
+          DBENTRY dbentry;
+          long	  status;
+          dbInitEntry(pdbbase,&dbentry);
+          status = dbFirstRecordType(&dbentry);
+          while(!status) {
+            recordnumber += dbGetNRecords(&dbentry);
+            status = dbNextRecordType(&dbentry);
+          }
+          dbFinishEntry(&dbentry);
+        }
         if (pdevIocStatsVirtualOS->pInit) (*pdevIocStatsVirtualOS->pInit)();
 	return 0;
 }
@@ -595,8 +612,12 @@ static long ao_write(aoRecord* pr)
 	unsigned long sec=pr->val;
 	pvtArea	*pvt=(pvtArea*)pr->dpvt;
 	int		type=pvt->type;
-
-	scan[type].rate_sec=sec;
+        
+        if (sec > 0.0)
+          scan[type].rate_sec=sec;
+        else
+          pr->val = scan[type].rate_sec;
+        pr->udf=0;
 	return 0;
 }
 
@@ -604,10 +625,11 @@ static long ai_clusts_read(aiRecord* pr)
 {
 	pvtClustArea* pvt=(pvtClustArea*)pr->dpvt;
 
-        if (pvt->size < CLUSTSIZES) {
+        if (pvt->size < CLUSTSIZES)
           pr->val = clustinfo[pvt->pool][pvt->size][pvt->elem];
-          pr->udf=0;
-        }
+        else
+          pr->val = 0;
+        pr->udf=0;
 	return 2; /* don't convert */
 }
 
@@ -791,6 +813,10 @@ static void statsIFIErrs(double* val)
 static void statsIFOErrs(double* val)
 {
 	*val = (double)iferrors[1];
+}
+static void statsRecords(double *val)
+{
+	*val = (double)recordnumber;
 }
 
 /*====================================================
