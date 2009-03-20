@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 196
-y 17
+x 202
+y 144
 w 540
 h 700
 font "helvetica-bold-r-18.0"
@@ -157,6 +157,7 @@ h 15
 controlPv "$(ioc):STARTTOD"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -263,6 +264,7 @@ h 15
 controlPv "$(ioc):TOD"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -281,6 +283,7 @@ h 15
 controlPv "$(ioc):UPTIME"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -419,6 +422,7 @@ h 15
 controlPv "$(ioc):HEARTBEAT"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -457,6 +461,7 @@ h 15
 controlPv "$(ioc):HOSTNAME"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -475,6 +480,7 @@ h 15
 controlPv "$(ioc):LOCATION"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -533,6 +539,7 @@ h 15
 controlPv "$(ioc):ENGINEER"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -551,6 +558,7 @@ h 15
 controlPv "$(ioc):EPICS_VERS"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -589,6 +597,7 @@ h 15
 controlPv "$(ioc):APP_DIR1"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -627,6 +636,7 @@ h 15
 controlPv "$(ioc):APP_DIR2"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -645,6 +655,7 @@ h 15
 controlPv "$(ioc):ST_SCRIPT2"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -663,6 +674,7 @@ h 15
 controlPv "$(ioc):ST_SCRIPT1"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -701,6 +713,7 @@ h 15
 controlPv "$(ioc):KERNEL_VERS"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -739,6 +752,7 @@ h 15
 controlPv "$(ioc):BSP_REV"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -797,6 +811,7 @@ h 15
 controlPv "$(ioc):BOOTLINE2"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -815,6 +830,7 @@ h 15
 controlPv "$(ioc):BOOTLINE1"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -853,6 +869,7 @@ h 15
 controlPv "$(ioc):BOOTLINE4"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -871,6 +888,7 @@ h 15
 controlPv "$(ioc):BOOTLINE3"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -889,6 +907,7 @@ h 15
 controlPv "$(ioc):BOOTLINE6"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -907,6 +926,7 @@ h 15
 controlPv "$(ioc):BOOTLINE5"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
@@ -1007,6 +1027,7 @@ h 15
 controlPv "$(ioc):FD_MAX"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -1153,6 +1174,7 @@ h 15
 controlPv "$(ioc):MEM_FREE"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -1172,6 +1194,7 @@ h 15
 controlPv "$(ioc):MEM_USED"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -1310,6 +1333,7 @@ fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
+fontAlign "center"
 endObjectProperties
 
 # (Textupdate)
@@ -1325,9 +1349,11 @@ h 15
 controlPv "$(ioc):IFO_ERR_CNT"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
+fontAlign "center"
 endObjectProperties
 
 # (Static Text)
@@ -1436,6 +1462,7 @@ h 15
 controlPv "$(ioc):DAT_MBUF_MAX"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
@@ -1534,6 +1561,7 @@ h 15
 controlPv "$(ioc):SYS_MBUF_MAX"
 displayMode "decimal"
 fgColor index 14
+fgAlarm
 bgColor index 4
 fill
 font "helvetica-bold-r-14.0"
