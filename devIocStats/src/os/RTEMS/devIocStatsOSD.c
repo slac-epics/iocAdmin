@@ -84,6 +84,7 @@ typedef char * objName;
    || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
 #ifdef SSRLAPPSMISCUTILS
 #define USE_SSRLAPPSMISCUTILS
+extern int isnan();
 #include <ssrlAppsMiscUtils.h>
 static struct timespec prev_uptime   = {0};
 static struct timespec prev_idletime = {0};
