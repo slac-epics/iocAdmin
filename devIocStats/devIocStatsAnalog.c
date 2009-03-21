@@ -576,7 +576,7 @@ static long ao_init_record(aoRecord* pr)
 	}
 
 	/* Initialize value with default */
-	pr->rbv=pr->rval=scan_rate_sec[--type];
+	pr->rbv=pr->rval=scan_rate_sec[pvt->type];
 
 	/* Make sure record processing routine does not perform any conversion*/
 	pr->linr=0;
