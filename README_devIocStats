@@ -1,4 +1,4 @@
-README_devIocStats		Last Updated 01/20/2009
+README_devIocStats		Last Updated 03/20/2009
 ------------------
 
 I - General Notes on devIocStats - All Operating Systems
@@ -66,6 +66,7 @@ Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
                 sys_mbuf	 - number of system MBUFs
                 inp_errs	 - number of IF input  errors
                 out_errs	 - number of IF output errors
+                records		 - number of records
 
 Analog In (ai) Records for Cluster Statistics 
 (DTYP = "IOC stats clusts"), INP = @clust_info <pool> <index> <type> where:
