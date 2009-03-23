@@ -19,7 +19,7 @@ I - Adding the iocAdmin package to your IOC application:
 
 (1) Add IOCADMIN to configure/RELEASE and clean/rebuild configure:
 
-IOCADMIN=/afs/slac/g/lcls/build/epics/modules/iocAdmin/iocAdmin-R<release>
+IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 
 (2) Link the iocAdmin libraries into your app by adding to xxxApp/src/Makefile:
 
