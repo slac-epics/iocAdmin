@@ -1,17 +1,18 @@
 Release Notes
 -------------
-iocAdmin-R2-1-4: Mar 20, 2009
+iocAdmin-R2-1-4: Mar 23, 2009
   * devIocStats/src/devIocStatsAnalog.c - add support for number of records.
     Fix bad bug in update rate initialization.  Add a check for valid rate.
     Reset UDF for all cluster sizes.
   * devIocStats/src/os/RTEMS/devIocStatsOSD.c - check for cpuUsageReset.
     Use Tills miscUtils routines for cpu load if rtems version >= 4.9
-    and selected in the Makefile.
+    and selected in CONFIG_SITE.
   * devIocStats/src/os/vxWorks/devIocStatsOSD.* - Bug fix for vxWorks 6.
     Remove IF error logic for vxWorks 6 (leave those at zero).
-  * iocAdminLib/srcDisplay/ioc_stats*.edl - add alarm sensitivity to inputs.
+  * iocAdminLib/srcDisplay/ioc_stats*.edl - add alarm sensitivity on ALL inputs.
   * iocAdminLib/Db/ioc.db - add PINI=YES for ao's, add RECORD_CNT.
   * README_devIocStats - add support for number of records.
+  * configure/CONFIG_SITE - add USR_CFLAGS_RTEMS option for Till's CPU load calc.
 
 iocAdmin-R2-1-3: Feb 10, 2009
   * devIocStats/src/devIocStatsString.c - set epics env var string to blank 
