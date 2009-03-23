@@ -26,3 +26,6 @@
 # define INSTALL_LOCATION here
 #INSTALL_LOCATION=<fullpathname>
 
+# Uncomment this to use CPU load determination from ssrlApps/miscUtils
+# provided by Till Straumann.
+USR_CFLAGS_RTEMS += -DSSRLAPPSMISCUTILS
