@@ -1,8 +1,27 @@
-sSubRecord-R1-0-2:
-Build against EPICS R3.14.9 and RTEMS 4.7.1 (base-R3-14-9-lcls1)
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem: This files describes release notes for
+#       the sSubRecord subroutine record support.
+#
+#  Auth: dd-mmm-yyyy, Andy Foster        (USERNAME)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        21-Feb-2008, K. Luchini         (LUCHINI):
+#           release sSubRecord-R1-0-2-1
+#
+#==============================================================
+#
+sSubRecord-R1-0-2-1: Replace CONFIG_APP with CONFIG_SITE
+                     Add RELEASE_SITE
 
-sSubRecord-R1-0-1:
-Build against EPICS R3.14.8.2 and RTEMS 4.7.1 (base-R3-14-8-2-lcls2)
+sSubRecord-R1-0-2: Build against EPICS R3.14.9 
+                   Build agains RTEMS 4.7.1 (base-R3-14-9-lcls1)
 
-sSubRecord-R1-0-0:
-Build against EPICS R3.14.8.2 and RTEMS 4.7 (base-R3-14-8-2-lcls1)
+sSubRecord-R1-0-1: Build against EPICS R3.14.8.2
+                   Build agains RTEMS 4.7.1 (base-R3-14-8-2-lcls2)
+
+sSubRecord-R1-0-0: Build against EPICS R3.14.8.2
+                   Build against RTEMS 4.7 (base-R3-14-8-2-lcls1)

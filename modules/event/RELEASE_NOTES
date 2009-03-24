@@ -4,6 +4,253 @@ Release Notes for the event package
 Note: The file called "CHANGES" has only changes in mrfApp.  This file 
 (RELEASE_NOTES) lists changes for ALL directories.
 
+event-R2-8-1: Jan 20, 2009
+	* evrSupport/src/bsa.c - Report SOFT INVALID alarm when there's been
+          no valid inputs to the average for the BSA record.
+        * evrSupport/src/bsaRecord.c - Make sure VAL/RMS/CNT all post a
+          monitor when VAL changes.
+	* evrSupport/src/evrTime.c - initialize new pattern timestamp with
+	  the previous pattern timestamp.  It will be overwritten by the new 
+	  pattern timestamp only if the new pattern is valid.
+	* evrSupport/src/evrPattern.c - if the timestamp from EVR data is 
+	  different from system time by 10 seconds or more 
+	  (evrDeltaTimeMax global variable), throw the data away and use 
+	  system time for record timestamps.  
+
+event-R2-8-0: Jan 12, 2009
+	* change README to increase EPICS_CA_MAX_ARRAY_BYTES to 300000 and
+	  add more details for using BSA and the high resolution fiducial time.
+	* evrSupport - many files.  
+	  (1) Change to beam synchronous acquisition to reduce lockset sizes, 
+	      make more efficient, and make BSA updates done in the low 
+	      priority callback task.  
+	  (2) Add ability to use rate-limited devices (devices that takes
+	      longer than 7 ms to process) in BSA processing for 
+	      rate-limited EDEFs.
+	  (3) Do EDEF initialization without needed special event codes.
+	  (4) Add ability to get pattern and timestamp for last active 
+	      timeslot (timeslot 1 or 4 for LCLS).  Remove timestamps
+	      from fiducial diagnostics since it's available in pattern diags.
+	      Process PATTERN at 360hz but let it get the same data 3 times
+	      in a row (instead of disabling for the 2 off pulses).
+	  (5) Provide global 360hz and 120hz fiducial time variable for 
+	      timing difference determinations WRT to fiducial.
+	  (6) Separate out BSA device-non-specific info from device-specific
+	      info so that IOC engineers can move the device specific files
+	      to their own apps.
+	  (7) Reduce size of 360hz pattern record lockset.
+	  (8) Allow multiple user functions for 360hz fiducial processing. 
+
+event-R2-7-1: Dec 3, 2008
+	* add /evrSupport/Db/bsa/bsaBPMSCavityEdef.substitutions,
+	  contains new cavity BPM BSA attributes
+	* mrfApp/src/devLibPMC.h, drvMrfEr.c, pmc_isr_test.c - 
+	  RTEMS 4.9 changes.
+	* mrfApp/src/drvMrfEg.c - get rid of compiler warnings on 2 printf's.
+	* README - add instructions for updating event EDM displays and
+	  ALH for new EVRs.
+	* testIoc/README_evgTest - correct typo in EVG usage instructions.
+
+event-R2-7-0: Aug 28, 2008
+        * evrSupport/Db/bsa/Makefile - install databases for apps that want to
+	  do their own substitutions files.
+        * evrSupport/Db/evr/evrEventAll.substitutions - change LCLSTBD1 to
+	  LCTCV3PM for TCAV3 OTR camera triggering.
+	* README, configure/RELEASE, testIoc/README_* - remove sSubRecord 
+          dependency.
+	* README - Add note about registration of user's fiducial routine.
+	* evrSupport/src and Db<many files>:
+	  - Add doubSubRecord and longSubRecord and remove sSubRecord from build.
+	  - Replace as many doubles as possible with unsigned longs.
+	  - Replace sSubRecord and some subRecord with 
+	    longSubRecord and doubSubRecord as appropriate.
+	  - Don't do any unnecessary floating point arithmetic.
+	  - Changes to share more code between event module and Mpg IOC app.
+	  - Use 6 element modifier array instead of 4+modifier5+bunchcharge.
+	  - Move pattern pipelining out of record processing.  Add pattern
+	    to evrTimeGetFromPattern.
+	  - 2 360Hz tasks now started by the event driver:
+		+ evrTask (evrThreadPriorityHigh+1) for pattern pipelining 
+		+ evrRecord (evrThreadPriorityHigh) for record processing.
+	  - evrTask now calls a routine provided by the user on every fiducial.
+	    evrTimeRegister added to register the user's fiducial routine 
+	    (must be called by the user during user's initialization). 
+	  - 360hz record processing is now just shells around static data.
+	  - Simulator logic updated to simulate EVR interrupts.
+	  - Add PATTERN_NO_DATA to possible pattern states.
+	* evrIoc - various changes to support testing.
+
+event-R2-6-5: Aug 15, 2008
+        * evrSupport/Db/bsa/bsaBLENEdef&bsaBLENTest.substitutions - added IPK.
+
+event-R2-6-4: Aug 4, 2008
+        * evrSupport/Db/bsa/bsaBPMSEdef.substitutions - for all TMIT PVs,
+          change EGU field from "" to Nel
+	* evrSupport/src/bsa.c - ignore same timestamps (for double-processing
+	  on the same pulse)
+	* evrSupport/src/evrPattern.h - add TCAVx_PERM defines.
+
+event-R2-6-3: May 20, 2008
+        * mrfApp/src - many changes to build for Embedded EVRs.
+	  Dayle added Coldfire register setup.
+	* evrSupport/src/evrMessage.c - add check for PPC on a diagnostic.
+	* evrSupport/src/evrPattern.h - add more modifier5 bit masks.
+	  Add defines for the pockels cell and shutter bits.
+	* evrSupport/src/evrModifier5.c - use bit mask now in evrPattern.h.
+	* configure/CONFIG_SITE - build for all platforms.
+	* evrSupport/Db/evr/evrEvent.db, evrEventAll.substitutions - add
+	  HIGH and LOW limit for event rates.  Set HIGH limit for TCAV0 
+          and TCAV3 so that these rates go yellow when greater than 0.
+          Set LOW limit for Pock and Shut so these rates go yellow when
+          less than 0.5.  Add new event codes for the pockels cell and 
+	  profile monitors.
+	* evrSupport/Db/evr/evr.db, evrWithDelays.db - remove trigger
+	  enables at initialization time (triggers attributes may not
+	  yet be set up).
+	* evrSupport/srcRestore/evrDevTrig.cwConfig,evrPMXXTrig.cwConfig - 
+          add TCON.
+	* evrIoc/iocBoot - directory added for test startup files.
+
+event-R2-6-2: Apr 01, 2008
+        * mrfApp/src/mrfVme64x.c,.h - return board ID from the "Find" routines.
+	  Correct find logic so that 200 and 230 boards can be any order in 
+	  the crate.
+        * mrfApp/src/drvMrfEg.c - add argument for board ID in the "Find" call.
+        * mrfApp/src/drvMrfEr.c - add argument for board ID in the "Find" call.
+	  For ADER set either function 0 (200) or function 1 (230).
+	  Write DBuff control register twice in ISR to get rid of extra data
+	  buffer interrupts.
+	* evrSupport/Db/evr/evrFiducial.db - Change state 2 in PATTERNSTATE to 
+	  indicate that it's a spare.
+	* evrSupport/src/drvEvr.c - check for invalid message size in data
+	  interrupt.  Don't set evrTask event in the fiducial interrupt until 
+	  task is ready.  Set timeout flag in evrTask timeout logic.
+	* evrSupport/src/evrMessage.c,.h - don't write a buffer if it's being
+	  read (throw it away).  Timeout logic added to read routine.  Remove
+	  unnecessary mutex locking (everything done in same task). Changes
+	  to diagnostic counters.  Add routines to set timeout flag and
+	  update missing fiducial counter.
+	* evrSupport/src/evrTime.c - set all timestamps in pipeline to bad
+	  when 3 same pulses.  Changes to diagnostic counters.
+	* evrSupport/src/evrPattern.c,.h - add timeout error processing.  
+	  Changes to diagnostic counters.  Don't set timestamp to bad until
+	  3 bad pulses in a row unless there is a timeout error. 
+	* evrSupport/src/bsa.c - use INPD instead of SDIS for timestamp check.
+	* evrSupport/Db/bsa/bsaEdefAvg.db, bsaEdefFanouts.db - add GO bi
+	  record upstream of device EDEF records and move disabling to GO.
+	  Set MDEL to -1 for all BSA PVs.
+
+event-R2-6-1: Mar 26, 2008
+        * configure/RELEASE - revert back to 3.14.8.2.
+        * mrfApp/src/drvMrfEr.c - add error messages for when VME EVR A24 
+	  space cannot be set up or the IRQ level cannot be set.  Process
+	  data before events in the ISR.
+	* mrfApp/src/os/RTEMS/vmeCSRMemProbeB.c - probe 2 or 4 bytes depending
+	  on input - required to set interrupt level on the VME EVR 230.
+        * mrfApp/src/Makefile - install debugPrint.h.
+	* evrSupport/Db/evr/evrFiducial.db - reset counters during iocInit 
+          record initial processing.
+	* evrSupport/src/drvEvr.c - don't set event in fiducial interrupt if 
+	  task is not yet done with the last fiducial - update missed fiducial
+	  counter and skip pulse instead.  Add check for invalid message size 
+	  in data interrupt.  Set timeout flag before processing data in 
+	  fiducial timeout logic of the evrTask (for the case where fiducials
+	  are missing but data is still being received - throw data away).
+	* evrSupport/src/evrMessage.c,.h - remove unnecessary mutex lock.
+	  Change logic so that the write routine at interrupt throws away data 
+	  if the buffer it wants to write to is being read by the evrTask.  
+	  Add routine for evrTask to set timeout flag and the read routine 
+	  to reset it and return timeout error.  Add routine for fiducial 
+	  interrupt to call to update the missing fiducial counter.
+	* evrSupport/src/evrTime.c - set all timestamps in the pipeline bad 
+	  when 3 same pulses.  Diagnostic counter change.
+	* evrSupport/src/evrPattern.c,.h - add timeout error logic.  Use
+	  invalid waveform status for invalid header.  Diagnostic counter 
+	  change.
+
+event-R2-6-0-1: Mar 4, 2008
+        * configure/RELEASE - revert back to 3.14.9.
+
+event-R2-6-0: Mar 3, 2008
+        * configure/RELEASE - revert back to 3.14.8.2.
+        * mrfApp/src/devMrfEr.c,.dbd,Makefile - add device support for bi 
+	  that polls the link status.
+        * mrfApp/src/drvMrfEr.c (ISR) - Don't disable the data interrupt 
+	  if data processing routine not provided.  Allow data stream 
+	  enable/disable without also enabling/disabling the interrupt.
+        * evrSupport/src/evrMessage.c,.h - remove std deviation calc.
+	  Remove pattern-fiducial delta time calc.  Add 3 new diagnostic
+	  counter (data-read-retry, no-data-avail, check sum error).  
+	  Add evrMessageCheckSumError.  evrMessageEnd call moved to drvEvr.c.
+        * evrSupport/src/evrPattern.c,.h - ErEnableDBuff call moved to
+	  drvEvr.c.  Add timeout logic to pattern processing.  Add new
+	  counters to diagnostics, remove std dev.  Add defines for MPS.
+	* evrSupport/src/evrTime.c - remove some diagnostics.  Add fiducial
+	  rate calculation.  Don't set timestamp to bad until 3 same pulses.
+	* evrSupport/src/drvEvr.c - add timeout logic to evrTask.  Process
+	  pattern data only when fiducial event is received.  Add calls to
+	  evrMessageEnd.  Add data buffer enable and interrupt calls.
+	  Add check sum error processing.
+	* evrSupport/Db/evrEventAll.substitutions - remove fiducial event.
+	  FIDUCIALRATE moved to evrFiducial.db.
+	* evrSupport/Db/evrEvent.db - use rate subroutine from evrTime.
+	* evrSupport/Db/evrFiducial.db - add FIDUCIALRATE.  Process diags
+	  at init. 
+	* evrSupport/Db/evr/evr.db - add bi to poll the link status.
+        * testIoc/eventTestApp/edm/evrDiags.edl - change link status.
+
+event-R2-5-3-1: Feb 21, 2008
+        * build with base R3.14.9
+        * build with generalTime-R1-2-2-2
+        * build with sSubRecord-R1-0-2-1
+        * build with miscUtils-R1-0-2-1
+        * Replace CONFIG_APP with CONFIG_SITE
+        * Add RELEASE_SITE
+
+event-R2-5-3: Feb 20, 2008
+	* evrSupport/Db/evr/evrEventAll.substitutions - add TBD1 to 6.
+	* evrSupport/Db/evr/evrFiducial.db - add TIMEOUT state to PATTERNSTATE.
+	* evrSupport/src/evrMessage.c/.h - check for data-not-avail in 
+	  evrMessageRead
+	* evrSupport/src/evrPattern.h - add PATTERN_TIMEOUT.
+
+event-R2-5-2: Jan 25, 2008
+	* evrSupport/Db/evr/evrEvent.db - add event code as INPA in CNT record.
+	* evrSupport/src/evrPattern.c - CNT subroutine now uses A as event 
+          code instead of EVNT field.  Rollover logic added to RATE and CNT
+	  routines.
+	* evrSupport/src/evrTime.c - bug fix - set status unconditionally 
+	  in evrTimePut.CNT subroutine now uses A as event 
+	* mrfApp/mrfVme64x.* - add check for EVG 230.
+
+event-R2-5-1: Jan 18, 2008
+	* configure/RELEASE - change to use /usr/local instead of /nfs/slac/g.
+	* testIoc directory - added for testing - is not built for production.
+	* evrSupport/Db/evr/evrEventAll.substitutions - Change LCLSTBD6 event 
+          to LCLSTCV3 and LCLSTBD7 to LCNOTCV3.
+
+event-R2-5-0: Nov 30, 2007
+	* configure/RELEASE - change to EPICS R3-14-8-2-lcls2 (base, modules)
+	* configure:
+	  - remove RULES.Db - not needed when substitution files are 
+            corrected to put "{" and "}" on their own lines.
+	  - remove RULES.Cw - replaced by RULES.Restore in epics base.
+	  - remove unused rules files - RULES_JAVA, RULES.Opi, RULES.Cfg, 
+	    RULES.iocBoot, RULES.PLC.
+	* README - Removed obsolete instructions and changed instructions for
+	  creating databases.
+	* evrSupport/srcRestore - added srcRestore for .cwConfig template files
+	  moved from evrSupport/Db/ioc
+	* evrSupport/Db/bsa/Makefile - remove inclusion of RULES.Db.
+	* evrSupport/Db/evr:
+	  - move evrDevTrig.db from evrSupport/Db/ioc.
+	  - change Makefile to install evrDevTrig.db and to remove RULES.Db.
+	* evrSupport/Db/ioc - Remove all files.  All files moved to individual
+	  ioc applications.
+	* evrSupport/Db/Makefile - Remove build of the ioc directory.
+	* evrIoc/Db - corrected files so that local RULES.Db is not required.
+	* evrIoc/srcRestore - added example trigXL05.cwsubstitutions file.
+
 event-R2-4-8: Oct 11, 2007
 	* configure/RELEASE - change to EPICS R3.14.9 and RTEMS 4.7.1
 	* README - change afs to nfs.

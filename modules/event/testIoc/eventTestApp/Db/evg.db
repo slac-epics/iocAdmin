@@ -1,0 +1,72 @@
+record(eg, "$(DEV):CTRL") {
+  field(DESC, "EVG Control")
+  field(DTYP, "MRF Event Generator")
+  field(OUT, "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(ENAB, "YES")
+# Clock speed if using internal clock
+  field(R1SP, "118999921")
+  field(R2SP, "118999921")
+# Clock prescaler (0 = external clock)
+  field(R1CK, "1")
+  field(R2CK, "1")
+# Max # ticks for any RAM entry (1/360 sec - ~500usec) at 119MHz
+  field(RMAX, "271000")
+# Start with Sequence RAMs off so they can be set up during initialization
+  field(MOD1, "Off")
+  field(MOD2, "Off")
+# Only one EVG exists
+  field(FIFO, "NO")
+# Use the AC input divider for sequence trigger enable
+  field(ASQ1, "YES")
+  field(ASQ2, "YES")
+# Don't trigger event output 0 from AC input divider.
+  field(AEV0, "NO")
+# Don't synchronize AC input trigger with multiplexed counter, don't divide it, and don't delay it.
+  field(ASYN, "NO")
+# ADIV of 0 means bypass phase and divide logic.
+  field(ADIV, "0")
+  field(APHS, "0")
+# Externally trigger events - set to 100.
+  field(ET0,  "100")
+  field(ET1,  "100")
+  field(ET2,  "100")
+  field(ET3,  "100")
+  field(ET4,  "100")
+  field(ET5,  "100")
+  field(ET6,  "100")
+  field(ET7,  "100")
+# There is no multiplexed counter, all MC*,MD*,ME*,MS* fields left at 0.
+}
+
+record(longout, "$(DEV):EVENT") {
+  field(DESC, "EVG User Event Code")
+  field(PINI, "YES")
+  field(DRVH, "256")
+  field(DRVL, "0")
+  field(MDEL, "-1")
+}
+
+record(seq, "$(DEV):EVENTSEND") {
+  field(DESC, "EVG Send User Event Code")
+  field(DOL1, "$(DEV):EVENT")
+  field(LNK1, "$(DEV):CTRL.VME PP")
+}
+
+record(bo, "$(DEV):SEQ1SEND") {
+  field(DESC, "EVG Send Seq 1")
+  field(ZNAM, "No Trigger")
+  field(ONAM, "Trigger")
+  field(DOL,  "1")
+  field(OMSL, "closed_loop")
+  field(OUT, "$(DEV):CTRL.TRG1 PP")
+}
+
+record(bo, "$(DEV):SEQ2SEND") {
+  field(DESC, "EVG Send Seq 2")
+  field(ZNAM, "No Trigger")
+  field(ONAM, "Trigger")
+  field(DOL,  "1")
+  field(OMSL, "closed_loop")
+  field(OUT, "$(DEV):CTRL.TRG2 PP")
+}

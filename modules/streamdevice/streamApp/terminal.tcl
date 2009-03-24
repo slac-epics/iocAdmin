@@ -52,6 +52,7 @@ proc receiveHandler {sock} {
     if [catch {
         switch -- [lindex $a 0] {
             "disconnect" {
+                sendReply $sock [string range $a 11 end]
                 destroy .$sock
             }
             "echo" {

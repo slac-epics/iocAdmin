@@ -1,7 +1,9 @@
 
 #include <rtems.h>
+#ifdef PCI
 #include <bsp/pci.h>
 #include <plx9080_eeprom.h>
+#endif
 #define EPICS_REGISTER
 #ifdef EPICS_REGISTER
 #include <registryFunction.h>   /* EPICS Registry support library                                 */
@@ -23,6 +25,7 @@
 int
 evrEEPROMFixup(int instance, int doit)
 {
+#ifdef PCI
 int ssvid, ssdid, x;
 
 	if ( plx9080_ee_init(instance, 9030, 66) ) {
@@ -77,6 +80,7 @@ fatal:
 	return -1;
 
 bail:
+#endif
 	fprintf(stderr,"==> Errors encountered; EEPROM UNCHANGED\n");
 	return -1;
 }

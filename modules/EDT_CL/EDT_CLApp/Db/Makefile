@@ -12,6 +12,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 DB += camera640480.db
 DB += camera13921040.db
+DB += camera20482048.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

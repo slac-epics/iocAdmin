@@ -11,7 +11,7 @@
 ***********************************************************************/
 
 /*
- * $Id: drvAsynIPPort.c,v 1.2 2006/09/01 23:38:42 saa Exp $
+ * drvAsynIPPort.c,v 1.37 2007/05/16 19:45:33 rivers Exp
  */
 
 /* Previous versions of drvAsynIPPort.c (1.29 and earlier, asyn R4-5 and earlier)
@@ -45,6 +45,7 @@
 #include <errlog.h>
 #include <iocsh.h>
 #include <epicsAssert.h>
+#include <epicsExit.h>
 #include <epicsStdio.h>
 #include <epicsString.h>
 #include <epicsThread.h>
@@ -67,6 +68,10 @@
 # endif
 #endif
 
+
+/* This delay is needed in cleanup() else sockets are not always really closed cleanly */
+#define CLOSE_SOCKET_DELAY 0.02
+
 /*
  * This structure holds the hardware-specific information for a single
  * asyn link.  There is one for each IP socket.
@@ -76,6 +81,7 @@ typedef struct {
     char              *IPDeviceName;
     char              *portName;
     int                socketType;
+    int                broadcastFlag;
     int                fd;
     unsigned long      nRead;
     unsigned long      nWritten;
@@ -191,6 +197,24 @@ report(void *drvPvt, FILE *fp, int details)
 }
 
 /*
+ * Clean up a socket on exit
+ * This helps reduce problems with vxWorks when the IOC restarts
+ */
+static void
+cleanup (void *arg)
+{
+    ttyController_t *tty = (ttyController_t *)arg;
+
+    if (!tty) return;
+    if (tty->fd >= 0) {
+        close(tty->fd);
+        tty->fd = -1;
+        /* If this delay is not present then the sockets are not always really closed cleanly */
+        epicsThreadSleep(CLOSE_SOCKET_DELAY);
+    }
+}
+
+/*
  * Create a link
  */
 static asynStatus
@@ -227,6 +251,20 @@ connectIt(void *drvPvt, asynUser *pasynUser)
         }
 
         /*
+         * Enable broadcasts if so requested
+         */
+        i = 1;
+        if (tty->broadcastFlag
+         && (setsockopt(tty->fd, SOL_SOCKET, SO_BROADCAST, (void *)&i, sizeof i) < 0)) {
+            epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
+                          "Can't set %s socket BROADCAST option: %s\n",
+                          tty->IPDeviceName, strerror(SOCKERRNO));
+            epicsSocketDestroy(tty->fd);
+            tty->fd = -1;
+            return asynError;
+        }
+
+        /*
          * Connect to the remote host
          */
 
@@ -242,10 +280,15 @@ connectIt(void *drvPvt, asynUser *pasynUser)
             tty->fd = -1;
             return asynError;
         }
+
+        /*
+         * Register for socket cleanup
+         */
+        epicsAtExit(cleanup, tty);
     }
     i = 1;
     if ((tty->socketType == SOCK_STREAM)
-        && (setsockopt(tty->fd, IPPROTO_TCP, TCP_NODELAY, (void *)&i, sizeof i) < 0)) {
+     && (setsockopt(tty->fd, IPPROTO_TCP, TCP_NODELAY, (void *)&i, sizeof i) < 0)) {
         epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
                       "Can't set %s socket NODELAY option: %s\n",
                       tty->IPDeviceName, strerror(SOCKERRNO));
@@ -313,16 +356,15 @@ static asynStatus writeRaw(void *drvPvt, asynUser *pasynUser,
     if (writePollmsec < 0) writePollmsec = -1;
 #ifdef USE_SOCKTIMEOUT
     {
-        struct timeval tv;
-        tv.tv_sec = writePollmsec / 1000;
-        tv.tv_usec = 1000 * (writePollmsec % 1000);
-        if (setsockopt(tty->fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof tv) < 0)
-        {
-            epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
-                               "Can't set %s socket send timeout: %s",
-                               tty->IPDeviceName, strerror(SOCKERRNO));
-            return asynError;
-        }
+    struct timeval tv;
+    tv.tv_sec = writePollmsec / 1000;
+    tv.tv_usec = (writePollmsec % 1000) * 1000;
+    if (setsockopt(tty->fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof tv) < 0) {
+        epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
+                      "Can't set %s socket send timeout: %s",
+                      tty->IPDeviceName, strerror(SOCKERRNO));
+        return asynError;
+    }
     }
 #endif
 #ifdef USE_POLL
@@ -384,7 +426,7 @@ static asynStatus readRaw(void *drvPvt, asynUser *pasynUser,
     }
     if (maxchars <= 0) {
         epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
-                      "%s maxchars %d. Why <=0?\n",tty->IPDeviceName,maxchars);
+                  "%s maxchars %d. Why <=0?\n",tty->IPDeviceName,(int)maxchars);
         return asynError;
     }
     readPollmsec = pasynUser->timeout * 1000.0;
@@ -392,16 +434,15 @@ static asynStatus readRaw(void *drvPvt, asynUser *pasynUser,
     if (readPollmsec < 0) readPollmsec = -1;
 #ifdef USE_SOCKTIMEOUT
     {
-        struct timeval tv;
-        tv.tv_sec = readPollmsec / 1000;
-        tv.tv_usec = 1000 * (readPollmsec % 1000);
-        if (setsockopt(tty->fd, SOL_SOCKET, SO_RCVTIMEO,  &tv, sizeof tv) < 0)
-        {
-            epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
-                               "Can't set %s socket receive timeout: %s",
-                               tty->IPDeviceName, strerror(SOCKERRNO));
-            status = asynError;
-        }
+    struct timeval tv;
+    tv.tv_sec = readPollmsec / 1000;
+    tv.tv_usec = (readPollmsec % 1000) * 1000;
+    if (setsockopt(tty->fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof tv) < 0) {
+        epicsSnprintf(pasynUser->errorMessage,pasynUser->errorMessageSize,
+                      "Can't set %s socket receive timeout: %s",
+                      tty->IPDeviceName, strerror(SOCKERRNO));
+        status = asynError;
+    }
     }
 #endif
     if (gotEom) *gotEom = 0;
@@ -441,9 +482,14 @@ static asynStatus readRaw(void *drvPvt, asynUser *pasynUser,
         closeConnection(pasynUser,tty);
         status = asynError;
     }
+    if (thisRead < 0)
+        thisRead = 0;
     *nbytesTransfered = thisRead;
     /* If there is room add a null byte */
-    if (thisRead < maxchars) data[thisRead] = 0;
+    if (thisRead < maxchars)
+        data[thisRead] = 0;
+    else if (gotEom)
+        *gotEom = ASYN_EOM_CNT;
     return status;
 }
 
@@ -574,12 +620,17 @@ drvAsynIPPortConfigure(const char *portName,
     *cp = ':';
     tty->farAddr.ia.sin_port = htons(port);
     tty->farAddr.ia.sin_family = AF_INET;
+    tty->broadcastFlag = 0;
     if ((protocol[0] ==  '\0')
      || (epicsStrCaseCmp(protocol, "tcp") == 0)) {
         tty->socketType = SOCK_STREAM;
     }
     else if (epicsStrCaseCmp(protocol, "udp") == 0) {
         tty->socketType = SOCK_DGRAM;
+    }
+    else if (epicsStrCaseCmp(protocol, "udp*") == 0) {
+        tty->socketType = SOCK_DGRAM;
+        tty->broadcastFlag = 1;
     }
     else {
         printf("drvAsynIPPortConfigure: Unknown protocol \"%s\".\n", protocol);

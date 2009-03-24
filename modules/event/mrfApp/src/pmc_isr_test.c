@@ -2,7 +2,7 @@
              Dayle Kotturi  <dayle@slac.stanford.edu>,    2006 */ 
 #include <rtems.h>
 #include <rtems/pci.h>
-#include <rtems/irq.h>
+#include <bsp/irq.h>
 #include <libcpu/io.h>
 
 #include <bsp.h>

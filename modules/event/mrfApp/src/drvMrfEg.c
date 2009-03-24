@@ -200,6 +200,9 @@ typedef struct MrfEVGRegs
 
 #define EG_MONITOR                      /* Include the EG monitor program */
 #define RAM_LOAD_SPIN_DELAY     1       /* taskDelay() for waiting on RAM */
+#ifndef VME_AM_STD_SUP_DATA
+#define VME_AM_STD_SUP_DATA (0x3D)
+#endif
 
 /* Only look at these bits when ORing on new bits in the control register */
 #define CTL_OR_MASK     (0x9660)
@@ -343,6 +346,7 @@ EgCardStruct *EgGetCardStruct (int Card)
 int EgConfigure(int Card, epicsUInt32 CardAddress, epicsUInt32 internalClock) {
   int rc;
   epicsUInt16          Junk;          /* Dummy variable for card read probe function            */
+  epicsUInt32          DeviceId;      /* Board ID                                               */
   volatile MrfEVGRegs *pEvg = NULL;
   EgCardStruct *pCard;
   int                  Slot,i;
@@ -397,7 +401,7 @@ int EgConfigure(int Card, epicsUInt32 CardAddress, epicsUInt32 internalClock) {
 	i    = -1;
 	do {
 		i++;
-		if ( 0 == (Slot = mrfFindNextEVG(Slot)) ) {
+		if ( 0 == (Slot = mrfFindNextEVG(Slot, &DeviceId)) ) {
 			errlogPrintf("ErConfigure: VME64x scan found no EVG instance %u\n",i);
 			epicsMutexDestroy (pCard->EgLock);
 			free (pCard);
@@ -2101,7 +2105,7 @@ int EgSeqRamRead(EgCardStruct *pParm, int ram, unsigned short address, int len)
           /* Read back to flush pipelines */
           dummy = MRF_VME_REG16_READ(&pEg->Seq1Addr);
           printf("Address %d evno %d timestamp %d\n",dummy,
-                 MRF_VME_REG16_READ(&pEg->Seq1Data), MRF_VME_REG32_READ(&pEg->Seq1Time));
+                 MRF_VME_REG16_READ(&pEg->Seq1Data), (int)MRF_VME_REG32_READ(&pEg->Seq1Time));
         }
     }
   else if (ram == 2)
@@ -2112,7 +2116,7 @@ int EgSeqRamRead(EgCardStruct *pParm, int ram, unsigned short address, int len)
           /* Read back to flush pipelines */
           dummy = MRF_VME_REG16_READ(&pEg->Seq2Addr);
           printf("Address %d evno %d timestamp %d\n",dummy,
-                 MRF_VME_REG16_READ(&pEg->Seq2Data), MRF_VME_REG32_READ(&pEg->Seq2Time));
+                 MRF_VME_REG16_READ(&pEg->Seq2Data), (int)MRF_VME_REG32_READ(&pEg->Seq2Time));
         }
     }
   else

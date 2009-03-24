@@ -32,5 +32,3 @@ EDLS += save_restore.edl
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-
-realclean:

@@ -1,4 +1,4 @@
-/* $Id: drvHy8002.c,v 1.2 2007/08/30 19:33:46 luchini Exp $
+/* $Id: drvHy8002.c,v 1.3 2007/12/05 20:48:30 luchini Exp $
    Implement an IPAC carrier interface as defined
    by Andrew Johnson <anjohnson@iee.org>
    for the Hytec 8002 carrier board.
@@ -203,12 +203,17 @@ checkprom( unsigned int base)
         str[4] = 0;
         printf("PROM header: '%4s'\n", str);
         /*
-           compare to expected string
+           compare to expected string. 
+           Note: this is a non-standard check of the carrier
+                 identification. Usually the check verifies
+                 the first 4 characters but hytec uses the 
+                 last char for a carrier version number.
+                 Therefoer, only 3 char are checked below.
          */
         i = 0;
-        while(i < 4 && expstr[i] == str[i])
+        while(i < 3 && expstr[i] == str[i])
                 i++;
-        strok = (i == 4);
+        strok = (i == 3);
 
         manid = (int) (*((char *) (base + CARR_MANID)));
         ishytec = (manid == MANUFACTURER_HYTEC);

@@ -16,12 +16,12 @@
 file evrPattern.db
 {
 #                             Input
-#     Location   ,pattern#, pattern#      
-pattern { DEV    , N      , NINP    , TSE ,         FLNK           ,         SDIS           }
-      {$(DEVICE) , ""     , "N-1"   ,  0  , ""                     , "$(DEVICE):FIDUCIAL.L" }
-      {$(DEVICE) , "360HZ", "N-1"   , -2  , "$(DEVICE):PATTERNN-1" , ""                     }
-      {$(DEVICE) , "N-1"  , "N-2"   ,  0  , "$(DEVICE):PATTERNN-2" , ""                     }
-      {$(DEVICE) , "N-2"  , "N-3"   ,  0  ,  ""                    , ""                     }
+#     Location   ,pattern#, id      
+pattern { DEV    , N      , NINP    , TSE ,         FLNK            , SDIS }
+      {$(DEVICE) , ""     ,   4     ,  0  , "$(DEVICE):PATTERN360HZ", ""   }
+      {$(DEVICE) , "360HZ",   0     ,  1  , "$(DEVICE):PATTERNN-1"  , ""   }
+      {$(DEVICE) , "N-1"  ,   1     ,  0  , "$(DEVICE):PATTERNN-2"  , ""   }
+      {$(DEVICE) , "N-2"  ,   2     ,  0  ,  ""                     , ""   }
 # Note N-3 instantiated in mpgPatternProc.db or evrPatternProc.db
 }
 
@@ -32,10 +32,11 @@ file evrPattern.db
 #                             Input
 #     Location   ,pattern#, pattern#      
 pattern { DEV    , N      , NINP    , TSE ,         FLNK             ,SDIS}
-      {$(DEVICE) , "D"    , "360HZ" ,  0  , "$(DEVICE):PATTERND-1"   , "" }
-      {$(DEVICE) , "D-1"  , "N-1"   ,  0  , "$(DEVICE):PATTERND-2"   , "" }
-      {$(DEVICE) , "D-2"  , "N-2"   ,  0  , "$(DEVICE):PATTERND-3"   , "" }
-      {$(DEVICE) , "D-3"  , "N-3"   ,  0  , "$(DEVICE):PATTERNSTATE" , "" }
+      {$(DEVICE) , "D"    ,   4     ,  0  , "$(DEVICE):PATTERND-0"   , "" }
+      {$(DEVICE) , "D-0"  ,   0     ,  0  , "$(DEVICE):PATTERND-1"   , "" }
+      {$(DEVICE) , "D-1"  ,   1     ,  0  , "$(DEVICE):PATTERND-2"   , "" }
+      {$(DEVICE) , "D-2"  ,   2     ,  0  , "$(DEVICE):PATTERND-3"   , "" }
+      {$(DEVICE) , "D-3"  ,   3     ,  0  , "$(DEVICE):PATTERNSTATE" , "" }
 }
 
 file evrFiducial.db

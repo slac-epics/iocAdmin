@@ -1,0 +1,107 @@
+#==============================================================================
+# Abs:  EVR records for TEST EV01
+#
+# Name: evrTest.substitutions
+#
+# Macros: evr.db - instantiates an EVR record.
+#	  Associated display is evrDiags.edl.
+#	DEV	Name of EVR - EVR:<loca>:<unit>
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	DELAY	Initial delay in ticks for normal delay triggers (one tick = 8.4 nsec)
+#	WIDTH	Initial pulse width in ticks
+#
+#	evrEventCtrl.db - instantiates a record for an EVR event.
+#	Associated display is evrTriggerDiags.edl.
+#	DEV	Name of EVR - EVR:<loca>:<unit>
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	NAME	EVENT1 to EVENT14 - instantiate all 14 records even if you only use a few events.
+#	ID	Event code number.  Must match an event code in evgTest.substitutions.
+#	P0 to P13 - trigger state for channels 0 to 13
+#		(0 = disabled for the event code, 1 = enabled for the event code)
+#		Channels 0 to 3  are used for the front panel triggers.
+#		Channels 0 to 13 are used for the transition module triggers.
+#	VME	Controls whether an IRQ happens when this event code occurs.
+#		(0 = no IRQ, 1 = IRQ)
+#		Must be set to 1 if you want event record processing using the event code.
+#		Set for card 0 only.
+#
+#==============================================================================
+#
+#
+file evr.db
+{
+#                               Default Pulse
+#	  Device         Card   Delay   Width (clock ticks)    
+pattern { DEV          , CARD , DELAY , WIDTH }
+	{ EVR:TEST:EV01,  0   ,   0   ,  12   }
+#	{ EVR:TEST:EV02,  1   ,   0   ,  12   }
+#	{ EVR:TEST:EV03,  2   ,   0   ,  12   }
+}
+file evrEventCtrl.db
+{
+#	  Device         Card  <----------------------------  Event -------------------------->       
+pattern { DEV          , CARD , NAME    , ID ,P0,P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,P13,VME}
+	{ EVR:TEST:EV01,  0   , EVENT1  , 1  , 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT2  , 2  , 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT3  , 3  , 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT4  , 4  , 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT5  , 5  , 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT6  , 6  , 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT7  , 7  , 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT8  , 8  , 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT9  , 9  , 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT10 , 10 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT11 , 11 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT12 , 12 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1 , 0 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT13 , 13 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 1 , 0 , 1 }
+	{ EVR:TEST:EV01,  0   , EVENT14 , 14 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 1 , 1 }
+
+#	{ EVR:TEST:EV02,  1   , EVENT1  , 1  , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT2  , 2  , 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT3  , 3  , 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT4  , 4  , 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT5  , 5  , 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT6  , 6  , 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT7  , 7  , 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT8  , 8  , 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT9  , 9  , 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT10 , 10 , 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT11 , 11 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT12 , 12 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT13 , 13 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV02,  1   , EVENT14 , 14 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 1 , 0 , 0 }
+
+#	{ EVR:TEST:EV03,  2   , EVENT1  , 1  , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT2  , 2  , 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT3  , 3  , 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT4  , 4  , 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT5  , 5  , 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT6  , 6  , 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT7  , 7  , 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT8  , 8  , 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT9  , 9  , 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT10 , 10 , 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT11 , 11 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT12 , 12 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT13 , 13 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1 , 0 , 0 , 0 }
+#	{ EVR:TEST:EV03,  2   , EVENT14 , 14 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 1 , 0 , 0 }
+}
+file evrEventRate.db
+{
+#	  Device               <--  Event -->       
+pattern { DEV                 , NAME    , ID }
+	{ IOC:TEST:EV01       , EVENT1  , 1  }
+	{ IOC:TEST:EV01       , EVENT2  , 2  }
+	{ IOC:TEST:EV01       , EVENT3  , 3  }
+	{ IOC:TEST:EV01       , EVENT4  , 4  }
+	{ IOC:TEST:EV01       , EVENT5  , 5  }
+	{ IOC:TEST:EV01       , EVENT6  , 6  }
+	{ IOC:TEST:EV01       , EVENT7  , 7  }
+	{ IOC:TEST:EV01       , EVENT8  , 8  }
+	{ IOC:TEST:EV01       , EVENT9  , 9  }
+	{ IOC:TEST:EV01       , EVENT10 , 10 }
+	{ IOC:TEST:EV01       , EVENT11 , 11 }
+	{ IOC:TEST:EV01       , EVENT12 , 12 }
+	{ IOC:TEST:EV01       , EVENT13 , 13 }
+	{ IOC:TEST:EV01       , EVENT14 , 14 }
+}

@@ -271,6 +271,7 @@ typedef void (*DBUFF_FUNC) (void);
 
 #define VME_EVR (0)
 #define PMC_EVR (1)
+#define EMBEDDED_EVR (2)
 
 /*---------------------
  * Event Receiver Card Structure

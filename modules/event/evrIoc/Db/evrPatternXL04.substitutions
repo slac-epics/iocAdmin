@@ -1,13 +1,17 @@
 #
 # Pattern records
-file evrPatternAll.db {
-#	    Device        ,  SLC Pattern Check LNK       ,  EVR/Trigger    
-#	                                                    Links          
-  pattern { DEVICE        ,        LINK4                 ,LINK5,        LINK6              , TREF , TS1ST, TS2ND }
-	  { IOC:XL04:EV01 , "IOC:XL04:EV01:FANOUTSLC PP" , ""  , "IOC:XL04:EV01:FANOUT PP" , 1E06 ,   1  ,   4   }
+file evrPatternAll.db 
+{
+  pattern { DEVICE        , LINK4 ,  LINK5                    ,        LINK6                  , TREF , TS1ST, TS2ND }
+	  { IOC:XL04:EV01 ,  ""   , "IOC:XL04:EV01:FANOUT PP" , "ESIM:XL04:1:PATTERNSIMFO PP" , 1E06 ,   1  ,   4   }
 }
-# Event records
-file evrEventAll.db {
-  pattern { DEVICE        }
-	  { IOC:XL04:EV01 }
+file evrPatternTest.db 
+{
+pattern { DEVICE        , SIMUL       }
+        { IOC:XL04:EV01 , ESIM:XL04:1 }
+}
+file evrPatternProc.db 
+{
+pattern {    DEV          }
+        { "IOC:XL04:EV01" }
 }

@@ -16,12 +16,28 @@
 #==============================================================
 #
 #
+TODO:             Change p2pthreshold/pixel to float value and give more explanation
+                  Add minimal number of pixel noise
+                  Add timestamp event ID record
+
+EDT_CL-R1-3-9:    Add support of PULNiX TM4200CL PW mode for XTOD
+                  For PTM6710CL, remove the noise ratio default to allow restore
+                  Switch EPICS base back to R3.14.8.2 as LCLS standard
+                  Change default timing event ID to 159 for timestamp
+                  Support PMC DV Fox
+
+EDT_CL-R1-3-8:    For PTM6710CL, remove p2pthreshold/pixel default value to allow restore
+                  For PTM6710CL, does not remove noise level from whole wf just to portion below noise level
+                  For PTM6710CL, swap the interlaced lines
+                  **** configure/RELEASE is modified by Kristi and Ernest to point to EPICS 3.14.9 ***
 
 EDT_CL-R1-3-7-1:  Cosmetic changes for EPICS 3.14.9 at LCLS  
+                  **** configure/RELEASE is modified by Kristi and Ernest to point to EPICS 3.14.9 ***
 
-EDT_CL_R1-3-7:    Build with base-R3-14-9-lcls1 (RTEMS 4.7.1)
+EDT_CL-R1-3-7:    Build with base-R3-14-9-lcls1 (RTEMS 4.7.1)
+                  **** configure/RELEASE is modified by Kristi and Ernest to point to EPICS 3.14.9 ***
 
-EDT_CL_R1-3-6:    Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+EDT_CL-R1-3-6:    Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
                   Add standard header
 
 EDT_CL-R1-3-5:    Change EPICS_BASE path

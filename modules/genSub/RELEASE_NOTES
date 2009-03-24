@@ -21,9 +21,12 @@
 #
 #==============================================================
 #
-genSub-1-6-lcls2: Build with base-R3-14-9-lcls1 (RTEMS 4.7.1)
+genSub-R1-6-1-lcls2:
+	modifications needed to bring the module to EPICS R3-14-9 standard
 
-genSub-1-6-lcls1: Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+genSub-R1-6-lcls2: Build with base-R3-14-9-lcls1 (RTEMS 4.7.1)
+
+genSub-R1-6-lcls1: Build with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
 
 genSub-R1-0-1: Allow build for rtems 
                Build with base-R3-14-8-2-lcls1 (RTEMS 4.7)

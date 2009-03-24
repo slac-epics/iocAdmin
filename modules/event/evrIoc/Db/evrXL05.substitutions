@@ -1,10 +1,45 @@
 #==============================================================================
-#
-# Abs:  LCLS EVR IOC records for IOC XL05
+# Abs:  LCLS EVR records for XL05 EV01
 #
 # Name: evrXL05.substitutions
 #
+# Macros: evr.db - instantiates an EVR record.
+#	  Associated display is evrDiags.edl.
+#	DEV	Name of EVR - EVR:<loca>:<unit>
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	DELAY	Initial delay in ticks for normal delay triggers (one tick = 8.4 nsec)
+#	WIDTH	Initial pulse width in ticks
+#
+#	evrEventCtrl.db - instantiates a record for an EVR event.
+#	Associated display is evrTriggerDiags.edl.
+#	DEV	Name of EVR - EVR:<loca>:<unit>
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	NAME	EVENT1 to EVENT14 - instantiate all 14 records even if you only use a few events.
+#	ID	Event code number.  To find all available event codes:
+#		lclshome -> Event -> Events... (in the EVG IOC box).
+#		This display brings up all the event that are beam-dependent.
+#	        For events that are beam-independent (constant or standby), select 
+#		"Time Slot 1 to 6 Event Codes".  Find the event that you want to trigger one or 
+#		more devices connected to the EVR.  Use number in the Event Code column.
+#		Also check sharepoint spreadsheet:
+#		Controls -> Timing -> timingEventCodes
+#		NOTE: There is a dependency on event code assignments and triggers.
+#     		When changing event code assignments below, also change the appropriate
+#    		<ioc>trig.substitutions file!
+#		NOTE: If you don't need to use all 14 event codes, populate the spare records 
+#		with other event codes from the "Time Slot 1 to 6 Event Codes" display.
+#	P0 to P13 - trigger state for channels 0 to 13
+#		(0 = disabled for the event code, 1 = enabled for the event code)
+#		Channels 0 to 3  are used for the front panel triggers.
+#		Channels 0 to 13 are used for the transition module triggers.
+#		The assignments here must match the field selections in <ioc>trig.substitution.
+#	VME	Controls whether an IRQ happens when this event code occurs.
+#		(0 = no IRQ, 1 = IRQ)
+#		Must be set to 1 if you want event record processing using the event code.
+#		Must be set to 1 if you have records with TSE fields set to the event code.
+#
 #==============================================================================
+#
 #
 file evr.db
 {
@@ -19,20 +54,20 @@ file evrEventCtrl.db
 {
 #	  Device         Card  <----------------------------  Event -------------------------->       
 pattern { DEV      , CARD , NAME    , ID ,P0,P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,P13,VME}
-	{ EVR:XL05:EV01,   0  , EVENT1  , 140, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT2  , 9  , 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT3  , 10 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT4  , 11 , 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT5  , 12 , 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT6  , 13 , 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT7  , 14 , 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT8  , 40 , 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT9  , 41 , 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT10 , 42 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT11 , 43 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT12 , 44 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1 , 0 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT13 , 45 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 1 , 0 , 1 }
-	{ EVR:XL05:EV01,   0  , EVENT14 , 46 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 1 , 1 }
+	{ EVR:XL05:EV01,   0  , EVENT1  , 140, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT2  , 9  , 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT3  , 10 , 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT4  , 11 , 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT5  , 12 , 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT6  , 13 , 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT7  , 14 , 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT8  , 40 , 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT9  , 41 , 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT10 , 42 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT11 , 43 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 , 0 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT12 , 44 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 1 , 0 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT13 , 45 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 1 , 0 , 0 }
+	{ EVR:XL05:EV01,   0  , EVENT14 , 46 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 1 , 0 }
 
 #	{ EVR:XL05:EV02,   1  , EVENT1  , 1  , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }
 #	{ EVR:XL05:EV02,   1  , EVENT2  , 2  , 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 0 }

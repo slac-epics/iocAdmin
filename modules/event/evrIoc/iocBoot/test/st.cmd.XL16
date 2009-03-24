@@ -1,0 +1,28 @@
+## EVR RTEMS startup script
+
+## Set common environment variables. eg. EPICS_TS_NTP_INET and PORTs
+< all/pre_st.cmd
+
+# by building one obj with everything in it, no lib/... link to ioc/lib/<target> is needed
+ld("bin/evr.obj") 
+
+dbLoadDatabase("dbd/evr.dbd")
+
+evr_registerRecordDeviceDriver(pdbbase) 
+
+## Load record instances
+dbLoadRecords("db/evrXL16.db")
+dbLoadRecords("db/evrPatternXL16.db")
+#dbLoadRecords("db/trigXL16.db")
+#dbLoadRecords("db/bsaXL09.db")
+#dbLoadRecords("db/bsaSimXL09.db")
+#ErDebug=100
+bspExtVerbosity=0
+
+ErConfigure(0,0x300000,0x60,4,0)  # VME type.
+ErConfigure(1,0x400000,0x62,4,0)  # VME type
+ErConfigure(2,0x000000,0x00,0,1)  # PMC type
+
+evrTimeFlag=0
+iocInit() # after h/w initialisations
+bspExtVerbosity=1

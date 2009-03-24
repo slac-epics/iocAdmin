@@ -9,6 +9,9 @@
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
 #  Mod:
+#        21-Feb-2008, Z. Szalata         (ZMS):
+#          release seq-R2-0-11
+#          release seq-R2-0-2
 #        08-Oct-2007, K. Luchini         (LUCHINI):
 #          release seq-R2-0-1
 #          release seq-R2-0-0
@@ -19,6 +22,13 @@
 #
 #==============================================================
 #
+seq-R2-0-11: Change tag only to conform to standard
+
+seq-R2-0-2:  Change tag only to conform to standard
+
+seq-R2-0-1-1: modifications needed to bring the module 
+              to EPICS R3-14-9 standard
+
 seq-R2-0-1: Build agains base-R3-14-9-lcls1 (RTEMS 4.7.1)
 
 seq-R2-0-0: Retag with proper version number

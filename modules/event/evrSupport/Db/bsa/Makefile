@@ -11,32 +11,16 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 #
+# Databases for apps that do their own Edef support.
+DB += bsaEdefAvg.db
+DB += bsaEdefFanouts.db
 # Device Simulation
 DB += bsaTestInput.db
 DB += bsaProcTestAll.db
-DB += bsaBPMSTest.db
-DB += bsaTOROTest.db
-DB += bsaBLENTest.db
-DB += bsaWIRETest.db
-DB += bsaPMTTest.db
-DB += bsaFARCTest.db
-DB += bsaTestInput.db
-DB += bsaTestFanouts.db
 # Device edef records
-DB += bsaBPMSEdef.db
-DB += bsaTOROEdef.db
-DB += bsaFARCEdef.db
-DB += bsaBLENEdef.db
-DB += bsaPMTEdef.db
-DB += bsaWIREEdef.db
-DB += bsaAMPLEdef.db
-DB += bsaPHASEdef.db
-DB += bsaPWREdef.db
-DB += bsaEnergyEdef.db
+DB += bsaATTREdef.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
-include $(TOP)/configure/RULES.Db
-
 

@@ -1,0 +1,24 @@
+VHSx0x-R1-3-1:
+Cosmetic changes to comply with EPICS 3.14.9 at LCLS
+
+
+VHSx0x-R1-3:
+Merge RELEASE_NOTE into Release
+Add VHSx0xTest.edl
+Change screen color
+Add bspExtVerbosity=0 in readme for RTEMS
+Due to the firmware upgrade from 2.01 to 2.05, no byte order indicator anymore
+
+VHSx0x-R1-2:
+Built against EPICS R3.14.9 and RTEMS 4.7.1 (base-R3-14-9-lcls1)
+
+VHSx0x-R1-1:
+Built against EPICS R3.14.8.2 and RTEMS 4.7.1 (base-R3-14-8-2-lcls2)
+
+VHSx0x-R1-0:
+The above has no funtional changes. Only following
+the LCLS convention for cvs tags.
+
+R1-0:
+The first release of ISEG VHS x0x driver and device support
+

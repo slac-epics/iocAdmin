@@ -186,7 +186,7 @@ class AsynDriverInterface : StreamBusInterface
     bool supportsEvent();
     bool supportsAsyncRead();
     bool connectRequest(unsigned long connecttimeout_ms);
-    bool disconnect();
+    bool disconnectRequest();
     void finish();
 
 #ifdef EPICS_3_14
@@ -458,17 +458,22 @@ connectToBus(const char* busname, int addr)
 bool AsynDriverInterface::
 lockRequest(unsigned long lockTimeout_ms)
 {
+    int connected;
+    asynStatus status;
+    
     debug("AsynDriverInterface::lockRequest(%s, %ld msec)\n",
         clientName(), lockTimeout_ms);
-    asynStatus status;
     lockTimeout = lockTimeout_ms ? lockTimeout_ms*0.001 : -1.0;
-    if (!lockTimeout_ms)
-    {
-        if (!connectToAsynPort()) return false;
-    }
-    
     ioAction = Lock;
-    status = pasynManager->queueRequest(pasynUser, priority(),
+    status = pasynManager->isConnected(pasynUser, &connected);
+    if (status != asynSuccess)
+    {
+        error("%s: pasynManager->isConnected() failed: %s\n",
+            clientName(), pasynUser->errorMessage);
+        return false;
+    }
+    status = pasynManager->queueRequest(pasynUser,
+        connected ? priority() : asynQueuePriorityConnect,
         lockTimeout);
     if (status != asynSuccess)
     {
@@ -497,6 +502,8 @@ connectToAsynPort()
             clientName(), pasynUser->errorMessage);
         return false;
     }
+    debug("AsynDriverInterface::connectToAsynPort(%s) is %s connected\n",
+        clientName(), connected ? "already" : "not yet");
     if (!connected)
     {
         status = pasynCommon->connect(pvtCommon, pasynUser);
@@ -510,6 +517,12 @@ connectToAsynPort()
             return false;
         }
     }
+//  We probably should set REN=1 prior to sending but this
+//  seems to hang up the device every other time.
+//     if (pasynGpib)
+//     {
+//         pasynGpib->ren(pvtGpib, pasynUser, 1);
+//     }
     return true;
 }
 
@@ -517,10 +530,12 @@ connectToAsynPort()
 void AsynDriverInterface::
 lockHandler()
 {
+    int connected;
     debug("AsynDriverInterface::lockHandler(%s)\n",
         clientName());
     pasynManager->blockProcessCallback(pasynUser, false);
-    lockCallback(StreamIoSuccess);
+    connected = connectToAsynPort();
+    lockCallback(connected ? StreamIoSuccess : StreamIoFault);
 }
 
 // interface function: we don't need exclusive access any more
@@ -1182,6 +1197,9 @@ connectRequest(unsigned long connecttimeout_ms)
     double queueTimeout = connecttimeout_ms*0.001;
     asynStatus status;
     ioAction = Connect;
+    
+    debug("AsynDriverInterface::connectRequest %s\n",
+        clientName());
     status = pasynManager->queueRequest(pasynUser,
         asynQueuePriorityConnect, queueTimeout);
     if (status != asynSuccess)
@@ -1199,49 +1217,51 @@ connectRequest(unsigned long connecttimeout_ms)
 void AsynDriverInterface::
 connectHandler()
 {
-    asynStatus status;
-    status = pasynCommon->connect(pvtCommon, pasynUser);
-    if (status != asynSuccess)
-    {
-        error("%s connectRequest: pasynCommon->connect() failed: %s\n",
-            clientName(), pasynUser->errorMessage);
-        connectCallback(StreamIoFault);
-        return;
-    }
-    connectCallback(StreamIoSuccess);
+    connectCallback(connectToAsynPort() ? StreamIoSuccess : StreamIoFault);
 }
 
 bool AsynDriverInterface::
-disconnect()
+disconnectRequest()
 {
     asynStatus status;
     ioAction = Disconnect;
+    
+    debug("AsynDriverInterface::disconnectRequest %s\n",
+        clientName());
     status = pasynManager->queueRequest(pasynUser,
         asynQueuePriorityConnect, 0.0);
     if (status != asynSuccess)
     {
-        error("%s disconnect: pasynManager->queueRequest() failed: %s\n",
+        error("%s disconnectRequest: pasynManager->queueRequest() failed: %s\n",
             clientName(), pasynUser->errorMessage);
         return false;
     }
     // continues with:
     //    handleRequest() -> disconnectHandler()
-    // or handleTimeout()
-    // (does not expect callback)
     return true;
 }
 
 void AsynDriverInterface::
 disconnectHandler()
 {
+    int connected;
     asynStatus status;
-    status = pasynCommon->disconnect(pvtCommon, pasynUser);
-    if (status != asynSuccess)
+
+    pasynManager->isConnected(pasynUser, &connected);
+    debug("AsynDriverInterface::disconnectHandler %s is %s disconnected\n",
+        clientName(), !connected ? "already" : "not yet");
+    if (connected)
     {
-        error("%s connectRequest: pasynCommon->disconnect() failed: %s\n",
-            clientName(), pasynUser->errorMessage);
-        return;
+        status = pasynCommon->disconnect(pvtCommon, pasynUser);
+        if (status != asynSuccess)
+        {
+            error("%s connectRequest: pasynCommon->disconnect() failed: %s\n",
+                clientName(), pasynUser->errorMessage);
+            disconnectCallback(StreamIoFault);
+            return;
+        }
     }
+    disconnectCallback(StreamIoSuccess);
 }
 
 void AsynDriverInterface::
@@ -1251,6 +1271,12 @@ finish()
         clientName());
     cancelTimer();
     ioAction = None;
+//     if (pasynGpib)
+//     {
+//         // Release GPIB device the the end of the protocol
+//         // to re-enable local buttons.
+//         pasynGpib->ren(pvtGpib, pasynUser, 0);
+//     }
     debug("AsynDriverInterface::finish(%s) done\n",
         clientName());
 }
@@ -1261,6 +1287,8 @@ void handleRequest(asynUser* pasynUser)
 {
     AsynDriverInterface* interface =
         static_cast<AsynDriverInterface*>(pasynUser->userPvt);
+    debug("AsynDriverInterface::handleRequest(%s)\n",
+        interface->clientName());
     switch (interface->ioAction)
     {
         case None:
@@ -1295,6 +1323,8 @@ void handleTimeout(asynUser* pasynUser)
 {
     AsynDriverInterface* interface =
         static_cast<AsynDriverInterface*>(pasynUser->userPvt);
+    debug("AsynDriverInterface::handleTimeout(%s)\n",
+        interface->clientName());
     switch (interface->ioAction)
     {
         case Lock:
@@ -1313,7 +1343,9 @@ void handleTimeout(asynUser* pasynUser)
             interface->connectCallback(StreamIoTimeout);
             break;
         case Disconnect:
-            // not interested in callback
+            error("AsynDriverInterface %s: disconnect timeout\n",
+                interface->clientName());
+            // should not happen because of infinite timeout
             break;
         // No AsyncRead here because we don't use timeout when polling
         default:

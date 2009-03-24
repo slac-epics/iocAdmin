@@ -1,0 +1,119 @@
+#*************************************************************************
+# Copyright (c) 2002 The University of Chicago, as Operator of Argonne
+#     National Laboratory.
+# Copyright (c) 2002 The Regents of the University of California, as
+#     Operator of Los Alamos National Laboratory.
+# EPICS BASE Versions 3.13.7
+# and higher are distributed subject to a Software License Agreement found
+# in file LICENSE that is included with this distribution. 
+#*************************************************************************
+recordtype(bsa) {
+	include "dbCommon.dbd" 
+	field(VAL,DBF_DOUBLE) {
+		prompt("Value")
+		special(SPC_NOMOD)
+	}
+	field(RMS,DBF_DOUBLE) {
+		prompt("RMS")
+		special(SPC_NOMOD)
+	}
+	field(CNT,DBF_LONG) {
+		prompt("Count")
+		special(SPC_NOMOD)
+	}
+        field(INP,DBF_INLINK) {
+                prompt("Input Specification")
+                promptgroup(GUI_INPUTS)
+                interest(1)
+        }
+        field(EDEF,DBF_LONG) {
+                prompt("EDEF Number")
+        }
+        field(NOAV,DBF_LONG) {
+                prompt("No Averaging")
+        }
+	field(EGU,DBF_STRING) {
+		prompt("Units Name")
+		promptgroup(GUI_DISPLAY)
+		interest(1)
+		size(16)
+	}
+	field(HOPR,DBF_DOUBLE) {
+		prompt("High Operating Rng")
+		promptgroup(GUI_DISPLAY)
+		interest(1)
+	}
+	field(LOPR,DBF_DOUBLE) {
+		prompt("Low Operating Range")
+		promptgroup(GUI_DISPLAY)
+		interest(1)
+	}
+	field(PREC,DBF_SHORT) {
+		prompt("Display Precision")
+		promptgroup(GUI_DISPLAY)
+		interest(1)
+	}
+	field(ADEL,DBF_DOUBLE) {
+		prompt("Archive Deadband")
+		promptgroup(GUI_DISPLAY)
+		interest(1)
+	}
+	field(MDEL,DBF_DOUBLE) {
+		prompt("Monitor Deadband")
+		promptgroup(GUI_DISPLAY)
+		interest(1)
+	}
+	field(CLST,DBF_LONG) {
+		prompt("Prev Value of Count")
+		special(SPC_NOMOD)
+		interest(3)
+	}
+	field(RLST,DBF_DOUBLE) {
+		prompt("Prev Value of RMS")
+		special(SPC_NOMOD)
+		interest(3)
+	}
+	field(ALST,DBF_DOUBLE) {
+		prompt("Last Value Archived")
+		special(SPC_NOMOD)
+		interest(3)
+	}
+	field(MLST,DBF_DOUBLE) {
+		prompt("Last Value Monitored")
+		special(SPC_NOMOD)
+		interest(3)
+	}
+	field(NOCH,DBF_ULONG) {
+		prompt("# same data time")
+		special(SPC_NOMOD)
+	}
+	field(NORE,DBF_ULONG) {
+		prompt("# results not read")
+		special(SPC_NOMOD)
+	}
+	field(LNOC,DBF_ULONG) {
+		prompt("last # same data time")
+		special(SPC_NOMOD)
+		interest(3)
+	}
+	field(LNOR,DBF_ULONG) {
+		prompt("last # not read")
+		special(SPC_NOMOD)
+		interest(3)
+	}
+        field(VRES,DBF_OUTLINK) {
+                prompt("VAL History Reset")
+                promptgroup(GUI_OUTPUT)
+                interest(1)
+        }
+        field(RRES,DBF_OUTLINK) {
+                prompt("RMS History Reset")
+                promptgroup(GUI_OUTPUT)
+                interest(1)
+        }
+        field(CRES,DBF_OUTLINK) {
+                prompt("CNT History Reset")
+                promptgroup(GUI_OUTPUT)
+                interest(1)
+        }
+}

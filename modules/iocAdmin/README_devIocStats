@@ -1,0 +1,228 @@
+README_devIocStats		Last Updated 10/09/2008
+------------------
+
+I - General Notes on devIocStats - All Operating Systems
+--------------------------------------------------------
+
+String (stringin) Records (DTYP = "IOC stats"), INP = @one of the following:
+============================================================================
+		startup_script_[12]	-path of startup script (2 records)
+					Default - uses STARTUP and ST_CMD
+					environment variables.
+		bootline_[1-6]		-CPU bootline (6 records)
+ 		bsp_rev			-CPU board support package revision
+		kernel_ver		-OS kernel build version
+		epics_ver		-EPICS base version
+                engineer                -IOC Engineer
+					Default - uses ENGINEER env var.
+                location                -IOC Location
+					Default - uses LOCATION env var.
+                logname                 -IOC Log Name
+					Default - uses LOGNAME env var.
+                hostname                -IOC Host Name from gethostname
+                pwd[1-2]                -IOC Current Working Directory 
+					  (2 records) from getcwd
+                up_time                 -IOC Up Time
+
+	Except for up_time, the support is static.  The record only needs to 
+	be processed once, for which SCAN=Passive and PINI=YES is recommended.
+
+	When a string cannot be determined, the PV will show "not available" 
+	or "<not implemented>" or some other variation.
+
+Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
+=========================================================================
+		free_bytes	 - number of bytes in IOC not allocated
+		allocated_bytes  - number of bytes allocated
+		max_free	 - size of largest free block
+		free_blocks	 - number of blocks in IOC not allocated
+		allocated_blocks - number of blocks allocated
+		cpu		 - estimated percent IOC usage by tasks
+		suspended_tasks	 - number of suspended tasks
+		fd		 - number of file descriptors currently in use
+		max_fd		 - max number of file descriptors
+		ca_clients	 - number of current CA clients
+		ca_connections	 - number of current CA connections
+                min_data_mbuf    - minimum percent free data   MBUFs
+                min_sys_mbuf	 - minimum percent free system MBUFs
+                data_mbuf	 - number of data   MBUFs
+                sys_mbuf	 - number of system MBUFs
+                inp_errs	 - number of IF input  errors
+                out_errs	 - number of IF output errors
+
+Analog In (ai) Records for Cluster Statistics 
+(DTYP = "IOC stats clusts"), INP = @clust_info <pool> <index> <type> where:
+==========================================================================
+		pool		 - 0 (data) or 1 (system)
+		index		 - index into cluster array
+		type		 - 0=size, 1=clusters, 2=free, 3=usage
+
+Analog Out (ao) Records (DTYP = "IOC stats"), OUT = @one of the following:
+==========================================================================
+		memoryScanRate	 - max period (sec) at which new memory stats 
+				   can be read, default = 10 sec
+		fdScanRate	 - max period (sec) at which file descriptors 
+				   can be counted, default = 20 sec
+		cpuScanRate	 - max period (sec) at which cpu load 
+				   can be calculated, default = 10 sec 
+		caConnScanRate	 - max period (sec) at which CA connections 
+				   can be counted, default = 15 sec
+
+Subroutine (sub) Records, SNAM = one of the following:
+======================================================
+		rebootProc	 - System reset or epics exit.
+
+II - Notes on Soft IOC Implementation of devIocStats
+----------------------------------------------------
+
+(1) bootline_[1-6], bsp_rev, and kernel_ver currently not implemented and
+    will show "not available".
+
+(2) Currently all analog inputs are set to zero or 1E9 except for 
+    ca_clients, ca_connections, and suspended_tasks.  The following are set 
+    to 1E9:
+		free_bytes
+		max_free
+		free_blocks
+
+(3) There is a bug in EPICS 3.14.8.2 base/src/libCom/taskwd/taskwd.c which
+    results in the soft IOC crashing when a task suspends.  The taskwd.c fix
+    is to change this line in the taskwdTask function from:
+                                TASKWDANYFUNCPRR pcallback = pt->callback;
+    to:
+                                TASKWDANYFUNCPRR pcallback = ptany->callback;
+    Note that the suspended task count will only includes tasks that call 
+    taskwdInsert on startup, including all of iocCore tasks and all sequence 
+    tasks.  Some (many?) support modules that create tasks neglect to call 
+    taskwdInsert.
+
+(4) The reboot subroutine record will exit the IOC process.  It is assumed
+    some soft IOC managing process will automatically restart the soft IOC. 
+
+III - Notes on RTEMS Implementation of devIocStats by Till Straumann
+--------------------------------------------------------------------
+
+Memory / Heap Statistics
+========================
+
+- gathering heap statistics could be expensive; I wouldn't
+  want to run this too often w/o knowing how it is implemented
+  and how it could impact the running system.
+
+  Furthermore, vxStats reports 'free', 'used' and 'total' memory.
+  Unfortunately, it just assumes 'total = free + used' instead
+  of the correct total number (difference could give a hint about
+  fragmentation). However, if you know the true total amount of
+  memory you can estimate fragmentation in your head...
+
+- RTEMS also uses a so-called 'workspace' memory
+  area which is independent of the malloc heap.
+  Some system-internal data structures are
+  allocated from the workspace area.
+  So far, support for monitoring the workspace area
+  has not been implemented (although it would be
+  straightforward to do).
+
+CPU Load Estimate from the IDLE Task (from Phil Sorensen at CHESS)
+====================================
+
+-  The cpu usage is done the same way as in cpukit/libmisc/cpuuse
+   from the RTEMS source.
+
+-  Comment from Till:
+	The way they determine CPU usage is more appropriate
+	but only so if the 'billing' algorithm has access to a high
+	resolution clock. This is the case for powerpc under 4.9.
+	The code would have to be modified to make use of the
+	high resolution clock however.
+
+	If no high resolution clock is available the 'billing' is always
+	in ticks even if no full tick period is used. This tends to show
+	too high usage numbers.
+
+
+CPU Load Estimate using the cpuBurn Method
+==========================================
+
+- The CPU load estimate works as follows:
+
+       1) during initialization (it is assumed the CPU is otherwise
+          idle at this time) a busy loop is executed for a fixed amount
+          of time and the code uses the number of iterations done
+          as a measure for a 'unloaded' CPU.
+
+       2) when EPICS is up, a very low priority task is scheduled
+          periodically and executes the same busy loop counting
+          iterations during a fixed time interval.
+          The idea is that any higher priority work will preempt
+          the spinning task and thus reduce the number of iterations
+          it is able to perform. The ratio of iterations under load
+          to iterations while idle is an estimate for CPU load.
+
+   This algorithm has a few gotchas:
+
+       1) implementation of the busy-loop was inappropriate for a
+          modern compiler (which could notice that the loop doesn't
+          do anything and therefore optimize it away).
+          I replaced the code by something that should not be removed
+          by the compiler.
+       2) CPU load is only estimated during intervals the measuring
+          task is burning cycles. The algorithm is blind while the
+          task is sleeping.
+       3) Some modern CPUs would rather go into low-power sleep when
+          idle instead of burning cycles -- (unfortunately a chip-errata
+          of the mpc7450 prevents us from using sleep on the MVME6100)
+
+   Summary: IMO it would be better to use info from the OS scheduler
+            about CPU usage. Unfortunately, this info is not very
+            meaningful unless the scheduler uses a high-resolution
+            clock for billing [available with RTEMS 4.9 on select
+            architectures].
+
+Networking (Mbufs)
+==================
+
+The RTEMS/BSD stack has only one pool of mbufs
+and only uses two sizes: MSIZE (128b) for 'ordinary'
+mbufs, and MCLBYTES (2048b) for 'mbuf clusters'.
+Therefore, the 'data' pool is empty. However,
+the calculation of MinDataMBuf always shows usage
+info of 100% free (but 100% of 0 is still 0).
+
+Suspended Tasks
+===============
+
+Note that e.g., the rtems GDB agent uses a
+helper task which is suspended most of the time. Hence on systems
+where the agent is active a count of 1 suspended task is normal.
+
+Reboot
+======
+
+In RTEMS there is no general 'reset/reboot' system call. The idea
+is that the RTEMS application is terminated using 'exit()' which
+should allow a firmware monitor to resume. However, on some boards
+this is not possible (and 'exit' would not by itself reset the hardware).
+
+On the BSP's I implemented or modified I have added the 'rtemsReboot()'
+function which performs a hard reset of the CPU (but not necessarily a
+VME reset).
+
+
+Misc IOC Info
+=============
+
+The startup script, engineer and ioc_location information is simply
+read from environment variables "INIT", "IOC_ENGINEER" and "IOC_LOCATION",
+respectively. Of course, these variables (in particular "INIT") must
+somehow be set e.g., (when using GeSys) via the BOOTP commandline.
+This could have been implemented in a more 'vxworks-alike' way by
+looking up symbols via cexpsh but using env-vars seems more
+generic/portable to me.
+
+BSP Revision is currently not implemented (since this info is IIRC
+not present in RTEMS proper; for BSPs distributed with RTEMS the
+revision matches the kernel revision, however).
+
+
+

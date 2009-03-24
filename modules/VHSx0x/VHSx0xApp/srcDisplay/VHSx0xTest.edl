@@ -1,0 +1,191 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 760
+y 365
+w 500
+h 200
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+ctlFont "courier-bold-r-14.0"
+ctlFontAlign "right"
+btnFont "courier-medium-r-8.0"
+fgColor index 10
+bgColor index 3
+textColor index 10
+ctlFgColor1 index 25
+ctlFgColor2 index 30
+ctlBgColor1 index 5
+ctlBgColor2 index 10
+topShadowColor index 5
+botShadowColor index 10
+pvType "EPICS"
+endScreenProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 29
+y 83
+w 128
+h 30
+fgColor index 10
+bgColor index 5
+topShadowColor index 5
+botShadowColor index 10
+font "courier-medium-r-8.0"
+buttonLabel "Module"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "VHSx0x_Module.edl"
+}
+menuLabel {
+  0 "Module"
+}
+symbols {
+  0 "S=ICS,SS=Test,DVC=ISEG,N=_DEV,DI=1"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 183
+y 17
+w 128
+h 30
+fgColor index 10
+bgColor index 5
+topShadowColor index 5
+botShadowColor index 10
+font "courier-medium-r-8.0"
+buttonLabel "Channel A"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "VHSx0x_Channel.edl"
+}
+menuLabel {
+  0 "Channel A"
+}
+symbols {
+  0 "S=ICS,SS=Test,DVC=ISEG,N=_CH,DI=1A"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 183
+y 65
+w 128
+h 30
+fgColor index 10
+bgColor index 5
+topShadowColor index 5
+botShadowColor index 10
+font "courier-medium-r-8.0"
+buttonLabel "Channel B"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "VHSx0x_Channel.edl"
+}
+menuLabel {
+  0 "Channel B"
+}
+symbols {
+  0 "S=ICS,SS=Test,DVC=ISEG,N=_CH,DI=1B"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 183
+y 113
+w 128
+h 30
+fgColor index 10
+bgColor index 5
+topShadowColor index 5
+botShadowColor index 10
+font "courier-medium-r-8.0"
+buttonLabel "Channel C"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "VHSx0x_Channel.edl"
+}
+menuLabel {
+  0 "Channel C"
+}
+symbols {
+  0 "S=ICS,SS=Test,DVC=ISEG,N=_CH,DI=1C"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 183
+y 160
+w 128
+h 30
+fgColor index 10
+bgColor index 5
+topShadowColor index 5
+botShadowColor index 10
+font "courier-medium-r-8.0"
+buttonLabel "Channel D"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "VHSx0x_Channel.edl"
+}
+menuLabel {
+  0 "Channel D"
+}
+symbols {
+  0 "S=ICS,SS=Test,DVC=ISEG,N=_CH,DI=1D"
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 362
+y 155
+w 116
+h 31
+fgColor index 45
+bgColor index 40
+topShadowColor index 5
+botShadowColor index 10
+label "EXIT"
+font "courier-bold-r-8.0"
+3d
+exitProgram
+endObjectProperties
+

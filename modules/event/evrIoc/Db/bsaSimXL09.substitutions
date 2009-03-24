@@ -1,5 +1,6 @@
 # Simulation files :
-file bsaBPMSTest.db {
+file bsaBPMSTest.db 
+{
   pattern { DEVICE       , S           }
 	  { BPMS:XX09:1  , ".1 second" }
 	  { BPMS:XX09:2  , ".1 second" }
@@ -8,19 +9,22 @@ file bsaBPMSTest.db {
 	  { BPMS:XX09:5  , ".1 second" }
 	  { BPMS:XX09:6  , ".1 second" }
 }
-file bsaTOROTest.db {
+file bsaTOROTest.db 
+{
   pattern { DEVICE       , S           }
 	  { TORO:XX09:1  , ".1 second" }
 	  { TORO:XX09:2  , ".1 second" }
 }
 # ESIM Pattern records (from EVG) to EVR:
-#file evrPatternTest.db {
+#file evrPatternTestBsa.db 
+#{
 #  pattern { EIOC  ,  DEVICE }
 #	  { IOC:XL09:EV01  ,ESIM:XX09:1  }
 #}
 
 # EVG EDEF checking simulation for Modifier5/ bsa enable/disable:
-#file bsaProcTestAll.db {
+#file bsaProcTestAll.db 
+#{
 #  pattern {  DEVICE    , LOC     }
 #	      { ESIM:XX09:1, SYS0    }
 #}

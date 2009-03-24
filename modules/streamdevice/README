@@ -11,7 +11,7 @@ Online Documentation:
 http://epics.web.psi.ch/software/streamdevice/doc/
 
 
-Instructions for using the sscan module in an EPICS IOC (copied from web documentation):
+Instructions for using the streamdevice module in an EPICS IOC (copied from web documentation):
 
 To use StreamDevice, your application must be built with the asyn and stream libraries and must load asyn.dbd and stream.dbd. 
 

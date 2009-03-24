@@ -1,0 +1,26 @@
+## EVR RTEMS startup script
+
+## Set common environment variables. eg. EPICS_TS_NTP_INET and PORTs
+< all/pre_st.cmd
+
+# by building one obj with everything in it, no lib/... link to ioc/lib/<target> is needed
+ld("bin/evr.obj") 
+
+dbLoadDatabase("dbd/evr.dbd")
+
+evr_registerRecordDeviceDriver(pdbbase) 
+
+# Allows gdb to attach to this target
+#rtems_gdb_start(0,0)
+
+## Load record instances
+dbLoadRecords("db/evrXL05.db")
+dbLoadRecords("db/evrPatternXL05.db")
+
+bspExtVerbosity=0
+drvMrfErFlag=0
+## 4/17/8: from page 223 of MCF5282UM.pdf, vector is 65 when IRQ1 is used, for INTC0
+ErConfigure(0,0x0000,65,6,2)  # Embedded type
+
+iocInit() # after h/w initialisations
+bspExtVerbosity=1

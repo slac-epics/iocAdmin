@@ -1,0 +1,31 @@
+What is generalTime?
+   -It is a time source manager
+   -It provides two default time source for vxWorks: NTP & Ticks
+   -Future use of on-board clock chip for full stand alone IOC
+
+What is the benefit you get from generalTime?
+   -You can register many of your own time sources such as RTDL easily
+   -generalTime always gives you the best timestamp according to the availability and priority
+   -generalTime will automatically roll down to next time source if better one failed
+   -generalTime guarantees monotonic timestamp
+   -generalTime syncs all time source (if possible) by the best time
+   -generalTime is 100% transparent to your application
+   -generalTime is ready to be merged into EPICS base.
+
+How to use it?
+   -Add one line in your RELEASE file
+        GENERALTIME=$(SHARE_RELEASE)/generalTime/R1-2-0
+   -Add couple lines in your st.cmd file (for vxWorks)
+        # Load general time before the utility module
+
+        cd generaltimebin
+        ld <generalTimeLib.munch
+
+        # below is optional  
+        cd generaltime
+        dbLoadDatabase("dbd/generalTime.dbd")
+        generalTime_registerRecordDeviceDriver(pdbbase)
+        dbLoadDatabase("db/generalTime.template",0,"IOC=your IOC name")
+
+        # generalTime_Init
+ 

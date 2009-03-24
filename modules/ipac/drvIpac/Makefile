@@ -19,6 +19,13 @@ HTMLS += ipacRelease.html
 LIBRARY_IOC_RTEMS   = Ipac
 LIBRARY_IOC_vxWorks = Ipac
 
+# Disable hotswap option in drvHy8002.c
+USR_CFLAGS += -Wshadow -Wpointer-arith -Wbad-function-cast -Wno-unused
+USR_CFLAGS += -Wredundant-decls -Wnested-externs -Winline
+USR_CFLAGS += -D__NO_HOTSWAP__
+
+USR_CFLAGS_RTEMS += -DIPAC_FORCELINK_TAB
+
 LIBSRCS += drvIpac.c
 
 # Any VMEbus: SBS VIPC carrier drivers

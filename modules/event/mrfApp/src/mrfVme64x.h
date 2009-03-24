@@ -149,6 +149,7 @@ typedef struct mrfUserCSRStruct
 /**************************************************************************************************/
 
 #define MRF_EVG200_BID   0x454700C8     /* Event Generator                                        */
+#define MRF_EVG230_BID   0x454700E6     /* Event Generator 230                                    */
 #define MRF_EVR200_BID   0x455200C8     /* Event Receiver                                         */
 #define MRF_EVR200RF_BID 0x455246C8     /* Event Receiver with RF Recovery                        */
 #define MRF_EVR230_BID   0x455246E6     /* Event Receiver 230                                     */
@@ -166,14 +167,16 @@ typedef struct mrfUserCSRStruct
 /*  Function Prototypes for CR/CSR Utility Routines                                               */
 /**************************************************************************************************/
 
-int          mrfFindNextEVG (int lastSlot);
-int          mrfFindNextEVR (int lastSlot);
+int          mrfFindNextEVG (int lastSlot, epicsUInt32 *pboard_id);
+int          mrfFindNextEVR (int lastSlot, epicsUInt32 *pboard_id);
 
 epicsStatus  vmeCSRMemProbe (epicsUInt32, int, int, void *);
 void         vmeCRShow (int slot);
 void         vmeCSRShow (int slot);
 void         vmeUserCSRShow (int slot);
-epicsStatus  vmeCRFindBoard (int slot, epicsUInt32 ieee_oui, epicsUInt32 board_id, int *p_slot);
+epicsStatus  vmeCRFindBoard(int slot, epicsUInt32 ieee_oui,
+                            const epicsUInt32 *pboard_ids, int num_board_id,
+                            epicsUInt32 *pboard_id, int *p_slot);
 epicsStatus  vmeCSRWriteADER (int slot, int func, epicsUInt32 ader);
 epicsStatus  vmeCSRSetIrqLevel (int slot, int level);
 

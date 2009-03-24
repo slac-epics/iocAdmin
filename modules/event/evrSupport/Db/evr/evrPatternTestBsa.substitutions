@@ -1,0 +1,35 @@
+#==============================================================================
+#
+# Abs:  Simulated pattern testing
+#
+# Name: evrPatternTestBsa.substitutions
+#
+# Note: Must follow the LCLS naming conventions.  
+#
+#==============================================================================
+#
+file bsaTestInput.db
+{
+# Instantiate simulators for the EVG data that is retrieved by the EVR from
+#  the waveform.
+#                           
+#             Device          
+  pattern {    DEV     ,  SECN   ,      CALC         , A , B ,EGU,  HOPR,LOPR,PREC,ADEL,MDEL,RES   }
+          {"$(DEVICE)" ,PULSEID  ,"C>=131039?0:C+1"  , 0 , 0 , "",    131039,0 , 0  , 36 , 0  , 0  }
+          {"$(DEVICE)" ,BEAMCODE ,"A"                , 1 , 0 , "",    10    ,1 , 0  ,  0 , 0  , 0  }
+          {"$(DEVICE)" ,YY       ,"C>=100?1:C+1"     , 0 , 0 , "",    256   ,0 , 0  ,  0 , 0  , 0  }
+          {"$(DEVICE)" ,MODIFIER1,"C=20?A:C=A?1:C+1" ,16809984,0,"",4294967296,0,0  ,  0 , 0  , 0  }
+          {"$(DEVICE)" ,MODIFIER2,"A"                ,1024,0 , "",4294967296,0 , 0  ,  0 , 0  , 0  }
+          {"$(DEVICE)" ,MODIFIER3,"A"                , 0 , 0 , "",4294967296,0 , 0  ,  0 , 0  , 0  } 
+          {"$(DEVICE)" ,MODIFIER4,"C>=10?1:C+1"      , 0 , 0 , "",4294967296,0 , 0  ,  0 , 0  , 0  }
+          {"$(DEVICE)" ,MODIFIER6,"C>=1000?200:C+1"  , 0 , 0 , "",   1000 ,200 , 0  ,  0 , 0  , 0  } 
+}
+file evrPatternSimBsa.db
+{
+#
+#        Location
+pattern {    SIM     ,   DEV     }
+        { "$(DEVICE)", "$(EIOC)" }
+}
+
+

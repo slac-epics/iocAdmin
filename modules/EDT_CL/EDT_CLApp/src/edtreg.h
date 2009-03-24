@@ -15,7 +15,7 @@
 #define PDVK_ID			0x0014
 #define PDV44_ID		0x0015
 #define PDVAERO_ID		0x0016
-#define PDVCL_ID		0x0034
+#define PDVCL_ID		0x0034	/* PMC DV C-Link is using this DID */
 
 #define PGP20_ID		0x0021
 #define PGP40_ID		0x0022
@@ -49,7 +49,7 @@
 #define PDVCL2_ID		0x004a
 #define PDVHSS_ID		0x004c
 #define PCDHSS_ID		0x004e
-#define PDVFOX_ID		PDVHSS_ID /* new names */
+#define PDVFOX_ID		PDVHSS_ID /* new names */	/* PMC FOX is using this DID */
 #define PCDFOX_ID		PCDHSS_ID /* new names */
 
 #define PGS4_ID			0x0050

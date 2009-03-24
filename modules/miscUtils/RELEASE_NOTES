@@ -16,6 +16,9 @@
 #
 #==============================================================
 #
+miscUtils-R1-0-2-1:
+	modifications needed to bring the module to EPICS R3-14-9 standard
+
 miscUtils-R1-0-2: Build againt base-R3-14-9-lcls1 (RTEMS 4.7.1)
 
 miscUtils-R1-0-1: Retag using LCLS standard.

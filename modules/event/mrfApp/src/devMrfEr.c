@@ -88,6 +88,7 @@
 #include <erRecord.h>           /* Event Receiver (ER) Record structure                           */
 #include <ereventRecord.h>      /* Event Receiver Event (EREVENT) record structure                */
 #include <eventRecord.h>        /* Standard EPICS Event Record structure                          */
+#include <biRecord.h>           /* Standard EPICS Event Record structure                          */
 #include <erDefs.h>             /* Common Event Receiver (ER) definitions                         */
 
 #include <devMrfEr.h>           /* MRF Event Receiver device support layer interface              */
@@ -196,6 +197,9 @@ epicsStatus ErInitRecord (erRecord *pRec)
 	if ( VME_EVR == pCard->FormFactor ) {
 		epicsSnprintf(pRec->busd,sizeof(pRec->busd)-1,"VME Card %i, Slot %i, IRQ %i (Vect 0x%02x)",
 			pCard->Cardno, pCard->Slot, pCard->IrqLevel, pCard->IrqVector);
+	} else if ( EMBEDDED_EVR == pCard->FormFactor ) {
+		epicsSnprintf(pRec->busd,sizeof(pRec->busd)-1,"Embedded Card %i, IRQ %i (Vect 0x%02x)",
+			pCard->Cardno, pCard->IrqLevel, pCard->IrqVector);
 	} else {
 		epicsSnprintf(pRec->busd,sizeof(pRec->busd)-1,"PMC Card %i @%u/%u/%u, IRQ 0x%x",
 			pCard->Cardno,
@@ -827,6 +831,153 @@ epicsStatus ErEpicsEventGetIoScan (int cmd, eventRecord *pRec, IOSCANPVT *pPvt)
   return (0);
 
 }/*end ErEpicsEventGetIoScan()*/
+
+/**************************************************************************************************/
+/*                         EPICS Binary Input Record Device Support Routines                      */
+/*                         to check for taxi violation                                            */
+
+/**************************************************************************************************/
+/*  Prototype Definitions for EPICS Binary Input Record Device Support Functions                  */
+/**************************************************************************************************/
+
+LOCAL_RTN epicsStatus ErEpicsBiInitRec  (biRecord*);
+LOCAL_RTN epicsStatus ErEpicsBiProcess  (biRecord*);
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET)                                                             */
+/**************************************************************************************************/
+
+static ErDsetStruct devMrfErEpicsBi = {
+    5,                                  /* Number of entries in the Device Support Entry Table    */
+    (DEVSUPFUN)NULL,                    /* -- No device report routine                            */
+    (DEVSUPFUN)NULL,                    /* -- No device initialization routine                    */
+    (DEVSUPFUN)ErEpicsBiInitRec,        /* Record initialization routine                          */
+    (DEVSUPFUN)NULL,                    /* -- No I/O interrupt information routine                */
+    (DEVSUPFUN)ErEpicsBiProcess         /* Record processing routine                              */
+};
+
+epicsExportAddress (dset, devMrfErEpicsBi);
+
+/**************************************************************************************************
+|* ErEpicsBiInitRec () -- EPICS Binary Input Record Initialization Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the EPICS iocInit() routine. It is called once for each EPICS
+|* bi record in the database.
+|*
+|* Note that this is a regular EPICS bi record and not an ER or EG event record.
+|* The regular EPICS bi records is used to check for taxi violation without
+|* processing the Event Receiver record which has much higher overhead.  This record is
+|* especially useful when the taxi violation interrupt is disabled.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Validate the record's card number by making sure it was configured in the startup script
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (biRecord *) Pointer to the EPICS bi record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      0              = Record initialization was successfull.
+|*      S_dev_badCard  = Specified card was invalid.
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsBiInitRec (biRecord *pRec)
+{
+   /*---------------------
+    * Local variables
+    */
+    int            Card;	/* Event Receiver card number for this record                     */
+    ErCardStruct  *pCard;       /* Pointer to the Event Receiver card structure for this record   */
+
+   /*---------------------
+    * Extract the Event Receiver card number (card) from the record's output link.
+    */
+    Card = pRec->inp.value.vmeio.card;
+
+   /*---------------------
+    * Output a debug message if the debug flag is set.
+    */
+    if (ErDebug)
+        printf ("ErEpicsBiInitRec(%s) Card %d\n",
+                      pRec->name, Card);
+
+   /*---------------------
+    * Make sure the card number is valid
+    * by obtaining the address of its card structure
+    */
+    pRec->dpvt = NULL;
+    if (NULL == (pCard = ErGetCardStruct(Card))) {
+        recGblRecordError(S_dev_badCard, (void *)pRec, 
+                          "devMrfEr::ErEpicsBiInitRec() invalid card number in INP field");
+        return(S_dev_badCard);
+    }/*end if card number is invalid*/
+
+    pRec->dpvt = (void *)pCard; /* Save the address of the card structure */
+    return (0);
+
+}/*end ErEpicsBiInitRec()*/
+
+/**************************************************************************************************
+|* ErEpicsBiProcess () -- Binary Input Record Processing Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the "bi" record's record processing routine.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Make sure we have a valid Event Receiver Card Structure in the DPVT field.  If not,
+|*     set the record's PACT field so that we won't be processed again.
+|*   o Lock the card structure to keep other record processing routines from interferring with us.
+|*   o Call ErCheckTaxi to get binary value.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (biRecord *) Pointer to the "bi" record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      Always returns 2 (don't convert)
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsBiProcess (biRecord  *pRec)
+{
+   /*---------------------
+    * Local variables
+    */
+    ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
+  
+   /*---------------------
+    * Get the card structure.
+    * Abort if we don't have a valid card structure.
+    */
+    if (NULL == (pCard = (ErCardStruct *)pRec->dpvt)) {
+        pRec->pact = epicsTrue;
+        return (-1);
+    }/*end if did not have a valid card structure*/
+
+   /*---------------------
+    * Lock the event receiver card structure while we process this record
+    */
+    epicsMutexLock (pCard->CardLock);
+
+    pRec->val = ErCheckTaxi (pCard)?0:1;
+    pRec->udf = 0;
+
+   /*---------------------
+    * Unlock the Event Record card structure
+    */
+    epicsMutexUnlock (pCard->CardLock);
+
+    return (2);
+
+}/*end ErEpicsBiProcess()*/
 
 /**************************************************************************************************
 |* ErDevEventFunc () -- Device Support Layer Interrupt-Level Event Handling Routine

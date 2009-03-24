@@ -1,4 +1,4 @@
-TOP=../..
+TOP=..
 
 include $(TOP)/configure/CONFIG
 
@@ -15,8 +15,10 @@ USR_CFLAGS += -DDEBUG_PRINT
 DBD += evr.dbd
 DBD += evrTest.dbd
 evrTest_DBD += base.dbd
+evrTest_DBD += mpsEvrProc.dbd
 evrTest_DBD += evrSupport.dbd
 evr_DBD += base.dbd
+evr_DBD += mpsEvrProc.dbd
 evr_DBD += evrSupport.dbd
 evr_DBD += devMrfEr.dbd
 
@@ -25,11 +27,13 @@ PROD_IOC_RTEMS = evr
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
 evrTest_SRCS += evrTest_registerRecordDeviceDriver.cpp
 evrTest_SRCS += evrTestMain.cpp
+evrTest_SRCS += mpsEvrProc.c
 evr_SRCS += evr_registerRecordDeviceDriver.cpp
+evr_SRCS += mpsEvrProc.c
 
-evrTest_LIBS += evrSupport sSubRecord generalTime
+evrTest_LIBS += evrSupport generalTime
 evrTest_LIBS += $(EPICS_BASE_IOC_LIBS)
-evr_LIBS += evrSupport sSubRecord generalTime
+evr_LIBS += evrSupport generalTime
 evr_LIBS += devMrfEr mrfVme64x
 evr_LIBS += $(EPICS_BASE_IOC_LIBS)
 

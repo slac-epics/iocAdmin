@@ -38,6 +38,7 @@ void	setup_cl2_simulator(EdtDev *edt_p, Dependent *dd_p);
 int     check_register_wrap(EdtDev * edt_p);
 char   *serial_tx_rx(PdvDev * pdv_p, char *command, int hexin);
 void	do_xregwrites(EdtDev *edt_p, Dependent *dd_p);
+char *  pmcdvfox_load(EdtDev *edt_p);
 int serial_init_binary(EdtDev * edt_p, Dependent * dd_p);
 static int set_rci = 0;
 static int rci_set_unit = 0;
@@ -104,6 +105,20 @@ int pdv_initcam(EdtDev * edt_p, Dependent * dd_p, int unit, Edtinfo * edtinfo, c
 		if (!pdv_channel_initialized(edt_p->unit_no, 0))
 		{
 		    if(EDT_DRV_DEBUG) errlogPrintf("You must initialize channel 0 before initializing any other channels on the DV-FOX\n");
+		}
+            }
+	    else if (edt_p->devid == PDVFOX_ID && edt_p->channel_no == 0)
+            {/* PDVFOX, copy bitfile from flash */
+		char *s;
+		printf("Special Procedure for PDVFOX, load bitfile from on board flash ...!\n");
+		if ((s=pmcdvfox_load(edt_p))!=NULL)
+	        {
+		    puts(s);
+		    printf("Failed to load bitfile from on board flash for PDVFOX!\n");
+		}
+		else
+		{
+		    printf("Successfully loaded bitfile from on board flash for PDVFOX!\n");
 		}
             }
 	    else if (pdv_initcam_load_bitfile(edt_p, dd_p, unit, bitdir, cfgfname))

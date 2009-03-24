@@ -15,6 +15,10 @@
 #
 #==============================================================.
 #
+highlandLVDTV550-R1-0-2-1:
+	modifications needed to bring the module to EPICS R3-14-9 standard
+
+
 highlandLVDTV550-R1-0-2: Built with base-R3-14-9-lcls1 (RTEMS 4.7.1)
 
 highlandLVDTV550-R1-0-1: Built with base-R3-14-8-2-lcls2 (RTEMS 4.7.1)

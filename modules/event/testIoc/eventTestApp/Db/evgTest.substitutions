@@ -1,0 +1,57 @@
+#==============================================================================
+#
+# Abs:  EVG records for TEST EV01
+#
+# Name: evgTest.template
+#
+# Macros: evg.db - instantiates an EVG record.
+#	  Associated display is evgDiags.edl.
+#	DEV	Name of EVG - EVG:<loca>:<unit>
+#	CARD	EVG card number starting at 0 (matches card number in EgConfigure).
+#
+#	evrEventCtrl.db - instantiates a record for an EVG event.
+#	Associated display is evgEventDiags.edl.
+#	DEV	Name of EVG - EVG:<loca>:<unit>
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	NAME	EVENT1 to EVENT14 - instantiate all 14 records even if you only use a few events.
+#	ID	Event code number.  
+#	DELY    Delay in ticks from the beginning of the event code sequence.
+#
+#==============================================================================
+#
+file evg.db
+{
+#                               
+#	  Device         Card   
+pattern { DEV          , CARD }
+	{ EVG:TEST:EV01,  0   }
+}
+file evgEventCtrl.db
+{
+#                                       Event  Delay in 
+#	  Device         Card 	        Code   Clock Ticks
+pattern { DEV          , CARD , NAME    , ID , DELY   }
+	{ EVG:TEST:EV01,  0   , EVENT1  , 1  , 0      }
+	{ EVG:TEST:EV01,  0   , EVENT2  , 2  , 15000  }
+	{ EVG:TEST:EV01,  0   , EVENT3  , 3  , 30000  }
+	{ EVG:TEST:EV01,  0   , EVENT4  , 4  , 45000  }
+	{ EVG:TEST:EV01,  0   , EVENT5  , 5  , 60000  }
+	{ EVG:TEST:EV01,  0   , EVENT6  , 6  , 75000  }
+	{ EVG:TEST:EV01,  0   , EVENT7  , 7  , 90000  }
+	{ EVG:TEST:EV01,  0   , EVENT8  , 8  , 105000 }
+	{ EVG:TEST:EV01,  0   , EVENT9  , 9  , 120000 }
+	{ EVG:TEST:EV01,  0   , EVENT10 , 10 , 135000 }
+	{ EVG:TEST:EV01,  0   , EVENT11 , 11 , 150000 }
+	{ EVG:TEST:EV01,  0   , EVENT12 , 12 , 165000 }
+	{ EVG:TEST:EV01,  0   , EVENT13 , 13 , 180000 }
+	{ EVG:TEST:EV01,  0   , EVENT14 , 14 , 195000 }
+	{ EVG:TEST:EV01,  0   , EVENT15 , 15 , 210000 }
+	{ EVG:TEST:EV01,  0   , EVENT16 , 16 , 250000 }
+}
+file evgData.db
+{
+#                               
+#	  Device
+pattern { DEV          }
+	{ EVG:TEST:EV01}
+}

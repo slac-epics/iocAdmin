@@ -1,4 +1,5 @@
-function(evrTimeInit)
+function(evrTimeProcInit)
 function(evrTimeProc)
 function(evrTimeDiag)
-
+function(evrTimeRate)
+function(evrTimeEvent)

@@ -1,0 +1,772 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 709
+y 334
+w 500
+h 600
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+ctlFont "courier-bold-r-14.0"
+ctlFontAlign "right"
+btnFont "EOD"
+fgColor index 10
+bgColor index 3
+textColor index 10
+ctlFgColor1 index 25
+ctlFgColor2 index 30
+ctlBgColor1 index 5
+ctlBgColor2 index 10
+topShadowColor index 5
+botShadowColor index 10
+pvType "EPICS"
+endScreenProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 139
+w 87
+h 160
+
+beginGroup
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 139
+w 20
+h 160
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):ModuleStatus"
+lineColor index 10
+onColor index 15
+offColor index 9
+numBits 8
+shift 7
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 141
+w 51
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isTMPgd"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 163
+w 56
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isSPLYgd"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 184
+w 54
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isMODgd"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 203
+w 62
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isEVNTact"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 223
+w 55
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isSFLPgd"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 243
+w 60
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isnoRAMP"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 262
+w 59
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isnoSERR"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 66
+y 283
+w 41
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "isCCPL"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Slider)
+object activeSliderClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 8
+y 350
+w 296
+h 73
+fgColor index 10
+bgColor index 5
+2ndBgColor index 60
+controlColor index 25
+indicatorColor index 30
+font "courier-bold-r-12.0"
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageRampSpeed"
+controlLabel "V Ramp Speed            %Nominal V"
+readLabelType "pvName"
+increment 1
+incMultiplier 1
+limitsFromDb
+displayFormat "FFloat"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 122
+y 450
+w 180
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):VoltageMax"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 122
+y 499
+w 180
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):CurrentMax"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 261
+y 185
+w 180
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):SupplyP5"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 261
+y 219
+w 180
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):SupplyP12"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 261
+y 253
+w 180
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):SupplyN12"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 260
+y 134
+w 180
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):Temperature"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 56
+y 45
+w 383
+h 30
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):DeviceInfo"
+fgColor index 25
+bgColor index 5
+fill
+font "courier-bold-r-14.0"
+fontAlign "center"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 57
+y 12
+w 251
+h 21
+font "helvetica-bold-i-18.0"
+fontAlign "center"
+fgColor index 10
+bgColor index 5
+useDisplayBg
+value {
+  "$(S)_$(SS):$(DVC)$(N)$(DI)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 28
+y 103
+w 127
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "Module Status"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 125
+y 147
+w 123
+h 0
+lineColor index 10
+fillColor index 5
+lineWidth 2
+arrows "to"
+numPoints 2
+xPoints {
+  0 125
+  1 248
+}
+yPoints {
+  0 147
+  1 147
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 227
+y 223
+w 0
+h 0
+lineColor index 10
+fillColor index 5
+lineWidth 2
+arrows "to"
+numPoints 1
+xPoints {
+  0 227
+}
+yPoints {
+  0 223
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 128
+y 166
+w 118
+h 68
+lineColor index 10
+fillColor index 5
+lineWidth 2
+arrows "to"
+numPoints 2
+xPoints {
+  0 128
+  1 246
+}
+yPoints {
+  0 166
+  1 234
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 451
+y 191
+w 34
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "+5V"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 449
+y 225
+w 44
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "+12V"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 449
+y 257
+w 40
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "-12V"
+}
+autoSize
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 343
+y 316
+w 100
+h 94
+
+beginGroup
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 343
+y 346
+w 100
+h 28
+fgColor index 35
+onColor index 25
+offColor index 45
+inconsistentColor index 10
+topShadowColor index 5
+botShadowColor index 10
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):ModuleControlKILena"
+onLabel "Enable"
+offLabel "Disable"
+3d
+font "courier-medium-r-8.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 343
+y 382
+w 100
+h 28
+fgColor index 35
+onColor index 25
+offColor index 45
+inconsistentColor index 10
+topShadowColor index 5
+botShadowColor index 10
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):ModuleControlCLEAR"
+onLabel "Clear"
+offLabel "Clear"
+3d
+font "courier-medium-r-8.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 373
+y 316
+w 41
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "KILL"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 308
+y 437
+w 168
+h 94
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 308
+y 437
+w 168
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "All Channel On/Off"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 342
+y 467
+w 100
+h 28
+fgColor index 35
+onColor index 25
+offColor index 45
+inconsistentColor index 10
+topShadowColor index 5
+botShadowColor index 10
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):AllChannelEMCY"
+onLabel "Emergency Off"
+offLabel "Emergency Off"
+labelType "literal"
+buttonType "push"
+3d
+font "courier-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 342
+y 503
+w 100
+h 28
+fgColor index 35
+onColor index 25
+offColor index 45
+inconsistentColor index 10
+topShadowColor index 5
+botShadowColor index 10
+controlPv "$(S)_$(SS):$(DVC)$(N)$(DI):AllChannelOnOff"
+onLabel "ON"
+offLabel "OFF"
+3d
+font "courier-medium-r-8.0"
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 25
+y 459
+w 53
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "V Max"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 29
+y 503
+w 45
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 9
+bgColor index 5
+useDisplayBg
+value {
+  "I Max"
+}
+autoSize
+endObjectProperties
+

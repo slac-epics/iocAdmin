@@ -169,22 +169,28 @@ epicsStatus vmeCSRMemProbe (
     else mode = 0;
 
    /*---------------------
-    * Probe the first 2 bytes to make sure they can be read or written
+    * Probe the first 2 or 4 bytes to make sure they can be read or written
     */
-    status = bspExtMemProbe ((void *)localAddress, mode, 2, pVal);
-    if (RTEMS_SUCCESSFUL != status)
-        return status;
+    if (length == 4) i = 2;
+    else             i = 1;
+    status = bspExtMemProbe ((void *)localAddress, mode, i*2, pVal);
+    if (RTEMS_SUCCESSFUL != status) {
+      DEBUGPRINT (DP_INFO, vme64_crFlag,
+               ("vmeCSRMemProbe: BSPExtMemProbe failed for mode %d\n", mode));
+      return status;
+    }
+      
 
    /*---------------------
     * If the first 2 bytes were OK, transfer the rest of the data
     */
     if (mode == 1) {
-        for (i=1;  i < (length >> 1);  i++) 
+        for (;  i < (length >> 1);  i++) 
             localAddress[i] = ((epicsUInt16 *)pVal)[i];
     }/*end if write access*/
 
     else { /* mode == CSR_READ */
-        for (i=1;  i < (length >> 1); i++)
+        for (;  i < (length >> 1); i++)
             ((epicsUInt16 *)pVal)[i] = localAddress[i];
     }/*end if read access*/
 

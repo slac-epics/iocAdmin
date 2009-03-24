@@ -16,6 +16,13 @@
 #
 #==============================================================
 #
+#
+ether_ip-R2-15-lcls3: Cosmetic changes to bring up to R3.14.9 at LCLS
+
+
+ether_ip-R2-15-lcls2: Added RELEASE_SITE and srcDisplay
+                      Build with base-R3-14-9-lcls1
+
 ether_ip-R2-15-lcls1: Import V2.15 from SNS
                       Build with base-R3-14-9-lcls1
 

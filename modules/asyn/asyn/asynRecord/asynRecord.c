@@ -315,9 +315,7 @@ static long process(asynRecord * pasynRec)
             REMEMBER_STATE(ucmd);
             REMEMBER_STATE(acmd);
             REMEMBER_STATE(nowt);
-            /* Make sure nrrd and nowt are valid */
-            if(pasynRec->nrrd > pasynRec->imax) pasynRec->nrrd = pasynRec->imax;
-            if(pasynRec->nowt > pasynRec->omax) pasynRec->nowt = pasynRec->omax;
+            REMEMBER_STATE(nrrd);
             resetError(pasynRec);
             /* If we got value from interrupt no need to read */
             if(pasynRecPvt->gotValue) goto done;  
@@ -1160,8 +1158,8 @@ static asynStatus connectDevice(asynRecord * pasynRec)
         pasynRecPvt->asynFloat64Pvt = pasynInterface->drvPvt;
         pasynRec->f64iv = 1;
     } else {
-        pasynRecPvt->pasynInt32 = 0;
-        pasynRecPvt->asynInt32Pvt = 0;
+        pasynRecPvt->pasynFloat64 = 0;
+        pasynRecPvt->asynFloat64Pvt = 0;
         pasynRec->f64iv = 0;
     }
     /* Get asynGpib interface if it exists */
@@ -1428,6 +1426,8 @@ static void performOctetIO(asynUser * pasynUser)
         outptr = pasynRecPvt->outbuff;
     } else {
         /* Binary output mode */
+        /* Check that nowt is not greated than omax */
+        if(pasynRec->nowt > pasynRec->omax) pasynRec->nowt = pasynRec->omax;
         nwrite = pasynRec->nowt;
         outptr = pasynRec->optr;
     }
@@ -1440,7 +1440,9 @@ static void performOctetIO(asynUser * pasynUser)
         inptr = pasynRec->iptr;
         inlen = pasynRec->imax;
     }
-    if(pasynRec->nrrd != 0)
+    /* Make sure nrrd is not more than inlen */
+    if(pasynRec->nrrd > inlen) pasynRec->nrrd = inlen;
+    if(pasynRec->nrrd != 0) 
         nread = pasynRec->nrrd;
     else
         nread = inlen;

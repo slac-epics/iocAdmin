@@ -8,7 +8,6 @@
 #ifdef __rtems__
 #include <rtems.h>              /* for rtems_status_code */
 #include <rtems/pci.h>          /* for PCI_BASE_CLASS_MEMORY */          
-#include <rtems/irq.h>          /* for BSP_install_rtems_irq_handler */
 #include <bsp/irq.h>            /* for BSP_PCI_IRQ_LOWEST_OFFSET */
 #endif
 
@@ -39,6 +38,9 @@
 #define	epicsPciConfigOutByte	pciConfigOutByte
 #define	epicsPciConfigOutWord	pciConfigOutWord
 #define	epicsPciConfigOutLong	pciConfigOutLong
+typedef unsigned char  EpicsPciByte;
+typedef unsigned short EpicsPciWord;
+typedef unsigned int   EpicsPciDWord;
 
 #define	epicsPciIntConnect(pciLine, isr, uarg)		pciIntConnect(INUM_TO_IVEC(pciLine), isr, uarg)
 #define	epicsPciIntDisconnect(pciLine, isr, uarg)	pciIntDisconnect2(INUM_TO_IVEC(pciLine), isr, uarg)
@@ -66,6 +68,15 @@ causes error../devLibPMC.h:57:37: error: macro parameters must be comma-separate
 #define	epicsPciConfigOutByte	pci_write_config_byte
 #define	epicsPciConfigOutWord	pci_write_config_word
 #define	epicsPciConfigOutLong	pci_write_config_dword
+#if (__RTEMS_MAJOR__ > 4 ) || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7 )
+typedef uint8_t        EpicsPciByte;
+typedef uint16_t       EpicsPciWord;
+typedef uint32_t       EpicsPciDWord;
+#else
+typedef unsigned char  EpicsPciByte;
+typedef unsigned short EpicsPciWord;
+typedef unsigned int   EpicsPciDWord;
+#endif
 
 #ifdef USING_BSP_EXT
 #define	devConnectInterruptPCI(pciLine, isr, uarg)	\

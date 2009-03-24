@@ -162,3 +162,18 @@ EVENT_CLOCK_SELECT := CLOCK_SELECT_LVPECL_OSC  # LVPECL oscillator (alias SLAC 1
 #EVENT_CLOCK_SELECT := CLOCK_SELECT_DIVBY_10    # Divide by 10
 #EVENT_CLOCK_SELECT := CLOCK_SELECT_DIVBY_12    # Divide by 12
 
+###############################################################################
+# PART III  -- PMC Support
+#==============================================================================
+# This section of the MRF_CONFIG_SITE file determines if the software
+# can support the MRF EVR PCI Mezzanine Card.
+#
+
+#------------------------------------------------------------------------------
+# Question 1:  Does your Board Support Package support PCI
+#
+
+BSP_SUPPORTS_PCI = YES
+#BSP_SUPPORTS_PCI = NO
+
+

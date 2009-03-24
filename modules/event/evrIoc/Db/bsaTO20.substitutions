@@ -1,7 +1,8 @@
 #
 # BSA records
 
-file bsaTOROEdef.db {
+file bsaTOROEdef.db 
+{
 #      Device        ,loc'n , IOC unit, timing system  
   pattern {DEVICE    , LOC  ,  UN   , SLCLNK}
 	  { TORO:TO20:215, TO20 , IM01, TORO:TO20:215:FANOUTSLC }
@@ -12,7 +13,8 @@ file bsaTOROEdef.db {
 	  { TORO:TO21:277, TO20 , IM01, TORO:TO21:277:FANOUTSLC }
 
 }
-file bsaFARCEdef.db {
+file bsaFARCEdef.db 
+{
 #      Device        ,loc'n , IOC unit, timing system  
   pattern {DEVICE    , LOC  ,  UN , SLCLNK  }
 	  { FARC:TO20:212, TO20 , IM01, "FARC:TO20:212:FANOUTSLC" }

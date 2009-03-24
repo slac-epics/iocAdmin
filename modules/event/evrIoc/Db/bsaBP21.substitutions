@@ -1,7 +1,8 @@
 # BSA records
 # One per device:
 # Please check the HOPR,LOPR,PREC,ADEL,MDEL values provided in bsaBPMSEdef.db!
-file bsaBPMSEdef.db {
+file bsaBPMSEdef.db 
+{
 #      Device        ,loc'n , IOC unit, timing system
   pattern {DEVICE    , LOC  ,  UN  , SYS  , SLCLNK}
 	  { BPMS:BP21:131, BP21 , BP01 , SYS0 , BPMS:BP21:131:FANOUTSLC}

@@ -36,6 +36,7 @@ int initcam(int unit, int channel, char * cfgname)
     ret = pdv_readcfg_emb(cfgname, dd_p, &edtinfo);
 
     if (ret != 0) exit(1);
+    /* Always skipped bitfile load since we don't want to access file */
     strcpy(dd_p->rbtfile, "_SKIPPED_");
 
     /*

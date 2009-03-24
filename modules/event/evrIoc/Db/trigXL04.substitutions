@@ -5,7 +5,8 @@
 # Must also have pattern records
 # Note: WID, DES, TEC are in terms of nSec and are unique per device
 # 
-file evrDevTrig.db {
+file evrDevTrig.db 
+{
 #      Device	      , Description   , EVR  ,  width ,desired  , EC delay   , EVR  , EVR,  IOC          , slope 
 #			                            Trigger       wrt TREF   wrt fiducial loca   unit                 1/119Mhz
   pattern { DEV       ,  DESC         ,PREC  ,  WID   , DES     , TEC        , LOCA , UNIT, IOC          , ESLO            

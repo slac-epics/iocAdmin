@@ -1,0 +1,17 @@
+#==============================================================================
+#
+# Abs:  Beam Synchronous Acquisition records for a single power readout from
+#       laser steering.
+#
+# Name: bsaPWREdef.substitutions
+#
+# Note: Must follow the LCLS naming conventions.  
+#
+#==============================================================================
+#
+file bsaATTREdef.db
+{
+#           Device   Attribute  Input        EGU   HOPR  LOPR PREC ADEL  Link
+  pattern {   D       ,ATTR,    I           , EG ,  HO  , LO , PR , AD  ,  LNK      }
+	  { $(DEVICE) ,PWR ,  $(DEVICE):PWR , uJ ,  5   ,  0 ,  3 ,  0  , $(SLCLNK) }
+}

@@ -219,6 +219,9 @@ static long getIoIntInfo(int cmd, dbCommon *pr, IOSCANPVT *iopvt)
     devPvt *pPvt = (devPvt *)pr->dpvt;
     asynStatus status;
 
+    /* If initCommon failed then pPvt->puint32 is NULL, return error */
+    if (!pPvt->puint32) return -1;
+
     if (cmd == 0) {
         /* Add to scan list.  Register interrupts */
         asynPrint(pPvt->pasynUser, ASYN_TRACE_FLOW,
@@ -301,7 +304,9 @@ static void interruptCallbackInput(void *drvPvt, asynUser *pasynUser,
     epicsMutexLock(pPvt->mutexId);
     pPvt->gotValue = 1; pPvt->value = value;
     epicsMutexUnlock(pPvt->mutexId);
-    scanIoRequest(pPvt->ioScanPvt);
+    dbScanLock(pr);
+    pr->rset->process(pr);
+    dbScanUnlock(pr);
 }
 
 static void interruptCallbackOutput(void *drvPvt, asynUser *pasynUser,

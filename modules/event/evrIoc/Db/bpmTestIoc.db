@@ -1,0 +1,4 @@
+record(ai, "$(ioc):PULSEID") {
+  field(DESC, "Pulse ID")
+  field(INP, "$(ioc):PATTERN360HZ.L CPP")
+}

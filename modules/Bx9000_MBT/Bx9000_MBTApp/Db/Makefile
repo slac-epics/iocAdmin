@@ -32,7 +32,6 @@ DB += KL4132.template
 # <anyname>_TEMPLATE = <templatename>
 
 include $(TOP)/configure/RULES
-include $(TOP)/configure/RULES.Db
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
 

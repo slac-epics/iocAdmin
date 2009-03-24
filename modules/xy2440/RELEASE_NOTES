@@ -9,6 +9,10 @@
 #  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
 #--------------------------------------------------------------
 #  Mod:
+#        21-Feb-2008, K. Luchini         (LUCHINI):
+#           release xy2440-R1-0-6
+#        10-Dec-2007, K. Luchini         (LUCHINI):
+#           release xy2440-R1-0-5
 #        08-Oct-2007, K. Luchini         (LUCHINI):
 #           release xy2440-R1-0-4
 #           release xy2440-R1-0-3
@@ -19,6 +23,14 @@
 #
 #==============================================================
 #
+xy2440-R1-0-6:   Build with base-R3-14-9-lcls1
+                 Build with ipac-R2-8-lcls4
+                 Replace CONFIG_APP with CONFIG_SITE
+                 Add RELEASE_SITE
+
+xy2440-R1-0-5:   Backout epics to base-R3-14-8-2-lcls2 (RTEMS 4.7.1)
+                 Build with ipac-R2-8-lcls3
+
 xy2440-R1-0-4:   Build with base-R3-14-9-lcls1 (RTEMS 4.7.1)
                  Build with extensions-R3-14-9
                  Build with ipac-R2-8-lcls2

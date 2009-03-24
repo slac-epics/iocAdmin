@@ -30,7 +30,7 @@ const char* commandStr[] = { "end", "in", "out", "wait", "event", "exec",
 
 inline const char* commandName(unsigned char i)
 {
-    return i > exec_cmd ? "invalid" : commandStr[i];
+    return i >= sizeof(commandStr)/sizeof(char*) ? "invalid" : commandStr[i];
 }
 
 /// debug functions /////////////////////////////////////////////
@@ -921,7 +921,11 @@ readCallback(StreamIoStatus status,
             finishProtocol(ReplyTimeout);
             return 0;
         case StreamIoFault:
-            error("%s: I/O error when reading from device\n", name());
+            error("%s: I/O error after reading %ld byte%s: \"%s%s\"\n",
+                name(),
+                inputBuffer.length(), inputBuffer.length()==1 ? "" : "s",
+                inputBuffer.length() > 20 ? "..." : "",
+                inputBuffer.expand(-20,20)());
             finishProtocol(Fault);
             return 0;
     }
@@ -1323,7 +1327,7 @@ scanValue(const StreamFormat& fmt, char* value, long maxlen)
         consumed > inputLine.length()-consumedInput) return -1;
 #ifndef NO_TEMPORARY
     debug("StreamCore::scanValue(%s) scanned \"%s\"\n",
-        name(), StreamBuffer(value, consumed).expand()());
+        name(), StreamBuffer(value, maxlen).expand()());
 #endif
     flags |= GotValue;
     return consumed;
@@ -1510,8 +1514,23 @@ bool StreamCore::evalDisconnect()
         finishProtocol(Fault);
         return false;
     }
-    evalCommand();
     return true;
+}
+
+void StreamCore::
+disconnectCallback(StreamIoStatus status)
+{
+    switch (status)
+    {
+        case StreamIoSuccess:
+            evalCommand();
+            return;
+        default:
+            error("%s: Disconnect failed\n",
+                name());
+            finishProtocol(Fault);
+            return;
+    }
 }
 
 #include "streamReferences"

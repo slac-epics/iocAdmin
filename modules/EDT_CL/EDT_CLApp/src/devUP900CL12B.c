@@ -62,7 +62,7 @@ int UP900CL12B_DEV_DEBUG = 1;
 
 #define	NUM_OF_FRAMES	50	/* number of frames in circular buffer */
 
-#define IMAGE_TS_EVT_NUM 143	/* upon which event we timestamp image */
+#define IMAGE_TS_EVT_NUM 159	/* upon which event we timestamp image */
 
 #ifdef vxWorks
 #define CAMERA_THREAD_PRIORITY	(10)

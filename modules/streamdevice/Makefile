@@ -2,15 +2,18 @@
 TOP = .
 include $(TOP)/configure/CONFIG
 
-DIRS = configure
+DIRS := $(DIRS) $(filter-out $(DIRS), configure)
 DIRS += src
-
-  ifneq ($(words $(CALC) $(SYNAPPS)), 0)
-    # with synApps calc module (contains scalcout)
-    DIRS += srcSynApps
-  endif
-
+ifneq ($(words $(CALC) $(SYNAPPS)), 0)   
+   # with synApps calc module (contains scalcout) 
+   DIRS += srcSynApps
+endif
 DIRS += streamApp
 
-include $(TOP)/configure/RULES_TOP
+#DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *App))
+#DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *app))
 
+DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocBoot))
+DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocboot))
+
+include $(TOP)/configure/RULES_TOP

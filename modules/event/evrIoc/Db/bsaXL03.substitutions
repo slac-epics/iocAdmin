@@ -5,7 +5,8 @@
 # BSA records
 # One per device:
 #
-file bsaBPMSEdef.db {
+file bsaBPMSEdef.db 
+{
   pattern {DEVICE      , LOC  , UN, SYS, SLCLNK }
 	  { BPMS:XX03:1, IN20,EV02, SYS0, "BPMS:XX03:1:FANOUTSLC PP"}
 	  { BPMS:XX03:2, IN20,EV02, SYS0, "BPMS:XX03:2:FANOUTSLC PP"}
@@ -15,12 +16,14 @@ file bsaBPMSEdef.db {
 	  { BPMS:XX03:6, IN20,EV02, SYS0, "BPMS:XX03:6:FANOUTSLC PP"}
 }
 
-file bsaTOROEdef.db {
+file bsaTOROEdef.db 
+{
   pattern {DEVICE       , LOC , UN , SYS, SLCLNK }
 	  { TORO:XX03:1 ,IN20 ,EV02, SYS0, "TORO:XX03:1:FANOUTSLC PP"}
 	  { TORO:XX03:2 ,IN20 ,EV02, SYS0, "TORO:XX03:2:FANOUTSLC PP"}
 }
-file bsaPMTEdef.db {
+file bsaPMTEdef.db 
+{
   pattern {DEVICE      , LOC , UN , SYS, SLCLNK  }
 	  { PMT:XX03:1 , IN20,EV02, SYS0, "PMT:XX03:1:FANOUTSLC PP"}
 	  { PMT:XX03:2 , IN20,EV02, SYS0, "PMT:XX03:2:FANOUTSLC PP"}
@@ -29,13 +32,15 @@ file bsaPMTEdef.db {
 	  { PMT:XX03:5 , IN20,EV02, SYS0, "PMT:XX03:5:FANOUTSLC PP"}
 	  { PMT:XX03:6 , IN20,EV02, SYS0, "PMT:XX03:6:FANOUTSLC PP"}
 }
-file bsaBLENEdef.db {
+file bsaBLENEdef.db 
+{
   pattern {DEVICE   , LOC , UN , SYS, SLCLNK  , ATB}
 	  { BLEN:XX03:1 , IN20,EV02, SYS0, "" , A  }
 	  { BLEN:XX03:2 , IN20,EV02, SYS0, "" , B  }
 	  { BLEN:XX03:3 , IN20,EV02, SYS0, "" , C  }
 }
-file bsaWIREEdef.db {
+file bsaWIREEdef.db 
+{
   pattern {DEVICE       , LOC , UN , SYS, SLCLNK  }
 	  { WIRE:XX03:1 , IN20,EV02, SYS0, "WIRE:XX03:1:FANOUTSLC PP"}
 	  { WIRE:XX03:2 , IN20,EV02, SYS0, "WIRE:XX03:2:FANOUTSLC PP"}

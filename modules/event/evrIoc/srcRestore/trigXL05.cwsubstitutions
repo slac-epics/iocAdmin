@@ -1,0 +1,40 @@
+#==============================================================================
+#
+# Abs:  LCLS Trigger record channel watcher template for XL05 EV01
+#
+# Name: trigXL05.cwsubstitutions
+#
+#==============================================================================
+#
+file evrDevTrig.cwConfig 
+{
+# Instantiate one line for every trigger channel in the corresponding 
+# <ioc>trig.substitutions file. 
+#           Device	      
+  pattern { DEV             }
+	  { TRIG:XL05:EV01: }
+	  { TRIG:XL05:EV02: }
+	  { TRIG:XL05:EV03: }
+	  { TRIG:XL05:EV04: }
+	  { TRIG:XL05:EV05: }
+	  { TRIG:XL05:EV06: }
+	  { TRIG:XL05:EV07: }
+	  { TRIG:XL05:EV08: }
+	  { TRIG:XL05:EV09: }
+	  { TRIG:XL05:EV10: }
+	  { TRIG:XL05:EV11: }
+	  { TRIG:XL05:EV12: }
+	  { TRIG:XL05:EV13: }
+	  { TRIG:XL05:EV14: }
+	  { TRIG:XL05:EV15: }
+	  { TRIG:XL05:EV16: }
+	  { TRIG:XL05:EV17: }
+}
+file evrIocTrig.cwConfig 
+{
+# Instantiate one line for your IOC.
+#          Device
+ pattern { DEV            }
+	 { IOC:XL05:EV01  }
+}
+

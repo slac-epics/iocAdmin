@@ -1,0 +1,47 @@
+## EVR RTEMS startup script
+
+## Set common environment variables. eg. EPICS_TS_NTP_INET and PORTs
+< all/pre_st.cmd
+
+# by building one obj with everything in it, no lib/... link to ioc/lib/<target> is needed
+ld("bin/evr.obj") 
+
+## For BSA:
+epicsEnvSet ("EPICS_CA_MAX_ARRAY_BYTES",   "30000")
+
+dbLoadDatabase("dbd/evr.dbd")
+
+evr_registerRecordDeviceDriver(pdbbase) 
+
+# Allows gdb to attach to this target
+#rtems_gdb_start(0,0)
+
+## Load record instances
+dbLoadRecords("db/evrXL03.db")
+dbLoadRecords("db/evrPatternXL03.db")
+dbLoadRecords("db/bsaSimXL03.db")
+dbLoadRecords("db/bsaXL03.db")
+dbLoadRecords("db/trigXL03.db")
+
+bspExtVerbosity=0
+
+ErConfigure(0,0x000000,0x00,0,1)  # PMC type
+#ErConfigure(1,0x300000,0x60,4,0)  # VME type
+
+evrTimeFlag=0
+iocInit() # after h/w initialisations
+bspExtVerbosity=1
+dbpf("BLEN:XX03:1:FANOUT.DISV","0")
+dbpf("BLEN:XX03:2:FANOUT.DISV","0")
+dbpf("BLEN:XX03:3:FANOUT.DISV","0")
+dbpf("PMT:XX03:1:FANOUT.DISV","0")
+dbpf("PMT:XX03:2:FANOUT.DISV","0")
+dbpf("PMT:XX03:3:FANOUT.DISV","0")
+dbpf("PMT:XX03:4:FANOUT.DISV","0")
+dbpf("PMT:XX03:5:FANOUT.DISV","0")
+dbpf("PMT:XX03:6:FANOUT.DISV","0")
+dbpf("WIRE:XX03:1:FANOUT.DISV","0")
+dbpf("WIRE:XX03:2:FANOUT.DISV","0")
+dbpf("WIRE:XX03:3:FANOUT.DISV","0")
+dbpf("WIRE:XX03:4:FANOUT.DISV","0")
+dbpf("IOC:XL03:EV01:TS4_120_CNT.FLNK","IOC:XL03:EV01:FANOUT")

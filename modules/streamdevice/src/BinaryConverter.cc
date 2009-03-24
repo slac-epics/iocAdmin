@@ -38,11 +38,11 @@ parse(const StreamFormat& format, StreamBuffer& info,
     if (format.conv == 'B')
     {
         // user defined characters for %B (next 2 in source)
-        if (!*source )
+        if (*source)
         {
             if (*source == esc) source++;
             info.append(*source++);
-            if (!*source)
+            if (*source)
             {
                 if (*source == esc) source++;
                 info.append(*source++);

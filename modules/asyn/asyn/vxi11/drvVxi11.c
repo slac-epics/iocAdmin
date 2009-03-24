@@ -92,6 +92,7 @@ typedef struct vxiPort {
     osiSockAddr   vxiServerAddr; /*addess of vxi11 server*/
     char          *srqThreadName;
     epicsInterruptibleSyscallContext *srqInterrupt;
+    int           srqEnabled;
 }vxiPort;
 
 /* Local routines */
@@ -527,13 +528,12 @@ static enum clnt_stat clientCall(vxiPort * pvxiPort,
     enum clnt_stat stat;
     asynUser *pasynUser = pvxiPort->pasynUser;
 
-    errno = 0;
     stat = clnt_call(pvxiPort->rpcClient,
         req, proc1, addr1, proc2, addr2, pvxiPort->vxiRpcTimeout);
-    if(stat!=RPC_SUCCESS || errno!=0) {
+    if(stat!=RPC_SUCCESS) {
         asynPrint(pasynUser,ASYN_TRACE_ERROR,
-            "%s vxi11 clientCall errno %d clnt_stat %d\n",
-            pvxiPort->portName,errno,stat);
+            "%s vxi11 clientCall errno %s clnt_stat %d\n",
+            pvxiPort->portName,strerror(errno),stat);
         if(stat!=RPC_TIMEDOUT) vxiDisconnectPort(pvxiPort);
     }
     return stat;
@@ -554,16 +554,15 @@ static enum clnt_stat clientIoCall(vxiPort * pvxiPort,asynUser *pasynUser,
     } else {
         rpcTimeout.tv_sec = (unsigned long)(timeout+1.0);
     }
-    errno = 0;
     while(TRUE) {
         stat = clnt_call(pvxiPort->rpcClient,
             req, proc1, addr1, proc2, addr2, pvxiPort->vxiRpcTimeout);
         if(timeout>=0.0 || stat!=RPC_TIMEDOUT) break;
     }
-    if(stat!=RPC_SUCCESS || errno!=0) {
+    if(stat!=RPC_SUCCESS) {
         asynPrint(pasynUser,ASYN_TRACE_ERROR,
-            "%s vxi11 clientIoCall errno %d clnt_stat %d\n",
-            pvxiPort->portName,errno,stat);
+            "%s vxi11 clientIoCall errno %s clnt_stat %d\n",
+            pvxiPort->portName,strerror(errno),stat);
         if(stat!=RPC_TIMEDOUT) vxiDisconnectPort(pvxiPort);
     }
     return stat;
@@ -901,7 +900,8 @@ static asynStatus vxiConnectPort(vxiPort *pvxiPort,asynUser *pasynUser)
             asynPrint(pasynUser,ASYN_TRACE_ERROR,
            	    "%s vxiConnectPort cannot read bus status initialization aborted\n",
                 pvxiPort->portName);
-            clnt_destroy(pvxiPort->rpcClient);
+            if (pvxiPort->server.connected)
+                vxiDisconnectPort(pvxiPort);
             return status;
         }
         /* initialize the vxiPort structure with the data we have got so far */
@@ -914,7 +914,8 @@ static asynStatus vxiConnectPort(vxiPort *pvxiPort,asynUser *pasynUser)
             asynPrint(pasynUser,ASYN_TRACE_ERROR,
                 "%s vxiConnectPort vxiBusStatus error initialization aborted\n",
                 pvxiPort->portName);
-            clnt_destroy(pvxiPort->rpcClient);
+            if (pvxiPort->server.connected)
+                vxiDisconnectPort(pvxiPort);
             return status;
         }
         if(isController == 0) {
@@ -924,7 +925,8 @@ static asynStatus vxiConnectPort(vxiPort *pvxiPort,asynUser *pasynUser)
                 asynPrint(pasynUser,ASYN_TRACE_ERROR,
                     "%s vxiConnectPort vxiBusStatus error initialization aborted\n",
                     pvxiPort->portName);
-                clnt_destroy(pvxiPort->rpcClient);
+                if (pvxiPort->server.connected)
+                    vxiDisconnectPort(pvxiPort);
                 return asynError;
             }
             if(isController == 0) {
@@ -932,7 +934,8 @@ static asynStatus vxiConnectPort(vxiPort *pvxiPort,asynUser *pasynUser)
                     "%s vxiConnectPort neither system controller nor "
                     "controller in charge -- initialization aborted\n",
                     pvxiPort->portName);
-                clnt_destroy(pvxiPort->rpcClient);
+                if (pvxiPort->server.connected)
+                    vxiDisconnectPort(pvxiPort);
                 return asynError;
             }
         }
@@ -1494,6 +1497,12 @@ static asynStatus vxiSrqEnable(void *drvPvt, int onOff)
         printf("%s vxiSrqEnable port not connected\n",pvxiPort->portName);
         return asynError;
     }
+    if ((pvxiPort->srqEnabled >= 0)
+     && ((onOff && pvxiPort->srqEnabled)
+      || (!onOff && !pvxiPort->srqEnabled))) {
+        return asynSuccess;
+    }
+    pvxiPort->srqEnabled = -1;
     devEnSrqP.lid = pdevLink->lid;
     if(onOff) {
         devEnSrqP.enable = TRUE;
@@ -1519,6 +1528,9 @@ static asynStatus vxiSrqEnable(void *drvPvt, int onOff)
         printf("%s vxiSrqEnable %s\n",
             pvxiPort->portName, vxiError(devErr.error));
         status = asynError;
+    }
+    else {
+        pvxiPort->srqEnabled = (onOff != 0);
     }
     xdr_free((const xdrproc_t) xdr_Device_Error, (char *) &devErr);
     return status;
@@ -1666,6 +1678,7 @@ int vxi11Configure(char *dn, char *hostName, int recoverWithIFC,
     pvxiPort->srqThreadName = srqThreadName = portName + strlen(dn) + 1;
     strcpy(srqThreadName,dn);
     strcat(srqThreadName,"SRQ");
+    pvxiPort->srqEnabled = -1;
     pvxiPort->server.eos = -1;
     for(addr = 0; addr < NUM_GPIB_ADDRESSES; addr++) {
         pvxiPort->primary[addr].primary.eos = -1;

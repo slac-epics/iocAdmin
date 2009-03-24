@@ -2,24 +2,15 @@
  
   Name: bsa.c
 
-  Abs: This file contains all subroutine support for the lcls beam synchronous
-       acquisition and control subroutine records via EVG/EVR EDEFS
-       
-  Rem: All functions called by the subroutine record get passed one argument:
-
-         psub                       Pointer to the subroutine record data.
-          Use:  pointer
-          Type: struct subRecord *
-          Acc:  read/write
-          Mech: reference
-
-         All functions return a long integer.  0 = OK, -1 = ERROR.
-         The subroutine record ignores the status returned by the Init
-         routines.  For the calculation routines, the record status (STAT) is
-         set to SOFT_ALARM (unless it is already set to LINK_ALARM due to
-         severity maximization) and the severity (SEVR) is set to psub->brsv
-         (BRSV - set by the user in the database though it is expected to
-          be invalid).
+  Abs: This device support for beam synchronous acquisition records via
+       EVG/EVR EDEFS
+           bsaSecnAvg        - BSA Processing 
+           bsaSecnInit       - BSA Processing Initialization
+           read_bsa          - BSA Record Value Update
+           init_bsa_record   - Init BSA Record Device Support
+           get_ioint_info    - Get IO Intr pointer
+           init_ao_record    - Init AO Record Device Support
+           write_ao          - Update Data for BSA Record 
 
   Auth:  
   Rev:  
@@ -33,154 +24,132 @@
   Mod:  (newest to oldest)  
  
 =============================================================================*/
-#include "debugPrint.h"
-#ifdef  DEBUG_PRINT
-#include <stdio.h>
-  int bsaSubFlag = DP_FATAL;
-#endif
 
-#define bsadebug 1
-/* c includes */
-#include <string.h>        /* memcmp */
+#include <string.h>        /* strcmp */
+#include <stdlib.h>        /* calloc */
 #include <math.h>          /* sqrt   */
 
-#include <subRecord.h>        /* for struct subRecord      */
-#include <sSubRecord.h>       /* for struct sSubRecord in site area */
-#include <registryFunction.h> /* for epicsExport           */
-#include <epicsExport.h>      /* for epicsRegisterFunction */
-#include <epicsTime.h>        /* epicsTimeStamp */
-#include <dbAccess.h>         /* dbGetTimeStamp */
-#include <alarm.h>            /* NO_ALARM, INVALID_ALARM */
- 
+#include "bsaRecord.h"        /* for struct bsaRecord      */
+#include "aoRecord.h"         /* for struct aoRecord       */
+#include "registryFunction.h" /* for epicsExport           */
+#include "epicsExport.h"      /* for epicsRegisterFunction */
+#include "epicsTime.h"        /* epicsTimeStamp */
+#include "epicsMutex.h"       /* epicsMutexId   */
+#include "dbAccess.h"         /* dbGetTimeStamp */
+#include "devSup.h"           /* for dset and DEVSUPFUN    */
+#include "devLib.h"           /* for S_dev_noMemory        */
+#include "recGbl.h"           /* for recGblSetSevr         */
+#include "ellLib.h"           /* linked list    */
+#include "dbScan.h"           /* IOSCANPVT      */
+#include "alarm.h"            /* INVALID_ALARM  */
+#include "evrTime.h"          /* evrTimeGetFromEdef        */
+#include "bsa.h"              /* prototypes in this file   */
+
+/* BSA information for one device, one EDEF */
+typedef struct {
+
+  /* Results of Averaging */
+  double              val;       /* average value     */
+  double              rms;       /* RMS of above      */
+  int                 cnt;       /* # in average      */
+  epicsTimeStamp      time;      /* time of average   */
+  unsigned long       nochange;  /* Same time stamp counter */
+  unsigned long       noread;    /* Data not read counter   */
+  int                 readFlag;  /* Data read flag    */
+  int                 reset;     /* Reset waveforms   */
+  /* Intermediate Values */
+  double              avg;       /* average  so far   */
+  double              var;       /* variance so far   */
+  int                 avgcnt;    /* count    so far   */
+  epicsTimeStamp      timeData;  /* latest input time */
+  epicsTimeStamp      timeInit;  /* init         time */
+  IOSCANPVT           ioscanpvt; /* to process records using above fields */
+
+} bsa_ts;
+
+/* BSA devices */
+typedef struct {
+  ELLNODE node;
+  char    name[PVNAME_STRINGSZ];
+  int     noAverage;
+  bsa_ts  bsa_as[EDEF_MAX];
+
+} bsaDevice_ts;
+
+ELLLIST bsaDeviceList_s;
+static epicsMutexId bsaRWMutex_ps = 0; 
+
 /*=============================================================================
 
   Name: bsaSecnAvg
 
-  Abs:  Device Secondary Processing
-        Computes running average and RMS values of Secondary
-        for PRIM:LOCA:UNIT:$SECN$MDID.VAL 
+  Abs:  Beam Synchronous Acquisition Processing
+        Computes BSA device running average and RMS values for all EDEFs
 
-		
-  Args: Type	            Name        Access	   Description
-        ------------------- -----------	---------- ----------------------------
-        subRecord *        psub        read       point to subroutine record
+  Args: Type                Name        Access     Description
+        ------------------- ----------- ---------- ----------------------------
+        epicsTimeStamp *    secnTime_ps Read       Data timestamp
+        double              secnVal     Read       Data value
+        epicsEnum16         secnSevr    Read       Data severity
+        void *              dev_ps      Read/Write BSA Device Structure
 
-  Rem:  Subroutine for PRIM:LOCA:UNIT:MEASCNT$MDID
-
-  Side: INPA - PRIM:LOCA:UNIT:SECN.VAL
-        INPB - EDEF:LOCA:UNIT:EDEFAVGDONE.$(BIT)
-		INPC - EDEF:LOCA:UNIT:EDEFMEASSEVR.$(BIT) 
-        SDIS - EVR:IOC:1:MODIFIER5 BIT for this MDID 1=  match
-		INPD - PRIM:LOCA:UNIT:SECN.STAT (was cum EPICS STAT for device, STATUS)
-        INPE - PRIM:LOCA:UNIT:SECN.SEVR (was cum EPICS SEVR for device, STATUS.L)
-        INPG - Init flag - set upon init
-		OUT 
-           H = Variance value used in RMS calc
-           I = B - 1
-           J = B - 2
-           K = A - previous VAL
-           L = RMS value when average is done
-
-		   M = goodmeas cnt - # of pulses considered good when each pulse's severity
-               is compared with the EDEF MEASSEVR value for this edef. This count
-			   will be stored in the $(SECN)CNTHST history buffer.
-		   N - Running count of inner loop * outer loop = total measured
-           O - reset counters, values (avcnt, goodmeas, stat, timestamp check)
-               remembers B was set last time
-	       Q = local, inner, avgcnt
-		   W = Timestamp mismatch
-		   X = history buff enable(1)/disable (0)
-		   Y = count (total pulses counted so far)
-		   Z = outer loop count
-	   VAL = Running average 
+  Rem:  
       
-  Ret:  0
+  Ret:  0 = OK, -1 = Mutex problem or bad status from evrTimeGetFromEdef.
 
 ==============================================================================*/
-static long bsaSecnAvg(sSubRecord *psub)
+
+int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
+               double          secnVal,
+               epicsEnum16     secnSevr,
+               int             noAveraging,
+               void           *dev_ps)
 {
-/* linux uses system time; rtems general time */
-#ifndef linux
-  epicsTimeStamp  timeEVR; 
-  epicsTimeStamp  timeSecn;  /* for comparison */
-#endif
-
+  epicsTimeStamp  edefTimeInit_s, edefTime_s;
+  int             edefAvgDone;
+  int             noAverage;
+  int             idx;
+  int             status = 0;
+  epicsEnum16     edefSevr;
+  bsa_ts         *bsa_ps;
   
-#ifdef linux
-  psub->g = 0;    /* simulator needs psub->g to always be 0 */
-  psub->x = 1;    /* if simulator always enable history buffer */
-  psub->o = 0;    /* no averaging, always reinit */
-  psub->y = 0;    /* total count */
-  psub->z = 0;    /* outer loop count reset */	
-  psub->m = 0;    /* always set goodmeas to 0, no averaging */
-  psub->q = 0;
-  psub->c = 3;    /* simulator wants all data sevrs */
-  psub->val = 0;
-#endif
-
-
-#ifndef linux
-  psub->x = 0;    /* default to history buff disable  */
-
-  if (psub->g) {  /* set from reset seq at beg of acq */
-	psub->g = 0;
-	psub->n = 0;
-    psub->w = 0;  /* ts mismatch */
-    psub->z= 0;   /* outer loop count */
-	psub->y = 0;  /* total count */
-    psub->l = 0;  /* RMS */
-    psub->val = 0; /* Average */
-  }
-  psub->n++;      /* count of how many times this is processed */
-
-
-  /*EVR timestamp:*/
-  if (dbGetTimeStamp(&psub->sdis, &timeEVR)){
-	DEBUGPRINT(DP_ERROR, bsaSubFlag, ("bsaSecnAvg for %s: Unable to determine EVR timestamp.\n",psub->name));
-	psub->w++;
-	return -1;
-  }
-  /*Secondary timestamp:*/
-  if (dbGetTimeStamp(&psub->inpa, &timeSecn)){
-	DEBUGPRINT(DP_ERROR, bsaSubFlag, ("bsaSecnAvg for %s: Unable to determine device timestamp.\n",psub->name));
-	psub->w++;
-	return -1;
-  }
-  /* if timestamps are different, then processing is not synched */
-  if (memcmp(&timeEVR,&timeSecn,sizeof(epicsTimeStamp))) {
-	DEBUGPRINT(DP_ERROR, bsaSubFlag, ("basSecnAvg for %s: Timestamp MISMATCH.\n",psub->name));
-	psub->w++;
-
-#ifndef bsadebug
-	return -1;
-#endif
-  }
-  
-  /* Reinit for a new average (avg done was flagged last time through) */
-  if (psub->o) {
-	psub->o = 0; /* flag- no resetting next time around */
-    /*  reset avgcnt, meascnt, goodmeas, stat   */
-	psub->q = 0; /* avgcount    */
-    psub->m = 0; /* goodmeas    */
-  }
-  
-  psub->q++;  /* always incr avgcnt */
-  psub->y++;  /* increment total count */ 
-#endif
-
-  /* if edef avg count done */
-  if (psub->b) {
-	/*  then averaging is done, and enable history buffer */
-	psub->x = 1;  /* enable history buff */
-	psub->o = 1;  /* flag to reset pertinent counters next loop */
-	psub->z++;    /* inc outer loop count */
-  } else {
-	/*  else averaging is NOT done */
-	psub->o = 0;
-  }
-  if (psub->e < psub->c) {
-	/*if (psub->e < INVALID_ALARM) {*/
-	psub->m++; /* inc goodmeas cnt */
+  if ((!bsaRWMutex_ps) || epicsMutexLock(bsaRWMutex_ps) || (!dev_ps))
+    return -1;
+  /* Request BSA processing for matching EDEFs */
+  noAverage = ((bsaDevice_ts *)dev_ps)->noAverage;
+  for (idx = 0; idx < EDEF_MAX; idx++) {
+    /* EDEF timestamp must match the data timestamp. */
+    if (evrTimeGetFromEdef(idx, &edefTime_s, &edefTimeInit_s,
+                           &edefAvgDone, &edefSevr)) {
+      status = -1;
+      continue;
+    }
+    /* EDEF timestamp must match the data timestamp. */
+    if ((secnTime_ps->secPastEpoch != edefTime_s.secPastEpoch) ||
+        (secnTime_ps->nsec         != edefTime_s.nsec)) continue;
+    
+    bsa_ps = &((bsaDevice_ts *)dev_ps)->bsa_as[idx];
+    /* Check if the EDEF has initialized and wipe out old values if it has */
+    if ((edefTimeInit_s.secPastEpoch != bsa_ps->timeInit.secPastEpoch) ||
+        (edefTimeInit_s.secPastEpoch != bsa_ps->timeInit.secPastEpoch)) {
+      bsa_ps->timeInit = edefTimeInit_s;
+      bsa_ps->avg    = 0.0;
+      bsa_ps->var    = 0.0;
+      bsa_ps->avgcnt = 0;
+      if (bsa_ps->readFlag) bsa_ps->noread++;
+      bsa_ps->readFlag = 0;
+      bsa_ps->reset    = 1;
+    }
+    /* Ignore data that hasn't changed since last time */
+    if ((secnTime_ps->secPastEpoch == bsa_ps->timeData.secPastEpoch) &&
+        (secnTime_ps->nsec         == bsa_ps->timeData.nsec)) {
+      bsa_ps->nochange++;
+    } else {
+      bsa_ps->timeData = *secnTime_ps;
+    
+      /* Include this value in the average if it's OK with the EDEF */
+      if (secnSevr < edefSevr) {
+	bsa_ps->avgcnt++;
 
 	/* now start the averaging */
 	/* first time thru for new cycle; reset previous avg, variance */
@@ -195,133 +164,254 @@ static long bsaSecnAvg(sSubRecord *psub)
 	/*                                                       */
 	/*        Note that CUM's method of computing VAR avoids */
 	/*        possible loss of significance.                 */
-	if (psub->m <= 1) {
-	  psub->v = psub->a;
-	  psub->h = 0;
-	  psub->i = 0;
-	  psub->j = 0;
-	  psub->k = 0;
+	if ((bsa_ps->avgcnt == 1) || noAverage) {
+          bsa_ps->avgcnt = 1;
+	  bsa_ps->avg    = secnVal;
+          bsa_ps->var    = 0.0;
 	} 
 	else {
-	  psub->i = psub->m-1.0;
-	  psub->j = psub->m-2.0;
-	  psub->k = psub->a-psub->v;
-	  psub->v += psub->k/psub->m;
-	  psub->k /= psub->i;
-	  psub->h = (psub->j*(psub->h/psub->i)) + (psub->m*psub->k*psub->k);
-	  DEBUGPRINT(DP_DEBUG, bsaSubFlag, ("bsaSecnAvg for %s: Avg: %f; Var: %f \n", psub->name, psub->v, psub->h) );
+	  int avgcnt_1 = bsa_ps->avgcnt-1;
+          int avgcnt_2 = bsa_ps->avgcnt-2;
+	  double diff  = secnVal - bsa_ps->avg;
+	  bsa_ps->avg += diff/(double)bsa_ps->avgcnt;
+	  diff        /= (double)avgcnt_1;
+	  bsa_ps->var  = ((double)avgcnt_2*(bsa_ps->var/(double)avgcnt_1)) +
+                         ((double)bsa_ps->avgcnt*diff*diff);
 	}
-  } /* if good, include in averaging */
-
-  if (psub->o) { /* values when avg is done */
-    if (psub->m > 0) {
-	  psub->l = psub->h/psub->m;
-      psub->l = sqrt(psub->l);
-      psub->val = psub->v;
-    } else {
-      psub->l=0.0;
-      psub->val = 0.0;
-	}
+      } /* if good, include in averaging */
+    }
+    /* Finish up calcs when the average is done and force record processing */
+    if (edefAvgDone) { /* values when avg is done */
+      bsa_ps->val  = bsa_ps->avg;
+      bsa_ps->cnt  = bsa_ps->avgcnt;
+      bsa_ps->time = bsa_ps->timeData;
+      if (bsa_ps->avgcnt <= 1) {
+        bsa_ps->rms = 0.0;
+      } else {
+        bsa_ps->rms = bsa_ps->var/(double)bsa_ps->avgcnt;
+        bsa_ps->rms = sqrt(bsa_ps->rms);
+      }
+      bsa_ps->avgcnt = 0;
+      bsa_ps->avg    = 0;
+      if (bsa_ps->ioscanpvt) {
+        if (bsa_ps->readFlag) bsa_ps->noread++;
+        else                  bsa_ps->readFlag = 1;
+        scanIoRequest(bsa_ps->ioscanpvt);
+      }
+    }
   }
-   
-#ifdef linux
-  /* simulation won't be supporting averaging */
-  psub->b = 1;
-#endif
- 
-  /* note that if no good pulses, psub->l remained 0 and a 0 is stored in history buff */
-  return 0;
+  epicsMutexUnlock(bsaRWMutex_ps);
+  return status;
 }
+
 /*=============================================================================
-  
-  Name: bsaSimCheckTest
-  Simulater for EVG - simulates only 1 hertz and 10 hertz right now
-  
-  Abs:  360Hz Processing
-  Check to see if current beam pulse is to be used in any
-  current measurement definition.
 
+  Name: bsaSecnInit
 
+  Abs:  Beam Synchronous Acquisition Processing Initialization
 
-  Args: Type	            Name        Access	   Description
-        ------------------- -----------	---------- ----------------------------
-        sSubRecord *        psub        read       point to sSub subroutine record
-
-  Rem:   Subroutine for EVR:$IOC:1:CHECKEVR$MDID
-
-  side: 
-        INPA - EDEF:LCLS:$(MD):CTRL  1= active; 0 = inactive
-		
-		INPB - ESIM:$(IOC):1:MEASCNT$(MDID)
-		INPC -          EDEF:SYS0:$(MD):CNTMAX - now is calculated from inp I & J
-        INPD - ESIM:SYS0:1:DONE$(MDID)
-		INPE - EDEF:SYS0:$(MD):AVGCNT
-        INPF - ESIM:$(IOC):1:MODIFIER4
-		INPG - INCLUSION2
-        INPH - 
-		INPI - EDEF:SYS0:$(MD):AVGCNT
-		INPJ - EDEF:SYS0:$(MD):MEASCNT
-for testing, match on Inclusion bits only;
-override modifier 4 if one hertz bit is set
-        INPP - EDEF:$(IOC):$(MD):INCLUSION4
-
-        INPU - INCLUSION2   ONE HERTZ BIT from Masksetup		
-        INPV - INCLUSION3   TEN HERTZ BIT from masksetup
-		  Note: above masksetup bits override MODIFIER4 input!
-        INPW - ESIM:$(IOC):1:BEAMCODE.SEVR
-        INPX - EVR:$(IOC):1:CNT$(MDID).Q
-                OUT
-	    Q - full measurement count complete - flags DONE
-	    VAL = EVR pattern match = 1
-		 no match = 0; enable/disable for bsaSimCount
-
-        All three outputs are initialized to 0 before first-time processing
-        when MDEF CTRL changes to ON.
-
-  Ret:  none
+  Args: Type                Name        Access     Description
+        ------------------- ----------- ---------- ----------------------------
+        char *              secnName    Read       BSA Device Name
+        int                 noAverage   Read       Skip averaging (EVG IOC only)
+        void **             dev_pps     Write      BSA Device Structure Pointer
+        
+  Rem:  
+      
+  Ret:  0 = OK, -1 = Mutex creation or memory allocation error
 
 ==============================================================================*/
-static long bsaSimCheckTest(sSubRecord *psub)
+
+int bsaSecnInit(char  *secnName,
+                int    noAverage,
+                void **dev_pps)
 {
-  psub->val = 0;
-  psub->q = 0;
+  bsaDevice_ts *dev_ps = 0;
   
-
-  if (psub->w>MAJOR_ALARM) {
-    /* bad data - do nothing this pulse and return bad status */
-    return(-1);
+  if (!bsaRWMutex_ps) {
+    bsaRWMutex_ps = epicsMutexCreate();
+    if (bsaRWMutex_ps) ellInit(&bsaDeviceList_s);
   }
-  /* if this edef is not active, exit */
-  if (!psub->a) return 0;
-  psub->c = psub->i * psub->j;
-  /* now check this pulse */
-  /* check inclusion mask */
-  if ( (unsigned long)psub->u ) psub->p = 10; /* force one hertz processing */
-  /* set modifier 4 to 10; assuming evg sim counts 1 to 10 */
-  if ( (unsigned long)psub->v ) psub->p = 0 ; /* force 10  hertz processing */	 
-  
-  if (  (((unsigned long)psub->f & (unsigned long)psub->p)==(unsigned long)psub->p)
-		/*		&&(((unsigned long)psub->g & (unsigned long)psub->q)==(unsigned long)psub->q)*/) 
-	{
-		DEBUGPRINT(DP_DEBUG, bsaSubFlag, 
-				   ("bsaSimCheckTest: inclusion match for %s; INCL4=0x%lx, MOD4=0x%lx\n",
-					psub->name, (unsigned long)psub->p, (unsigned long)psub->f ));	  
-		psub->val = 1;
-	
-	}
-	else DEBUGPRINT(DP_DEBUG, bsaSubFlag, 
-					("bsaSimCheckTest: inclusion NO match for %s; INCL4=0x%lx, MOD4=0x%lx\n",
-					 psub->name, (unsigned long)psub->p, (unsigned long)psub->f ));
-
-  /* check for end of measurement */
-  /* if SYS EDEF,EDEF:SYS0:MD:MEASCNT = -1, and this will go forever */ 
-  if ( (psub->b==psub->c) && (!psub->d) ) { /* we're done - */
-	psub->val = 0;       /* clear modmatch flag */
-	psub->q = 1;         /* flag to DONE to disable downstream */
-	return 0;
+  if (bsaRWMutex_ps && (!epicsMutexLock(bsaRWMutex_ps))) { 
+    /* Check if device name is already registered. */
+    dev_ps = (bsaDevice_ts *)ellFirst(&bsaDeviceList_s);
+    while(dev_ps) {
+      if(strcmp(dev_ps->name, secnName)==0) break;
+      dev_ps = (bsaDevice_ts *)ellNext(&dev_ps->node);
+    }
+    if (!dev_ps) {
+      dev_ps = calloc(1,sizeof(bsaDevice_ts));
+      if (dev_ps) {
+        strcpy(dev_ps->name, secnName);
+        ellAdd(&bsaDeviceList_s,&dev_ps->node);
+      }
+    }
+    epicsMutexUnlock(bsaRWMutex_ps);
   }
-return 0;
+  *dev_pps = dev_ps;
+  if (dev_ps) {
+    if (noAverage) dev_ps->noAverage = 1;
+    return 0;
+  }
+  return -1;
+}
+
+/*=============================================================================
+
+  Name: read_bsa
+
+  Abs:  Beam Synchronous Acquisition Record Update
+        Updates average and RMS values of Secondary
+        for PRIM:LOCA:UNIT:$SECN$MDID.VAL 
+
+  Args: Type                Name        Access     Description
+        ------------------- ----------- ---------- ----------------------------
+        bsaRecord *         pbsa        Read/Write BSA Record
+
+  Rem:  
+      
+  Ret:  0 = OK
+
+==============================================================================*/
+
+static long read_bsa(bsaRecord *pbsa)
+{
+  bsa_ts *bsa_ps = (bsa_ts *)pbsa->dpvt;
+  short reset    = 0;
+  int   noread   = 1;
+
+  /* Lock and update */
+  if (bsa_ps && bsaRWMutex_ps && (!epicsMutexLock(bsaRWMutex_ps))) {
+    if (bsa_ps->readFlag) {
+      bsa_ps->readFlag = 0;
+      noread           = 0;
+      pbsa->val  = bsa_ps->val;
+      pbsa->rms  = bsa_ps->rms;
+      pbsa->cnt  = bsa_ps->cnt;
+      pbsa->time = bsa_ps->time;
+      pbsa->noch = bsa_ps->nochange;
+      pbsa->nore = bsa_ps->noread;
+    }
+    if (bsa_ps->reset) {
+      bsa_ps->reset = 0;
+      reset         = 1;
+    }
+    epicsMutexUnlock(bsaRWMutex_ps);
+  }
+  /* Read alarm if there was nothing to read.
+     Soft alarm if there were no valid inputs to the average.*/ 
+  if (noread) {
+    pbsa->val  = 0.0;
+    pbsa->rms  = 0.0;
+    pbsa->cnt  = 0;
+    epicsTimeGetEvent(&pbsa->time, 0);
+    recGblSetSevr(pbsa,READ_ALARM,INVALID_ALARM);
+  } else if (pbsa->cnt == 0) {
+    recGblSetSevr(pbsa,SOFT_ALARM,INVALID_ALARM);
+  }
+  /* Reset compress records if requested */
+  if (reset) {
+    dbPutLink(&pbsa->vres, DBR_SHORT, &reset, 1);
+    dbPutLink(&pbsa->rres, DBR_SHORT, &reset, 1);
+    dbPutLink(&pbsa->cres, DBR_SHORT, &reset, 1);
+  }
+  return 0;
+}
+
+static long init_record(dbCommon *prec, int noAverage, DBLINK *link)
+{
+  if (link->type != INST_IO) {
+    errlogPrintf("init_record (%s): INP is not INST_IO\n", prec->name);
+    return S_db_badField;
+  }
+  bsaSecnInit(link->value.instio.string, noAverage, &prec->dpvt);    
+  if (!prec->dpvt) {
+    errlogPrintf("init_record (%s): cannot allocate DPVT\n", prec->name);
+    return S_dev_noMemory;
+  }
+  return 0;
 }
 
-epicsRegisterFunction(bsaSecnAvg);
-epicsRegisterFunction(bsaSimCheckTest);
+static long init_bsa_record(bsaRecord *pbsa)
+{
+  long status = init_record((dbCommon *)pbsa, pbsa->noav, &pbsa->inp);
+  if (status) return status;
+
+  if ((pbsa->edef <= 0) || (pbsa->edef > EDEF_MAX)) {
+    errlogPrintf("init_bsa_record (%s): Invalid EDEF %d\n",
+                 pbsa->name, pbsa->edef);
+    return S_db_badField;
+  }
+  pbsa->dpvt = &((bsaDevice_ts *)pbsa->dpvt)->bsa_as[pbsa->edef-1];
+  return 0;
+}
+
+static long get_ioint_info(int cmd, bsaRecord *pbsa, IOSCANPVT *ppvt)
+{
+  bsa_ts *bsa_ps = (bsa_ts *)(pbsa->dpvt);
+
+  if (bsa_ps) {
+      if (bsa_ps->ioscanpvt == 0) scanIoInit(&bsa_ps->ioscanpvt);
+      *ppvt = bsa_ps->ioscanpvt;
+    } else {
+      *ppvt = 0;
+    }
+    return 0;
+}
+
+static long init_ao_record(aoRecord *pao)
+{
+  return (init_record((dbCommon *)pao, 0, &pao->out));
+}
+
+static long write_ao(aoRecord *pao)
+{
+  long           status = 0;
+
+  /* Get the input's timestamp to match with the EDEFs */
+  if (dbGetTimeStamp(&pao->dol, &pao->time)) {
+    status = -1;
+  } else {
+    status = bsaSecnAvg(&pao->time, pao->val, pao->nsev, 0, pao->dpvt);
+  }
+  if (status) recGblSetSevr(pao,WRITE_ALARM,INVALID_ALARM);
+  return status;
+}
+
+/* Create the device support entry tables */
+typedef struct
+{
+  long        number;
+  DEVSUPFUN   report;
+  DEVSUPFUN   init;
+  DEVSUPFUN   init_record;
+  DEVSUPFUN   get_ioint_info;
+  DEVSUPFUN   read_write;
+  DEVSUPFUN   special_linconv;
+} DSET;
+
+DSET devAoBsa =
+{
+  6,
+  NULL,
+  NULL,
+  init_ao_record,
+  NULL,
+  write_ao,
+  NULL
+};
+
+DSET devBsa =
+{
+  6,
+  NULL,
+  NULL,
+  init_bsa_record,
+  get_ioint_info,
+  read_bsa,
+  NULL
+};
+
+epicsExportAddress(dset,devAoBsa);
+epicsExportAddress(dset,devBsa);
+

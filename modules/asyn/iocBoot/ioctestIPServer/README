@@ -37,7 +37,7 @@ iocInit()
 Starting iocInit
 ############################################################################
 ###  EPICS IOC CORE built on Feb 17 2006
-###  EPICS R3.14.8 $$Name: asyn-R4-7-1-lcls3 $$ $$Date: 2006/03/03 15:03:20 $$
+###  EPICS R3.14.8 $R4-9$ $2006/03/03 15:03:20$
 ############################################################################
 iocInit: All initialization complete
 ipEchoServer("P5001")

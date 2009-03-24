@@ -1,0 +1,18 @@
+#==============================================================================
+#
+# Abs:  Beam Synchronous Acquisition records for a single 
+#	    RF Amplitude measurement.
+#
+# Name: bsaAMPLEdef.substitutions 
+#
+# Note: Must follow the LCLS naming conventions.  
+#
+#==============================================================================
+#
+#
+file bsaATTREdef.db
+{
+#           Device   Attribute  Input  EGU   HOPR  LOPR PREC ADEL  Link
+  pattern {   D       , ATTR   , I   , EG ,  HO  , LO , PR , AD  ,  LNK      }
+	  { $(DEVICE) ,$(ATRB) ,$(IN), meV ,  0  ,  0 ,  3 , .01 , $(SLCLNK) }
+}
