@@ -1,0 +1,119 @@
+Instructions for iocAdmin users                    Last Updated 10/07/2008
+--------------------------------
+
+The iocAdmin package contains databases and libraries to add ioc administration
+PVs (including STARTTOD (ioc start time), TOD (time-of-day that updates 
+every second), SYSRESET (ioc restart command), access security PVs, etc) to an 
+ioc application.  This package also supports IOC stats (devIocStats).
+
+See README_devIocStats for detail on devIocStats.
+
+iocAdmin also provides access.db, the database that defines possible
+access modes (Running, Maintenance, Test, OFFLINE), for both iocs 
+and devices (beamline and other devices).
+
+Also provided is baseSecurity.acf, an access control file with ioc-related
+access rules and groups.
+
+I - Adding the iocAdmin package to your IOC application:
+-------------------------------------------------------
+
+(1) Add IOCADMIN to configure/RELEASE and clean/rebuild configure:
+
+IOCADMIN=/afs/slac/g/lcls/build/epics/modules/iocAdmin/iocAdmin-R<release>
+
+(2) Link the iocAdmin libraries into your app by adding to xxxApp/src/Makefile:
+
+   xxx_LIBS += devIocStats
+
+(3) Add the following .dbd files to xxxApp/src/Makefile 
+    or to xxxApp/src/xxxInclude.dbd:
+
+   xxx_DBD += iocAdmin.dbd
+
+(4) Install the iocAdmin database by adding to xxxApp/Db/Makefile:
+
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdmin.db
+   DB_INSTALLS += $(IOCADMIN)/db/access.db        (only if used for devices)
+   DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
+
+(5) Optional - include baseSecurity.acf in any existing acf file that is
+    built in the ioc application.
+
+II - Adding iocAdmin to your IOC startup file:
+-----------------------------------------------
+
+(1) Add the following environment variables to st.cmd:
+
+	All IOCs (must be less than 40 characters):
+	   epicsEnvSet("ENGINEER","<yourname>")
+	   epicsEnvSet("LOCATION","<ioclocation>")
+
+	Soft IOCs only (can be longer than 40 characters):
+	   epicsEnvSet("STARTUP","/usr/local/lcls/epics/iocCommon/<iocname>")
+	   epicsEnvSet("ST_CMD","startup.cmd")
+
+(2) Add iocAdmin database to st.cmd (before iocInit):
+
+    dbLoadRecords("db/iocAdmin.db", "IOC=<iocname>")
+
+(3) If baseSecurity.acf is not included in the ioc application's own
+    acf file, add these lines (before iocInit):
+
+    asSetFilename("<path>/db/baseSecurity.acf")
+    asSetSubstitutions("IOC=<iocname>")
+
+    where <path> must be absolute.
+
+III - Adding iocAdmin to CA Clients:
+------------------------------------
+
+(1) Channel Watcher - Macros are not provided for alarm limits in iocAdmin.db.
+    Alarm limits must be added to the channel watcher configuration file 
+    instead.  The IOC access state should also be added.  Use this template 
+    to create the <ioc>.cwConfig file:
+
+	$(IOCADMIN)/restore/iocAdmin.cwConfig	
+
+(2) EDM Display - Choose the correct machine area for the IOC and add the ioc 
+    to the proper network EDM displays:
+	$EDM/lcls/ntwk_<area>_main.edl
+	$EDM/lcls/ntwk_<area>_iocstatus.edl
+    Use the proper related display depending on the type of IOC:
+	ioc_rtems_acsw - RTEMS IOC using an AC switch to power cycle.
+	ioc_rtems_crat - RTEMS IOC using the crate interface to power cycle.
+	ioc_rtems_none - RTEMS IOC without a crate interface or AC switch.
+	ioc_rtems_nosupport - RTEMS IOC with a unsupported crate interface
+
+(3) Channel Archiver - for each IOC, consider adding some or all of the 
+    following records to Channel Archiver:
+
+	All IOCs:
+	<iocname>:CA_CLNT_CNT
+	<iocname>:CA_CONN_CNT
+
+	RTEMS IOCs only:
+	<iocname>:FD_FREE
+	<iocname>:MEM_FREE
+	<iocname>:MEM_BLK_FREE
+	<iocname>:SYS_MBUF_FREE
+	<iocname>:LOAD
+	<iocname>:IFI_ERR_CNT
+	<iocname>:IFO_ERR_CNT
+	<iocname>:CLUST_1_0_2
+	<iocname>:CLUST_1_1_2
+
+(4) Alarm Handler - add logic for the IOC heartbeat (that creates the 
+    HEARTBEATSUM record) to the ALH soft IOC (via email to Judy Rock).  Add 
+    the IOC to the "NETWORK" subgroup for all applicable machine areas with 
+    the following PVs and include them in <iocname>:STATSUMY on the ALH soft 
+    IOC:
+
+	<iocname>:CA_CLNT_CNT
+	<iocname>:CA_CONN_CNT
+	<iocname>:SUSP_TASK_CNT
+	<iocname>:FD_FREE
+	<iocname>:LOAD
+	<iocname>:MEM_BLK_FREE
+	<iocname>:HEARTBEATSUM (from the ALH soft IOC)
+
