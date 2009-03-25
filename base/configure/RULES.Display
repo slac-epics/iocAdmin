@@ -2,6 +2,10 @@
 # Where to install EDM Displays:
 # ================================================================
 
+vpath %.edl $(USR_VPATH) $(ALL_SRC_DIRS)
+vpath %.gif $(USR_VPATH) $(ALL_SRC_DIRS)
+vpath %.png $(USR_VPATH) $(ALL_SRC_DIRS)
+
 INSTALL_EDL = $(INSTALL_LOCATION)/display
 INSTALL_EDLS = $(EDLS:%=$(INSTALL_EDL)/%)
 
