@@ -1,0 +1,6 @@
+# Following avoid cross compilations
+CROSS_COMPILER_TARGET_ARCHS=
+
+# Add path to Acqiris driver files
+USR_INCLUDES += -I$(ACQIRIS_DRIVER)/acqiris/aqdrv4
+USR_LDFLAGS += -L$(ACQIRIS_DRIVER)/build/acqiris/lib/i386-linux

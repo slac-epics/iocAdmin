@@ -1,2 +1,2 @@
 1
-epicsPv /home/sinclair/edm/sources/libEpics.so epics
+epicsPv $(EDMLIBS)/libEpics.so epics

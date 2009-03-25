@@ -1,0 +1,8 @@
+device(ai,        INST_IO, acqiris_dev_ai_t,  "acqiris")
+device(ao,        INST_IO, acqiris_dev_ao_t,  "acqiris")
+device(longin,    INST_IO, acqiris_dev_li_t,  "acqiris")
+device(longout,   INST_IO, acqiris_dev_lo_t,  "acqiris")
+device(mbbo,      INST_IO, acqiris_dev_mbbo_t,"acqiris")
+device(waveform,  INST_IO, acqiris_dev_wf_t,  "acqiris")
+registrar(acqirisRegistrar)
+

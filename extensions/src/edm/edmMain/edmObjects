@@ -19,7 +19,7 @@ activeMenuButtonClass $(EDMLIBS)/libEdmBase.so Controls Menu Button
 activeRadioButtonClass $(EDMLIBS)/libEdmBase.so Controls Radio Box
 activeMessageButtonClass $(EDMLIBS)/libEdmBase.so Controls Message Button
 activeUpdownButtonClass $(EDMLIBS)/libEdmBase.so Controls Up/Down Button
-activeRampButtonClass /home/sinclair/edm/libEdmBase.so Controls Ramp Button
+activeRampButtonClass $(EDMLIBS)/libEdmBase.so Controls Ramp Button
 activeExitButtonClass $(EDMLIBS)/libEdmBase.so Controls Exit Button
 ByteClass $(EDMLIBS)/libPV.so Monitors Byte
 menuMuxClass $(EDMLIBS)/libEdmBase.so Controls Menu Mux

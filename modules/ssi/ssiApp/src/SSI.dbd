@@ -1,0 +1,42 @@
+# $Author: saa $
+# $Date: 2007/09/12 01:33:50 $ 
+# $Id: SSI.dbd,v 1.1.1.1 2007/09/12 01:33:50 saa Exp $ 
+# $Name: ssi-R1-1-0-1 $ 
+# $Revision: 1.1.1.1 $ 
+# $Log: SSI.dbd,v $
+# Revision 1.1.1.1  2007/09/12 01:33:50  saa
+# SSI Encoder Interface support from SPEAR who got it from SLS and modified it.
+#
+# Revision 1.2  2007/09/12 01:33:50  saa
+# Changes for 3.14/OSI/RTEMS.  Added support for 505F.
+#
+# Revision 1.1.1.1  2003/03/28 13:05:19  saa
+# SSI encoder EPICS support from PSI/SLS:
+# ssi is currently being maintained by:-
+# David Maden email: david.maden_at_psi.ch
+# Dirk Zimoch email: dirk.zimoch_at_psi.ch
+#
+# Revision 1.3  2003/03/28 13:05:19  dach
+# Update to use ao record
+#
+# Revision 1.2  2000/09/20 15:50:49  dach
+# read_ai returns 0
+#
+# Revision 1.1.1.1  1999/07/13 13:39:52  dach
+# SSI driver for EPICS
+#
+# Revision 1.8  1999/06/16 13:22:22  hunt
+# Added RCS IDs
+# 
+
+device(ai,VME_IO,devSSI,"SSI")
+device(ao,VME_IO,devAoSSI,"SSI")
+#device(ai,VME_IO,devAiXy540DI,"XYCOM-540DI")
+#device(ao,VME_IO,devAoBPM,"BPM")
+#device(bi,VME_IO,devBiBPM,"BPM")
+#device(bo,VME_IO,devBoBPM,"BPM")
+#device(mbbi,VME_IO,devMbbiDSP,"DSP")
+#device(mbbo,VME_IO,devMbboBPM,"BPM")
+driver(drvSSI)
+registrar(drvSSIRegister)
+#driver(drvXy540)  

@@ -1,0 +1,263 @@
+record(longin,"${DEV}:${UNIT}:${INSTR}:COverloadStatus")
+{
+   field(DESC,"OverloadStatus")
+   field(DTYP,"acqiris")
+   field(INP,"@M${MODULE} C${CHANNEL} COVST")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ai,"${DEV}:${UNIT}:${INSTR}:CTrigLevelRange")
+{
+   field(DESC,"TrigLevelRange")
+   field(DTYP,"acqiris")
+   field(INP,"@M${MODULE} C${CHANNEL} CTLRG")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CDitherRange")
+{
+   field(DESC,"DitherRange")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CDTRN")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CFixedSamples")
+{
+   field(DESC,"FixedSamples")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CFXSM")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CGateType")
+{
+   field(DESC,"GateType")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CGTTP")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ONVL,"1")
+   field(ONST,"User_Gates")
+   field(TWVL,"2")
+   field(TWST,"Threshold_Gates")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CHistoTDCEnable")
+{
+   field(DESC,"HistoTDCEnable")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CHTDE")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"Disabled")
+   field(ONVL,"1")
+   field(ONST,"Enabled")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CInvertData")
+{
+   field(DESC,"InvertData")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CINDT")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"No_Inversion")
+   field(ONVL,"1")
+   field(ONST,"Inversion")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CNbrMaxGates")
+{
+   field(DESC,"NbrMaxGates")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNMXG")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CNbrSamples")
+{
+   field(DESC,"NbrSamples")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNSML")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CNbrSegments")
+{
+   field(DESC,"NbrSegments")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNSGM")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CNbrWaveforms")
+{
+   field(DESC,"NbrWaveforms")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNWVF")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CNbrRoundRobins")
+{
+   field(DESC,"NbrRoundRobins")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNRRB")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(longout,"${DEV}:${UNIT}:${INSTR}:CNoiseBaseEnable")
+{
+   field(DESC,"NoiseBaseEnable")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNBEN")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:CNoiseBase")
+{
+   field(DESC,"NoiseBase")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CNSBS")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CTrigCoupling")
+{
+   field(DESC,"TrigCoupling")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CTRCP")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"DC")
+   field(ONVL,"1")
+   field(ONST,"AC")
+   field(TWVL,"2")
+   field(TWST,"HF_Reject")
+   field(THVL,"3")
+   field(THST,"DC_50_Ohm")
+   field(FRVL,"4")
+   field(FRST,"AC_50_Ohm")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CTrigSlope")
+{
+   field(DESC,"TrigSlope")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CTRSL")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"Positive")
+   field(ONVL,"1")
+   field(ONST,"Negative")
+   field(TWVL,"2")
+   field(TWST,"Out_of_Window")
+   field(THVL,"3")
+   field(THST,"Into_Window")
+   field(FRVL,"4")
+   field(FRST,"HF_Divide")
+   field(FVVL,"5")
+   field(FVST,"Spike_Stretcher")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:CTrigLevel1")
+{
+   field(DESC,"TrigLevel1")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CTRL1")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:CTrigLevel2")
+{
+   field(DESC,"TrigLevel2")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CTRL2")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:CFullScale")
+{
+   field(DESC,"FullScale")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CFLSC")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:COffset")
+{
+   field(DESC,"Offset")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} COFFS")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CCoupling")
+{
+   field(DESC,"Coupling")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CCPLN")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"Ground")
+   field(ONVL,"1")
+   field(ONST,"DC")
+   field(TWVL,"2")
+   field(TWST,"AC")
+   field(THVL,"3")
+   field(THST,"DC_50_Ohm")
+   field(FRVL,"4")
+   field(FRST,"AC_50_Ohm")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:CBandwidth")
+{
+   field(DESC,"Bandwidth")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} CBNDW")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"No_Limit")
+   field(ONVL,"1")
+   field(ONST,"25Mhz")
+   field(TWVL,"2")
+   field(TWST,"700MHz")
+   field(THVL,"3")
+   field(THST,"200Mhz")
+   field(FRVL,"4")
+   field(FRST,"20Mhz")
+   field(FVVL,"5")
+   field(FVST,"35Mhz")
+}
+
+record(waveform,"${DEV}:${UNIT}:${INSTR}:Data")
+{
+   field(SCAN,"I/O Intr")
+   field(DESC,"acqiris waveform record")
+   field(DTYP,"acqiris")
+   field(NELM,"${NELM}")
+   field(FTVL,"SHORT")
+   field(INP,"@M${MODULE} C${CHANNEL} MWFS")
+}

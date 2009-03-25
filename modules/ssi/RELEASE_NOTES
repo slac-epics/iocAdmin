@@ -1,0 +1,31 @@
+Release Notes for the ssi module
+--------------------------------
+
+ssi-R1-1-0-1: Cosmetic changes to bring it into conformance with EPICS R3.14.9.
+
+ssi-R1-1-0: Nov 2, 2007
+	First version for LCLS - changes for RTEMS and 505F.  From an email
+        to SLS:
+	(1) I don't have the slsDevLib utilities.  I assumed what these 
+	    utilities do and I replaced them with code.  
+	(2) The routines still only work for vxWorks - I use RTEMS.  
+	    I changed them to use the osi devLib calls, removed 
+	    vxWorks-specific include files, replaced vxWorks-specific typedefs 
+	    with epics typedefs, added epics registration of the configure 
+	    routine, etc, etc.
+	(3) We normally use macros to access VME register space to enforce 
+	    order of VME accesses in our PPCs - I changed all VME accesses to 
+	    use those macros.
+	(4) The SSI-552 doesn't support a CSR and I get a bus error if I 
+	    attempt to read it like you are doing in your configuration 
+	    routine.  So I added code to the init routine (not configure) to 
+	    probe for it via devReadProbe and set a csrAvail flag used later.  
+	(5) To support the 505F, I added other arguments to the configure 
+	    routine and got rid of the unsupported arguments, like all the 
+	    interrupt-related ones.
+	(6) I added a utility to get the max counts (which depends on the 
+	    number of bits which is settable in the 505F) which the linear 
+	    conversion routines in device support use to calculate ESLO.
+
+ssi-R1-0-1: Sep, 2007
+	Original from SLS - imported to the SPEAR repository, not LCLS.

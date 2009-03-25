@@ -6,7 +6,7 @@ vpath %.edl $(USR_VPATH) $(ALL_SRC_DIRS)
 vpath %.gif $(USR_VPATH) $(ALL_SRC_DIRS)
 vpath %.png $(USR_VPATH) $(ALL_SRC_DIRS)
 
-INSTALL_EDL = $(INSTALL_LOCATION)/display
+INSTALL_EDL ?= $(INSTALL_LOCATION)/display
 INSTALL_EDLS = $(EDLS:%=$(INSTALL_EDL)/%)
 
 INSTALL_GIFS += $(addprefix $(INSTALL_GIF)/,$(notdir $(GIFS))) 
@@ -19,6 +19,8 @@ build:	$(INSTALL_EDLS) $(INSTALL_GIFS) $(INSTALL_PNGS)
 rebuild:        clean install
 
 buildInstall:	$(INSTALL_EDLS) $(INSTALL_GIFS) $(INSTALL_PNGS)
+
+realclean: clean
 
 clean::
 	@echo "Cleaning"

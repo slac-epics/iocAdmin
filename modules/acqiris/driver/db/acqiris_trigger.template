@@ -1,0 +1,116 @@
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:XTrigCoupling")
+{
+   field(DESC,"TrigCoupling")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XTRCP")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"DC")
+   field(ONVL,"1")
+   field(ONST,"AC")
+   field(TWVL,"2")
+   field(TWST,"HF_Reject")
+   field(THVL,"3")
+   field(THST,"DC_50_Ohm")
+   field(FRVL,"4")
+   field(FRST,"AC_50_Ohm")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:XTrigSlope")
+{
+   field(DESC,"TrigSlope")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XTRSL")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"Positive")
+   field(ONVL,"1")
+   field(ONST,"Negative")
+   field(TWVL,"2")
+   field(TWST,"Out_of_Window")
+   field(THVL,"3")
+   field(THST,"Into_Window")
+   field(FRVL,"4")
+   field(FRST,"HF_Divide")
+   field(FVVL,"5")
+   field(FVST,"Spike_Stretcher")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:XTrigLevel1")
+{
+   field(DESC,"TrigLevel1")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XTRL1")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:XTrigLevel2")
+{
+   field(DESC,"TrigLevel2")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XTRL2")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:XFullScale")
+{
+   field(DESC,"FullScale")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XFLSC")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(ao,"${DEV}:${UNIT}:${INSTR}:XOffset")
+{
+   field(DESC,"Offset")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XOFFS")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:XCoupling")
+{
+   field(DESC,"Coupling")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XCPLN")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"Ground")
+   field(ONVL,"1")
+   field(ONST,"DC")
+   field(TWVL,"2")
+   field(TWST,"AC")
+   field(THVL,"3")
+   field(THST,"DC_50_Ohm")
+   field(FRVL,"4")
+   field(FRST,"AC_50_Ohm")
+}
+
+record(mbbo,"${DEV}:${UNIT}:${INSTR}:XBandwidth")
+{
+   field(DESC,"Bandwidth")
+   field(DTYP,"acqiris")
+   field(OUT,"@M${MODULE} C${CHANNEL} XBNDW")
+   field(PINI,"YES")
+   field(SCAN,"Passive")
+   field(ZRVL,"0")
+   field(ZRST,"No_Limit")
+   field(ONVL,"1")
+   field(ONST,"25Mhz")
+   field(TWVL,"2")
+   field(TWST,"700MHz")
+   field(THVL,"3")
+   field(THST,"200Mhz")
+   field(FRVL,"4")
+   field(FRST,"20Mhz")
+   field(FVVL,"5")
+   field(FVST,"35Mhz")
+}
+

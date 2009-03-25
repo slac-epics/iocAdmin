@@ -125,19 +125,23 @@ def package_release(strPackage, strVersion):
 		strReleaseBranchRev = "HEAD"
 		strBranch = "%s/%s" % (dictConfig["svnrepo"], dictConfig["branch"])
 		strBranchRev = dictConfig["svnrev"]
-	# Detect the make variable name for that module
+	# Detect the make variable name for that module, usually it is the name
+	# of the directory in upper case but there are exceptions
 	if strPackage == "base":
 		strPackageMakevarName = "EPICS_BASE"
 		strPackageVerMakevarName = "BASE_MODULE_VERSION"
 	elif strPackage == "extensions":
 		strPackageMakevarName = "EPICS_EXTENSIONS"
 		strPackageVerMakevarName = "EXTENSIONS_MODULE_VERSION"
+	elif strPackage == "modules/seq":
+		strPackageMakevarName = "SNCSEQ"
+		strPackageVerMakevarName = "SNCSEQ_MODULE_VERSION"
 	else:
 		strPackageMakevarName = os.path.basename(strPackage).upper()
 		strPackageVerMakevarName = strPackageMakevarName + "_MODULE_VERSION"
 	# ... and the value of what we know now:
 	if strPackage == "tools":
-		strPackageMakevarNameValue = "%$(EPICS_TOOLS_SITE_TOP)/%s/$(%s)" \
+		strPackageMakevarNameValue = "$(EPICS_TOOLS_SITE_TOP)/%s/$(%s)" \
 					% (strPackage, strPackageVerMakevarName)
 	else:
 		strPackageMakevarNameValue = "$(EPICS_SITE_TOP)/%s/$(%s)" \
@@ -147,6 +151,11 @@ def package_release(strPackage, strVersion):
 		execute("svn ls %s" % (strBranch))
 	except:
 		raise RuntimeError, "cannot access SVN repository %s." % (dictConfig["svnrepo"])
+	# Make sure the the package exists
+	try:
+		execute("svn ls %s" % (strBranch + "/" + strPackage))
+	except:
+		raise RuntimeError, "Package %s not found." % (strPackage)
 	# Generate the check-in message and calculate the version of the
 	# caller selected HEAD
 	if strBranchRev == "HEAD":
@@ -238,6 +247,7 @@ def package_release(strPackage, strVersion):
 					if regexEPICSTop != None:
 						fdout.write("EPICS_SITE_TOP=%s\n" % (dictConfig["prefix"]))
 						bModifyEPICSTop = False
+						continue
 				regex = re.match("^[\s]*(%s)[\s]*=" % (strPackageMakevarName), strLine)
 				if regex == None:
 					fdout.write(strLine)
@@ -309,13 +319,14 @@ def package_release(strPackage, strVersion):
 		# of some modules...
 		if not os.path.exists(dictConfig["prefix"] + "/RELEASE_SITE"):
 			shutil.copyfile(strTmpDir + "/RELEASE_SITE", dictConfig["prefix"] + "/RELEASE_SITE")
+			os.chmod(dictConfig["prefix"] + "/RELEASE_SITE", 0664)
+			execute("chgrp lab-admin %s" % (dictConfig["prefix"] + "/RELEASE_SITE"))
 
 		# Now we modify or if necessary add the module path and version to RELEASE_SITE
 		shutil.copyfile(dictConfig["prefix"] + "/RELEASE_SITE", strTmpDir + "/RELEASE_SITE.prev")
 		fdout = open(dictConfig["prefix"] + "/RELEASE_SITE", "w")
 		fdin = open(strTmpDir + "/RELEASE_SITE.prev", "r")
 		bFoundVersion = False
-		bFoundName = False
 		for strLine in fdin:
 			regex = re.match("^[\s]*%s[\s]*=" \
 						% (strPackageVerMakevarName), strLine)
@@ -327,13 +338,13 @@ def package_release(strPackage, strVersion):
 							% (strPackageMakevarName), strLine)
 				if regex != None:
 					fdout.write("%s=%s\n" % (strPackageMakevarName, strPackageMakevarNameValue))
-					bFoundName = True
 				else:
 					fdout.write(strLine)
 		if not bFoundVersion:
 			fdout.write("%s=%s\n" % (strPackageVerMakevarName, strRelVersion))
-		if not bFoundName:
-			fdout.write("%s=%s\n" % (strPackageMakevarName, strPackageMakevarNameValue))
+		# Note: if the module name is not found we do not add it
+		# because we don't want every EPICS module to use every other EPICS module
+		# and that's what would effectively happen otherwise
 		fdin.close()
 		fdout.close()
 		print "done"
@@ -439,7 +450,7 @@ try:
 		elif sys.argv[i] == "--patch":
 			dictConfig["patch"] = True
 		elif re.match("[^=]*=[^=]*", sys.argv[i]) != None:
-			strPackages = strPackages + sys.argv[i]
+			strPackages = strPackages + " " +sys.argv[i]
 		else:
 			raise RuntimeError, "invalid option or package %s. Try --help" % (sys.argv[i])
 		i += 1

@@ -1,0 +1,223 @@
+#
+# $Source: /afs/slac/g/lcls/cvs/epics/site/src/ssi/ssiApp/Db/G_DRV_ssi_full.template,v $
+# $Revision: 1.1.1.1 $    $Date: 2006/08/18 14:00:24 $
+#--------------------------------------------------------------------
+# Description: template file for Kramert type encoder cards.
+#
+#   This template requires 2 drivers to be loaded into the IOC.
+#
+#   Assuming that the encoder card has a base address of 0x02'0000 and is
+#   located in position 10 of the VME crate, a typical IOC startup script
+#   should contain commands of the form:
+#
+#      require "ssi"
+#      require "gpmm"
+#
+#      SSIConfigure    10, 0x20000, 0, 0, 0, 1
+#
+#      GPMMConfigure   10, 0x20080, "Encoder", "A24", "D32"
+#      addGPMMRegister 10, 0, 0x00, 4, 'R', "CSR", 0
+#
+#   The card should be set to A24 (Std) addressing mode.
+#---------------------------------------------------------
+#  The raw encoder value is read by the ai record:  $(P)$(E)raw
+#  This is converted to EGU in the calc record:     $(P)$(E)
+#  The conversion is a linear transformation:
+#     <EGU> = (<raw> - <offset>) * <scale>
+#  The parameters of the transformation are held in
+#  the records:    $(P)$(E)scale
+#                  $(P)$(E)off
+#---------------------------------------------------------
+#  Macros required:
+#    P        = Channel Name Prefix, e.g. X99SA-FE-SH1:
+#    E        = Channel Name Suffix, e.g. ENC1
+#    C        = The Card Number (corresponds to SSIConfigure,
+#               GPMMConfigure and addGPMMRegister calls).
+#    S        = Channel number, 0, 1, 2, 3, ...
+#    DESC     = description (29 chars max)
+#    ISCAN    = scan period of raw encoder value, e.g. ".1 second"
+#    SCALE    = scale factor
+#    OFF      = offset
+#    HOPR-raw = high operating value for $(P)$(E)raw
+#    LOPR-raw = low  operating value for $(P)$(E)raw
+#    HOPR     = high operating value for $(P)$(E)
+#    LOPR     = low  operating value for $(P)$(E)
+#    EGU      = engineering units for $(P)$(E)
+#    PREC     = precision for $(P)$(E)
+#    SHIFTEN  = Bit number in CSR of the EN  bit:  0,  1,  2 or  3.
+#               This is expected to be the same as S.
+#    SHIFTVR  = Bit number in CSR of the VR  bit:  4,  5,  6 or  7.
+#    SHIFTCLR = Bit number in CSR of the CLR bit:  8,  9, 10 or 11.
+#    SHIFTHFF = Bit number in CSR of the HFF bit: 12, 13, 14 or 15.
+#    VR-INIT  = Value for VR bit to be set at boot time.
+#---------------------------------------------------------
+# Notes: 
+#  1) The Kramert cards do not support VME64-X geographic addressing. The
+#     slot (or card) number in the above commands is arbitrary, but it must
+#     correspond to settings in the INP fields of the records.
+#
+#  2) The 'R' (note the single, not double quote) indicates a read-only
+#     probe of the CSR register during iocInit. If a 'W' is specified,
+#     probing will cause a reset of the raw encoder registers causing a
+#     loss of encoder value, even on a soft reboot.
+#
+#  3) The "CSR" in the call to addGPMMRegister is mandatory. It corresponds
+#     to values defined in the INP fields below.
+#
+#  4) The EGU direction of the encoder can be changed by either
+#     specifying a negative scale or by flipping the VR bit.
+#====================================================================
+#           First come   the records for the ssi  driver.
+#           Then we have the records for the gpmm driver.
+#====================================================================
+#               These records are for the ssi driver.
+#---------------------------------------------------------
+#      Read the raw encoder value. This is a signed 24 bit integer.
+#
+  record (ai, "$(P)$(E)raw") {
+    field (DTYP, "SSI")
+    field (DESC, "$(DESC) - raw")
+    field (SCAN, "$(ISCAN)")
+    field (INP,  "#C$(C) S$(S) @")
+    field (FLNK, "$(P)$(E)")
+    field (LINR, "NO CONVERSION")
+    field (HOPR, "$(HOPR-raw)")
+    field (LOPR, "$(LOPR-raw)")
+    field (PREC, "0")
+  }
+#-----------------------------------------------------
+#         Convert to Engineering units
+#
+  record (calc, "$(P)$(E)") {
+    field (DESC, "$(DESC)")
+    field (SCAN, "Passive")
+#
+    field (INPA, "$(P)$(E)raw.VAL PP")
+    field (INPB, "$(P)$(E)off")
+    field (INPC, "$(P)$(E)scale")
+#
+    field (EGU,  "$(EGU)")
+    field (PREC, "$(PREC)")
+    field (HOPR, "$(HOPR)")
+    field (LOPR, "$(LOPR)")
+#
+    field (CALC, "(A-B)*C")
+  }
+#-----------------------------------------------------
+#         Scale Factor for Conversion
+#
+  record (ai, "$(P)$(E)scale") {
+    field (DESC, "$(DESC) - scale")
+    field (SCAN, "Passive")
+    field (PREC, "5")
+    field (VAL,  "$(SCALE)")
+  }
+#-----------------------------------------------------
+#         Offset for Conversion
+#
+  record (ai, "$(P)$(E)off") {
+    field (DESC, "$(DESC) - offset")
+    field (SCAN, "Passive")
+    field (PREC, "0")
+    field (VAL,  "$(OFF)")
+  }
+#====================================================================
+#               These records are for the gpmm driver.
+#---------------------------------------------------------
+#           Records to read/write the EN bit (reset enable).
+#
+  record (bi,"$(P)$(E)_EN"){
+    field (DESC, "Enable home SW status, EN$(S)")
+    field (DTYP, "GPMM")
+    field (INP,  "#C$(C) S0 @CSR,s=$(SHIFTEN)")
+    field (SCAN, "1 second")
+    field (ZNAM, "Disabled")
+    field (ONAM, "Enabled")
+  }
+#       Writing a "1" to the following record will enable the encoder's
+#       reset (or home) input. The encoder register will be set to zero
+#       when a reset pulse is detected.
+#
+  record (bo,"$(P)$(E)_oEN"){
+    field (DESC, "Enab home SW set, EN$(S)")
+    field (DTYP, "GPMM")
+    field (OUT,  "#C$(C) S0 @CSR,s=$(SHIFTEN)")
+    field (VAL,  "0")
+    field (PINI, "YES")
+    field (ZNAM, "Off")
+    field (ONAM, "On")
+  }
+#---------------------------------------------------------
+#           Records to read/write the VR bit (count direction).
+#
+  record (bi,"$(P)$(E)_VR"){
+    field (DESC, "Counting direction status")
+    field (DTYP, "GPMM")
+    field (INP,  "#C$(C) S0 @CSR,s=$(SHIFTVR)")
+    field (SCAN, "1 second")
+    field (ZNAM, "Zero")
+    field (ONAM, "One")
+  }
+#       Writing a "0" or "1" to the following record will set the
+#       encoder's count direction.
+#
+  record (bo,"$(P)$(E)_oVR"){
+    field (DESC, "Counting direction set")
+    field (DTYP, "GPMM")
+    field (OUT,  "#C$(C) S0 @CSR,s=$(SHIFTVR)")
+    field (RVAL, "0")
+    field (ZNAM, "Zero")
+    field (ONAM, "One")
+  }
+#
+#    The following record initialises the counting direction
+#    at boot time. Direction is set via VR-INIT.
+#
+  record (bo,"$(P)$(E)_oVR_INI") {
+    field (DESC, "Counting dirn init")
+    field (ZNAM, "OFF")
+    field (ONAM, "ON")
+    field (DOL,  "$(VR-INIT)")
+    field (PINI, "YES")
+    field (OUT,  "$(P)$(E)_oVR PP")
+    field (ZNAM, "Zero")
+    field (ONAM, "One")
+  }
+#---------------------------------------------------------
+#           Records to read/write the CLR bit (zero register).
+#
+  record (bi,"$(P)$(E)_CLR"){
+    field (DESC, "CLR bit status, CLR$(S))")
+    field (DTYP, "GPMM")
+    field (INP,  "#C$(C) S0 @CSR,s=$(SHIFTCLR)")
+    field (SCAN, "1 second")
+    field (ZNAM, "Off")
+    field (ONAM, "On")
+  }
+#       Writing a "1" to the following record will clear the encoder's
+#       register. The bit stays at the 1 level for 1.5 secs so that
+#       the $(P)$(E)_CLR, which is only scanned once per second, will
+#       see the transition.
+#
+  record (bo,"$(P)$(E)_oCLR"){
+    field (DESC, "Set CLR bit, CLR$(S)")
+    field (DTYP, "GPMM")
+    field (OUT,  "#C$(C) S0 @CSR,s=$(SHIFTCLR)")
+    field (HIGH, "1.5")
+    field (RVAL, "0")
+    field (ZNAM, "Idle")
+    field (ONAM, "Clear")
+  }
+#---------------------------------------------------------
+#           Record to read the HFF bit (home transition flip-flop).
+#
+  record (bi,"$(P)$(E)_HFF"){
+    field (DESC, "CLR bit status, HFF$(S)")
+    field (DTYP, "GPMM")
+    field (INP,  "#C$(C) S0 @CSR,s=$(SHIFTHFF)")
+    field (SCAN, ".1 second")
+    field (ZNAM, "Zero")
+    field (ONAM, "One")
+  }
+#----------------------- End of $RCSfile: G_DRV_ssi_full.template,v $
+

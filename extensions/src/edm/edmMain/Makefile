@@ -54,6 +54,12 @@ ifdef EPICS_HOST_ARCH
    
    edm_SRCS += main.cc
 
+   # Configuration files
+   vpath edmPvObjects $(ALL_SRC_DIRS)
+   vpath edmObjects $(ALL_SRC_DIRS)
+   INSTALL_TEMPLATES = $(INSTALL_LOCATION)/templates/edm
+   TEMPLATES += edmPvObjects edmObjects edmPrintDef fonts.list colors.list
+
    include $(TOP)/configure/RULES
    
 else

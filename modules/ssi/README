@@ -1,0 +1,57 @@
+Instructions for RTEMS SSI Encoder Readback          Last Updated 11/02/2007
+-------------------------------------------
+
+I - Adding the ssi package to your IOC application:
+-----------------------------------------------------
+
+(1) Add SSI to configure/RELEASE and clean/rebuild configure.
+
+(2) Link ssi library into the app by adding to xxxApp/src/Makefile:
+
+   xxx_LIBS += ssi
+
+(3) Add the following .dbd files to xxxApp/src/Makefile 
+    or to xxxApp/src/xxxInclude.dbd:
+
+   xxx_DBD += SSI.dbd
+
+(4) When creating ai records for the encoder readback, conversion
+    to engineering units can be done by setting LINR=LINEAR and EGUF/EGUL to
+    the high range and low range engineering units values. 
+
+
+II - Adding SSI configuration to your IOC startup file:
+--------------------------------------------------------------------------
+(1) Add SSIConfigure for each EVR (before iocInit).
+
+    SSIConfigure(<card>,<address>,<model>,<numbits>,<numchans>,<format>)
+
+    where card     = card number, starting from 0, incrementing by 1
+                     for each subsequent card
+    and   address  = VME card base address on 0x20000 boundary
+    and   model    = 0x505F or 0x552
+    and   numbits  = 1 to 32 bits for 505F, 24 for 552
+    and   numchans = 1 to 5 for 505F, 1 to 32 for 552
+    and   format   = 0 = binary, 1 = gray (505F only)
+
+
+III - Hardware Setup:
+---------------------
+
+(1) Set dip switches so that card is A24 (standard).  Note that the default 
+    is A32 (extended)).  Also set base address dip switches per instructions
+    in the manual:
+    http://www.slac.stanford.edu/~spear/epics/vme/ECM_505F.pdf
+
+IV - Test Database and Display:
+--------------------------------
+
+(1) ssi/ssiApp/Db/ssiAi.db and ssiAi.template provide a test database with
+    32 ai records.  For testing, add the following to the startup file:
+
+    dbLoadTemplate("db/ssiAi.template")
+
+(2) ssi/ssiApp/medm/ssiAis.edl is a test display to use with the above
+    template:
+
+    edm -x -eolc -m "SSI=SSI" <location of ssi>/ssiApp/medm/ssiAis.edl &
