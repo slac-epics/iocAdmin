@@ -33,6 +33,12 @@ DIRS+=xy2445
 DIRS+=VHSx0x
 DIRS+=ics130
 #DIRS+=modbus
+#Missing acqiris driver DIRS+=acqiris
+DIRS+=sscan
+DIRS+=calc
+DIRS+=epm2000
+DIRS+=ssi
+DIRS+=plcAdmin
 
 all:
 

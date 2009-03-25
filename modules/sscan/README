@@ -1,0 +1,34 @@
+sscan Module Description (copied from sscan webpage):
+This module contains the sscan record and related software for 
+systematically moving positioners, triggering detectors, and acquiring and 
+storing resulting data. It also contains the recDynLink library, which is 
+used by the sscan and swait records to implement their links; and the busy 
+record, which allows CA clients to indicate completion in a way that works 
+with EPICS putNotify/ca_put_callback mechanism.
+
+Author:
+Tim Mooney (mooney@aps.anl.gov)
+
+Webpage:
+http://www.aps.anl.gov/aod/bcda/synApps/sscan/sscan.html
+
+Online Documentation:
+http://www.aps.anl.gov/aod/bcda/synApps/sscan/sscanDoc.html
+
+Instructions for using the sscan module in an EPICS IOC (copied from web 
+documentation):
+The sscan module is not intended to run an IOC application directly, but 
+rather to contribute code libraries, databases, MEDM displays, etc., to an 
+IOC application. SynApps contains an example IOC application (the xxx 
+module), which pulls software from the sscan module and deploys it in an 
+IOC.
+
+1. Include the following line in configure/RELEASE. 
+   SSCAN=<full path to sscan module>
+
+2. Include the following line in example/exampleApp/src/iocexampleInclude.dbd. 
+   include "sscanSupport.dbd"
+
+3. Include the following line in example/exampleApp/src/Makefile. 
+   example_LIBS += sscan
+ 

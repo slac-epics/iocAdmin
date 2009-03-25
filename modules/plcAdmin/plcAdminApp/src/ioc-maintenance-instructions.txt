@@ -1,0 +1,19 @@
+This file contains instructions for using the plcAdmin database in an IOC.
+
+--------------------------------------------------------------------------
+Instructions for Allen-Bradley ControlLogix PLC:
+
+1. Changing the desired program number:
+	The expected PLC program version number is stored on the IOC.  This
+	must be updated if a new program (with a new version number) is loaded
+	on the PLC.  To update the expected PLC program version number, modify the
+	substitutions file in your <appname>App/Db directory.  In this substitutions
+	file, three macros define the expected version number:
+	(Note: The format of the PLC logic version number is MAJ.MIN.REV)
+
+	VERMAJ - the first part of the PLC logic version number
+	VERMIN - the second part of the PLC logic version number
+	VERREV - the third part of the PLC logic version number
+
+	Modify these three macros to match the expected PLC logic version
+	number.

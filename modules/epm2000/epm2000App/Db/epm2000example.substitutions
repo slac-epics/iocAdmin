@@ -1,0 +1,7 @@
+file  epm2000.db
+{
+pattern {  cont       , cha           , chb          , bus , addr , desc_a , desc_b, chath, chbth,  cha_scan ,  chb_scan  }
+        {  PMCL:LR20:1, PMTR:LR20:112 , PMTR:LR20:117, 1   , 1    , PM1    , PM2   , 0    , 0    , "5 second", "5 second" }
+        {  PMCL:LR20:2, PMTR:LR20:119 , PMTR:LR20:120, 2   , 1    , PM3    , SPARE , 0    , 0    , "5 second", "5 second" }
+        {  PMCL:LR20:3, PMTR:LR20:166 , PMTR:LR20:167, 3   , 1    , PMOSC  , SPARE , 1    , 0    , "5 second", "Passive" }
+}

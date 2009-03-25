@@ -1,0 +1,13 @@
+This file contains instructions for loading the plcAdmin EDM screen.
+
+--------------------------------------------------------------------------
+Instructions for Allen-Bradley ControlLogix PLC:
+
+1. Install the file plcAdminControlLogix in your EDM screen area.
+
+2. Load the file plcAdminControlLogix with the following macros:
+	PLC=<your plc name - should be PLC:(area):(unit)>
+	IOC=<your ioc name - should be (S)IOC:(area):(unit)>
+
+When a new PLC program version is released, it is not necessary to change the
+macros for the EDM display. 

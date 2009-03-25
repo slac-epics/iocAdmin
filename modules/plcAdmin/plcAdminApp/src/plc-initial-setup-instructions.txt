@@ -1,0 +1,101 @@
+This file provides directions for adding the plcAdmin PLC ladder logic 
+to your PLC program.
+
+-----------------------------------------------------------------------------
+Allen-Bradley ControlLogix PLC:
+	
+1. Open your PLC program in RSLogix 5000.
+
+2. In a second RSLogix 5000 window, open the file plcAdminControlLogix.l5k.
+A prompt will ask you to save the imported project.  Select a filename
+(plcAdminControlLogix is fine) and click Import.
+
+3. In the left sidebar of the plcAdminControlLogix RSLogix window, expand the Data
+Types folder, then the User-Defined folder.  Right-click on FAULTRECORD and
+select Copy.
+
+4. In the left sidebar of your PLC's RSLogix window, expand the Data Types
+folder.  Right-click on User-Defined and select Paste.  The FAULTRECORD data
+type should appear in your PLC's user-defined data type list.
+
+5. Copy and paste all the controller tags from plcAdminControlLogix into
+your project's controller tag list.
+
+6. In the left sidebar of the plcAdmin RSLogix window, expand the Controller
+folder, then the Power-Up Handler folder.  Right-click the Powerup_Program
+folder and select copy.  In your project's RSLogix window, paste the
+Powerup_Program into the Power-Up Handler folder.
+
+7. In the plcAdmin RSLogix window, right click on plcAdminProgram and select
+copy.  In your project's RSLogix window, right-click on MainTask and select
+Paste.
+If you wish, you can now close RSLogix window containing the
+plcAdminControlLogix template.  All the remaining steps are done inside your
+PLC project.
+
+8. In the controller tag editor, change the name of the array
+PLCADMIN_PLC_location_unit.  For example, if your PLC is the LCLS injector
+magnet PLC, with EPICS name PLC:IN20:MG01 and network nodename plc-in20-mg01,
+your array should be called PLCADMIN_PLC_IN20_MG01. 
+
+9. In your project's plcAdmin ladder, make the following changes:
+Rungs 11 through 20 retrieve scan times of your main task, the plcAdmin
+program, and up to three other programs.
+In rungs 11 and 12, change the Instance Name in the GSV instruction
+so that it matches the name of your main task. 
+Rungs 13 and 14 are reserved for the plcAdminProgram.  Do not change these
+tags. 
+In rungs 15-16, 17-18, and 19-20, change the Instance Name in the GSV
+instruction so that it matches the name of up to three programs in your PLC.
+ 
+10. Enter a version number for your PLC's ladder logic program and a document
+number for your PLC's ladder logic in the appropriate plcAdmin tags:
+
+a. The version of your PLC program has three parts.  It is of
+the form x.y.z, where x is the major version number, y is the minor version
+number, and z is the revision number.  This version number is stored 
+in the following program tags (in program plcAdmin):
+	PLCADMIN_VERSIONMAJOR
+	PLCADMIN_VERSIONMINOR
+	PLCADMIN_VERSIONREV
+Under plcAdminProgram, double-click Program Tags.  At the bottom of the
+program tag window, click the "Monitor Tags" tab.  Scroll down the list of
+tags until you find the group of three PLCADMIN_VERSION tags.  Assign the
+appropriate values to these tags.
+
+b. A graphical version of your ladder logic should be added to the SLAC
+document control system.  The document will be assigned a SLAC document
+number of the form aa-bbb-ccc-dd-Ree, where aa is the prefix, bb is the Series,
+cc is the Base, dd is the Suffix, and ee is the Revision. 
+
+This document number is stored in the following PLC tags:
+	PLCADMIN_DOCPREFIX *** see note below for the Prefix field
+	PLCADMIN_DOCSERIES
+	PLCADMIN_DOCBASE
+	PLCADMIN_DOCSUFFIX
+	PLCADMIN_DOCREV
+Open the Program Tag window for the plcAdminProgram, and click Monitor Tags
+in the bottom of the window.  Find the PLCADMIN_DOC tags and enter the
+appropriate values.
+
+*** The prefix field is a two letter abbreviation.  Please enter the number
+corresponding to your document's prefix.  The available prefixes and their
+corresponding numbers are:
+
+ 0 (no document number entered)
+ 1 SD
+ 2 BD
+ 3 DL
+ 4 EI
+ 5 FC
+ 6 FS
+ 7 IM
+ 8 LD
+ 9 OM
+10 QT
+11 WD
+
+
+Now the initial setup of the plcAdmin PLC logic is complete.  When you release
+new versions of your PLC program, follow the instructions in
+plc-maintenance-instructions.txt.

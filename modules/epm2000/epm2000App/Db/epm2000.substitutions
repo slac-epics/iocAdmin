@@ -1,0 +1,12 @@
+file epm2000chan.template
+{
+pattern { dev     ,ch     , QM   , thr_enable ,     DESC    ,  dev_scan    }
+        { $(cha)  , A     , "\'" ,    $(chath),  $(desc_a)  , $(cha_scan)  }
+        { $(chb)  , B     , "\'" ,    $(chbth),  $(desc_b)  , $(chb_scan)  }
+}
+
+file epm2000cont.template
+{
+pattern { dev         , QM    }
+        { $(cont)     , "\'"  }
+}

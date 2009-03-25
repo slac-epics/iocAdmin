@@ -1,0 +1,303 @@
+﻿(*********************************************
+
+  Import-Export
+  Version   := RSLogix 5000 v15.02
+  Owner     := slac, slac
+  Exported  := Thu Nov 01 17:15:40 2007
+**********************************************)
+IE_VER := 2.6;
+
+CONTROLLER plcAdminControlLogix (ProcessorType := 1756-L61,
+                                 Major := 15,
+                                 TimeSlice := 20,
+                                 PowerLossProgram := Powerup_Program,
+                                 RedundancyEnabled := 0,
+                                 KeepTestEditsOnSwitchOver := 0,
+                                 DataTablePadPercentage := 50,
+                                 SecurityCode := 0,
+                                 SFCExecutionControl := CurrentActive,
+                                 SFCRestartPosition := MostRecent,
+                                 SFCLastScan := DontScan,
+                                 SerialNumber := 16#0032_4e45,
+                                 MatchProjectToController := No)
+		DATATYPE FAULTRECORD (FamilyType := NoFamily)
+			DINT Time_Low (Description := "lower 32 bits of the fault timestamp value");
+			DINT Time_High (Description := "upper 32 bits of the  fault timestamp value");
+			INT Type (Description := "fault type (program, I/O, etc.)");
+			INT Code (Description := "unique code for the fault");
+			DINT Info[8] (Description := "fault specifiic information",
+			          Radix := Hex);
+		END_DATATYPE
+
+	MODULE Local (Parent := Local,
+	              ParentModPortId := 1,
+	              CatalogNumber := 1756-L61,
+	              Vendor := 1,
+	              ProductType := 14,
+	              ProductCode := 54,
+	              Major := 15,
+	              Minor := 4,
+	              PortLabel := RxBACKPLANE,
+	              ChassisSize := 7,
+	              Slot := 0,
+	              Mode := 2#0000_0000_0000_0000,
+	              CompatibleModule := 0,
+	              KeyMask := 2#0000_0000_0001_1111)
+	END_MODULE
+
+	TAG
+		PLCADMIN_PLC_location_unit : DINT[40] (Description := "PLC Admin: Main PLC Admin array.  $NUsed for monitoring of PLC by the EPICS control system.",
+		            RADIX := Decimal) := [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		PLCADMIN_UPTIMETIMER : TIMER (Description := "PLC Admin: Uptime counter.  Used for monitoring of PLC by EPICS control system.") := [-1071850904,1000000000,0];
+	END_TAG
+
+		PROGRAM MainProgram (MAIN := MainRoutine,
+		                     MODE := 0,
+		                     DisableFlag := 0)
+				TAG
+				END_TAG
+
+				ROUTINE MainRoutine 
+				END_ROUTINE
+
+		END_PROGRAM
+
+		PROGRAM plcAdminProgram (MAIN := plcAdmin,
+		                         MODE := 0,
+		                         DisableFlag := 0)
+				TAG
+					PLCADMIN_DOCBASE OF PLCADMIN_PLC_location_unit[33] (Description := "PLC Admin - EDITABLE: Base field of SLAC document number.",
+					            RADIX := Decimal);
+					PLCADMIN_DOCPREFIX OF PLCADMIN_PLC_location_unit[31] (Description := "PLC Admin - EDITABLE: Prefix field of SLAC doc number.$NN/A=0,$NSD=1,BD=2,DL=3,EI=4,FC=5,FS=6,IM=7,LD=8,OM=9,QT=10,WD=11",
+					            RADIX := Decimal);
+					PLCADMIN_DOCREV OF PLCADMIN_PLC_location_unit[35] (Description := "PLC Admin - EDITABLE: Rev field of SLAC document number.",
+					            RADIX := Decimal);
+					PLCADMIN_DOCSERIES OF PLCADMIN_PLC_location_unit[32] (Description := "PLC Admin - EDITABLE: Series field of SLAC document number.",
+					            RADIX := Decimal);
+					PLCADMIN_DOCSUFFIX OF PLCADMIN_PLC_location_unit[34] (Description := "PLC Admin - EDITABLE: Suffix field of SLAC document number.",
+					            RADIX := Decimal);
+					PLCADMIN_FWVERSIONRAW OF PLCADMIN_PLC_location_unit[7] (Description := "PLC Admin: Two byte hex word corresponding to firmware version of controller.",
+					            RADIX := Decimal, UNUSED_COMMENT.DATA := "ion pumps 111-965 state");
+					PLCADMIN_HEARTBEATRAW OF PLCADMIN_PLC_location_unit[19] (Description := "PLC Admin: Heartbeat tag, which switches from 0 to 1 every second.",
+					            RADIX := Decimal);
+					PLCADMIN_MAJORFAULTRAW OF PLCADMIN_PLC_location_unit[8] (Description := "PLC Admin: Word containing information about major faults.",
+					            RADIX := Decimal);
+					PLCADMIN_MINORFAULTRAW OF PLCADMIN_PLC_location_unit[9] (Description := "PLC Admin: Word containing information about minor faults.",
+					            RADIX := Decimal);
+					PLCADMIN_MODELRAW OF PLCADMIN_PLC_location_unit[6] (Description := "PLC Admin: Integer $Ncorresponding to model of PLC controller.  Each model has a unique integer associated with it.",
+					            RADIX := Decimal);
+					PLCADMIN_PLCADMINV1 OF PLCADMIN_PLC_location_unit[0] (Description := "PLC Admin: Internally used by PLC Admin.  Do not edit this tag.",
+					            RADIX := Decimal);
+					PLCADMIN_PLCADMINV2 OF PLCADMIN_PLC_location_unit[1] (Description := "PLC Admin: Internally used by PLC Admin.  Do not edit this tag.",
+					            RADIX := Decimal);
+					PLCADMIN_PLCADMINV3 OF PLCADMIN_PLC_location_unit[2] (Description := "PLC Admin: Internally used by PLC Admin.  Do not edit this tag.",
+					            RADIX := Decimal);
+					PLCADMIN_PROG1TLST OF PLCADMIN_PLC_location_unit[24] (Description := "PLC Admin: Processing time for program #1 on the last cycle.",
+					            RADIX := Decimal);
+					PLCADMIN_PROG1TMAX OF PLCADMIN_PLC_location_unit[25] (Description := "PLC Admin: Processing time for program #1 on the slowest cycle since reset.",
+					            RADIX := Decimal);
+					PLCADMIN_PROG2TLST OF PLCADMIN_PLC_location_unit[26] (Description := "PLC Admin: Processing time for program #2 on the last cycle.",
+					            RADIX := Decimal);
+					PLCADMIN_PROG2TMAX OF PLCADMIN_PLC_location_unit[27] (Description := "PLC Admin: Processing time for program #2 on the slowest cycle since reset.",
+					            RADIX := Decimal);
+					PLCADMIN_PROG3TLST OF PLCADMIN_PLC_location_unit[28] (Description := "PLC Admin: Processing time for program #3 on the last cycle.",
+					            RADIX := Decimal);
+					PLCADMIN_PROG3TMAX OF PLCADMIN_PLC_location_unit[29] (Description := "PLC Admin: Processing time for program #3 on the slowest cycle since reset.",
+					            RADIX := Decimal);
+					PLCADMIN_PROGPLCATLST OF PLCADMIN_PLC_location_unit[22] (Description := "PLC Admin: Processing time for plcAdmin program on the last cycle.",
+					            RADIX := Decimal);
+					PLCADMIN_PROGPLCATMAX OF PLCADMIN_PLC_location_unit[23] (Description := "PLC Admin: Processing time for plcAdmin program on the slowest cycle since reset.",
+					            RADIX := Decimal);
+					PLCADMIN_SERIALNUMBER OF PLCADMIN_PLC_location_unit[4] (Description := "PLC Admin: Serial number of the controller module.  Note that serial numbers are hexadecimal.",
+					            RADIX := Decimal);
+					PLCADMIN_STATUSRAW OF PLCADMIN_PLC_location_unit[5] (Description := "PLC Admin: Hex word providing keyswitch position, run/program mode, and fault information.",
+					            RADIX := Decimal);
+					PLCADMIN_TASKMAINTLST OF PLCADMIN_PLC_location_unit[20] (Description := "PLC Admin: Processing time for the main task on the last cycle.",
+					            RADIX := Decimal);
+					PLCADMIN_TASKMAINTMAX OF PLCADMIN_PLC_location_unit[21] (Description := "PLC Admin: Processing time for the main task on the slowest cycle since reset.",
+					            RADIX := Decimal);
+					PLCADMIN_TODDATE OF PLCADMIN_PLC_location_unit[12] (Description := "PLC Admin: Current day of the month.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_TODHOUR OF PLCADMIN_PLC_location_unit[13] (Description := "PLC Admin: Current hour.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_TODMICROSECOND OF PLCADMIN_PLC_location_unit[16] (Description := "PLC Admin: Current microsecond.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_TODMINUTE OF PLCADMIN_PLC_location_unit[14] (Description := "PLC Admin: Current minute.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_TODMONTH OF PLCADMIN_PLC_location_unit[11] (Description := "PLC Admin: Current month.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_TODSECOND OF PLCADMIN_PLC_location_unit[15] (Description := "PLC Admin: Current second.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_TODYEAR OF PLCADMIN_PLC_location_unit[10] (Description := "PLC Admin: Current year.  Part of PLC date/time.",
+					            RADIX := Decimal);
+					PLCADMIN_UPTIMEDAY OF PLCADMIN_PLC_location_unit[18] (Description := "PLC Admin: PLC uptime in days.  See also the UPTIMESEC tag.",
+					            RADIX := Decimal);
+					PLCADMIN_UPTIMESEC OF PLCADMIN_PLC_location_unit[17] (Description := "PLC Admin: PLC uptime in seconds.  See also the UPTIMEDAY tag.",
+					            RADIX := Decimal);
+					PLCADMIN_VERSIONMAJOR OF PLCADMIN_PLC_location_unit[36] (Description := "PLC Admin - EDITABLE: The first part of the PLC program version number.  Version number has the form $NMajor.Minor.Rev",
+					            RADIX := Decimal);
+					PLCADMIN_VERSIONMINOR OF PLCADMIN_PLC_location_unit[37] (Description := "PLC Admin - EDITABLE: The second part of the PLC program version number.  Version number has the form $NMajor.Minor.Rev",
+					            RADIX := Decimal);
+					PLCADMIN_VERSIONREV OF PLCADMIN_PLC_location_unit[38] (Description := "PLC Admin - EDITABLE: The third part of the PLC program version number.  Version number has the form $NMajor.Minor.Rev",
+					            RADIX := Decimal);
+				END_TAG
+
+				ROUTINE plcAdmin 
+						RC: "This ladder is part of the PLC Admin package.$N"
+	    	    	    	    	    	    "$N"
+	    	    	    	    	    	    "$N"
+	    	    	    	    	    	    "$N"
+	    	    	    	    	    	    "Read the serial number from the controller and write to a tag for EPICS.";
+						N: GSV(CONTROLLERDEVICE,,SerialNumber,PLCADMIN_SERIALNUMBER);
+						RC: "Read the PLC controller status and write to a tag for EPICS.  This provides keyswitch position, run/program mode, and fault information.";
+						N: GSV(CONTROLLERDEVICE,?,Status,PLCADMIN_STATUSRAW);
+						RC: "Read the controller model and write to a tag for EPICS.  This tag contains an integer that is translated to a product name in EPICS.";
+						N: GSV(CONTROLLERDEVICE,,ProductCode,PLCADMIN_MODELRAW);
+						RC: "Read the controller firmware version and write to a tag for EPICS.  This tag contains a two byte hex number that is translated to a decimal firmware version in EPICS.";
+						N: GSV(CONTROLLERDEVICE,,ProductRev,PLCADMIN_FWVERSIONRAW);
+						RC: "Read the major fault information and write to a tag for EPICS.  This tag contains a hex number that is translated to a list of major faults in EPICS.$N"
+	    	    	    	    	    	    "";
+						N: GSV(FAULTLOG,,MajorFaultBits,PLCADMIN_MAJORFAULTRAW);
+						RC: "Read the minor fault information and write to a tag for EPICS.  This tag contains a hex number that is translated to a list of minor faults in EPICS.$N"
+	    	    	    	    	    	    "";
+						N: GSV(FAULTLOG,,MinorFaultBits,PLCADMIN_MINORFAULTRAW);
+						RC: "Copy PLC $QWall clock time$Q to TOD array.  This operation copies data to array elements 10-16.$N"
+	    	    	    	    	    	    "";
+						N: GSV(WALLCLOCKTIME,,DateTime,PLCADMIN_TODYEAR);
+						RC: "Count PLC uptime in milliseconds";
+						N: TON(PLCADMIN_UPTIMETIMER,?,?);
+						RC: "If the uptime reaches 86400000 milliseconds (1 day), add one to the day counter and reset the number of seconds.";
+						N: GRT(PLCADMIN_UPTIMETIMER.ACC,86400000)SUB(PLCADMIN_UPTIMETIMER.ACC,86400000,PLCADMIN_UPTIMETIMER.ACC)ADD(PLCADMIN_UPTIMEDAY,1,PLCADMIN_UPTIMEDAY);
+						RC: "Convert the uptime in milliseconds to uptime in seconds";
+						N: DIV(PLCADMIN_UPTIMETIMER.ACC,1000,PLCADMIN_UPTIMESEC);
+						RC: "create a PLC heartbeat tag that changes from 0 to 1 every second.  The EPICS IOC uses this heartbeat tag to determine whether or not the PLC is running.$N"
+	    	    	    	    	    	    "";
+						N: MOD(PLCADMIN_UPTIMESEC,2,PLCADMIN_HEARTBEATRAW);
+						RC: "Read the scan time for the main task and copy to EPICS$N"
+	    	    	    	    	    	    "";
+						N: GSV(TASK,MainTask,LastScanTime,PLCADMIN_TASKMAINTLST);
+						N: GSV(TASK,MainTask,MaxScanTime,PLCADMIN_TASKMAINTMAX);
+						RC: "Read the scan time for plcAdmin program and copy to EPICS$N"
+	    	    	    	    	    	    "";
+						N: GSV(PROGRAM,plcAdminProgram,LastScanTime,PLCADMIN_PROGPLCATLST);
+						N: GSV(PROGRAM,plcAdminProgram,MaxScanTime,PLCADMIN_PROGPLCATMAX);
+						RC: "Read the scan time for program #1 and copy to EPICS$N"
+	    	    	    	    	    	    "";
+						N: GSV(PROGRAM,MainProgram,LastScanTime,PLCADMIN_PROG1TLST);
+						N: GSV(PROGRAM,MainProgram,MaxScanTime,PLCADMIN_PROG1TMAX);
+						RC: "Read the scan time for program #2 and copy to EPICS$N"
+	    	    	    	    	    	    "";
+						N: GSV(PROGRAM,MainProgram,LastScanTime,PLCADMIN_PROG2TLST);
+						N: GSV(PROGRAM,MainProgram,MaxScanTime,PLCADMIN_PROG2TMAX);
+						RC: "Read the scan time for program #3 and copy to EPICS$N"
+	    	    	    	    	    	    "";
+						N: GSV(PROGRAM,MainProgram,LastScanTime,PLCADMIN_PROG3TLST);
+						N: GSV(PROGRAM,MainProgram,MaxScanTime,PLCADMIN_PROG3TMAX);
+				END_ROUTINE
+
+		END_PROGRAM
+
+		PROGRAM Powerup_Program (MAIN := Powerup_Routine,
+		                         MODE := 0,
+		                         DisableFlag := 0)
+				TAG
+					PLCADMIN_FAULTRECORD : FAULTRECORD  := [0,0,0,0,[0,0,0,0,0,0,0,0]];
+					PLCADMIN_UPTIMEDAY OF PLCADMIN_PLC_location_unit[18] (Description := "PLC Admin: PLC uptime in days.  See also the UPTIMESEC tag.",
+					            RADIX := Decimal);
+					PLCADMIN_UPTIMESEC OF PLCADMIN_PLC_location_unit[17] (Description := "PLC Admin: PLC uptime in seconds.  See also the UPTIMEDAY tag.",
+					            RADIX := Decimal);
+				END_TAG
+
+				ROUTINE Powerup_Routine 
+						RC: "These rungs clear the fault on the processor when power is cycled while the key is in Run Mode.$N"
+	    	    	    	    	    	    "Refer to: AB PUB 1756-pm001i-en-p, chapter 16";
+						N: GSV(PROGRAM,THIS,MAJORFAULTRECORD,PLCADMIN_FAULTRECORD.Time_Low);
+						N: EQU(PLCADMIN_FAULTRECORD.Type,1)EQU(PLCADMIN_FAULTRECORD.Code,1)CLR(PLCADMIN_FAULTRECORD.Type)CLR(PLCADMIN_FAULTRECORD.Code);
+						N: SSV(PROGRAM,THIS,MAJORFAULTRECORD,PLCADMIN_FAULTRECORD.Time_Low);
+						N: MOV(0,PLCADMIN_UPTIMETIMER.ACC);
+						N: MOV(0,PLCADMIN_UPTIMESEC);
+						N: MOV(0,PLCADMIN_UPTIMEDAY);
+				END_ROUTINE
+
+		END_PROGRAM
+
+		TASK MainTask (Type := CONTINUOUS,
+		               Rate := 10,
+		               Priority := 10,
+		               Watchdog := 500,
+		               DisableUpdateOutputs := No,
+		               InhibitTask := No)
+				MainProgram;
+				plcAdminProgram;
+		END_TASK
+
+CONFIG ASCII(XONXOFFEnable := 0,
+	             DeleteMode := 0,
+	             EchoMode := 0,
+	             TerminationChars := 65293,
+	             AppendChars := 2573,
+	             BufferSize := 82) END_CONFIG
+
+CONFIG ControllerDevice END_CONFIG
+
+CONFIG CST(SystemTimeMasterID := 0) END_CONFIG
+
+CONFIG DF1(DuplicateDetection := 1,
+	           ErrorDetection := BCC Error,
+	           EmbeddedResponseEnable := 0,
+	           DF1Mode := Pt to Pt,
+	           ACKTimeout := 50,
+	           NAKReceiveLimit := 3,
+	           ENQTransmitLimit := 3,
+	           TransmitRetries := 3,
+	           StationAddress := 0,
+	           ReplyMessageWait := 5,
+	           PollingMode := 1,
+	           MasterMessageTransmit := 0,
+	           NormalPollNodeFile := <NA>,
+	           NormalPollGroupSize := 0,
+	           PriorityPollNodeFile := <NA>,
+	           ActiveStationFile := <NA>,
+	           SlavePollTimeout := 3000,
+	           EOTSuppression := 0,
+	           MaxStationAddress := 31,
+	           TokenHoldFactor := 1) END_CONFIG
+
+CONFIG ExtendedDevice END_CONFIG
+
+CONFIG FaultLog END_CONFIG
+
+CONFIG FileManager END_CONFIG
+
+CONFIG ICP END_CONFIG
+
+CONFIG PCCC END_CONFIG
+
+CONFIG Redundancy END_CONFIG
+
+CONFIG SerialPort(BaudRate := 19200,
+	                  Parity := No Parity,
+	                  DataBits := 8 Bits of Data,
+	                  StopBits := 1 Stop Bit,
+	                  ComDriverId := DF1,
+	                  PendingComDriverId := DF1,
+	                  RTSOffDelay := 0,
+	                  RTSSendDelay := 0,
+	                  ControlLine := No Handshake,
+	                  PendingControlLine := No Handshake,
+	                  RemoteModeChangeFlag := 0,
+	                  PendingRemoteModeChangeFlag := 0,
+	                  ModeChangeAttentionChar := 27,
+	                  PendingModeChangeAttentionChar := 27,
+	                  SystemModeCharacter := 83,
+	                  PendingSystemModeCharacter := 83,
+	                  UserModeCharacter := 85,
+	                  PendingUserModeCharacter := 85) END_CONFIG
+
+CONFIG UserMemory END_CONFIG
+
+CONFIG WallClockTime(LocalTimeAdjustment := 0,
+	                     TimeZone := 0) END_CONFIG
+
+END_CONTROLLER
+

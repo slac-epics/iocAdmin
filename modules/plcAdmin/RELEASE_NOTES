@@ -1,0 +1,23 @@
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem:  This file contains release notes for plcAdmin.
+#
+#  Auth: 05-Nov-2007, S. Schuh           (SCHUHS):
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        dd-mmm-yyyy, Modifier's Name    (USERNAME)
+#
+#==============================================================
+#
+plcAdmin-R1-0-2:  Build with base-R3-14-8-2-lcls2
+		  Increase number of allowed missing heartbeat pulses from 3 to 7
+		  Change severity of minor stack/nvram fault from minor to no_alarm
+
+plcAdmin-R1-0-0-1:  Build with base-R3-14-9-lcls1
+                    Replace CONFIG_APP with CONFIG_SITE
+                    Add RELEASE_SITE
+
+plcAdmin-R1-0-0:   Initial version

@@ -1,0 +1,53 @@
+This file contains instructions for using the plcAdmin ladder logic routine in
+a PLC.
+
+--------------------------------------------------------------------------
+Instructions for Allen-Bradley ControlLogix PLC:
+
+1. Changing the PLC program version number
+
+Every new release of a PLC program has a version number with form x.y.z where
+x is the major version, y is the minor version, and z is the revision.  
+
+This version number is stored in the following program tags (in program plcAdmin):
+        PLCADMIN_VERSIONMAJOR
+        PLCADMIN_VERSIONMINOR
+        PLCADMIN_VERSIONREV
+When releasing a new version of your PLC logic, make sure to update these
+three tags with the version number of the new PLC logic.
+
+2. Changing the document number
+
+A graphical version of your ladder logic should be added to the SLAC
+document control system.  The document will be assigned a SLAC document
+number of the form aa-bbb-ccc-dd-Ree, where aa is the prefix, bb is the
+Series,
+cc is the Base, dd is the Suffix, and ee is the Revision.
+
+This document number is stored in the following PLC tags:
+        PLCADMIN_DOCPREFIX *** see note below for the Prefix field
+        PLCADMIN_DOCSERIES
+        PLCADMIN_DOCBASE
+        PLCADMIN_DOCSUFFIX
+        PLCADMIN_DOCREV
+
+When releasing a new version of your PLC logic, make sure to update these five
+tags with the correct document number for your PLC logic.
+
+Assign the appropriate values to these tags in the program tag editor.
+*** The prefix field is a two letter abbreviation.  Please enter the number
+corresponding to your document's prefix.  The available prefixes and their
+corresponding numbers are:
+
+ 0 (no document number entered)
+ 1 SD
+ 2 BD
+ 3 DL
+ 4 EI
+ 5 FC
+ 6 FS
+ 7 IM
+ 8 LD
+ 9 OM
+10 QT
+11 WD
