@@ -1,4 +1,4 @@
-/* $Id: lcaNewMonitorValue.c,v 1.2 2007/11/16 16:45:06 ernesto Exp $ */
+/* $Id: lcaNewMonitorValue.c,v 1.6 2007/05/31 21:16:45 till Exp $ */
 
 /* matlab wrapper for ezcaNewMonitorValue */
 

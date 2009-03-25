@@ -1,4 +1,4 @@
-/* $Id: lcaClear.c,v 1.2 2007/11/16 16:45:05 ernesto Exp $ */
+/* $Id: lcaClear.c,v 1.6 2007/05/31 21:16:44 till Exp $ */
 
 /* matlab wrapper for ezcaClearChannel / ezcaPurge */
 

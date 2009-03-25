@@ -1,4 +1,4 @@
-/* $Id: lcaGetTimeout.c,v 1.2 2007/11/16 16:45:06 ernesto Exp $ */
+/* $Id: lcaGetTimeout.c,v 1.6 2007/06/01 07:00:49 strauman Exp $ */
 
 /* matlab wrapper for ezcaGetTimeout */
 

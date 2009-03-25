@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
-patched version by:  Kenshi Muto, Debian Project.
-* modified by:  Shige TAKENO
-LaTeX2HTML 2002-2-1 (1.70),
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -16,7 +13,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -44,8 +41,8 @@ Set a ``monitor'' on a set of PVs. Monitored PVs are automatically retrieved
 every time their value or status changes. 
 Monitors are especially useful under EPICS-3.14 which supports
 multiple threads. EPICS-3.14 transparently reads monitored PVs as needed.
-Older, single threaded versions of EPICS require periodic calls to <I>labCA</I>
-e.g., to <A HREF="lcaDelay.html#lcadelay"><TT>lcaDelay</TT></A>, in order to allow <I>labCA</I> to handle
+Older, single threaded versions of EPICS require periodic calls to <SPAN  CLASS="textit">labCA</SPAN>
+e.g., to <A HREF="lcaDelay.html#lcadelay"><TT>lcaDelay</TT></A>, in order to allow <SPAN  CLASS="textit">labCA</SPAN> to handle
 monitors.
 
 <P>
@@ -76,12 +73,12 @@ Parameters</A>
 </H3>
 <DL>
 <DT><STRONG>pvs</STRONG></DT>
-<DD>Column vector (in matlab: <I>m x 1</I> <I>cell-</I> matrix)
-of <I>m</I> strings.
+<DD>Column vector (in matlab: <SPAN  CLASS="textit">m x 1</SPAN> <SPAN  CLASS="textit">cell-</SPAN> matrix)
+of <SPAN  CLASS="textit">m</SPAN> strings.
 
 </DD>
 <DT><STRONG>nmax</STRONG></DT>
-<DD>(<I>optional argument</I>) Maximum number of elements
+<DD>(<SPAN  CLASS="textit">optional argument</SPAN>) Maximum number of elements
 (per PV) to monitor/retrieve. If set to 0 (default), all elements are fetched.
 See <A HREF="lcaGet.html#nmaxarg">here</A> for more information.
 
@@ -93,7 +90,7 @@ set of data from the server because the <TT>lcaGet</TT> request cannot
 be satisfied using the copy locally cached by the monitor-thread.
 </DD>
 <DT><STRONG>type</STRONG></DT>
-<DD>(<I>optional argument</I>) A string specifying the
+<DD>(<SPAN  CLASS="textit">optional argument</SPAN>) A string specifying the
 data type to be used for the channel access data transfer. The
 native type is used by default.
 See <A HREF="lcaGet.html#typearg">here</A> for more information.
@@ -119,8 +116,8 @@ lcaSetMonitor('PV', 20, 's')
 <P>
 <BR><HR>
 <ADDRESS>
-for EPICS management
-2007-11-16
+till
+2007-10-13
 </ADDRESS>
 </BODY>
 </HTML>

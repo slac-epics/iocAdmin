@@ -65,6 +65,29 @@ xyGraphClass *xyo = (xyGraphClass *) client;
 
 }
 
+static void updateAutoScaleTimerAction (
+  XtPointer client,
+  XtIntervalId *id )
+{
+
+xyGraphClass *xyo = (xyGraphClass *) client;
+
+  if ( !xyo->updateAutoScaleTimerActive ) {
+    xyo->updateAutoScaleTimer = 0;
+    return;
+  }
+
+  xyo->updateAutoScaleTimer = appAddTimeOut(
+   xyo->actWin->appCtx->appContext(),
+   xyo->updateAutoScaleTimerValue, updateAutoScaleTimerAction, client );
+
+  xyo->actWin->appCtx->proc->lock();
+  xyo->needAutoScaleUpdate = 1;
+  xyo->actWin->addDefExeNode( xyo->aglPtr );
+  xyo->actWin->appCtx->proc->unlock();
+
+}
+
 static void adjp_edit_apply (
   Widget w,
   XtPointer client,
@@ -850,6 +873,7 @@ static void cancelKpXMin (
 xyGraphClass *xyo = (xyGraphClass *) client;
 int i, ii, first;
 double dxValue, minValue;
+int ctl;
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -894,6 +918,10 @@ double dxValue, minValue;
     if ( minValue > xyo->curXMax ) minValue = 1.1 * xyo->curXMax;
     first = 1;
     for ( i=0; i<xyo->numTraces; i++ ) {
+
+      ctl = (int) xyo->traceCtl & ( 1 << i );
+
+      if ( !ctl ) {
 
       ii = xyo->arrayHead[i];
       while ( ii != xyo->arrayTail[i] ) {
@@ -959,6 +987,8 @@ double dxValue, minValue;
 
       }
 
+      }
+
     }
 
     if ( xyo->xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
@@ -989,6 +1019,7 @@ static void cancelKpXMax (
 xyGraphClass *xyo = (xyGraphClass *) client;
 int i, ii, first;
 double dxValue, maxValue;
+int ctl;
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -1033,6 +1064,10 @@ double dxValue, maxValue;
     if ( maxValue < xyo->curXMin ) maxValue = 0.9 * xyo->curXMin;
     first = 1;
     for ( i=0; i<xyo->numTraces; i++ ) {
+
+      ctl = (int) xyo->traceCtl & ( 1 << i );
+
+      if ( !ctl ) {
 
       ii = xyo->arrayHead[i];
       while ( ii != xyo->arrayTail[i] ) {
@@ -1095,6 +1130,8 @@ double dxValue, maxValue;
         if ( ii > xyo->plotBufSize[i] ) {
           ii = 0;
         }
+
+      }
 
       }
 
@@ -1246,6 +1283,7 @@ xyGraphClass *xyo = (xyGraphClass *) client;
 int i, ii, first, yScaleIndex;
 double dy1Value, minValue;
 int yi = yIndex;
+int ctl;
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -1289,6 +1327,10 @@ int yi = yIndex;
     if ( minValue > xyo->curY1Max[yi] ) minValue = 1.1 * xyo->curY1Max[yi];
     first = 1;
     for ( i=0; i<xyo->numTraces; i++ ) {
+
+      ctl = (int) xyo->traceCtl & ( 1 << i );
+
+      if ( !ctl ) {
 
       yScaleIndex = 0;
       if ( xyo->y2Scale[i] ) yScaleIndex = 1;
@@ -1361,6 +1403,8 @@ int yi = yIndex;
 
       }
 
+      }
+
     }
 
     if ( xyo->y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
@@ -1409,6 +1453,7 @@ xyGraphClass *xyo = (xyGraphClass *) client;
 int i, ii, first, yScaleIndex;
 double dy1Value, maxValue;
 int yi = yIndex;
+int ctl;
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -1452,6 +1497,10 @@ int yi = yIndex;
     if ( maxValue < xyo->curY1Min[yi] ) maxValue = 0.9 * xyo->curY1Min[yi];
     first = 1;
     for ( i=0; i<xyo->numTraces; i++ ) {
+
+      ctl = (int) xyo->traceCtl & ( 1 << i );
+
+      if ( !ctl ) {
 
       yScaleIndex = 0;
       if ( xyo->y2Scale[i] ) yScaleIndex = 1;
@@ -1524,6 +1573,8 @@ int yi = yIndex;
 
       }
 
+      }
+
     }
 
     if ( xyo->y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
@@ -1538,6 +1589,40 @@ int yi = yIndex;
   xyo->y1RescaleValue[yi] = maxValue;
   xyo->actWin->addDefExeNode( xyo->aglPtr );
 
+  xyo->actWin->appCtx->proc->unlock();
+
+}
+
+static void traceCtlMonitorConnection (
+  ProcessVariable *pv,
+  void *userarg )
+{
+
+xyGraphClass *xyo = (xyGraphClass *) userarg;
+
+  if ( pv->is_valid() ) {
+
+    xyo->actWin->appCtx->proc->lock();
+    xyo->needTraceCtlConnect = 1;
+    xyo->actWin->addDefExeNode( xyo->aglPtr );
+    xyo->actWin->appCtx->proc->unlock();
+
+  }
+
+}
+
+static void traceCtlValueUpdate (
+  ProcessVariable *pv,
+  void *userarg )
+{
+
+xyGraphClass *xyo = (xyGraphClass *) userarg;
+
+  xyo->traceCtl = pv->get_int();
+
+  xyo->actWin->appCtx->proc->lock();
+  xyo->needTraceUpdate = 1;
+  xyo->actWin->addDefExeNode( xyo->aglPtr );
   xyo->actWin->appCtx->proc->unlock();
 
 }
@@ -1609,10 +1694,13 @@ int i, ii, yi;
 char *xArray, *yArray;
 double dxValue, dyValue;
 double scaledX, scaledY;
+int ctl;
 
   xyo->actWin->appCtx->proc->lock();
 
   for ( i=0; i<xyo->numTraces; i++ ) {
+
+    ctl = (int) xyo->traceCtl & ( 1 << i );
 
     // make sure arrays have been allocated
     if ( !xyo->xPvData[i] || !xyo->yPvData[i] ) {
@@ -1704,6 +1792,7 @@ double scaledX, scaledY;
             if ( dyValue > 0 ) dyValue = log10( dyValue );
           }
 
+          if ( !ctl ) {
           if ( xyo->y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
             if ( xyo->kpY1MinEfDouble[yi].isNull() ) {
               if ( dyValue < xyo->curY1Min[yi] ) {
@@ -1720,6 +1809,7 @@ double scaledX, scaledY;
               }
             }
           }
+	  }
 
           scaledY = xyo->plotAreaH -
            rint( ( dyValue - xyo->curY1Min[yi] ) *
@@ -1779,6 +1869,7 @@ double scaledX, scaledY;
             if ( dxValue > 0 ) dxValue  = log10( dxValue );
           }
 
+          if ( !ctl ) {
           if ( xyo->xAxisSource == XYGC_K_AUTOSCALE ) {
             if ( xyo->kpXMinEfDouble.isNull() ) {
               if ( dxValue < xyo->curXMin ) {
@@ -1795,6 +1886,7 @@ double scaledX, scaledY;
               }
             }
           }
+	  }
 
           scaledX = rint( ( dxValue - xyo->curXMin ) *
            xyo->xFactor[i] + xyo->xOffset[i] );
@@ -1852,6 +1944,8 @@ double scaledX, scaledY;
               if ( dyValue > 0 ) dyValue = log10( dyValue );
             }
 
+            if ( !ctl ) {
+
             if ( xyo->xAxisSource == XYGC_K_AUTOSCALE ) {
               if ( xyo->kpXMinEfDouble.isNull() ) {
                 if ( dxValue < xyo->curXMin ) {
@@ -1885,6 +1979,8 @@ double scaledX, scaledY;
                 }
               }
             }
+
+	    }
 
             scaledY = xyo->plotAreaH -
              rint( ( dyValue - xyo->curY1Min[yi] ) *
@@ -1990,8 +2086,11 @@ int ii, yi;
 char *xArray, *yArray;
 double dxValue, dyValue;
 double scaledX, scaledY;
+int ctl;
 
   if ( !xyo->activeMode ) return;
+
+  ctl = (int) xyo->traceCtl & ( 1 << i );
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -2191,6 +2290,8 @@ double scaledX, scaledY;
           if ( dyValue > 0 ) dyValue = log10( dyValue );
         }
 
+	if ( !ctl ) {
+
         if ( xyo->y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
           if ( xyo->kpY1MinEfDouble[yi].isNull() ) {
             if ( dyValue < xyo->curY1Min[yi] ) {
@@ -2207,6 +2308,8 @@ double scaledX, scaledY;
             }
           }
         }
+
+	}
 
         scaledY = xyo->plotAreaH -
          rint( ( dyValue - xyo->curY1Min[yi] ) *
@@ -2266,6 +2369,9 @@ double scaledX, scaledY;
           if ( dxValue > 0 ) dxValue  = log10( dxValue );
         }
 
+
+	if ( !ctl ) {
+
         if ( xyo->xAxisSource == XYGC_K_AUTOSCALE ) {
           if ( xyo->kpXMinEfDouble.isNull() ) {
             if ( dxValue < xyo->curXMin ) {
@@ -2282,6 +2388,8 @@ double scaledX, scaledY;
             }
           }
         }
+
+	}
 
         scaledX = rint( ( dxValue - xyo->curXMin ) *
          xyo->xFactor[i] + xyo->xOffset[i] );
@@ -2391,8 +2499,11 @@ char *xArray, *yArray;
 double dxValue, dyValue;
 double scaledX, scaledY;
 int yi;
+int ctl;
 
   if ( !xyo->activeMode ) return;
+
+  ctl = (int) xyo->traceCtl & ( 1 << i );
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -2588,6 +2699,8 @@ int yi;
           if ( dyValue > 0 ) dyValue = log10( dyValue );
         }
 
+	if ( !ctl ) {
+
         if ( xyo->y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
           if ( xyo->kpY1MinEfDouble[yi].isNull() ) {
             if ( dyValue < xyo->curY1Min[yi] ) {
@@ -2604,6 +2717,8 @@ int yi;
             }
           }
         }
+
+	}
 
         scaledY = xyo->plotAreaH -
          rint( ( dyValue - xyo->curY1Min[yi] ) *
@@ -2663,6 +2778,8 @@ int yi;
           if ( dxValue > 0 ) dxValue  = log10( dxValue );
         }
 
+	if ( !ctl ) {
+
         if ( xyo->xAxisSource == XYGC_K_AUTOSCALE ) {
           if ( xyo->kpXMinEfDouble.isNull() ) {
             if ( dxValue < xyo->curXMin ) {
@@ -2678,6 +2795,8 @@ int yi;
               xyo->actWin->addDefExeNode( xyo->aglPtr );
 	    }
 	  }
+	}
+
 	}
 
         scaledX = rint( ( dxValue - xyo->curXMin ) *
@@ -2742,10 +2861,13 @@ objPlusIndexPtr ptr = (objPlusIndexPtr) userarg;
 xyGraphClass *xyo = (xyGraphClass *) ptr->objPtr;
 int ii, yi, i =  ptr->index;
 int sec, nsec;
-double dxValue, dyValue;
+double dxValue=0., dyValue;
 double scaledX, scaledY;
+int ctl;
 
   if ( !xyo->activeMode ) return;
+
+  ctl = (int) xyo->traceCtl & ( 1 << i );
 
   xyo->actWin->appCtx->proc->lock();
 
@@ -2936,7 +3058,7 @@ double scaledX, scaledY;
       }
 
       if ( xyo->firstTimeSample ) {
-        xyo->firstTimeSample = 0;
+        //xyo->firstTimeSample = 0;
         xyo->curSec = sec;
         xyo->curNsec = 0;
         sec = 0;
@@ -2961,33 +3083,47 @@ double scaledX, scaledY;
       }
       else if ( xyo->xAxisStyle == XYGC_K_AXIS_STYLE_LINEAR ) {
 
+	_edmDebug();
+
         if ( xyo->special[i] ) {
-          dxValue = (double) ( ++(xyo->totalCount[i]) % xyo->count );
+          dxValue = (double) ( xyo->totalCount[i] % xyo->count );
 	}
 	else {
-          dxValue = (double) ++(xyo->totalCount[i]);
+          dxValue = (double) xyo->totalCount[i];
 	}
         ( (double *) xyo->xPvData[i] )[ii] = dxValue;
+
+        if ( !(xyo->firstTimeSample) ) {
+          ++(xyo->totalCount[i]);
+	}
 
       }
       else if ( xyo->xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
 
         if ( xyo->special[i] ) {
-          dxValue = (double) ( ++(xyo->totalCount[i]) % xyo->count );
+          dxValue = (double) ( xyo->totalCount[i] % xyo->count );
 	}
 	else {
-          dxValue = (double) ++(xyo->totalCount[i]);
+          dxValue = (double) xyo->totalCount[i];
 	}
         ( (double *) xyo->xPvData[i] )[ii] = dxValue;
         if ( dxValue > 0 ) dxValue = log10( dxValue );
 
+        if ( !xyo->firstTimeSample ) {
+          ++(xyo->totalCount[i]);
+	}
+
       }
+
+      xyo->firstTimeSample = 0;
 
       if ( xyo->plotUpdateMode[i] != XYGC_K_UPDATE_ON_TRIG ) {
 
         if ( xyo->y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
           if ( dyValue > 0 ) dyValue = log10( dyValue );
         }
+
+	if ( !ctl ) {
 
         if ( xyo->xAxisSource == XYGC_K_AUTOSCALE ) {
           if ( xyo->kpXMinEfDouble.isNull() ) {
@@ -3022,6 +3158,8 @@ double scaledX, scaledY;
             }
           }
         }
+
+	}
 
         scaledY = xyo->plotAreaH -
          rint( ( dyValue - xyo->curY1Min[yi] ) *
@@ -3223,7 +3361,17 @@ int i, yi;
 
   axygo->border = axygo->eBuf->bufBorder;
   axygo->plotAreaBorder = axygo->eBuf->bufPlotAreaBorder;
+  axygo->autoScaleBothDirections = axygo->eBuf->bufAutoScaleBothDirections;
+  axygo->autoScaleTimerMs = axygo->eBuf->bufAutoScaleTimerMs;
+  axygo->autoScaleThreshPct = axygo->eBuf->bufAutoScaleThreshPct;
+  if ( axygo->autoScaleThreshPct.isNull() ) {
+    axygo->autoScaleThreshFrac = 0.5;
+  }
+  else {
+    axygo->autoScaleThreshFrac = 0.01 * axygo->autoScaleThreshPct.value();
+  }
 
+  axygo->traceCtlPvExpStr.setRaw( axygo->eBuf->bufTraceCtlPvName );
   axygo->trigPvExpStr.setRaw( axygo->eBuf->bufTrigPvName );
   axygo->resetPvExpStr.setRaw( axygo->eBuf->bufResetPvName );
   axygo->resetMode = axygo->eBuf->bufResetMode;
@@ -3240,6 +3388,8 @@ int i, yi;
   axygo->xMinorGrid = axygo->eBuf->bufXMinorGrid;
   axygo->xAnnotationFormat = axygo->eBuf->bufXAnnotationFormat;
   axygo->xAnnotationPrecision = axygo->eBuf->bufXAnnotationPrecision;
+  axygo->xGridMode = axygo->eBuf->bufXGridMode;
+  axygo->xAxisSmoothing = axygo->eBuf->bufXAxisSmoothing;
 
   for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
     axygo->y1NumLabelIntervals[yi] = axygo->eBuf->bufY1NumLabelIntervals[yi];
@@ -3251,6 +3401,8 @@ int i, yi;
     axygo->y1AnnotationFormat[yi] = axygo->eBuf->bufY1AnnotationFormat[yi];
     axygo->y1AnnotationPrecision[yi] =
      axygo->eBuf->bufY1AnnotationPrecision[yi];
+    axygo->y1GridMode[yi] = axygo->eBuf->bufY1GridMode[yi];
+    axygo->y1AxisSmoothing[yi] = axygo->eBuf->bufY1AxisSmoothing[yi];
   }
 
   // check for conflicts
@@ -3390,6 +3542,8 @@ time_t t1, t2;
   }
   trigPv = NULL;
   resetPv = NULL;
+  traceCtlPv = NULL;
+  traceCtl = 0;
 
   pixmap = (Pixmap) NULL;
 
@@ -3418,6 +3572,10 @@ time_t t1, t2;
 
   border = 1;
   plotAreaBorder = 0;
+  autoScaleBothDirections = 0;
+  autoScaleTimerMs.setNull(1);
+  autoScaleThreshPct.setNull(1);
+  autoScaleThreshFrac = 1;
 
   activeMode = 0;
 
@@ -3431,6 +3589,8 @@ time_t t1, t2;
   xMinorGrid = 0;
   xAnnotationPrecision.setNull(1);
   xAnnotationFormat = 0;
+  xGridMode = 0; // not user specified
+  xAxisSmoothing = 0; // XYGC_K_SMOOTHING
 
   for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
     y1NumLabelIntervals[yi].setNull(1);
@@ -3441,6 +3601,8 @@ time_t t1, t2;
     y1MinorGrid[yi] = 0;
     y1AnnotationPrecision[yi].setNull(1);
     y1AnnotationFormat[yi] = 0;
+    y1GridMode[yi] = 0; // not user specified
+    y1AxisSmoothing[yi] = 0; // XYGC_K_SMOOTHING
   }
 
   updateTimerValue = 0;
@@ -3480,6 +3642,9 @@ int i, yi;
   count = source->count;
   border = source->border;
   plotAreaBorder = source->plotAreaBorder;
+  autoScaleBothDirections = source->autoScaleBothDirections;
+  autoScaleTimerMs = source->autoScaleTimerMs;
+  autoScaleThreshPct = source->autoScaleThreshPct;
 
   numTraces = source->numTraces;
 
@@ -3509,6 +3674,10 @@ int i, yi;
   trigPvExpStr.copy( source->trigPvExpStr );
 
   pixmap = (Pixmap) NULL;
+
+  traceCtlPv = NULL;
+  traceCtlPvExpStr.copy( source->traceCtlPvExpStr );
+  traceCtl = 0;
 
   resetPv = NULL;
   resetPvExpStr.copy( source->resetPvExpStr );
@@ -3556,6 +3725,8 @@ int i, yi;
   xMinorGrid = source->xMinorGrid;
   xAnnotationPrecision = source->xAnnotationPrecision;
   xAnnotationFormat = source->xAnnotationFormat;
+  xGridMode = source->xGridMode;
+  xAxisSmoothing = source->xAxisSmoothing;
 
   for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
     y1NumLabelIntervals[yi] = source->y1NumLabelIntervals[yi];
@@ -3566,6 +3737,8 @@ int i, yi;
     y1MinorGrid[yi] = source->y1MinorGrid[yi];
     y1AnnotationPrecision[yi] = source->y1AnnotationPrecision[yi];
     y1AnnotationFormat[yi] = source->y1AnnotationFormat[yi];
+    y1GridMode[yi] = source->y1GridMode[yi];
+    y1AxisSmoothing[yi] = source->y1AxisSmoothing[yi];
   }
 
   connection.setMaxPvs( 2 * XYGC_K_MAX_TRACES + 2 );
@@ -3596,6 +3769,7 @@ int xyGraphClass::getDbXMinXMax (
 ) {
 
 int i, start, allChronological;
+int ctl;
 
   *min = 0;
   *max = 1;
@@ -3604,21 +3778,31 @@ int i, start, allChronological;
   i = 0;
   start = numTraces;
   while ( i<numTraces ) {
+
+    ctl = (int) traceCtl & ( 1 << i );
+
     if ( traceType[i] != XYGC_K_TRACE_CHRONOLOGICAL ) {
       allChronological = 0;
-      *min = dbXMin[i];
-      *max = dbXMax[i];
+      if ( !ctl ) {
+        *min = dbXMin[i];
+        *max = dbXMax[i];
+      }
       start = i+1;
       break;
     }
+
     i++;
+
   }
 
   for ( i=start; i<numTraces; i++ ) {
+    ctl = (int) traceCtl & ( 1 << i );
     if ( traceType[i] != XYGC_K_TRACE_CHRONOLOGICAL ) {
       allChronological = 0;
-      if ( dbXMin[i] < *min ) *min = dbXMin[i];
-      if ( dbXMax[i] > *max ) *max = dbXMax[i];
+      if ( !ctl ) {
+        if ( dbXMin[i] < *min ) *min = dbXMin[i];
+        if ( dbXMax[i] > *max ) *max = dbXMax[i];
+      }
     }
   }
 
@@ -3633,6 +3817,7 @@ void xyGraphClass::getDbYMinYMax (
 ) {
 
 int i, start;
+int ctl;
 
   *min = 0;
   *max = 1;
@@ -3642,19 +3827,29 @@ int i, start;
     i = 0;
     start = numTraces;
     while ( i<numTraces ) {
+
+      ctl = (int) traceCtl & ( 1 << i );
+
       if ( !y2Scale[i] ) {
-        *min = dbYMin[i];
-        *max = dbYMax[i];
+	if ( !ctl ) {
+          *min = dbYMin[i];
+          *max = dbYMax[i];
+	}
         start = i+1;
         break;
       }
+
       i++;
+
     }
 
     for ( i=start; i<numTraces; i++ ) {
+      ctl = (int) traceCtl & ( 1 << i );
       if ( !y2Scale[i] ) {
-        if ( dbYMin[i] < *min ) *min = dbYMin[i];
-        if ( dbYMax[i] > *max ) *max = dbYMax[i];
+        if ( !ctl ) {
+          if ( dbYMin[i] < *min ) *min = dbYMin[i];
+          if ( dbYMax[i] > *max ) *max = dbYMax[i];
+	}
       }
     }
 
@@ -3664,19 +3859,29 @@ int i, start;
     i = 0;
     start = numTraces;
     while ( i<numTraces ) {
+
+      ctl = (int) traceCtl & ( 1 << i );
+
       if ( y2Scale[i] ) {
-        *min = dbYMin[i];
-        *max = dbYMax[i];
+	if ( !ctl ) {
+          *min = dbYMin[i];
+          *max = dbYMax[i];
+	}
         start = i+1;
         break;
       }
+
       i++;
+
     }
 
     for ( i=start; i<numTraces; i++ ) {
+      ctl = (int) traceCtl & ( 1 << i );
       if ( y2Scale[i] ) {
-        if ( dbYMin[i] < *min ) *min = dbYMin[i];
-        if ( dbYMax[i] > *max ) *max = dbYMax[i];
+	if ( !ctl ) {
+          if ( dbYMin[i] < *min ) *min = dbYMin[i];
+          if ( dbYMax[i] > *max ) *max = dbYMax[i];
+	}
       }
     }
 
@@ -3691,16 +3896,21 @@ void xyGraphClass::getXMinMax (
 
 int i, ii, first;
 double dxValue;
+int ctl;
 
   first = 1;
   for ( i=0; i<numTraces; i++ ) {
+
+    ctl = (int) traceCtl & ( 1 << i );
+
+    if ( !ctl ) {
 
     ii = arrayHead[i];
     while ( ii != arrayTail[i] ) {
 
       if ( traceType[i] == XYGC_K_TRACE_CHRONOLOGICAL ) {
 
-	dxValue = ( (double *) xPvData[i] )[ii];
+        dxValue = ( (double *) xPvData[i] )[ii];
 
       }
       else {
@@ -3769,6 +3979,8 @@ double dxValue;
 
     }
 
+    }
+
   }
 
 }
@@ -3782,12 +3994,17 @@ void xyGraphClass::getYMinMax (
 
 int i, ii, first[NUM_Y_AXES];
 double dyValue[NUM_Y_AXES];
+int ctl;
 
   for ( i=0; i<NUM_Y_AXES; i++ ) {
     first[i] = 1;
   }
 
   for ( i=0; i<numTraces; i++ ) {
+
+    ctl = (int) traceCtl & ( 1 << i );
+
+    if ( !ctl ) {
 
     if ( ( ( yi == 0 ) && !y2Scale[i] ) ||
          ( ( yi > 0 ) && y2Scale[i] ) ) {
@@ -3856,6 +4073,8 @@ double dyValue[NUM_Y_AXES];
         }
 
       }
+
+    }
 
     }
 
@@ -4078,6 +4297,9 @@ static int resetModeEnum[2] = {
   tag.loadW( "# Appearance" );
   tag.loadBoolW( "border", &border, &zero );
   tag.loadBoolW( "plotAreaBorder", &plotAreaBorder, &zero );
+  tag.loadBoolW( "autoScaleBothDirections", &autoScaleBothDirections, &zero );
+  tag.loadW( "autoScaleUpdateMs", &autoScaleTimerMs );
+  tag.loadW( "autoScaleThreshPct", &autoScaleThreshPct );
   tag.loadW( "graphTitle", &graphTitle, emptyStr );
   tag.loadW( "xLabel", &xLabel, emptyStr );
   tag.loadW( "yLabel", &yLabel, emptyStr );
@@ -4092,6 +4314,7 @@ static int resetModeEnum[2] = {
    &plotModePlotNPtsAndStop );
   tag.loadW( "nPts", &count );
   tag.loadW( "updateTimerMs", &updateTimerValue, &zero );
+  tag.loadW( "traceCtlPv", &traceCtlPvExpStr, emptyStr );
   tag.loadW( "triggerPv", &trigPvExpStr, emptyStr );
   tag.loadW( "resetPv", &resetPvExpStr, emptyStr );
   tag.loadW( "resetMode", 2, resetModeEnumStr, resetModeEnum, &resetMode,
@@ -4116,6 +4339,8 @@ static int resetModeEnum[2] = {
   tag.loadW( "xLableFormat", 2, annoFormatEnumStr, annoFormatEnum,
    &xAnnotationFormat, &annoFormatF );
   tag.loadW( "xLablePrecision", &xAnnotationPrecision );
+  tag.loadW( "xUserSpecScaleDiv", &xGridMode, &zero );
+  tag.loadW( "xAxisSmoothing", &xAxisSmoothing, &zero );
 
   tag.loadW( "# Y axis properties" );
   tag.loadBoolW( "showYAxis", &y1Axis[0], &zero );
@@ -4134,6 +4359,8 @@ static int resetModeEnum[2] = {
   tag.loadW( "yAxisFormat", 2, annoFormatEnumStr, annoFormatEnum,
    &y1AnnotationFormat[0], &annoFormatF );
   tag.loadW( "yAxisPrecision", &y1AnnotationPrecision[0] );
+  tag.loadW( "yUserSpecScaleDiv", &y1GridMode[0], &zero );
+  tag.loadW( "yAxisSmoothing", &y1AxisSmoothing[0], &zero );
 
   tag.loadW( "# Y2 axis properties" );
   tag.loadBoolW( "showY2Axis", &y1Axis[1], &zero );
@@ -4152,6 +4379,8 @@ static int resetModeEnum[2] = {
   tag.loadW( "y2AxisFormat", 2, annoFormatEnumStr, annoFormatEnum,
    &y1AnnotationFormat[1], &annoFormatF );
   tag.loadW( "y2AxisPrecision", &y1AnnotationPrecision[1] );
+  tag.loadW( "y2UserSpecScaleDiv", &y1GridMode[1], &zero );
+  tag.loadW( "y2AxisSmoothing", &y1AxisSmoothing[1], &zero );
 
   // trace properties (arrays)
   tag.loadW( "# Trace Properties" );
@@ -4174,6 +4403,7 @@ static int resetModeEnum[2] = {
   tag.loadW( "ySigned", ySigned, numTraces, &zero );
   tag.loadW( "plotColor", actWin->ci, plotColor, numTraces );
 
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -4478,6 +4708,7 @@ static int resetModeEnum[2] = {
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -4491,6 +4722,9 @@ static int resetModeEnum[2] = {
   //tag.loadR( "# Appearance" );
   tag.loadR( "border", &border, &zero );
   tag.loadR( "plotAreaBorder", &plotAreaBorder, &zero );
+  tag.loadR( "autoScaleBothDirections", &autoScaleBothDirections, &zero );
+  tag.loadR( "autoScaleUpdateMs", &autoScaleTimerMs );
+  tag.loadR( "autoScaleThreshPct", &autoScaleThreshPct );
   tag.loadR( "graphTitle", &graphTitle, emptyStr );
   tag.loadR( "xLabel", &xLabel, emptyStr );
   tag.loadR( "yLabel", &yLabel, emptyStr );
@@ -4505,6 +4739,7 @@ static int resetModeEnum[2] = {
    &plotModePlotNPtsAndStop );
   tag.loadR( "nPts", &count );
   tag.loadR( "updateTimerMs", &updateTimerValue, &zero );
+  tag.loadR( "traceCtlPv", &traceCtlPvExpStr, emptyStr );
   tag.loadR( "triggerPv", &trigPvExpStr, emptyStr );
   tag.loadR( "resetPv", &resetPvExpStr, emptyStr );
   tag.loadR( "resetMode", 2, resetModeEnumStr, resetModeEnum, &resetMode,
@@ -4529,6 +4764,8 @@ static int resetModeEnum[2] = {
   tag.loadR( "xLableFormat", 2, annoFormatEnumStr, annoFormatEnum,
    &xAnnotationFormat, &annoFormatF );
   tag.loadR( "xLablePrecision", &xAnnotationPrecision );
+  tag.loadR( "xUserSpecScaleDiv", &xGridMode, &zero );
+  tag.loadR( "xAxisSmoothing", &xAxisSmoothing, &zero );
 
   //tag.loadR( "# Y axis properties" );
   tag.loadR( "showYAxis", &y1Axis[0], &zero );
@@ -4547,6 +4784,8 @@ static int resetModeEnum[2] = {
   tag.loadR( "yAxisFormat", 2, annoFormatEnumStr, annoFormatEnum,
    &y1AnnotationFormat[0], &annoFormatF );
   tag.loadR( "yAxisPrecision", &y1AnnotationPrecision[0] );
+  tag.loadR( "yUserSpecScaleDiv", &y1GridMode[0], &zero );
+  tag.loadR( "yAxisSmoothing", &y1AxisSmoothing[0], &zero );
 
   //tag.loadR( "# Y2 axis properties" );
   tag.loadR( "showY2Axis", &y1Axis[1], &zero );
@@ -4565,6 +4804,8 @@ static int resetModeEnum[2] = {
   tag.loadR( "y2AxisFormat", 2, annoFormatEnumStr, annoFormatEnum,
    &y1AnnotationFormat[1], &annoFormatF );
   tag.loadR( "y2AxisPrecision", &y1AnnotationPrecision[1] );
+  tag.loadR( "y2UserSpecScaleDiv", &y1GridMode[1], &zero );
+  tag.loadR( "y2AxisSmoothing", &y1AxisSmoothing[1], &zero );
 
   // trace properties (arrays)
   //tag.loadR( "# Trace Properties" );
@@ -4607,6 +4848,13 @@ static int resetModeEnum[2] = {
   }
 
   this->initSelectBox(); // call after getting x,y,w,h
+
+  if ( autoScaleThreshPct.isNull() ) {
+    autoScaleThreshFrac = 0.5;
+  }
+  else {
+    autoScaleThreshFrac = 0.01 * autoScaleThreshPct.value();
+  }
 
   for ( i=0; i<numTraces; i++ ) {
 
@@ -4953,22 +5201,34 @@ int i, yi;
   eBuf->bufBorder = border;
 
   eBuf->bufPlotAreaBorder = plotAreaBorder;
+  eBuf->bufAutoScaleBothDirections = autoScaleBothDirections;
+  eBuf->bufAutoScaleTimerMs = autoScaleTimerMs;
+  eBuf->bufAutoScaleThreshPct = autoScaleThreshPct;
 
   eBuf->bufUpdateTimerValue = updateTimerValue;
 
   eBuf->bufCount = count;
 
   strncpy( eBuf->bufGraphTitle, graphTitle.getRaw(), 127 );
+  eBuf->bufGraphTitle[127] = 0;
   strncpy( eBuf->bufXLabel, xLabel.getRaw(), 127 );
+  eBuf->bufXLabel[127] = 0;
   strncpy( eBuf->bufYLabel, yLabel.getRaw(), 127 );
+  eBuf->bufYLabel[127] = 0;
   strncpy( eBuf->bufY2Label, y2Label.getRaw(), 127 );
+  eBuf->bufY2Label[127] = 0;
   eBuf->bufFgColor = fgColor;
   eBuf->bufBgColor = bgColor;
   eBuf->bufGridColor = gridColor;
+  strncpy( eBuf->bufTraceCtlPvName, traceCtlPvExpStr.getRaw(),
+   PV_Factory::MAX_PV_NAME );
+  eBuf->bufTraceCtlPvName[PV_Factory::MAX_PV_NAME] = 0;
   strncpy( eBuf->bufTrigPvName, trigPvExpStr.getRaw(),
    PV_Factory::MAX_PV_NAME );
+  eBuf->bufTrigPvName[PV_Factory::MAX_PV_NAME] = 0;
   strncpy( eBuf->bufResetPvName, resetPvExpStr.getRaw(),
    PV_Factory::MAX_PV_NAME );
+  eBuf->bufResetPvName[PV_Factory::MAX_PV_NAME] = 0;
   eBuf->bufResetMode = resetMode;
 
   eBuf->bufXNumLabelIntervals = xNumLabelIntervals;
@@ -4979,6 +5239,8 @@ int i, yi;
   eBuf->bufXMinorGrid = xMinorGrid;
   eBuf->bufXAnnotationFormat = xAnnotationFormat;
   eBuf->bufXAnnotationPrecision = xAnnotationPrecision;
+  eBuf->bufXGridMode = xGridMode;
+  eBuf->bufXAxisSmoothing = xAxisSmoothing;
 
   for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
     eBuf->bufY1NumLabelIntervals[yi] = y1NumLabelIntervals[yi];
@@ -4989,6 +5251,8 @@ int i, yi;
     eBuf->bufY1MinorGrid[yi] = y1MinorGrid[yi];
     eBuf->bufY1AnnotationFormat[yi] = y1AnnotationFormat[yi];
     eBuf->bufY1AnnotationPrecision[yi] = y1AnnotationPrecision[yi];
+    eBuf->bufY1GridMode[yi] = y1GridMode[yi];
+    eBuf->bufY1AxisSmoothing[yi] = y1AxisSmoothing[yi];
   }
 
   ef.create( actWin->top, actWin->appCtx->ci.getColorMap(),
@@ -5013,6 +5277,9 @@ int i, yi;
   ef.addTextField( "Update Delay (ms)", 35, &eBuf->bufUpdateTimerValue );
   ef.addToggle( "Border", &eBuf->bufBorder );
   ef.addToggle( "Plot Area Border", &eBuf->bufPlotAreaBorder );
+  ef.addToggle( "Auto Scale Inward", &eBuf->bufAutoScaleBothDirections );
+  ef.addTextField( "Auto Scale Rate (ms)", 35, &eBuf->bufAutoScaleTimerMs );
+  ef.addTextField( "Auto Scale Thresh (%)", 35, &eBuf->bufAutoScaleThreshPct );
 
   ef.addEmbeddedEf( "X/Y/Trace Data", "... ", &efTrace );
 
@@ -5025,8 +5292,10 @@ int i, yi;
     for ( i=0; i<numTraces; i++ ) {
       strncpy( eBuf->bufXPvName[i], xPvExpStr[i].getRaw(),
        PV_Factory::MAX_PV_NAME );
+      eBuf->bufXPvName[i][PV_Factory::MAX_PV_NAME] = 0;
       strncpy( eBuf->bufYPvName[i], yPvExpStr[i].getRaw(),
        PV_Factory::MAX_PV_NAME );
+      eBuf->bufYPvName[i][PV_Factory::MAX_PV_NAME] = 0;
       eBuf->bufPlotStyle[i] = plotStyle[i];
       eBuf->bufPlotSymbolType[i] = plotSymbolType[i];
       eBuf->bufPlotUpdateMode[i] = plotUpdateMode[i];
@@ -5165,6 +5434,8 @@ int i, yi;
     efAxis->addOption( "",
      "Seconds|mm-dd-yy hh:mm:ss",
      &eBuf->bufXAxisTimeFormat );
+    efAxis->addLabel( "No Scale Adjustment" );
+    efAxis->addToggle( " ", &eBuf->bufXAxisSmoothing );
     efAxis->endSubForm();
 
     efAxis->beginLeftSubForm();
@@ -5181,10 +5452,12 @@ int i, yi;
     efAxis->addTextField( "", 3, &eBuf->bufXNumMinorPerMajor );
     efAxis->addLabel( " Grid" );
     efAxis->addToggle( " ", &eBuf->bufXMinorGrid );
-    efAxis->addLabel( " Format" );
-    efAxis->addOption( "", "f|g", &eBuf->bufXAnnotationFormat );
-    efAxis->addLabel( " Precision " );
-    efAxis->addTextField( "", 3, &eBuf->bufXAnnotationPrecision );
+    efAxis->addLabel( "User Specified Scale Divisions" );
+    efAxis->addToggle( " ", &eBuf->bufXGridMode );
+    //efAxis->addLabel( " Format" );
+    //efAxis->addOption( "", "f|g", &eBuf->bufXAnnotationFormat );
+    //efAxis->addLabel( " Precision " );
+    //efAxis->addTextField( "", 3, &eBuf->bufXAnnotationPrecision );
     efAxis->endSubForm();
    
     efAxis->addSeparator();
@@ -5203,6 +5476,8 @@ int i, yi;
     efAxis->addTextField( "", 10, &eBuf->bufY1Min[yi] );
     efAxis->addLabel( " Maximum " );
     efAxis->addTextField( "", 10, &eBuf->bufY1Max[yi] );
+    efAxis->addLabel( "No Scale Adjustment" );
+    efAxis->addToggle( " ", &eBuf->bufY1AxisSmoothing[yi] );
     efAxis->endSubForm();
 
     efAxis->beginLeftSubForm();
@@ -5219,10 +5494,12 @@ int i, yi;
     efAxis->addTextField( "", 3, &eBuf->bufY1NumMinorPerMajor[yi] );
     efAxis->addLabel( " Grid" );
     efAxis->addToggle( " ", &eBuf->bufY1MinorGrid[yi] );
-    efAxis->addLabel( " Format" );
-    efAxis->addOption( "", "f|g", &eBuf->bufY1AnnotationFormat[yi] );
-    efAxis->addLabel( " Precision " );
-    efAxis->addTextField( "", 3, &eBuf->bufY1AnnotationPrecision[yi] );
+    efAxis->addLabel( "User Specified Scale Divisions" );
+    efAxis->addToggle( " ", &eBuf->bufY1GridMode[yi] );
+    //efAxis->addLabel( " Format" );
+    //efAxis->addOption( "", "f|g", &eBuf->bufY1AnnotationFormat[yi] );
+    //efAxis->addLabel( " Precision " );
+    //efAxis->addTextField( "", 3, &eBuf->bufY1AnnotationPrecision[yi] );
     efAxis->endSubForm();
    
     efAxis->addSeparator();
@@ -5242,6 +5519,8 @@ int i, yi;
     efAxis->addTextField( "", 10, &eBuf->bufY1Min[yi] );
     efAxis->addLabel( " Maximum " );
     efAxis->addTextField( "", 10, &eBuf->bufY1Max[yi] );
+    efAxis->addLabel( "No Scale Adjustment" );
+    efAxis->addToggle( " ", &eBuf->bufY1AxisSmoothing[yi] );
     efAxis->endSubForm();
 
     efAxis->beginLeftSubForm();
@@ -5258,14 +5537,18 @@ int i, yi;
     efAxis->addTextField( "", 3, &eBuf->bufY1NumMinorPerMajor[yi] );
     efAxis->addLabel( " Grid" );
     efAxis->addToggle( " ", &eBuf->bufY1MinorGrid[yi] );
-    efAxis->addLabel( " Format" );
-    efAxis->addOption( "", "f|g", &eBuf->bufY1AnnotationFormat[yi] );
-    efAxis->addLabel( " Precision " );
-    efAxis->addTextField( "", 3, &eBuf->bufY1AnnotationPrecision[yi] );
+    efAxis->addLabel( "User Specified Scale Divisions" );
+    efAxis->addToggle( " ", &eBuf->bufY1GridMode[yi] );
+    //efAxis->addLabel( " Format" );
+    //efAxis->addOption( "", "f|g", &eBuf->bufY1AnnotationFormat[yi] );
+    //efAxis->addLabel( " Precision " );
+    //efAxis->addTextField( "", 3, &eBuf->bufY1AnnotationPrecision[yi] );
     efAxis->endSubForm();
 
     efAxis->finished( axygc_edit_ok_axis, this );
 
+  ef.addTextField( "Trace Ctl PV", 35, eBuf->bufTraceCtlPvName,
+   PV_Factory::MAX_PV_NAME );
   ef.addTextField( "Trigger PV", 35, eBuf->bufTrigPvName,
    PV_Factory::MAX_PV_NAME );
   ef.addTextField( "Reset PV", 35, eBuf->bufResetPvName,
@@ -5304,9 +5587,14 @@ void xyGraphClass::regenBuffer ( void ) {
 int i, ii, yi, count;
 double dxValue, dyValue;
 double scaledX, scaledY;
+int ctl;
 
   count = 0;
   for ( i=0; i<numTraces; i++ ) {
+
+    ctl = (int) traceCtl & ( 1 << i );
+
+    if ( !ctl ) {
 
     xFactor[i] =
      (double) ( plotAreaW ) / ( curXMax - curXMin );
@@ -5457,6 +5745,8 @@ double scaledX, scaledY;
 
     }
 
+    }
+
   }
 
 }
@@ -5470,8 +5760,13 @@ int ii, iii, yi, needRescale;
 double dxValue, dyValue;
 double scaledX, scaledY;
 char format[31+1];
+int ctl;
 
   *rescale = needRescale = 0;
+
+  ctl = (int) traceCtl & ( 1 << i );
+
+  if ( ctl ) return;
 
   yi = 0;
   if ( y2Scale[i] ) yi = 1;
@@ -5626,7 +5921,6 @@ char format[31+1];
         if ( dyValue > curY1Max[yi] ) {
           needRescale = 1;
           curY1Max[yi] = dyValue;
-          actWin->addDefExeNode( aglPtr );
         }
       }
     }
@@ -5635,28 +5929,71 @@ char format[31+1];
 
   if ( needRescale ) {
 
+    needNewLimits = 1;
+    //needAutoScaleUpdate = 1;
+    actWin->addDefExeNode( aglPtr );
+
     if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor, format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else if ( xAxisStyle == XYGC_K_AXIS_STYLE_TIME_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor, format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else {
-      get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_scale_params1( curXMin, curXMax,
+       &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor, format );
+      if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+        adjCurXMin = curXMin;
+        adjCurXMax = curXMax;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
 
     if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
-      get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-       &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+      get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+       &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
        &curY1MinorsPerMajor[yi], format );
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+        curY1Min[yi] = adjCurY1Min[yi];
+      }
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+        curY1Max[yi] = adjCurY1Max[yi];
+      }
     }
     else {
-      get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-       &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+      get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+       &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
        &curY1MinorsPerMajor[yi], format );
+      if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+        adjCurY1Min[yi] = curY1Min[yi];
+        adjCurY1Max[yi] = curY1Max[yi];
+      }
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+        curY1Min[yi] = adjCurY1Min[yi];
+      }
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+        curY1Max[yi] = adjCurY1Max[yi];
+      }
     }
 
     updateDimensions();
@@ -5691,9 +6028,19 @@ void xyGraphClass::genXyVector (
 int ii, iii, yi, needRescale, n;
 double dxValue, dyValue;
 double scaledX, scaledY;
+// Ron Chestnut changes 3/2/2007
+ double squash;
+double new_min_y = -1., new_max_y = 1.;
+double new_min_x = -1., new_max_x = 1.;
+// End of changes
 char format[31+1];
+int ctl;
 
   *rescale = needRescale = 0;
+
+  ctl = (int) traceCtl & ( 1 << i );
+
+  if ( ctl ) return;
 
   yi = 0;
   if ( y2Scale[i] ) yi = 1;
@@ -5755,7 +6102,13 @@ char format[31+1];
     if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
       if ( dyValue > 0 ) dyValue = log10( dyValue );
     }
-
+// Ron Chestnut changes 3/2/2007
+    if ( ii == 0) new_min_y = new_max_y = dyValue;
+    else {
+      if(dyValue > new_max_y) new_max_y=dyValue;
+      if(dyValue < new_min_y) new_min_y=dyValue;
+    }
+// end of changes
     scaledY = plotAreaH -
      rint( ( dyValue - curY1Min[yi] ) *
      y1Factor[yi][i] - y1Offset[yi][i] );
@@ -5820,63 +6173,179 @@ char format[31+1];
 
     addPoint( dxValue, scaledX, scaledY, i );
 
-    if ( xAxisSource == XYGC_K_AUTOSCALE ) {
-      if ( kpXMinEfDouble.isNull() ) {
-        if ( dxValue < curXMin ) {
-          curXMin = dxValue;
-          needRescale = 1;
-        }
-      }
-      if ( kpXMaxEfDouble.isNull() ) {
-        if ( dxValue > curXMax ) {
-          curXMax = dxValue;
-          needRescale = 1;
-        }
-      }
-    }
+    // =================================================
+    // DO NOT AUTO SCALE BOTH DIRECTIONS
+    if ( !autoScaleBothDirections || 1 ) {
 
-    if ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
-      if ( kpY1MinEfDouble[yi].isNull() ) {
-        if ( dyValue < curY1Min[yi] ) {
-          needRescale = 1;
-          curY1Min[yi] = dyValue;
+      if ( xAxisSource == XYGC_K_AUTOSCALE ) {
+
+        if ( kpXMinEfDouble.isNull() ) {
+          if ( dxValue < curXMin ) {
+            curXMin = dxValue;
+            needRescale = 1;
+          }
+        }
+        if ( kpXMaxEfDouble.isNull() ) {
+          if ( dxValue > curXMax ) {
+            curXMax = dxValue;
+            needRescale = 1;
+          }
         }
       }
-      if ( kpY1MaxEfDouble[yi].isNull() ) {
-        if ( dyValue > curY1Max[yi] ) {
-          needRescale = 1;
-          curY1Max[yi] = dyValue;
-          actWin->addDefExeNode( aglPtr );
+
+      if ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
+        if ( kpY1MinEfDouble[yi].isNull() ) {
+          if ( dyValue < curY1Min[yi] ) {
+            needRescale = 1;
+            curY1Min[yi] = dyValue;
+          }
+        }
+        if ( kpY1MaxEfDouble[yi].isNull() ) {
+          if ( dyValue > curY1Max[yi] ) {
+            needRescale = 1;
+            curY1Max[yi] = dyValue;
+            //actWin->addDefExeNode( aglPtr );
+          }
         }
       }
+
     }
+    // =================================================
+
+    // =================================================
+    // DO AUTO SCALE BOTH DIRECTIONS
+    if ( autoScaleBothDirections && 0 ) {
+// Ron Chestnut changes 3/2/2007
+      if ( ii == 0) {
+        new_min_x = new_max_x = dxValue;
+      }
+      else {
+        if(dxValue > new_max_x) new_max_x=dxValue;
+        if(dxValue < new_min_x) new_min_x=dxValue;
+      }
+// end of changes
+    }
+    // =================================================
 
   }
 
+  // =================================================
+  // DO AUTO SCALE BOTH DIRECTIONS
+  if ( autoScaleBothDirections && 0 ) {
+
+// Ron Chestnut changes 3/2/2007
+
+    if ( xAxisSource == XYGC_K_AUTOSCALE ) {
+      squash = (curXMax-curXMin)*.20;
+      if ( kpXMinEfDouble.isNull() ) {
+        if ( new_min_x < curXMin ||
+             new_min_x > curXMin+squash) {
+          needRescale = 1;
+        //fprintf( stderr, "min X rescale %g %g\n", new_min_x,curXMin );
+          curXMin = new_min_x;
+        }
+      }
+      if ( kpXMaxEfDouble.isNull() ) {
+        if ( new_max_x > curXMax ||
+             new_max_x < curXMax - squash) {
+          needRescale = 1;
+        //fprintf( stderr, "max X rescale %g %g\n",new_max_x,curXMax );
+          curXMax = new_max_x;
+        }
+      }
+    }
+ 
+    if ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
+      squash = (curY1Max[yi]-curY1Min[yi])*.20;
+      if ( kpY1MinEfDouble[yi].isNull() ) {
+        if ( new_min_y < curY1Min[yi] ||
+             new_min_y > curY1Min[yi]+squash) {
+          needRescale = 1;
+        //fprintf( stderr, "min Y rescale %g %g\n", new_min_y,curY1Min[yi] );
+          curY1Min[yi] = new_min_y;
+        }
+      }
+      if ( kpY1MaxEfDouble[yi].isNull() ) {
+        if ( new_max_y > curY1Max[yi] ||
+             new_max_y < curY1Max[yi]-squash) {
+          needRescale = 1;
+        //fprintf( stderr, "max Y rescale %g %g\n",new_max_y,curY1Max[yi] );
+          curY1Max[yi] = new_max_y;
+        }
+      }
+    }
+// end of changes
+
+  }
+  // =================================================
+
   if ( needRescale ) {
 
+    needNewLimits = 1;
+    //needAutoScaleUpdate = 1;
+    actWin->addDefExeNode( aglPtr );
+
     if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor, format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else if ( xAxisStyle == XYGC_K_AXIS_STYLE_TIME_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor, format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else {
-      get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_scale_params1( curXMin, curXMax,
+       &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor, format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+        adjCurXMin = curXMin;
+        adjCurXMax = curXMax;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
 
     if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
-      get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-       &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+      get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+      &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
        &curY1MinorsPerMajor[yi], format );
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+        curY1Min[yi] = adjCurY1Min[yi];
+      }
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+        curY1Max[yi] = adjCurY1Max[yi];
+      }
     }
     else {
-      get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-       &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+      get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+       &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
        &curY1MinorsPerMajor[yi], format );
+      if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+        adjCurY1Min[yi] = curY1Min[yi];
+        adjCurY1Max[yi] = curY1Max[yi];
+      }
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+        curY1Min[yi] = adjCurY1Min[yi];
+      }
+      if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+        curY1Max[yi] = adjCurY1Max[yi];
+      }
     }
 
     updateDimensions();
@@ -5907,6 +6376,7 @@ char format[31+1];
 int xyGraphClass::fullRefresh ( void ) {
 
 int i;
+int ctl;
 
   if ( !enabled || !activeMode || !init ) return 1;
 
@@ -5948,9 +6418,12 @@ int i;
 
   bufInvalid = 0;
   for ( i=0; i<numTraces; i++ ) {
-    traceIsDrawn[i] = 0;
-    yArrayNeedUpdate[i] = 1;
-    xArrayNeedUpdate[i] = 1;
+    ctl = (int) traceCtl & ( 1 << i );
+    if ( !ctl ) {
+      traceIsDrawn[i] = 0;
+      yArrayNeedUpdate[i] = 1;
+      xArrayNeedUpdate[i] = 1;
+    }
   }
 
   drawActive();
@@ -6171,22 +6644,22 @@ XRectangle xR = { plotAreaX+1, plotAreaY, plotAreaW-2, plotAreaH };
              actWin->executeGc.normGC(), plotBuf[i], curNpts[i],
              CoordModeOrigin );
 
-	  }
-	  else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_CIRCLE ) {
+          }
+          else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_CIRCLE ) {
 
             drawCircles( i, plotBuf[i], curNpts[i] );
 
-	  }
-	  else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_SQUARE ) {
+          }
+          else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_SQUARE ) {
 
             drawSquares( i, plotBuf[i], curNpts[i] );
 
-	  }
-	  else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_DIAMOND ) {
+          }
+          else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_DIAMOND ) {
 
             drawDiamonds( i, plotBuf[i], curNpts[i] );
 
-	  }
+          }
 
         }
 
@@ -6195,15 +6668,15 @@ XRectangle xR = { plotAreaX+1, plotAreaY, plotAreaW-2, plotAreaH };
 
         if ( curNpts[i] > 0 ) {
 
-	  if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_CIRCLE ) {
+          if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_CIRCLE ) {
             drawCircles( i, plotBuf[i], curNpts[i] );
-	  }
-	  else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_SQUARE ) {
+          }
+          else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_SQUARE ) {
             drawSquares( i, plotBuf[i], curNpts[i] );
-	  }
-	  else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_DIAMOND ) {
+          }
+          else if ( plotSymbolType[i] == XYGC_K_SYMBOL_TYPE_DIAMOND ) {
             drawDiamonds( i, plotBuf[i], curNpts[i] );
-	  }
+          }
 
           actWin->executeGc.setLineWidth( lineThk[i] );
           actWin->executeGc.setLineStyle( lineStyle[i] );
@@ -6214,7 +6687,7 @@ XRectangle xR = { plotAreaX+1, plotAreaY, plotAreaW-2, plotAreaH };
              actWin->executeGc.normGC(), plotBuf[i], curNpts[i],
              CoordModeOrigin );
 
-	  }
+          }
 
         }
 
@@ -6257,6 +6730,11 @@ int xyGraphClass::drawActiveOne (
 ) {
 
 int npts;
+int ctl;
+
+  ctl = (int) traceCtl & ( 1 << i );
+
+  if ( ctl ) return 1;
 
   actWin->executeGc.setLineWidth(1);
   actWin->executeGc.setLineStyle( LineSolid );
@@ -6508,6 +6986,9 @@ int i, stat, retStat = 1;
   stat = y2Label.expand1st( numMacros, macros, expansions );
   if ( !( stat & 1 ) ) retStat = stat;
 
+  stat = traceCtlPvExpStr.expand1st( numMacros, macros, expansions );
+  if ( !( stat & 1 ) ) retStat = stat;
+
   stat = trigPvExpStr.expand1st( numMacros, macros, expansions );
   if ( !( stat & 1 ) ) retStat = stat;
 
@@ -6544,6 +7025,9 @@ int i, stat, retStat = 1;
   stat = y2Label.expand2nd( numMacros, macros, expansions );
   if ( !( stat & 1 ) ) retStat = stat;
 
+  stat = traceCtlPvExpStr.expand2nd( numMacros, macros, expansions );
+  if ( !( stat & 1 ) ) retStat = stat;
+
   stat = trigPvExpStr.expand2nd( numMacros, macros, expansions );
   if ( !( stat & 1 ) ) retStat = stat;
 
@@ -6575,6 +7059,9 @@ int i, result;
   if ( result ) return result;
 
   result = y2Label.containsPrimaryMacros();
+  if ( result ) return result;
+
+  result = traceCtlPvExpStr.containsPrimaryMacros();
   if ( result ) return result;
 
   result = trigPvExpStr.containsPrimaryMacros();
@@ -6649,6 +7136,11 @@ int ii;
       return resetPvExpStr.getExpanded();
 
     }
+    else if ( i == ( XYGC_K_MAX_TRACES * 2 + 2 ) ) {
+
+      return traceCtlPvExpStr.getExpanded();
+
+    }
 
   }
   else {
@@ -6673,6 +7165,11 @@ int ii;
     else if ( i == ( XYGC_K_MAX_TRACES * 2 + 1 ) ) {
 
       return resetPvExpStr.getRaw();
+
+    }
+    else if ( i == ( XYGC_K_MAX_TRACES * 2 + 2 ) ) {
+
+      return traceCtlPvExpStr.getRaw();
 
     }
 
@@ -6792,6 +7289,8 @@ XmString str;
       // for timer
       updateTimer = 0;
       updateTimerActive = 0;
+      updateAutoScaleTimer = 0;
+      updateAutoScaleTimerActive = 0;
 
       // for message dialog
       msgDialog.create( actWin->topWidgetId() );
@@ -6876,14 +7375,33 @@ XmString str;
       numBufferScrolls = 0;
       needConnect = needInit = needRefresh = needErase = needDraw = 
        needUpdate = needResetConnect = needReset = needTrigConnect =
-       needTrig = needXRescale = needBufferScroll = needVectorUpdate =
+       needTrig = needTraceCtlConnect = needTraceUpdate =
+       needXRescale = needBufferScroll = needVectorUpdate =
        needRealUpdate = needBoxRescale = needNewLimits =
-       needOriginalLimits = 0;
+       needOriginalLimits = needAutoScaleUpdate = 0;
       drawGridFlag = 0;
 
       for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
         needY1Rescale[yi] = 0;
         numYTraces[yi] = 0;
+      }
+
+      traceCtlPv = NULL;
+      initialTraceCtlConnection = 1;
+
+      if ( !blankOrComment( traceCtlPvExpStr.getExpanded() ) ) {
+        traceCtlPvExists = 1;
+        traceCtlPv = the_PV_Factory->create( traceCtlPvExpStr.getExpanded() );
+	if ( traceCtlPv ) {
+	  traceCtlPv->add_conn_state_callback( traceCtlMonitorConnection, this );
+	}
+	else {
+          fprintf( stderr, "pv create failed for [%s]\n",
+           traceCtlPvExpStr.getExpanded() );
+        }
+      }
+      else {
+        traceCtlPvExists = 0;
       }
 
       resetPv = NULL;
@@ -7039,6 +7557,32 @@ XmString str;
     break;
 
   case 3:
+
+    if ( autoScaleBothDirections ) {
+
+      if ( autoScaleTimerMs.isNull() ) {
+        updateAutoScaleTimerValue = 5000;
+      }
+      else {
+        updateAutoScaleTimerValue = autoScaleTimerMs.value();
+      }
+
+      updateAutoScaleTimerValue = autoScaleTimerMs.value();
+      if ( updateAutoScaleTimerValue < 1000 ) {
+        updateAutoScaleTimerValue = 1000;
+      }
+
+      if ( !updateAutoScaleTimerActive ) {
+        updateAutoScaleTimer = appAddTimeOut( actWin->appCtx->appContext(),
+         updateAutoScaleTimerValue, updateAutoScaleTimerAction, this );
+        updateAutoScaleTimerActive = 1;
+      }
+
+    }
+
+    break;
+
+
   case 4:
   case 5:
   case 6:
@@ -7071,6 +7615,14 @@ int i;
       updateTimerActive = 0;
     }
 
+    if ( updateAutoScaleTimerActive ) {
+      if ( updateAutoScaleTimer ) {
+        XtRemoveTimeOut( updateAutoScaleTimer );
+        updateAutoScaleTimer = 0;
+      }
+      updateAutoScaleTimerActive = 0;
+    }
+
     if ( ef.formIsPoppedUp() ) {
       ef.popdown();
     }
@@ -7085,6 +7637,13 @@ int i;
     }
 
     msgDialog.destroy(); 
+
+    if ( traceCtlPv ) {
+      traceCtlPv->remove_conn_state_callback( traceCtlMonitorConnection, this );
+      traceCtlPv->remove_value_callback( traceCtlValueUpdate, this );
+      traceCtlPv->release();
+      traceCtlPv = NULL;
+    }
 
     if ( resetPv ) {
       resetPv->remove_conn_state_callback( resetMonitorConnection, this );
@@ -7798,14 +8357,18 @@ int xyGraphClass::getButtonActionRequest (
 
 void xyGraphClass::executeDeferred ( void ) {
 
-int i, ii, nc, ni, nu, nvu, nru, nr, ne, nd, nrstc, nrst, ntrgc, tmpC,
- ntrg, nxrescl, nbs, nbrescl, nnl, nol,
+int i, ii, nc, ni, nu, nvu, nru, nr, ne, nd, ntcc, ntu, nrstc, nrst, ntrgc, tmpC,
+ ntrg, nxrescl, nbs, nbrescl, nnl, nol, nasu,
  eleSize, doRescale, anyRescale, size,
  ny1rescl[NUM_Y_AXES], num;
 double dyValue, dxValue, range, oneMax, oldXMin, xmin, xmax, ymin[2], ymax[2],
  scaledX, scaledY;
 char format[31+1];
 int yi, yScaleIndex, allChronological;
+
+double checkXMin, checkXMax, checkY1Min[NUM_Y_AXES], checkY1Max[NUM_Y_AXES],
+ diff, maxDiff;
+int autoScaleX, autoScaleY[NUM_Y_AXES];
 
   if ( actWin->isIconified ) return;
 
@@ -7827,6 +8390,8 @@ int yi, yScaleIndex, allChronological;
   nr = needRefresh; needRefresh = 0;
   ne = needErase; needErase = 0;
   nd = needDraw; needDraw = 0;
+  ntcc = needTraceCtlConnect; needTraceCtlConnect = 0;
+  ntu = needTraceUpdate; needTraceUpdate = 0;
   nrstc = needResetConnect; needResetConnect = 0;
   nrst = needReset; needReset = 0;
   ntrgc = needTrigConnect; needTrigConnect = 0;
@@ -7836,6 +8401,7 @@ int yi, yScaleIndex, allChronological;
   nbrescl = needBoxRescale; needBoxRescale = 0;
   nnl = needNewLimits; needNewLimits = 0;
   nol = needOriginalLimits; needOriginalLimits = 0;
+  nasu = needAutoScaleUpdate; needAutoScaleUpdate = 0;
   actWin->remDefExeNode( aglPtr );
 
   for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
@@ -7946,6 +8512,26 @@ int yi, yScaleIndex, allChronological;
 
   }
 
+  if ( ntcc ) {
+
+    if ( initialTraceCtlConnection ) {
+
+      initialTraceCtlConnection = 0;
+
+      traceCtlPv->add_value_callback( traceCtlValueUpdate, this );
+
+    }
+
+  }
+
+  if ( ntu ) {
+
+    regenBuffer();
+    fullRefresh();
+    nru = 1;
+
+  }
+
   if ( nrstc ) {
 
     if ( initialResetConnection ) {
@@ -7975,7 +8561,8 @@ int yi, yScaleIndex, allChronological;
     for ( i=0; i<numTraces; i++ ) {
 
       if (
-           ( plotStyle[i] == XYGC_K_PLOT_STYLE_LINE ) &&
+           ( ( plotStyle[i] == XYGC_K_PLOT_STYLE_LINE ) ||
+             ( plotStyle[i] == XYGC_K_PLOT_STYLE_POINT ) ) &&
            ( traceType[i] == XYGC_K_TRACE_CHRONOLOGICAL ) &&
            ( yPvCount[i] == 1 ) && // must be scalar; use y here,
                                    // x is not used for chonological
@@ -8396,19 +8983,42 @@ int yi, yScaleIndex, allChronological;
     }
 
     if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
        format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else if ( xAxisStyle == XYGC_K_AXIS_STYLE_TIME_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
        format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else {
-      get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_scale_params1( curXMin, curXMax,
+       &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
        format );
+      if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+        adjCurXMin = curXMin;
+        adjCurXMax = curXMax;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
   
     for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
@@ -8431,14 +9041,30 @@ int yi, yScaleIndex, allChronological;
         }
 
         if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+           &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
         else {
-          get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+           &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+            adjCurY1Min[yi] = curY1Min[yi];
+            adjCurY1Max[yi] = curY1Max[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
 
       }
@@ -8673,13 +9299,15 @@ int yi, yScaleIndex, allChronological;
         getXMinMax( &curXMin, &oneMax );
 
         range = xRescaleValue - curXMin;
-        curXMax = xRescaleValue + 0.33 * range;
+        curXMax = xRescaleValue;
+        //curXMax = xRescaleValue + 0.33 * range;
 
       }
       else {
 
         range = xRescaleValue - curXMin;
-        curXMax = xRescaleValue + 0.1 * range;
+        curXMax = xRescaleValue;
+        //curXMax = xRescaleValue + 0.1 * range;
 
       }
 
@@ -8760,19 +9388,42 @@ int yi, yScaleIndex, allChronological;
     }
 
     if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
        format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else if ( xAxisStyle == XYGC_K_AXIS_STYLE_TIME_LOG10 ) {
-      get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
        format );
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
     else {
-      get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+      get_scale_params1( curXMin, curXMax,
+       &adjCurXMin, &adjCurXMax,
        &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
        format );
+      if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+        adjCurXMin = curXMin;
+        adjCurXMax = curXMax;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+        curXMin = adjCurXMin;
+      }
+      if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+        curXMax = adjCurXMax;
+      }
     }
 
     updateDimensions();
@@ -8863,14 +9514,30 @@ int yi, yScaleIndex, allChronological;
       }
 
       if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
-        get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-         &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+        get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+         &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
          &curY1MinorsPerMajor[yi], format );
+        if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+          curY1Min[yi] = adjCurY1Min[yi];
+        }
+        if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+          curY1Max[yi] = adjCurY1Max[yi];
+        }
       }
       else {
-        get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-         &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+        get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+         &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
          &curY1MinorsPerMajor[yi], format );
+        if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+          adjCurY1Min[yi] = curY1Min[yi];
+          adjCurY1Max[yi] = curY1Max[yi];
+        }
+        if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+          curY1Min[yi] = adjCurY1Min[yi];
+        }
+        if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+          curY1Max[yi] = adjCurY1Max[yi];
+        }
       }
 
       updateDimensions();
@@ -8899,8 +9566,8 @@ int yi, yScaleIndex, allChronological;
   if ( nol ) {
 
     getXMinMax( &xmin, &xmax );
-    getYMinMax( 0, &ymin[0], &ymax[0] );
-    getYMinMax( 1, &ymin[1], &ymax[1] );
+    getYMinMax( 0, ymin, ymax );
+    getYMinMax( 1, ymin, ymax );
 
     for ( num=0; num<2; num++ ) {
 
@@ -8915,6 +9582,14 @@ int yi, yScaleIndex, allChronological;
       else if ( xAxisSource == XYGC_K_USER_SPECIFIED ) {
         curXMin = xMin.value();
         curXMax = xMax.value();
+        get_scale_params1( curXMin, curXMax,
+         &adjCurXMin, &adjCurXMax,
+         &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
+         format );
+        if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+          adjCurXMin = curXMin;
+          adjCurXMax = curXMax;
+        }
       }
       else {
         curXMin = xMin.value();
@@ -8922,14 +9597,31 @@ int yi, yScaleIndex, allChronological;
         if ( xmin < curXMin ) curXMin = xmin;
         if ( xmax > curXMax ) curXMax = xmax;
         if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
 	else {
-          get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_scale_params1( curXMin, curXMax,
+           &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+            adjCurXMin = curXMin;
+            adjCurXMax = curXMax;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
       }
       if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
@@ -8945,14 +9637,31 @@ int yi, yScaleIndex, allChronological;
         if ( xmin < curXMin ) curXMin = xmin;
         if ( xmax > curXMax ) curXMax = xmax;
         if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
 	else {
-          get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_scale_params1( curXMin, curXMax,
+           &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+            adjCurXMin = curXMin;
+            adjCurXMax = curXMax;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
       }
 
@@ -8979,6 +9688,13 @@ int yi, yScaleIndex, allChronological;
 	else if ( y1AxisSource[yi] == XYGC_K_USER_SPECIFIED ) {
           curY1Min[yi] = y1Min[yi].value();
           curY1Max[yi] = y1Max[yi].value();
+          get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+           &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+           &curY1MinorsPerMajor[yi], format );
+          if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+            adjCurY1Min[yi] = curY1Min[yi];
+            adjCurY1Max[yi] = curY1Max[yi];
+          }
 	}
 	else {
           curY1Min[yi] = y1Min[yi].value();
@@ -8991,14 +9707,30 @@ int yi, yScaleIndex, allChronological;
           curY1Max[yi] = log10( curY1Max[yi] );
 	}
         if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+           &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
         else {
-          get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+           &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+            adjCurY1Min[yi] = curY1Min[yi];
+            adjCurY1Max[yi] = curY1Max[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
 
 #if 0
@@ -9045,6 +9777,195 @@ int yi, yScaleIndex, allChronological;
 
   }
 
+  if ( nasu && !doingBoxRescale ) {
+
+    if ( xAxisSource == XYGC_K_AUTOSCALE ) {
+
+      maxDiff = 0;
+      autoScaleX = 0;
+
+      getXMinMax( &checkXMin, &checkXMax );
+      if ( kpXMinEfDouble.isNull() || kpXMaxEfDouble.isNull() ) {
+        if ( ( curXMax - curXMin ) != 0 ) {
+          diff = ( fabs( curXMax - curXMin ) - fabs( checkXMax - checkXMin ) ) /
+           fabs( curXMax - curXMin );
+          if ( diff > maxDiff ) maxDiff = diff;
+        }
+      }
+
+      if ( maxDiff > autoScaleThreshFrac ) {
+        autoScaleX = 1;
+      }
+
+    }
+
+    for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
+
+      maxDiff = 0;
+      autoScaleY[yi] = 0;
+
+      if ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
+
+        getYMinMax( yi, checkY1Min, checkY1Max );
+
+	if ( kpY1MinEfDouble[yi].isNull() || kpY1MaxEfDouble[yi].isNull() ) {
+          if ( ( curY1Max[yi] - curY1Min[yi] ) != 0 ) {
+            diff = ( fabs( curY1Max[yi] - curY1Min[yi] ) -
+                     fabs( checkY1Max[yi] - checkY1Min[yi] ) ) /
+             fabs( curY1Max[yi] - curY1Min[yi] );
+            if ( diff > maxDiff ) maxDiff = diff;
+          }
+	}
+
+        if ( maxDiff > autoScaleThreshFrac ) {
+          autoScaleY[yi] = 1;
+        }
+
+      }
+
+    }
+
+    anyRescale = 0;
+
+    if ( autoScaleX ) {
+
+      if ( xAxisSource == XYGC_K_AUTOSCALE ) {
+
+        anyRescale = 1;
+
+        getXMinMax( &checkXMin, &checkXMax );
+
+        if ( kpXMinEfDouble.isNull() ) {
+          curXMin = checkXMin - 0.02 * fabs( checkXMax - curXMin );
+	}
+        if ( kpXMaxEfDouble.isNull() ) {
+	  curXMax = checkXMax + 0.02 * fabs( checkXMax - curXMin );
+	}
+
+        if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
+          if ( curXMin > 0 ) curXMin = log10( curXMin );
+          if ( curXMax > 0 ) curXMax = log10( curXMax );
+          get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
+           &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
+           format );
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
+        }
+        else if ( xAxisStyle == XYGC_K_AXIS_STYLE_TIME_LOG10 ) {
+          if ( curXMin > 0 ) curXMin = log10( curXMin );
+          if ( curXMax > 0 ) curXMax = log10( curXMax );
+          get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
+           &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
+           format );
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
+        }
+        else {
+          get_scale_params1( curXMin, curXMax,
+           &adjCurXMin, &adjCurXMax,
+           &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
+           format );
+          if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+            adjCurXMin = curXMin;
+            adjCurXMax = curXMax;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
+        }
+
+        for ( i=0; i<numTraces; i++ ) {
+          xFactor[i] =
+           (double) ( plotAreaW ) / ( curXMax - curXMin );
+          xOffset[i] = plotAreaX;
+        }
+
+      }
+
+    }
+
+    for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
+
+      if ( autoScaleY[yi] ) {
+
+        if ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
+
+          getYMinMax( yi, checkY1Min, checkY1Max );
+
+	  if ( kpY1MinEfDouble[yi].isNull() ) {
+	    curY1Min[yi] = checkY1Min[yi] - 0.02 * fabs( checkY1Max[yi] - curY1Min[yi] );
+	  }
+
+	  if ( kpY1MaxEfDouble[yi].isNull() ) {
+	    curY1Max[yi] = checkY1Max[yi] + 0.02 * fabs( checkY1Max[yi] - curY1Min[yi] );
+	  }
+
+          anyRescale = 1;
+
+          if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
+            if ( curY1Min[yi] > 0 ) curY1Min[yi] = log10( curY1Min[yi] );
+            if ( curY1Max[yi] > 0 ) curY1Max[yi] = log10( curY1Max[yi] );
+            get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+             &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+             &curY1MinorsPerMajor[yi], format );
+            if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+              curY1Min[yi] = adjCurY1Min[yi];
+            }
+            if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+              curY1Max[yi] = adjCurY1Max[yi];
+            }
+          }
+          else {
+            get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+             &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+             &curY1MinorsPerMajor[yi], format );
+            if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+              adjCurY1Min[yi] = curY1Min[yi];
+              adjCurY1Max[yi] = curY1Max[yi];
+            }
+            if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+              curY1Min[yi] = adjCurY1Min[yi];
+            }
+            if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+              curY1Max[yi] = adjCurY1Max[yi];
+            }
+          }
+
+          for ( i=0; i<numTraces; i++ ) {
+
+            yScaleIndex = 0;
+            if ( y2Scale[i] ) yScaleIndex = 1;
+
+            y1Factor[yScaleIndex][i] =
+             (double) ( plotAreaH ) / ( curY1Max[yScaleIndex] - curY1Min[yScaleIndex] );
+            y1Offset[yScaleIndex][i] = plotAreaY;
+
+          }
+
+        }
+
+      }
+
+    }
+
+    if ( anyRescale ) {
+      updateDimensions();
+      doRescale = 1;
+    }
+
+  }
+
   if ( nnl ) {
 
     anyRescale = 0;
@@ -9053,26 +9974,56 @@ int yi, yScaleIndex, allChronological;
 
       anyRescale = 1;
 
-      getXMinMax( &curXMin, &curXMax );
+      getXMinMax( &checkXMin, &checkXMax );
+
+      if ( kpXMinEfDouble.isNull() ) {
+        curXMin = checkXMin - 0.02 * fabs( checkXMax - curXMin );
+      }
+      if ( kpXMaxEfDouble.isNull() ) {
+        curXMax = checkXMax + 0.02 * fabs( checkXMax - curXMin );
+      }
 
       if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
         if ( curXMin > 0 ) curXMin = log10( curXMin );
         if ( curXMax > 0 ) curXMax = log10( curXMax );
-        get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+        get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
          &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
          format );
+        if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+          curXMin = adjCurXMin;
+        }
+        if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+          curXMax = adjCurXMax;
+        }
       }
       else if ( xAxisStyle == XYGC_K_AXIS_STYLE_TIME_LOG10 ) {
         if ( curXMin > 0 ) curXMin = log10( curXMin );
         if ( curXMax > 0 ) curXMax = log10( curXMax );
-        get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+        get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
          &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
          format );
+        if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+          curXMin = adjCurXMin;
+        }
+        if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+          curXMax = adjCurXMax;
+        }
       }
       else {
-        get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+        get_scale_params1( curXMin, curXMax,
+         &adjCurXMin, &adjCurXMax,
          &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
          format );
+        if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+          adjCurXMin = curXMin;
+          adjCurXMax = curXMax;
+        }
+        if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+          curXMin = adjCurXMin;
+        }
+        if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+          curXMax = adjCurXMax;
+        }
       }
 
       for ( i=0; i<numTraces; i++ ) {
@@ -9081,41 +10032,56 @@ int yi, yScaleIndex, allChronological;
         xOffset[i] = plotAreaX;
       }
 
-      kpXMinEfDouble.setNull(1);
-      kpXMaxEfDouble.setNull(1);
-
     }
 
     for ( yi=0; yi<xyGraphClass::NUM_Y_AXES; yi++ ) {
 
       if ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) {
 
-        getYMinMax( yi, curY1Min, curY1Max );
+        getYMinMax( yi, checkY1Min, checkY1Max );
+
+	if ( kpY1MinEfDouble[yi].isNull() ) {
+          curY1Min[yi] = checkY1Min[yi] - 0.02 * fabs( checkY1Max[yi] - checkY1Min[yi] );
+	}
+	if ( kpY1MaxEfDouble[yi].isNull() ) {
+          curY1Max[yi] = checkY1Max[yi] + 0.02 * fabs( checkY1Max[yi] - checkY1Min[yi] );
+	}
 
         anyRescale = 1;
 
         if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
           if ( curY1Min[yi] > 0 ) curY1Min[yi] = log10( curY1Min[yi] );
           if ( curY1Max[yi] > 0 ) curY1Max[yi] = log10( curY1Max[yi] );
-          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+           &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
         else {
-          get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+           &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+            adjCurY1Min[yi] = curY1Min[yi];
+            adjCurY1Max[yi] = curY1Max[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
 
         for ( i=0; i<numTraces; i++ ) {
           y1Factor[yi][i] =
            (double) ( plotAreaH ) / ( curY1Max[yi] - curY1Min[yi] );
           y1Offset[yi][i] = plotAreaY;
-        }
-
-        if ( numYTraces[yi] > 0 ) {
-          kpY1MinEfDouble[yi].setNull(1);
-          kpY1MaxEfDouble[yi].setNull(1);
         }
 
       }
@@ -9210,14 +10176,31 @@ int yi, yScaleIndex, allChronological;
         curXMin = xMin.value();
         curXMax = xMax.value();
         if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
 	else {
-          get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_scale_params1( curXMin, curXMax,
+           &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+            adjCurXMin = curXMin;
+            adjCurXMax = curXMax;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
       }
       if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
@@ -9231,14 +10214,31 @@ int yi, yScaleIndex, allChronological;
 
       if ( allChronological ) { // then autoscale X
         if ( xAxisStyle == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_log10_scale_params1( curXMin, curXMax, &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
 	else {
-          get_scale_params1( curXMin, curXMax, &curXMin, &curXMax,
+          get_scale_params1( curXMin, curXMax,
+           &adjCurXMin, &adjCurXMax,
            &curXNumLabelTicks, &curXMajorsPerLabel, &curXMinorsPerMajor,
            format );
+          if ( xAxisSmoothing == XYGC_K_NO_SMOOTHING ) {
+            adjCurXMin = curXMin;
+            adjCurXMax = curXMax;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMinEfDouble.isNull() ) {
+            curXMin = adjCurXMin;
+          }
+          if ( ( xAxisSource == XYGC_K_AUTOSCALE ) && kpXMaxEfDouble.isNull() ) {
+            curXMax = adjCurXMax;
+          }
 	}
       }
 
@@ -9273,14 +10273,30 @@ int yi, yScaleIndex, allChronological;
           curY1Max[yi] = log10( curY1Max[yi] );
 	}
         if ( y1AxisStyle[yi] == XYGC_K_AXIS_STYLE_LOG10 ) {
-          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_log10_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi], &adjCurY1Max[yi],
+           &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
         else {
-          get_scale_params1( curY1Min[yi], curY1Max[yi], &curY1Min[yi],
-           &curY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
+          get_scale_params1( curY1Min[yi], curY1Max[yi], &adjCurY1Min[yi],
+           &adjCurY1Max[yi], &curY1NumLabelTicks[yi], &curY1MajorsPerLabel[yi],
            &curY1MinorsPerMajor[yi], format );
+          if ( y1AxisSmoothing[yi] == XYGC_K_NO_SMOOTHING ) {
+            adjCurY1Min[yi] = curY1Min[yi];
+            adjCurY1Max[yi] = curY1Max[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MinEfDouble[yi].isNull() ) {
+            curY1Min[yi] = adjCurY1Min[yi];
+          }
+          if ( ( y1AxisSource[yi] == XYGC_K_AUTOSCALE ) && kpY1MaxEfDouble[yi].isNull() ) {
+            curY1Max[yi] = adjCurY1Max[yi];
+          }
         }
 
         for ( i=0; i<numTraces; i++ ) {
@@ -9523,7 +10539,7 @@ int xyGraphClass::fillPlotArray (
 ) {
 
 int i, npts, curCount;
-short curX, curY, prevX, prevY;
+short curX, curY, prevX=0, prevY=0;
 double n;
 
   curCount = npts = 0;
@@ -9883,6 +10899,7 @@ void xyGraphClass::drawXScale ( void ) {
     }
     else {
 
+#if 0
       drawXLinearScale ( actWin->d, pixmap, &actWin->executeGc, xAxis,
        plotAreaX, plotAreaY+plotAreaH, plotAreaW,
        curXMin, curXMax,
@@ -9892,6 +10909,26 @@ void xyGraphClass::drawXScale ( void ) {
        actWin->fi, fontTag, fs, 1,
        !kpXMinEfDouble.isNull(), !kpXMaxEfDouble.isNull(),
        0 );
+#endif
+
+#if 1
+      if ( xGridMode == XYGC_K_USER_SPECIFIED ) {
+        curXNumLabelTicks = xNumLabelIntervals.value();
+        if ( curXNumLabelTicks < 1 ) curXNumLabelTicks = 1;
+        curXMajorsPerLabel = xNumMajorPerLabel.value();
+        curXMinorsPerMajor = xNumMinorPerMajor.value();
+      }
+
+      drawXLinearScale2 ( actWin->d, pixmap, &actWin->executeGc, xAxis,
+       plotAreaX, plotAreaY+plotAreaH, plotAreaW,
+       curXMin, curXMax, adjCurXMin, adjCurXMax,
+       curXNumLabelTicks, curXMajorsPerLabel, curXMinorsPerMajor,
+       actWin->ci->pix(fgColor), actWin->executeGc.getBaseBG(), xLabelGrid,
+       xMajorGrid, xMinorGrid, plotAreaH, actWin->ci->pix(gridColor),
+       actWin->fi, fontTag, fs, 1,
+       !kpXMinEfDouble.isNull(), !kpXMaxEfDouble.isNull(),
+       0 );
+#endif
 
     }
 
@@ -9942,9 +10979,17 @@ int yi = 0;
   }
   else {
 
-    drawYLinearScale ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
+    if ( y1GridMode[yi] == XYGC_K_USER_SPECIFIED ) {
+      curY1NumLabelTicks[yi] = y1NumLabelIntervals[yi].value();
+      if ( curY1NumLabelTicks[yi] < 1 ) curY1NumLabelTicks[yi] = 1;
+      curY1MajorsPerLabel[yi] = y1NumMajorPerLabel[yi].value();
+      curY1MinorsPerMajor[yi] = y1NumMinorPerMajor[yi].value();
+    }
+
+    drawYLinearScale2 ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
      plotAreaX, plotAreaY+plotAreaH, plotAreaH,
      curY1Min[yi], curY1Max[yi],
+     adjCurY1Min[yi], adjCurY1Max[yi],
      curY1NumLabelTicks[yi], curY1MajorsPerLabel[yi], curY1MinorsPerMajor[yi],
      actWin->ci->pix(fgColor), actWin->executeGc.getBaseBG(), y1LabelGrid[yi],
      y1MajorGrid[yi], y1MinorGrid[yi], plotAreaW, actWin->ci->pix(gridColor),
@@ -9999,9 +11044,17 @@ int yi = 1;
   }
   else {
 
-    drawY2LinearScale ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
+    if ( y1GridMode[yi] == XYGC_K_USER_SPECIFIED ) {
+      curY1NumLabelTicks[yi] = y1NumLabelIntervals[yi].value();
+      if ( curY1NumLabelTicks[yi] < 1 ) curY1NumLabelTicks[yi] = 1;
+      curY1MajorsPerLabel[yi] = y1NumMajorPerLabel[yi].value();
+      curY1MinorsPerMajor[yi] = y1NumMinorPerMajor[yi].value();
+    }
+
+    drawY2LinearScale2 ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
      plotAreaX+plotAreaW, plotAreaY+plotAreaH, plotAreaH,
      curY1Min[yi], curY1Max[yi],
+     adjCurY1Min[yi], adjCurY1Max[yi],
      curY1NumLabelTicks[yi], curY1MajorsPerLabel[yi], curY1MinorsPerMajor[yi],
      actWin->ci->pix(fgColor), actWin->executeGc.getBaseBG(), y1LabelGrid[yi],
      y1MajorGrid[yi], y1MinorGrid[yi], plotAreaW, actWin->ci->pix(gridColor),
@@ -10046,6 +11099,7 @@ int yi;
     }
     else {
 
+#if 0
       drawXLinearScale ( actWin->d, pixmap, &actWin->executeGc, xAxis,
        plotAreaX, plotAreaY+plotAreaH, plotAreaW,
        curXMin, curXMax,
@@ -10055,6 +11109,26 @@ int yi;
        actWin->fi, fontTag, fs, 1,
        !kpXMinEfDouble.isNull(), !kpXMaxEfDouble.isNull(),
        0 );
+#endif
+
+#if 1
+      if ( xGridMode == XYGC_K_USER_SPECIFIED ) {
+        curXNumLabelTicks = xNumLabelIntervals.value();
+        if ( curXNumLabelTicks < 1 ) curXNumLabelTicks = 1;
+        curXMajorsPerLabel = xNumMajorPerLabel.value();
+        curXMinorsPerMajor = xNumMinorPerMajor.value();
+      }
+
+      drawXLinearScale2 ( actWin->d, pixmap, &actWin->executeGc, xAxis,
+       plotAreaX, plotAreaY+plotAreaH, plotAreaW,
+       curXMin, curXMax, adjCurXMin, adjCurXMax,
+       curXNumLabelTicks, curXMajorsPerLabel, curXMinorsPerMajor,
+       actWin->ci->pix(fgColor), actWin->executeGc.getBaseBG(), xLabelGrid,
+       xMajorGrid, xMinorGrid, plotAreaH, actWin->ci->pix(gridColor),
+       actWin->fi, fontTag, fs, 1,
+       !kpXMinEfDouble.isNull(), !kpXMaxEfDouble.isNull(),
+       0 );
+#endif
 
     }
 
@@ -10081,9 +11155,17 @@ int yi;
         }
         else {
 
-          drawYLinearScale ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
+          if ( y1GridMode[yi] == XYGC_K_USER_SPECIFIED ) {
+            curY1NumLabelTicks[yi] = y1NumLabelIntervals[yi].value();
+            if ( curY1NumLabelTicks[yi] < 1 ) curY1NumLabelTicks[yi] = 1;
+            curY1MajorsPerLabel[yi] = y1NumMajorPerLabel[yi].value();
+            curY1MinorsPerMajor[yi] = y1NumMinorPerMajor[yi].value();
+          }
+
+          drawYLinearScale2 ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
            plotAreaX, plotAreaY+plotAreaH, plotAreaH,
            curY1Min[yi], curY1Max[yi],
+           adjCurY1Min[yi], adjCurY1Max[yi],
            curY1NumLabelTicks[yi], curY1MajorsPerLabel[yi],
            curY1MinorsPerMajor[yi], actWin->ci->pix(fgColor),
            actWin->executeGc.getBaseBG(), y1LabelGrid[yi],
@@ -10112,9 +11194,17 @@ int yi;
         }
         else {
 
-          drawY2LinearScale ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
+          if ( y1GridMode[yi] == XYGC_K_USER_SPECIFIED ) {
+            curY1NumLabelTicks[yi] = y1NumLabelIntervals[yi].value();
+            if ( curY1NumLabelTicks[yi] < 1 ) curY1NumLabelTicks[yi] = 1;
+            curY1MajorsPerLabel[yi] = y1NumMajorPerLabel[yi].value();
+            curY1MinorsPerMajor[yi] = y1NumMinorPerMajor[yi].value();
+          }
+
+          drawY2LinearScale2 ( actWin->d, pixmap, &actWin->executeGc, y1Axis[yi],
            plotAreaX+plotAreaW, plotAreaY+plotAreaH, plotAreaH,
            curY1Min[yi], curY1Max[yi],
+           adjCurY1Min[yi], adjCurY1Max[yi],
            curY1NumLabelTicks[yi], curY1MajorsPerLabel[yi], curY1MinorsPerMajor[yi],
            actWin->ci->pix(fgColor), actWin->executeGc.getBaseBG(), y1LabelGrid[yi],
            y1MajorGrid[yi], y1MinorGrid[yi], plotAreaW, actWin->ci->pix(gridColor),
@@ -10181,7 +11271,7 @@ int lX, lY;
 void xyGraphClass::drawYlabel ( void ) {
 
 unsigned int i;
-int lX, lY, lW, inc, stat;
+int lX, lY, lW, inc, stat, useRotated, cW, maxW;
 char fullName[127+1], label[127+1];
 
   if ( y1Axis[0] && !blank( yLabel.getExpanded() ) ) {
@@ -10189,24 +11279,55 @@ char fullName[127+1], label[127+1];
     strncpy( label, yLabel.getExpanded(), 127 );
     label[127] = 0;
 
-    lX = fontHeight;
-    //lY = h - fontHeight * 3 / 2;
-    lW = XTextWidth( fs, label, strlen(label) );
-    lY = plotAreaY + ( plotAreaH + lW ) / 2;
-
     actWin->executeGc.saveFg();
     actWin->executeGc.setFG( actWin->ci->pix(fgColor) );
 
+    useRotated = 1;
+
     stat = actWin->fi->getFontName( fontTag, 90.0, fullName, 127 );
-    actWin->executeGc.setNativeFont( fullName, actWin->fi );
+    if ( !( stat & 1 ) ) {
+      useRotated = 0;
+    }
+
+    stat = actWin->executeGc.setNativeFont( fullName, actWin->fi );
+    if ( !( stat & 1 ) ) {
+      useRotated = 0;
+    }
+
+    if ( useRotated ) {
+      lX = fontHeight;
+      lW = 2 * XTextWidth( fs, label, strlen(label) );
+      lY = plotAreaY + ( plotAreaH + lW ) / 2;
+    }
+    else {
+      maxW = XTextWidth( fs, &label[0], 1 );
+      for ( i=0; i<strlen(label); i++ ) {
+        cW = XTextWidth( fs, &label[i], 1 );
+        if ( cW > maxW ) maxW = cW;
+      }
+      lW = fontHeight * strlen(label);
+      actWin->fi->loadFontTag( fontTag );
+      actWin->executeGc.setFontTag( fontTag, actWin->fi );
+      lY = fontHeight + plotAreaY + ( plotAreaH - lW ) / 2;
+    }
 
     for ( i=0; i<strlen(label); i++ ) {
+
+      if ( !useRotated ) {
+        lX = maxW - XTextWidth( fs, &label[i], 1 ) / 2;
+      }
 
       XDrawString( actWin->d, pixmap,
        actWin->executeGc.normGC(), lX, lY, &label[i], 1 );
 
-      inc = XTextWidth( fs, &label[i], 1 );
-      lY -= inc;
+      if ( useRotated ) {
+        inc = 2*XTextWidth( fs, &label[i], 1 );
+        lY -= inc;
+      }
+      else {
+        inc = fontHeight;
+        lY += inc;
+      }
 
     }
 
@@ -10219,7 +11340,7 @@ char fullName[127+1], label[127+1];
 void xyGraphClass::drawY2label ( void ) {
 
 unsigned int i;
-int lX, lY, lW, inc, stat;
+int lX, lY, lW, inc, stat, useRotated, cW, maxW;
 char fullName[127+1], label[127+1];
 
   if ( y1Axis[1] && !blank( y2Label.getExpanded() ) ) {
@@ -10227,23 +11348,55 @@ char fullName[127+1], label[127+1];
     strncpy( label, y2Label.getExpanded(), 127 );
     label[127] = 0;
 
-    lX = w - fontHeight;
-    lW = XTextWidth( fs, label, strlen(label) );
-    lY = plotAreaY + ( plotAreaH - lW ) / 2;
-
     actWin->executeGc.saveFg();
     actWin->executeGc.setFG( actWin->ci->pix(fgColor) );
 
+    useRotated = 1;
+
     stat = actWin->fi->getFontName( fontTag, 270.0, fullName, 127 );
-    actWin->executeGc.setNativeFont( fullName, actWin->fi );
+    if ( !( stat & 1 ) ) {
+      useRotated = 0;
+    }
+
+    stat = actWin->executeGc.setNativeFont( fullName, actWin->fi );
+    if ( !( stat & 1 ) ) {
+      useRotated = 0;
+    }
+
+    if ( useRotated ) {
+      lX = w - fontHeight;
+      lW = 2 * XTextWidth( fs, label, strlen(label) );
+      lY = plotAreaY + ( plotAreaH - lW ) / 2;
+    }
+    else {
+      maxW = XTextWidth( fs, &label[0], 1 );
+      for ( i=0; i<strlen(label); i++ ) {
+        cW = XTextWidth( fs, &label[i], 1 );
+        if ( cW > maxW ) maxW = cW;
+      }
+      lW = fontHeight * strlen(label);
+      actWin->fi->loadFontTag( fontTag );
+      actWin->executeGc.setFontTag( fontTag, actWin->fi );
+      lY = fontHeight + plotAreaY + ( plotAreaH - lW ) / 2;
+    }
 
     for ( i=0; i<strlen(label); i++ ) {
+
+      if ( !useRotated ) {
+        lX = w - maxW - XTextWidth( fs, &label[i], 1 ) / 2;
+      }
 
       XDrawString( actWin->d, pixmap,
        actWin->executeGc.normGC(), lX, lY, &label[i], 1 );
 
-      inc = XTextWidth( fs, &label[i], 1 );
-      lY += inc;
+      if ( useRotated ) {
+        inc = 2*XTextWidth( fs, &label[i], 1 );
+        lY += inc;
+      }
+      else {
+        inc = fontHeight;
+        lY += inc;
+      }
 
     }
 
@@ -10260,7 +11413,7 @@ void xyGraphClass::getPvs (
 
 int i, ii, num;
 
-  num = XYGC_K_MAX_TRACES + XYGC_K_MAX_TRACES + 2;
+  num = XYGC_K_MAX_TRACES + XYGC_K_MAX_TRACES + 3;
 
   if ( max < num ) {
     *n = 0;
@@ -10275,6 +11428,7 @@ int i, ii, num;
   }
   pvs[ii++] = resetPv;
   pvs[ii++] = trigPv;
+  pvs[ii++] = traceCtlPv;
 
 }
 
@@ -10290,33 +11444,36 @@ char *xyGraphClass::crawlerGetNextPv ( void ) {
 
 int i, max;
 
-  max = numTraces*2 + 1;
+  max = numTraces*2 + 2;
 
   if ( crawlerPvIndex >= max ) return NULL;
 
   crawlerPvIndex++;
 
   if ( crawlerPvIndex == 1 ) {
+    return traceCtlPvExpStr.getExpanded();
+  }
+  else if ( crawlerPvIndex == 2 ) {
     return resetPvExpStr.getExpanded();
   }
   else {
 
-    // index starts here from 2; x is even, y is odd
+    // index starts here from 3; x is odd, y is even
 
-    i = crawlerPvIndex / 2 - 1;
+    i = ( crawlerPvIndex - 3 ) / 2;
 
     if ( crawlerPvIndex % 2 ) {
 
-      // odd - y
+      // odd - x
 
-      return yPvExpStr[i].getExpanded();
+      return xPvExpStr[i].getExpanded();
 
     }
     else {
 
-      // even - x
+      // even - y
 
-      return xPvExpStr[i].getExpanded();
+      return yPvExpStr[i].getExpanded();
 
     }
 

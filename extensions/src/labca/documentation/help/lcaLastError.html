@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
-patched version by:  Kenshi Muto, Debian Project.
-* modified by:  Shige TAKENO
-LaTeX2HTML 2002-2-1 (1.70),
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -16,7 +13,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -40,13 +37,13 @@ Calling Syntax</A>
 <H3><A NAME="SECTION000211200000000000000">
 Description</A>
 </H3>
-This routine is a simple extension to <B>scilab</B>'s <TT>lasterror</TT>
-which only allows a single error to be reported. If <B>labCA</B> encounters
+This routine is a simple extension to <SPAN  CLASS="textbf">scilab</SPAN>'s <TT>lasterror</TT>
+which only allows a single error to be reported. If <SPAN  CLASS="textbf">labCA</SPAN> encounters
 an error of general nature then <TT>lasterror</TT> is sufficient
 and <TT>lcaLastError()</TT> reports redundant/identical information.
-However, if a <B>labCA</B> operation only fails on a subset of a vector
+However, if a <SPAN  CLASS="textbf">labCA</SPAN> operation only fails on a subset of a vector
 of PVs then <TT>lcaLastError()</TT> returns an error code for each individual
-PV (as a <I>m x 1</I> vector) so that failing channels can be identified.
+PV (as a <SPAN  CLASS="textit">m x 1</SPAN> vector) so that failing channels can be identified.
 
 <P>
 The error reported by <TT>lasterror</TT> corresponds to the first error
@@ -54,7 +51,7 @@ found in the <TT>err_status</TT> vector.
 
 <P>
 Note that (matching <TT>lasterror</TT>'s semantics) the recorded
-errors are <I>not cleared by a successful <B>labCA</B> operation</I>.
+errors are <I>not cleared by a successful <SPAN  CLASS="textbf">labCA</SPAN> operation</I>.
 Hence, the status returned by <TT>lcaLastError()</TT> is only defined
 after an error occurred and the routine is intended to be used
 from the <TT>catch</TT> section of a <TT>try - catch - end</TT>
@@ -67,14 +64,14 @@ Parameters</A>
 </H3>
 <DL>
 <DT><STRONG>err_status</STRONG></DT>
-<DD><B>m x 1</B> column vector of
+<DD><SPAN  CLASS="textbf">m x 1</SPAN> column vector of
 <A HREF="Error.html#errorhandling">status codes</A>
-for each PV of the last failing <B>labCA</B> call or a scalar.
+for each PV of the last failing <SPAN  CLASS="textbf">labCA</SPAN> call or a scalar.
 Note that this routine can return a scalar even if
 the last operation involved multiple PVs if the
 error was of general nature (e.g., ``invalid argument'').
 In this case the scalar is identical to the error reported
-by <B>scilab</B>'s <TT>lasterror</TT>.
+by <SPAN  CLASS="textbf">scilab</SPAN>'s <TT>lasterror</TT>.
 </DD>
 </DL>
 <H3><A NAME="SECTION000211400000000000000">
@@ -94,8 +91,8 @@ end
 <BR>
 <BR><HR>
 <ADDRESS>
-for EPICS management
-2007-11-16
+till
+2007-10-13
 </ADDRESS>
 </BODY>
 </HTML>

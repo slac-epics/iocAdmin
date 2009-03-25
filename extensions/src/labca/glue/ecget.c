@@ -1,4 +1,4 @@
-/* $Id: ecget.c,v 1.2 2007/11/16 16:45:04 ernesto Exp $ */
+/* $Id: ecget.c,v 1.20 2007/10/14 03:28:04 strauman Exp $ */
 
 /* ecdrget: channel access client routine for successively reading ECDR data.  */
 

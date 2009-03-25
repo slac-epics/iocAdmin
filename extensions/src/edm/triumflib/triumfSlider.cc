@@ -165,7 +165,9 @@ double fvalue;
 
   if ( mslo->controlExists ) {
     if ( mslo->controlPvId ) {
-      stat = mslo->controlPvId->put( fvalue );
+      stat = mslo->controlPvId->put(
+       XDisplayName(mslo->actWin->appCtx->displayName),
+       fvalue );
       if ( !stat ) printf( activeTriumfSliderClass_str59 );
     }
   }
@@ -325,7 +327,9 @@ int at_limit = 0;
 
   if ( mslo->controlExists ) {
     if ( mslo->controlPvId ) {
-      stat = mslo->controlPvId->put( fvalue );
+      stat = mslo->controlPvId->put(
+       XDisplayName(mslo->actWin->appCtx->displayName),
+       fvalue );
       if ( !stat ) printf( activeTriumfSliderClass_str59 );
     }
   }
@@ -392,7 +396,9 @@ double fvalue;
 
   if ( mslo->controlExists ) {
     if ( mslo->controlPvId ) {
-      stat = mslo->controlPvId->put( fvalue );
+      stat = mslo->controlPvId->put(
+       XDisplayName(mslo->actWin->appCtx->displayName),
+       fvalue );
       if ( !stat ) printf( activeTriumfSliderClass_str59 );
     }
   }
@@ -730,7 +736,9 @@ activeTriumfSliderClass *mslo = (activeTriumfSliderClass *) client;
 
   if ( mslo->controlExists ) {
     if ( mslo->controlPvId ) {
-      stat = mslo->controlPvId->put( fvalue );
+      stat = mslo->controlPvId->put(
+       XDisplayName(mslo->actWin->appCtx->displayName),
+       fvalue );
       if ( !stat ) printf( activeTriumfSliderClass_str3 );
       mslo->actWin->appCtx->proc->lock();
       mslo->actWin->addDefExeNode( mslo->aglPtr );
@@ -805,7 +813,9 @@ activeTriumfSliderClass *mslo = (activeTriumfSliderClass *) client;
 
   if ( mslo->controlExists ) {
     if ( mslo->controlPvId ) {
-      stat = mslo->controlPvId->put( fvalue );
+      stat = mslo->controlPvId->put(
+       XDisplayName(mslo->actWin->appCtx->displayName),
+       fvalue );
       if ( !stat ) printf( activeTriumfSliderClass_str3 );
       mslo->actWin->appCtx->proc->lock();
       mslo->actWin->addDefExeNode( mslo->aglPtr );
@@ -1517,6 +1527,7 @@ static int orienTypeEnum[2] = {
    &orientation, &horz );
   tag.loadW( "savedValuePv", &savedValuePvName, emptyStr );
   tag.loadBoolW( "showSavedValue", &showSavedValue, &zero );
+  tag.loadR( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -1644,6 +1655,7 @@ static int orienTypeEnum[2] = {
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -2689,7 +2701,9 @@ double df;
 
       if ( mslo->controlExists ) {
         if ( mslo->controlPvId ) {
-          stat = mslo->controlPvId->put( fvalue );
+          stat = mslo->controlPvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           fvalue );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }
@@ -2740,7 +2754,9 @@ double df;
 
       if ( mslo->controlExists ) {
         if ( mslo->controlPvId ) {
-          stat = mslo->controlPvId->put( fvalue );
+          stat = mslo->controlPvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           fvalue );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }
@@ -2886,7 +2902,9 @@ double df;
 #endif
       if ( mslo->controlExists ) {
         if ( mslo->controlPvId ) {
-          stat = mslo->controlPvId->put( fvalue );
+          stat = mslo->controlPvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           fvalue );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }
@@ -2900,7 +2918,9 @@ double df;
 
       if ( mslo->savedValueExists ) {
         if ( mslo->savedValuePvId ) {
-          stat = mslo->savedValuePvId->put( mslo->savedV );
+          stat = mslo->savedValuePvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           mslo->savedV );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }
@@ -2926,7 +2946,9 @@ double df;
 #endif 
      if ( mslo->controlExists ) {
         if ( mslo->controlPvId ) {
-          stat = mslo->controlPvId->put( mslo->controlV );
+          stat = mslo->controlPvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           mslo->controlV );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }
@@ -3141,7 +3163,9 @@ double fvalue, mult;
 
       if ( mslo->controlExists ) {
         if ( mslo->controlPvId ) {
-          stat = mslo->controlPvId->put( fvalue );
+          stat = mslo->controlPvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           fvalue );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }
@@ -3191,7 +3215,9 @@ double fvalue, mult;
 
       if ( mslo->controlExists ) {
         if ( mslo->controlPvId ) {
-          stat = mslo->controlPvId->put( fvalue );
+          stat = mslo->controlPvId->put(
+           XDisplayName(mslo->actWin->appCtx->displayName),
+           fvalue );
           if ( !stat ) printf( activeTriumfSliderClass_str59 );
         }
       }

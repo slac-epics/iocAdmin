@@ -1,4 +1,4 @@
-/* $Id: lcaGetNelem.c,v 1.2 2007/11/16 16:45:05 ernesto Exp $ */
+/* $Id: lcaGetNelem.c,v 1.7 2007/05/31 21:16:45 till Exp $ */
 
 /* matlab wrapper for ezcaGetNelem */
 

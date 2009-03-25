@@ -1,4 +1,4 @@
-/* $Id: gnelm.c,v 1.2 2007/11/16 16:45:04 ernesto Exp $ */
+/* $Id: gnelm.c,v 1.6 2007/05/23 02:50:15 strauman Exp $ */
 
 #include <cadef.h>
 #include <multiEzca.h>

@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
-patched version by:  Kenshi Muto, Debian Project.
-* modified by:  Shige TAKENO
-LaTeX2HTML 2002-2-1 (1.70),
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -16,7 +13,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -31,11 +28,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 Error Handling
 </H2>
 All errors<A NAME="tex2html7"
-  HREF="#foot798"><SUP>7</SUP></A>encountered during execution of <I>labCA</I> calls result in the
+  HREF="#foot798"><SUP><SPAN CLASS="arabic">7</SPAN></SUP></A>encountered during execution of <SPAN  CLASS="textit">labCA</SPAN> calls result in the
 call being aborted, a message being printed to the console
 and an error status being recorded which
-can be retrieved using <I>scilab</I>'s <TT>lasterror</TT> command.
-The recommended method for handling errors is <I>scilab</I>'s
+can be retrieved using <SPAN  CLASS="textit">scilab</SPAN>'s <TT>lasterror</TT> command.
+The recommended method for handling errors is <SPAN  CLASS="textit">scilab</SPAN>'s
 <TT>try - catch - end</TT> construct:
 <PRE>
 	try
@@ -48,11 +45,11 @@ The recommended method for handling errors is <I>scilab</I>'s
 		// handle error here
 	end
 </PRE>
-Many <I>labCA</I> calls can handle multiple PVs at once
+Many <SPAN  CLASS="textit">labCA</SPAN> calls can handle multiple PVs at once
 and underlying CA operations may fail for a subset of PVs only.
 However, <TT>lasterror</TT> only supports reporting a single error
 status. Therefore the <A HREF="lcaLastError.html#lcalasterror"><TT>lcaLastError</TT></A> routine
-was implemented: if a <I>labCA</I> call fails for a subset of PVs then
+was implemented: if a <SPAN  CLASS="textit">labCA</SPAN> call fails for a subset of PVs then
 a subsequent call to <TT>lcaLastError</TT> returns a column vector
 of status values for the individual PVs.
 The error codes are shown in
@@ -63,9 +60,9 @@ The error codes are shown in
 <DIV ALIGN="CENTER"><A NAME="801"></A>
 <TABLE>
 <CAPTION><STRONG>Table 1:</STRONG>
-&nbsp;<I>labCA</I> error codes. Numerical codes (<I>scilab</I> <TT>lasterror</TT> and
-<TT>lcaLastError()</TT>) and corresponding <I>matlab</I> error ``ID''s
-(as returned by <I>matlab</I> <TT>lasterror</TT>).</CAPTION>
+&nbsp;<SPAN  CLASS="textit">labCA</SPAN> error codes. Numerical codes (<SPAN  CLASS="textit">scilab</SPAN> <TT>lasterror</TT> and
+<TT>lcaLastError()</TT>) and corresponding <SPAN  CLASS="textit">matlab</SPAN> error ``ID''s
+(as returned by <SPAN  CLASS="textit">matlab</SPAN> <TT>lasterror</TT>).</CAPTION>
 <TR><TD><TABLE CELLPADDING=3 BORDER="1">
 <TR><TD ALIGN="RIGHT">#</TD>
 <TD ALIGN="LEFT">Matlab Error ID</TD>
@@ -131,7 +128,7 @@ The error codes are shown in
 <BR><HR><H4>Footnotes</H4>
 <DL>
 <DT><A NAME="foot798">... errors</A><A
- HREF="Error.html#tex2html7"><SUP>7</SUP></A></DT>
+ HREF="Error.html#tex2html7"><SUP><SPAN CLASS="arabic">7</SPAN></SUP></A></DT>
 <DD>As of version 3; earlier versions didn't consistently
 ``throw'' all errors so that they could be caught by the
 <TT>try-catch-end</TT> mechanism but would merely print messages
@@ -143,8 +140,8 @@ implement the <A HREF="lcaLastError.html#lcalasterror"><TT>lcaLastError</TT></A>
 </DL>
 <BR><HR>
 <ADDRESS>
-for EPICS management
-2007-11-16
+till
+2007-10-13
 </ADDRESS>
 </BODY>
 </HTML>

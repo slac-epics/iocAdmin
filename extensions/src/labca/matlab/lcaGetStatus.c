@@ -1,4 +1,4 @@
-/* $Id: lcaGetStatus.c,v 1.2 2007/11/16 16:45:05 ernesto Exp $ */
+/* $Id: lcaGetStatus.c,v 1.7 2007/10/14 03:28:04 strauman Exp $ */
 
 /* matlab wrapper for ezcaGetStatus */
 

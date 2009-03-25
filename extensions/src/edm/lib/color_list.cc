@@ -58,7 +58,8 @@ int *dest;
 
   for ( i=0; i<clo->numColors; i++ ) {
 
-    if ( (void *) cbs->item == clo->items[i] ) {
+    //if ( (void *) cbs->item == clo->items[i] ) {
+    if ( XmStringCompare( cbs->item, (XmString) clo->items[i] ) ) {
 
       mIndex = clo->ci->menuIndex( i );
 
@@ -74,6 +75,7 @@ int *dest;
       break;
 
     }
+
   }
 
   return;
@@ -153,17 +155,17 @@ XmString str;
   display = XtDisplay( top );
 
   //shell = XtVaAppCreateShell( colorListClass_str7, colorListClass_str7,
-  shell = XtVaAppCreateShell( "edm", "edm",
-   topLevelShellWidgetClass,
-   XtDisplay(top),
-   XtNmappedWhenManaged, False,
-   NULL );
-
-  //shell = XtVaCreatePopupShell( colorListClass_str7,
+  //shell = XtVaAppCreateShell( "edm", "edm",
   // topLevelShellWidgetClass,
-  // top,
-  // XmNmappedWhenManaged, False,
+  // XtDisplay(top),
+  // XtNmappedWhenManaged, False,
   // NULL );
+
+  shell = XtVaCreatePopupShell( colorListClass_str7,
+   topLevelShellWidgetClass,
+   top,
+   XmNmappedWhenManaged, False,
+   NULL );
 
   pane = XtVaCreateWidget( "colormenu", xmPanedWindowWidgetClass, shell,
    XmNsashWidth, 1,

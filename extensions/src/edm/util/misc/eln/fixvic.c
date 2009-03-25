@@ -4,11 +4,11 @@
 
 /*******************************************************************************
 
- $Source: /afs/slac/g/lcls/cvs/epics/extensions/src/edm/util/misc/eln/fixvic.c,v $
+ $Source: /sns/ADE/cvsroot/epics/supTop/extensions/1.1/src/edm/util/misc/eln/fixvic.c,v $
 
  $Revision: 1.1.1.1 $				$Date: 2001/03/19 20:50:56 $
 
- $Author: saa $				$Locker:  $
+ $Author: sinclair $				$Locker:  $
 
  ABSTRACT:              Program that touches the VME300 VIC chip to
 			deassert sysfail.

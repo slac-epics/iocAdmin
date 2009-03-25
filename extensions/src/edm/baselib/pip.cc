@@ -21,6 +21,8 @@
 #define SMALL_SYM_ARRAY_SIZE 10
 #define SMALL_SYM_ARRAY_LEN 31
 
+#define MAX_CONSECUTIVE_DEACTIVATE_ERRORS 100
+
 #include "pip.h"
 #include <sys/stat.h>
 #include <unistd.h>
@@ -83,7 +85,7 @@ static void pipc_edit_update (
 {
 
 activePipClass *pipo = (activePipClass *) client;
-int i, more;
+int i, ii;
 
   pipo->actWin->setChanged();
 
@@ -97,6 +99,7 @@ int i, more;
     pipo->symbolsExpStr[0].setRaw( "" );
     pipo->replaceSymbols[0] = 0;
     pipo->numDsps = 0;
+    ii = 0;
   }
   else {
     pipo->propagateMacros[0] = pipo->buf->bufPropagateMacros[0];
@@ -104,26 +107,18 @@ int i, more;
     pipo->symbolsExpStr[0].setRaw( pipo->buf->bufSymbols[0] );
     pipo->replaceSymbols[0] = pipo->buf->bufReplaceSymbols[0];
     pipo->numDsps = 1;
+    ii = 1;
   }
 
-  if ( pipo->numDsps ) {
-    more = 1;
-    for ( i=1; (i<pipo->maxDsps) && more; i++ ) {
-      pipo->displayFileName[i].setRaw( pipo->buf->bufDisplayFileName[i] );
-      if ( blank( pipo->displayFileName[i].getRaw() ) ) {
-        pipo->propagateMacros[i] = 1;
-        pipo->label[i].setRaw( "" );
-        pipo->symbolsExpStr[i].setRaw( "" );
-        pipo->replaceSymbols[i] = 0;
-        more = 0;
-      }
-      else {
-        pipo->propagateMacros[i] = pipo->buf->bufPropagateMacros[i];
-        pipo->label[i].setRaw( pipo->buf->bufLabel[i] );
-        pipo->symbolsExpStr[i].setRaw( pipo->buf->bufSymbols[i] );
-        pipo->replaceSymbols[i] = pipo->buf->bufReplaceSymbols[i];
-        (pipo->numDsps)++;
-      }
+  for ( i=ii; i<pipo->maxDsps; i++ ) {
+    if ( !blank( pipo->buf->bufDisplayFileName[i] ) ) {
+      pipo->displayFileName[ii].setRaw( pipo->buf->bufDisplayFileName[i] );
+      pipo->propagateMacros[ii] = pipo->buf->bufPropagateMacros[i];
+      pipo->label[ii].setRaw( pipo->buf->bufLabel[i] );
+      pipo->symbolsExpStr[ii].setRaw( pipo->buf->bufSymbols[i] );
+      pipo->replaceSymbols[ii] = pipo->buf->bufReplaceSymbols[i];
+      (pipo->numDsps)++;
+      ii++;
     }
   }
 
@@ -388,6 +383,8 @@ int i;
   unconnectedTimer = 0;
   buf = NULL;
 
+  consecutiveDeactivateErrors = 0;
+
 }
 
 // copy constructor
@@ -443,6 +440,8 @@ int i;
   popUpMenu = NULL;
   unconnectedTimer = 0;
   buf = NULL;
+
+  consecutiveDeactivateErrors = 0;
 
 }
 
@@ -554,6 +553,7 @@ static int displaySourceEnum[3] = {
   tag.loadW( "replaceSymbols", replaceSymbols, numDsps, &zero );
   tag.loadW( "propagateMacros", propagateMacros, numDsps, &one );
   tag.loadBoolW( "noScroll", &noScroll, &zero );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -634,6 +634,7 @@ static int displaySourceEnum[3] = {
   // read file and process each "object" tag
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -744,10 +745,14 @@ int i;
   buf = new bufType;
 
   ptr = actWin->obj.getNameFromClass( "activePipClass" );
-  if ( ptr )
+  if ( ptr ) {
     strncpy( title, ptr, 31 );
-  else
+    title[31] = 0;
+  }
+  else {
     strncpy( title, activePipClass_str4, 31 );
+    title[31] = 0;
+  }
 
   Strncat( title, activePipClass_str5, 31 );
 
@@ -761,22 +766,32 @@ int i;
   buf->bufTopShadowColor = topShadowColor.pixelIndex();
   buf->bufBotShadowColor = botShadowColor.pixelIndex();
 
-  if ( readPvExpStr.getRaw() )
+  if ( readPvExpStr.getRaw() ) {
     strncpy( buf->bufReadPvName, readPvExpStr.getRaw(),
      PV_Factory::MAX_PV_NAME );
-  else
+    buf->bufReadPvName[PV_Factory::MAX_PV_NAME] = 0;
+  }
+  else {
     strcpy( buf->bufReadPvName, "" );
+    buf->bufReadPvName[PV_Factory::MAX_PV_NAME] = 0;
+  }
 
-  if ( labelPvExpStr.getRaw() )
+  if ( labelPvExpStr.getRaw() ) {
     strncpy( buf->bufLabelPvName, labelPvExpStr.getRaw(),
      PV_Factory::MAX_PV_NAME );
-  else
+    buf->bufLabelPvName[PV_Factory::MAX_PV_NAME] = 0;
+  }
+  else {
     strcpy( buf->bufLabelPvName, "" );
+  }
 
-  if ( fileNameExpStr.getRaw() )
+  if ( fileNameExpStr.getRaw() ) {
     strncpy( buf->bufFileName, fileNameExpStr.getRaw(), 127 );
-  else
+    buf->bufFileName[127] = 0;
+  }
+  else {
     strcpy( buf->bufFileName, "" );
+  }
 
   buf->bufDisplaySource = displaySource;
 
@@ -787,21 +802,28 @@ int i;
 
   for ( i=0; i<maxDsps; i++ ) {
 
-    if ( displayFileName[i].getRaw() )
+    if ( displayFileName[i].getRaw() ) {
       strncpy( buf->bufDisplayFileName[i], displayFileName[i].getRaw(), 127 );
-    else
-      strncpy( buf->bufDisplayFileName[i], "", 127 );
-
-    if ( label[i].getRaw() )
-      strncpy( buf->bufLabel[i], label[i].getRaw(), 127 );
-    else
-      strncpy( buf->bufLabel[i], "", 127 );
-
-    if ( symbolsExpStr[i].getRaw() ) {
-      strncpy( buf->bufSymbols[i], symbolsExpStr[i].getRaw(), 255 );
+      buf->bufDisplayFileName[i][127] = 0;
     }
     else {
-      strncpy( buf->bufSymbols[i], "", 255 );
+      strncpy( buf->bufDisplayFileName[i], "", 127 );
+    }
+
+    if ( label[i].getRaw() ) {
+      strncpy( buf->bufLabel[i], label[i].getRaw(), 127 );
+      buf->bufLabel[i][127] = 0;
+    }
+    else {
+      strncpy( buf->bufLabel[i], "", 127 );
+    }
+
+    if ( symbolsExpStr[i].getRaw() ) {
+      strncpy( buf->bufSymbols[i], symbolsExpStr[i].getRaw(), maxSymbolLen );
+      buf->bufSymbols[i][maxSymbolLen] = 0;
+    }
+    else {
+      strncpy( buf->bufSymbols[i], "", maxSymbolLen );
     }
 
     buf->bufPropagateMacros[i] = propagateMacros[i];
@@ -847,7 +869,7 @@ int i;
     ef1->addLabel( "  File" );
     ef1->addTextField( "", 35, buf->bufDisplayFileName[i], 127 );
     ef1->addLabel( "  Macros" );
-    ef1->addTextField( "", 35, buf->bufSymbols[i], 255 );
+    ef1->addTextField( "", 35, buf->bufSymbols[i], maxSymbolLen );
     ef1->endSubForm();
 
     ef1->beginLeftSubForm();
@@ -1190,7 +1212,7 @@ int activePipClass::deactivate (
   int pass
 ) {
 
-int okToClose;
+int okToClose, stat;
 activeWindowListPtr cur;
 
   if ( pass == 1 ) {
@@ -1228,7 +1250,7 @@ activeWindowListPtr cur;
       }
 
       if ( okToClose ) {
-        aw->returnToEdit( 1 );
+        stat = aw->returnToEdit( 1 );
       }
 
       aw = NULL;
@@ -1273,7 +1295,7 @@ activeWindowListPtr cur;
 int activePipClass::preReactivate (
   int pass ) {
 
-int okToClose;
+int okToClose, stat;
 activeWindowListPtr cur;
 
   if ( pass == 1 ) {
@@ -1306,7 +1328,7 @@ activeWindowListPtr cur;
       }
 
       if ( okToClose ) {
-        aw->returnToEdit( 1 );
+        stat = aw->returnToEdit( 1 );
       }
 
       aw = NULL;
@@ -1889,7 +1911,7 @@ void activePipClass::openEmbeddedByIndex (
 
 activeWindowListPtr cur;
 int i, l, stat;
-char symbolsWithSubs[255+1];
+char symbolsWithSubs[maxSymbolLen+1];
 int useSmallArrays, symbolCount, maxSymbolLength;
 char smallNewMacros[SMALL_SYM_ARRAY_SIZE+1][SMALL_SYM_ARRAY_LEN+1+1];
 char smallNewValues[SMALL_SYM_ARRAY_SIZE+1][SMALL_SYM_ARRAY_LEN+1+1];
@@ -1897,8 +1919,8 @@ char *newMacros[100];
 char *newValues[100];
 int numNewMacros, max, numFound;
 
-char *formTk, *formContext, formBuf[255+1], *fileTk, *fileContext, fileBuf[255+1],
- *result, msg[79+1], macDefFileName[127+1];
+char *formTk, *formContext, formBuf[maxSymbolLen+1], *fileTk, *fileContext,
+ fileBuf[maxSymbolLen+1], *result, msg[79+1], macDefFileName[127+1];
 FILE *f;
 expStringClass symbolsFromFile;
 int gotSymbolsFromFile;
@@ -1906,8 +1928,8 @@ int gotSymbolsFromFile;
   // allow the syntax: @filename s1=v1,s2=v2,...
   // which means read symbols from file and append list
   gotSymbolsFromFile = 0;
-  strncpy( formBuf, symbolsExpStr[index].getExpanded(), 255 );
-  formBuf[255] = 0;
+  strncpy( formBuf, symbolsExpStr[index].getExpanded(), maxSymbolLen );
+  formBuf[maxSymbolLen] = 0;
   formContext = NULL;
   formTk = strtok_r( formBuf, " \t\n", &formContext );
   if ( formTk ) {
@@ -1921,7 +1943,7 @@ int gotSymbolsFromFile;
           symbolsFromFile.setRaw( "" );
 	}
 	else {
-	  result = fgets( fileBuf, 255, f );
+	  result = fgets( fileBuf, maxSymbolLen, f );
 	  if ( result ) {
             fileContext = NULL;
             fileTk = strtok_r( fileBuf, "\n", &fileContext );
@@ -1952,19 +1974,19 @@ int gotSymbolsFromFile;
       // append inline list to file contents
       formTk = strtok_r( NULL, "\n", &formContext );
       if ( formTk ) {
-        strncpy( fileBuf, symbolsFromFile.getRaw(), 255 );
-        fileBuf[255] = 0;
+        strncpy( fileBuf, symbolsFromFile.getRaw(), maxSymbolLen );
+        fileBuf[maxSymbolLen] = 0;
         if ( blank(fileBuf) ) {
           strcpy( fileBuf, "" );
 	}
         else {
-          Strncat( fileBuf, ",", 255 );
+          Strncat( fileBuf, ",", maxSymbolLen );
 	}
-	Strncat( fileBuf, formTk, 255 );
+	Strncat( fileBuf, formTk, maxSymbolLen );
         symbolsFromFile.setRaw( fileBuf );
       }
       // do special substitutions
-      actWin->substituteSpecial( 255, symbolsFromFile.getExpanded(),
+      actWin->substituteSpecial( maxSymbolLen, symbolsFromFile.getExpanded(),
        symbolsWithSubs );
       gotSymbolsFromFile = 1;
     }
@@ -1972,7 +1994,7 @@ int gotSymbolsFromFile;
 
   if ( !gotSymbolsFromFile ) {
     // do special substitutions
-    actWin->substituteSpecial( 255, symbolsExpStr[index].getExpanded(),
+    actWin->substituteSpecial( maxSymbolLen, symbolsExpStr[index].getExpanded(),
      symbolsWithSubs );
   }
 
@@ -2154,7 +2176,7 @@ void activePipClass::executeDeferred ( void ) {
 
 int iv;
 char v[39+1];
-int i, nc, nu, nmc, nmu, nd, nfo, nimfo, ncto, nmap, nunmap, okToClose;
+int i, nc, nu, nmc, nmu, nd, nfo, nimfo, ncto, nmap, nunmap, okToClose, stat;
 activeWindowListPtr cur;
 Window root, child;
 int rootX, rootY, winX, winY;
@@ -2175,6 +2197,7 @@ XButtonEvent be;
   nmap = needMap; needMap = 0;
   nunmap = needUnmap; needUnmap = 0;
   strncpy( v, curReadV, 39 );
+  v[39] = 0;
   iv = curReadIV;
   actWin->remDefExeNode( aglPtr );
   actWin->appCtx->proc->unlock();
@@ -2184,6 +2207,8 @@ XButtonEvent be;
 //----------------------------------------------------------------------------
 
   if ( nc ) {
+
+    consecutiveDeactivateErrors = 0;
 
     readPvConnected = 1;
     active = 1;
@@ -2203,6 +2228,8 @@ XButtonEvent be;
   }
 
   if ( nmc ) {
+
+    consecutiveDeactivateErrors = 0;
 
     readPvConnected = 1;
     active = 1;
@@ -2224,11 +2251,46 @@ XButtonEvent be;
   if ( nu ) {
 
     strncpy( readV, v, 39 );
+    readV[39] = 0;
     //fprintf( stderr, "readV = [%s]\n", readV );
 
     if ( enabled && !blank( readV ) ) {
 
       // close old
+
+      if ( aw ) {
+
+        okToClose = 0;
+        cur = actWin->appCtx->head->flink;
+        while ( cur != actWin->appCtx->head ) {
+          if ( &cur->node == aw ) {
+            okToClose = 1;
+            break;
+          }
+          cur = cur->flink;
+        }
+
+        if ( okToClose ) {
+          if ( !aw->okToDeactivate() ) {
+            consecutiveDeactivateErrors++;
+            if ( consecutiveDeactivateErrors < MAX_CONSECUTIVE_DEACTIVATE_ERRORS ) {
+              actWin->appCtx->proc->lock();
+              needUpdate = 1;
+              actWin->addDefExeNode( aglPtr );
+              actWin->appCtx->proc->unlock();
+              return;
+            }
+            else {
+              actWin->appCtx->postMessage( activePipClass_str30 );
+              consecutiveDeactivateErrors = 0;
+              return;
+            }
+          }
+	}
+
+      }
+
+      consecutiveDeactivateErrors = 0;
 
       if ( frameWidget ) {
         if ( *frameWidget ) XtUnmapWidget( *frameWidget );
@@ -2248,7 +2310,7 @@ XButtonEvent be;
         }
 
         if ( okToClose ) {
-          aw->returnToEdit( 1 ); // this frees frameWidget
+          stat = aw->returnToEdit( 1 ); // this frees frameWidget
         }
 
         aw = NULL;
@@ -2278,8 +2340,8 @@ XButtonEvent be;
 
           //fprintf( stderr, "Open file %s\n", readV );
 
-          strncpy( curFileName, readV, 127 );
-          curFileName[127] = 0;
+          strncpy( curFileName, readV, 39 );
+          curFileName[39] = 0;
 
           cur = new activeWindowListType;
           actWin->appCtx->addActiveWindow( cur );
@@ -2318,8 +2380,8 @@ XButtonEvent be;
     }
 
     if ( !enabled ) { // copy filename to be used when enabled becomes true
-      strncpy( curFileName, readV, 127 );
-      curFileName[127] = 0;
+      strncpy( curFileName, readV, 39 );
+      curFileName[39] = 0;
     }
 
   }
@@ -2352,6 +2414,40 @@ XButtonEvent be;
 
             // close old
 
+            if ( aw ) {
+
+              okToClose = 0;
+              cur = actWin->appCtx->head->flink;
+              while ( cur != actWin->appCtx->head ) {
+                if ( &cur->node == aw ) {
+                  okToClose = 1;
+                  break;
+                }
+                cur = cur->flink;
+              }
+
+              if ( okToClose ) {
+                if ( !aw->okToDeactivate() ) {
+                  consecutiveDeactivateErrors++;
+                  if ( consecutiveDeactivateErrors < MAX_CONSECUTIVE_DEACTIVATE_ERRORS ) {
+                    actWin->appCtx->proc->lock();
+                    needMenuUpdate = 1;
+                    actWin->addDefExeNode( aglPtr );
+                    actWin->appCtx->proc->unlock();
+                    return;
+                  }
+                  else {
+                    actWin->appCtx->postMessage( activePipClass_str30 );
+                    consecutiveDeactivateErrors = 0;
+                    return;
+                  }
+                }
+	      }
+
+	    }
+
+            consecutiveDeactivateErrors = 0;
+
             if ( frameWidget ) {
               if ( *frameWidget ) XtUnmapWidget( *frameWidget );
             }
@@ -2370,7 +2466,7 @@ XButtonEvent be;
               }
 
               if ( okToClose ) {
-                aw->returnToEdit( 1 ); // this frees frameWidget
+                stat = aw->returnToEdit( 1 ); // this frees frameWidget
               }
 
               aw = NULL;
@@ -2448,12 +2544,18 @@ XButtonEvent be;
 //----------------------------------------------------------------------------
 
   if ( nd ) {
+
+    consecutiveDeactivateErrors = 0;
+
     drawActive();
+
   }
 
 //----------------------------------------------------------------------------
 
   if ( nfo ) {
+
+    consecutiveDeactivateErrors = 0;
 
     if ( enabled && fileExists ) {
 
@@ -2517,6 +2619,8 @@ XButtonEvent be;
 
   if ( nimfo ) {
 
+    consecutiveDeactivateErrors = 0;
+
     if ( enabled ) {
 
       strncpy( curFileName, displayFileName[0].getExpanded(), 127 );
@@ -2559,6 +2663,8 @@ XButtonEvent be;
 
   if ( ncto ) {
 
+    consecutiveDeactivateErrors = 0;
+
     activateIsComplete = 1;
 
     drawActive();
@@ -2568,6 +2674,40 @@ XButtonEvent be;
 //----------------------------------------------------------------------------
 
   if ( nunmap ) {
+
+    if ( aw ) {
+
+      okToClose = 0;
+      cur = actWin->appCtx->head->flink;
+      while ( cur != actWin->appCtx->head ) {
+        if ( &cur->node == aw ) {
+          okToClose = 1;
+          break;
+        }
+        cur = cur->flink;
+      }
+
+      if ( okToClose ) {
+        if ( !aw->okToDeactivate() ) {
+          consecutiveDeactivateErrors++;
+          if ( consecutiveDeactivateErrors < MAX_CONSECUTIVE_DEACTIVATE_ERRORS ) {
+            actWin->appCtx->proc->lock();
+            needUnmap = 1;
+            actWin->addDefExeNode( aglPtr );
+            actWin->appCtx->proc->unlock();
+            return;
+          }
+          else {
+            actWin->appCtx->postMessage( activePipClass_str30 );
+            consecutiveDeactivateErrors = 0;
+            return;
+          }
+        }
+      }
+
+    }
+
+    consecutiveDeactivateErrors = 0;
 
     if ( frameWidget ) {
       if ( *frameWidget ) XtUnmapWidget( *frameWidget );
@@ -2587,7 +2727,7 @@ XButtonEvent be;
       }
 
       if ( okToClose ) {
-        aw->returnToEdit( 1 ); // this frees frameWidget
+        stat = aw->returnToEdit( 1 ); // this frees frameWidget
       }
 
       aw = NULL;
@@ -2610,6 +2750,40 @@ XButtonEvent be;
 
       // close old ( however, one should not be open )
 
+      if ( aw ) {
+
+        okToClose = 0;
+        cur = actWin->appCtx->head->flink;
+        while ( cur != actWin->appCtx->head ) {
+          if ( &cur->node == aw ) {
+            okToClose = 1;
+            break;
+          }
+          cur = cur->flink;
+        }
+
+        if ( okToClose ) {
+          if ( !aw->okToDeactivate() ) {
+            consecutiveDeactivateErrors++;
+            if ( consecutiveDeactivateErrors < MAX_CONSECUTIVE_DEACTIVATE_ERRORS ) {
+              actWin->appCtx->proc->lock();
+              needMap = 1;
+              actWin->addDefExeNode( aglPtr );
+              actWin->appCtx->proc->unlock();
+              return;
+            }
+            else {
+              actWin->appCtx->postMessage( activePipClass_str30 );
+              consecutiveDeactivateErrors = 0;
+              return;
+            }
+          }
+	}
+
+      }
+
+      consecutiveDeactivateErrors = 0;
+
       if ( frameWidget ) {
         if ( *frameWidget ) XtUnmapWidget( *frameWidget );
       }
@@ -2628,7 +2802,7 @@ XButtonEvent be;
         }
 
         if ( okToClose ) {
-          aw->returnToEdit( 1 ); // this frees frameWidget
+          stat = aw->returnToEdit( 1 ); // this frees frameWidget
         }
 
         aw = NULL;
@@ -2656,26 +2830,37 @@ XButtonEvent be;
 
         if ( !aw ) {
 
-          cur = new activeWindowListType;
-          actWin->appCtx->addActiveWindow( cur );
+          if ( displaySource == 2 ) { // menu
 
-          cur->node.createEmbedded( actWin->appCtx, frameWidget, 0, 0, w, h,
-           x, y, center, setSize, sizeOfs, noScroll, actWin->numMacros,
-           actWin->macros, actWin->expansions );
+            if ( iv < 0 ) iv = 0;
+            if ( iv > numDsps ) iv = 0;
+            openEmbeddedByIndex( iv );
 
-          cur->node.realize();
+	  }
+	  else {
 
-          cur->node.setGraphicEnvironment( &cur->node.appCtx->ci,
-           &cur->node.appCtx->fi );
+            cur = new activeWindowListType;
+            actWin->appCtx->addActiveWindow( cur );
 
-          cur->node.storeFileName( curFileName );
+            cur->node.createEmbedded( actWin->appCtx, frameWidget, 0, 0, w, h,
+             x, y, center, setSize, sizeOfs, noScroll, actWin->numMacros,
+             actWin->macros, actWin->expansions );
 
-          actWin->appCtx->openActivateActiveWindow( &cur->node, 0, 0 );
+            cur->node.realize();
 
-          aw = &cur->node;
+            cur->node.setGraphicEnvironment( &cur->node.appCtx->ci,
+             &cur->node.appCtx->fi );
 
-          aw->parent = actWin;
-          (actWin->numChildren)++;
+            cur->node.storeFileName( curFileName );
+
+            actWin->appCtx->openActivateActiveWindow( &cur->node, 0, 0 );
+
+            aw = &cur->node;
+
+            aw->parent = actWin;
+            (actWin->numChildren)++;
+
+          }
 
           drawActive();
 
@@ -2755,13 +2940,26 @@ int activePipClass::activateComplete ( void ) {
 int flag;
 
   if ( aw ) {
+
     if ( aw->loadFailure ) {
       activateIsComplete = 1;
     }
+
   }
 
   if ( !activateIsComplete ) return 0;
 
+#if 1
+  // this fails when I return to edit while things are updating
+  if ( aw ) {
+    flag = aw->okToDeactivate();
+  }
+  else {
+    flag = 1;
+  }
+#endif
+
+#if 0
   if ( aw ) {
     if ( aw->isExecuteMode() || aw->loadFailure ) {
       flag = aw->okToDeactivate();
@@ -2773,6 +2971,21 @@ int flag;
   else {
     flag = 1;
   }
+#endif
+
+#if 0
+  if ( aw ) {
+    if ( aw->isExecuteMode() || aw->loadFailure ) {
+      flag = aw->okToDeactivate();
+    }
+    else {
+      flag = 1; // this was originally: flag = 0; which was incorrect
+    }
+  }
+  else {
+    flag = 1;
+  }
+#endif
 
   return flag;
 

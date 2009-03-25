@@ -1,5 +1,5 @@
 #ifndef  MATLAB_EZCA_GLUE_H
-/* $Id: mglue.h,v 1.2 2007/11/16 16:45:05 ernesto Exp $ */
+/* $Id: mglue.h,v 1.21 2007/08/31 05:51:30 strauman Exp $ */
 
 /* matlab-ezca interface utility header */
 

@@ -30,7 +30,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xlibint.h>
 
-activeGraphicClass::activeGraphicClass ( void ) {
+activeGraphicClass::activeGraphicClass ( void ) : unknownTags() {
 
   baseName = new char[strlen("base")+1];
   strcpy( baseName, "base" );
@@ -1536,6 +1536,16 @@ int activeGraphicClass::getSelectBoxOperation (
   int _y )
 {
 
+  return getSelectBoxOperation( 0, _x, _y );
+
+}
+
+int activeGraphicClass::getSelectBoxOperation (
+  int controlKeyPressed,
+  int _x,
+  int _y )
+{
+
 int x0, y0, x1, y1, xx0, yy0, xx1, yy1;
 int boxW = 6;
 int boxH = 6;
@@ -1557,6 +1567,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_LEFT_TOP_OP;
 
     }
@@ -1569,6 +1580,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_LEFT_OP;
 
     }
@@ -1581,6 +1593,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_LEFT_BOTTOM_OP;
 
     }
@@ -1593,6 +1606,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_TOP_OP;
 
     }
@@ -1605,6 +1619,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_BOTTOM_OP;
 
     }
@@ -1617,6 +1632,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_RIGHT_TOP_OP;
 
     }
@@ -1629,6 +1645,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_RIGHT_OP;
 
     }
@@ -1641,6 +1658,7 @@ int boxH = 6;
 
     if ( ( _x >= xx0 ) && ( _x <= xx1 ) && ( _y >= yy0 ) && ( _y <= yy1 ) ) {
 
+      if ( controlKeyPressed ) return AGC_MOVE_OP;
       return AGC_RIGHT_BOTTOM_OP;
 
     }
@@ -2202,6 +2220,16 @@ int activeGraphicClass::movePoint (
   pointPtr curPoint,
   int x,
   int y )
+{
+
+  return 1;
+
+}
+
+int activeGraphicClass::movePointRel (
+  pointPtr curPoint,
+  int xofs,
+  int yofs )
 {
 
   return 1;
@@ -3171,7 +3199,7 @@ Widget mkDragIcon( Widget w, activeGraphicClass *agc )
   unsigned long   fg, bg;
   XGCValues       gcValues;
   unsigned long   gcValueMask;
-  char tmpStr[131+1];
+  char tmpStr[PV_Factory::MAX_PV_NAME+1];
 
   Display *display = XtDisplay(w);
   int screenNum = DefaultScreen(display);
@@ -3196,8 +3224,8 @@ Widget mkDragIcon( Widget w, activeGraphicClass *agc )
   char *str = agc->dragValue(agc->getCurrentDragIndex());
   if ( str ) {
     if ( !blank(str) ) {
-      strncpy( tmpStr, str, 131 );
-      tmpStr[131] = 0;
+      strncpy( tmpStr, str, PV_Factory::MAX_PV_NAME );
+      tmpStr[PV_Factory::MAX_PV_NAME] = 0;
     }
   }
 
@@ -3983,7 +4011,7 @@ void activeGraphicClass::initEnable ( void ) {
 
 void activeGraphicClass::enable ( void ) { // smartDrawAllActive should be
                                            // called after this
-  if ( enabled ) return;
+  //if ( enabled ) return;
 
   bufInvalidate();
   enabled = 1;
@@ -3993,7 +4021,7 @@ void activeGraphicClass::enable ( void ) { // smartDrawAllActive should be
 
 void activeGraphicClass::disable ( void ) {
 
-  if ( !enabled ) return;
+  //if ( !enabled ) return;
 
   bufInvalidate();
   eraseActive();

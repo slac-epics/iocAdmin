@@ -879,6 +879,8 @@ int stat;
 
   menuIndexMap = NULL;
 
+  showNoAlarmState = 1;
+
 }
 
 colorInfoClass::~colorInfoClass ( void ) {
@@ -1265,7 +1267,7 @@ static void file_cb (
 
 XmPushButtonCallbackStruct *cb;
 long num;
-Widget p, curP;
+Widget p, prevP, curP;
 
   num = (long) client;
   cb = (XmPushButtonCallbackStruct *) call;
@@ -1273,13 +1275,15 @@ Widget p, curP;
   if ( num == 0 ) {   // close window
 
     /* find topmost widget */
-    curP = p = w;
+    prevP = curP = p = w;
     do {
+      if ( XtParent(p) ) prevP = p;
       p = XtParent(p);
       if ( p ) curP = p;
     } while ( p );
 
-    XtUnmapWidget( curP );
+    //XtUnmapWidget( curP );
+    XtUnmapWidget( prevP );
 
   }
   else if ( num == 1 ) {
@@ -2741,6 +2745,7 @@ char msg[127+1];
         if ( strcmp( tk, "*" ) == 0 ) {
 
           specialIndex[index] = -1;
+	  showNoAlarmState = 0;
           
 	}
 	else {
@@ -3050,9 +3055,14 @@ term:
   // create window
 
   //shell = XtVaAppCreateShell( colorInfoClass_str2, colorInfoClass_str2,
-  shell = XtVaAppCreateShell( "edm", "edm",
-   topLevelShellWidgetClass,
-   XtDisplay(top),
+  //shell = XtVaAppCreateShell( "edm", "edm",
+  // topLevelShellWidgetClass,
+  // XtDisplay(top),
+  // XtNmappedWhenManaged, False,
+  // NULL );
+
+  shell = XtVaCreatePopupShell( "edm", topLevelShellWidgetClass,
+   top,
    XtNmappedWhenManaged, False,
    NULL );
 
@@ -4531,6 +4541,7 @@ int blinkMs = 500;
         if ( strcmp( tk, "*" ) == 0 ) {
 
           specialIndex[index] = -1;
+	  showNoAlarmState = 0;
           
 	}
 	else {
@@ -4903,9 +4914,14 @@ term:
   // create window
 
   //shell = XtVaAppCreateShell( colorInfoClass_str2, colorInfoClass_str2,
-  shell = XtVaAppCreateShell( "edm", "edm",
-   topLevelShellWidgetClass,
-   XtDisplay(top),
+  //shell = XtVaAppCreateShell( "edm", "edm",
+  // topLevelShellWidgetClass,
+  // XtDisplay(top),
+  // XtNmappedWhenManaged, False,
+  // NULL );
+
+  shell = XtVaCreatePopupShell( "edm", topLevelShellWidgetClass,
+   top,
    XtNmappedWhenManaged, False,
    NULL );
 
@@ -5689,9 +5705,14 @@ firstTry:
   // create window
 
   //shell = XtVaAppCreateShell( colorInfoClass_str2, colorInfoClass_str2,
-  shell = XtVaAppCreateShell( "edm", "edm",
-   topLevelShellWidgetClass,
-   XtDisplay(top),
+  //shell = XtVaAppCreateShell( "edm", "edm",
+  // topLevelShellWidgetClass,
+  // XtDisplay(top),
+  // XtNmappedWhenManaged, False,
+  // NULL );
+
+  shell = XtVaCreatePopupShell( "edm", topLevelShellWidgetClass,
+   top,
    XtNmappedWhenManaged, False,
    NULL );
 
@@ -7100,5 +7121,11 @@ void colorInfoClass::warnIfBadIndex (
     fprintf( stderr, "Bad color index encountered [%-d] near line %-d\n",
      index, line );
   }
+
+}
+
+int colorInfoClass::shouldShowNoAlarmState ( void ) {
+
+  return showNoAlarmState;
 
 }

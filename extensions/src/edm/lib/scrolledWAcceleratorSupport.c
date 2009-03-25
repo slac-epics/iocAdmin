@@ -1,4 +1,4 @@
-/* $Id: scrolledWAcceleratorSupport.c,v 1.1.1.1 2004/06/15 14:59:35 saa Exp $ */
+/* $Id: scrolledWAcceleratorSupport.c,v 1.1 2004/06/15 14:59:35 sinclair Exp $ */
 
 /* Recursively install Scrollbar accelerators to all children of
  * a Scrolled Window. This is useful to add Wheel Mouse Support

@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
-patched version by:  Kenshi Muto, Debian Project.
-* modified by:  Shige TAKENO
-LaTeX2HTML 2002-2-1 (1.70),
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -16,7 +13,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -48,28 +45,28 @@ Parameters</A>
 </H3>
 <DL>
 <DT><STRONG>pvs</STRONG></DT>
-<DD>Column vector (in matlab: <I>m x 1</I> <I>cell-</I> matrix)
-of <I>m</I> strings.
+<DD>Column vector (in matlab: <SPAN  CLASS="textit">m x 1</SPAN> <SPAN  CLASS="textit">cell-</SPAN> matrix)
+of <SPAN  CLASS="textit">m</SPAN> strings.
 
 </DD>
 <DT><STRONG>value</STRONG></DT>
-<DD><I>m x n</I> matrix or <I>1 x n</I> row vector of values
+<DD><SPAN  CLASS="textit">m x n</SPAN> matrix or <SPAN  CLASS="textit">1 x n</SPAN> row vector of values
 to be written to the PVs. If there is only a single row in <TT>value</TT>
-it is written to all <I>m</I> PVs. <TT>value</TT> may be a matrix of ``double''
-precision numbers or  a (<I>matlab</I>: <I>cell-</I>) matrix of strings (in
+it is written to all <SPAN  CLASS="textit">m</SPAN> PVs. <TT>value</TT> may be a matrix of ``double''
+precision numbers or  a (<SPAN  CLASS="textit">matlab</SPAN>: <SPAN  CLASS="textit">cell-</SPAN>) matrix of strings (in
 which case the values are transferred as strings and converted by the
 CA server to the native type -- this is particularly useful for
 DBF_ENUM / ``menu'' type PVs).
 
 <P>
-It is possible to write less than <I>n</I> elements -- <I>labCA</I> scans all rows
+It is possible to write less than <SPAN  CLASS="textit">n</SPAN> elements -- <SPAN  CLASS="textit">labCA</SPAN> scans all rows
 for NaN values and only transfers up to the last non-NaN element in each
 row.
 </DD>
 <DT><STRONG>type</STRONG></DT>
-<DD>(<I>optional argument</I>) A string specifying the
+<DD>(<SPAN  CLASS="textit">optional argument</SPAN>) A string specifying the
 data type to be used for the channel access data transfer. Note
-that <I>labCA</I> always converts numerical data from ``double'' locally.
+that <SPAN  CLASS="textit">labCA</SPAN> always converts numerical data from ``double'' locally.
 
 <P>
 It can be desirable, to use a different data type for the
@@ -117,8 +114,8 @@ Examples</A>
 <BR>
 <BR><HR>
 <ADDRESS>
-for EPICS management
-2007-11-16
+till
+2007-10-13
 </ADDRESS>
 </BODY>
 </HTML>

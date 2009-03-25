@@ -218,6 +218,11 @@ friend void viewFontMapping_cb (
   XtPointer client,
   XtPointer call );
 
+friend void viewEnv_cb (
+  Widget w,
+  XtPointer client,
+  XtPointer call );
+
 friend void view_pvList_cb (
   Widget w,
   XtPointer client,
@@ -320,6 +325,8 @@ Widget renderImagesB;
 Widget checkpointPidB;
 
 Widget viewFontMappingB;
+
+Widget viewEnvB;
 
 ulBindingClass userLibObject;
 int exitFlag;
@@ -629,6 +636,10 @@ void addActions (
   XtActionsRec *actions, // actions must be a unique static address
   Cardinal n
 );
+
+void showEnv ( void );
+
+Widget apptop ( void );
 
 };
 

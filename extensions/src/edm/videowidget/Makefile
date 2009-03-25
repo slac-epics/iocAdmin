@@ -3,43 +3,43 @@ ifdef EPICS_HOST_ARCH
   include $(TOP)/configure/CONFIG
   #HOST_OPT=NO
   
+  SHARED_LIBRARIES = YES
+
         USR_CXXFLAGS_Linux += -DSINGLE_THREADED=1 -D__epics__=1 -Wno-deprecated
-		
+
         USR_CXXFLAGS_Darwin += -DSINGLE_THREADED=1 -D__epics__=1 -Wno-deprecated
-  
+
+        USR_CXXFLAGS_solaris += -D__solaris__ -DSINGLE_THREADED=1 -D__epics__=1 -Wno-deprecated
+
+        USR_CXXFLAGS_hpux11_11_mt += -DHP_UX=1111 -DSINGLE_THREADED=1 -D__epics__=1 -Wno-deprecated
+
 # System Libraries to link in:
-  TwoDProfileMonitor_SYS_LIBS_Linux = Xpm
+  #TwoDProfileMonitor_SYS_LIBS_Linux =  Xpm
 
-  TwoDProfileMonitor_SYS_LIBS_Darwin = Xpm
- 
-  USR_CXXFLAGS_solaris += -D__solaris__ -DSINGLE_THREADED=1 -D__epics__=1 -Wno-deprecated
-  USR_LIBS_solaris =  Xpm
+  #TwoDProfileMonitor_SYS_LIBS_Darwin = Xpm
 
-  USR_CXXFLAGS_hpux11_11_mt += -DHP_UX=1111 -DSINGLE_THREADED=1 -D__epics__=1 -Wno-deprecated
-  USR_LIBS_hpux11_11_mt = Xpm
+  #TwoDProfileMonitor_SYS_LIBS_solaris = Xpm
 
-  USR_LDFLAGS += -L$(INSTALL_LIB)
-  TwoDProfileMonitor_LDFLAGS += -L$(MOTIF_LIB) -L$(X11_LIB)
+  #USR_LIBS_hpux11_11_mt = Xpm
 
- 
+  USR_LIBS_solaris = Xt X11
+
+  USR_LIBS += cfcaa62e-8199-11d3-a77f-00104b8742df
 
   # Build Shared library
   LIBRARY = TwoDProfileMonitor
 
-  
-  USR_INCLUDES = -I../
-  USR_INCLUDES += -I$(INSTALL_LOCATION)/include/edm -I../../util -I../../pvlib -I../../lib
-  
-  USR_INCLUDES += -I$(MOTIF_INC) -I$(X11_INC)
-    
+  INSTALL_INCLUDE = $(INSTALL_LOCATION)/include/edm
+  USR_INCLUDES += -I../../util -I../../lib
 
+  #USR_INCLUDES += -I$(MOTIF_INC) -I$(X11_INC)
 
   Xm_DIR =   $(MOTIF_LIB)
   Xt_DIR =   $(X11_LIB)
   X11_DIR =  $(X11_LIB)
   Xmu_DIR =  $(X11_LIB)
   Xtst_DIR = $(X11_LIB)
-  
+
   # ELW added following two lines for
   # Red Hat 7.0 LINUX
   Xp_DIR =   $(X11_LIB)
@@ -54,7 +54,6 @@ ifdef EPICS_HOST_ARCH
 
   LIB_SRCS += TwoDProfileMonitor.cc
   LIB_SRCS += image.cc
-  
 
   include $(TOP)/configure/RULES
 

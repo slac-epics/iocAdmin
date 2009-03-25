@@ -1,4 +1,4 @@
-/* $Id: lcaGetPrecision.c,v 1.1 2007/11/16 16:49:34 ernesto Exp $ */
+/* $Id: lcaGetPrecision.c,v 1.1 2007/06/04 18:56:18 guest Exp $ */
 
 /* matlab wrapper for ezcaGetPrecision */
 

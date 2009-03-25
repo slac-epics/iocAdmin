@@ -1,13 +1,13 @@
-# LaTeX2HTML 2002-2-1 (1.70)
+# LaTeX2HTML 2002-2-1 (1.71)
 # Associate internals original text with physical files.
 
 
-$key = q/lcanewmonitorvalue/;
-$ref_files{$key} = "$dir".q|lcaNewMonitorValue.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/lcanewmonitorwait/;
 $ref_files{$key} = "$dir".q|lcaNewMonitorWait.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/lcanewmonitorvalue/;
+$ref_files{$key} = "$dir".q|lcaNewMonitorValue.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/lcaput/;
@@ -26,12 +26,12 @@ $key = q/tbl:errors/;
 $ref_files{$key} = "$dir".q|Error.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/typearg/;
-$ref_files{$key} = "$dir".q|lcaGet.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/timeout/;
 $ref_files{$key} = "$dir".q|lcaGetTimeout.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/typearg/;
+$ref_files{$key} = "$dir".q|lcaGet.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/lcaget/;

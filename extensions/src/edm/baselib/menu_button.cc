@@ -78,7 +78,9 @@ short value;
 
       if ( w == mbto->pb[i] ) {
         value = (short) i;
-        mbto->controlPvId->put( value );
+        mbto->controlPvId->put(
+         XDisplayName(mbto->actWin->appCtx->displayName),
+         value );
         break;
       }
 
@@ -613,6 +615,7 @@ char *emptyStr = "";
   tag.loadW( "visMin", minVisString, emptyStr );
   tag.loadW( "visMax", maxVisString, emptyStr );
   tag.loadW( "colorPv", &colorPvExpStr, emptyStr  );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -708,6 +711,7 @@ char *emptyStr = "";
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );

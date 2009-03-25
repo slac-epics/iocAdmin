@@ -129,7 +129,7 @@ int l;
   baro->majorTicks = 2;
   baro->minorTicks = 2;
   baro->barOriginX = 0;
-  strcpy( fmt, "%.0-dg" );
+  strcpy( fmt, "%-g" );
 
   sprintf( str, fmt, baro->readMin );
   if ( baro->fs ) {
@@ -353,8 +353,8 @@ activeBarClass::activeBarClass ( void ) {
   name = new char[strlen("activeBarClass")+1];
   strcpy( name, "activeBarClass" );
   minW = 50;
-  minH = 5;
-  minVertW = 5;
+  minH = 2;
+  minVertW = 2;
   minVertH = 10;
   barStrLen = 10;
   strcpy( fontTag, "" );
@@ -373,6 +373,13 @@ activeBarClass::activeBarClass ( void ) {
   barOriginXExpStr.setRaw( "" );
   readMinExpStr.setRaw( "" );
   readMaxExpStr.setRaw( "" );
+
+  readMin = 0;
+  readMax = 10;
+  labelTicks = 10;
+  majorTicks = 2;
+  minorTicks = 2;
+  barOriginX = 0;
 
   limitsFromDb = 1;
   precisionExpStr.setRaw( "" );
@@ -423,16 +430,24 @@ activeGraphicClass *baro = (activeGraphicClass *) this;
   barStrLen = source->barStrLen;
 
   minW = 50;
-  minH = 5;
-  minVertW = 5;
+  minH = 2;
+  minVertW = 2;
   minVertH = 10;
   activeMode = 0;
+
+  readMin = source->readMin;
+  readMax = source->readMax;
+  labelTicks = source->labelTicks;
+  majorTicks = source->majorTicks;
+  minorTicks = source->minorTicks;
+  barOriginX = source->barOriginX;
 
   limitsFromDb = source->limitsFromDb;
   readMinExpStr.copy( source->readMinExpStr );
   readMaxExpStr.copy( source->readMaxExpStr );
 
   precisionExpStr.copy( source->precisionExpStr );
+  precision = source->precision;
 
   strncpy( scaleFormat, source->scaleFormat, 15 );
 
@@ -578,6 +593,7 @@ static int orienTypeEnum[2] = {
   tag.loadW( "scaleFormat", scaleFormat );
   tag.loadW( "orientation", 2, orienTypeEnumStr, orienTypeEnum,
    &horizontal, &horz );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -623,13 +639,14 @@ static int orienTypeEnum[2] = {
 int l;
 char fmt[31+1], str[31+1];
 
-efInt efI;
-efDouble efD;
+efInt efLabelTicks, efMajorTicks, efMinorTicks, efPrec;
+efDouble efMin, efMax;
 
   this->actWin = _actWin;
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -651,85 +668,16 @@ efDouble efD;
   tag.loadR( "origin", &barOriginXExpStr, emptyStr );
   tag.loadR( "font", 63, fontTag );
 
-  if ( ( ( major == 4 ) && ( minor > 0 ) ) || ( major > 4 ) ) {
-
-    tag.loadR( "labelTicks", &labelTicksExpStr, emptyStr );
-    tag.loadR( "majorTicks", &majorTicksExpStr, emptyStr );
-    tag.loadR( "minorTicks", &minorTicksExpStr, emptyStr );
-
-  }
-  else {
-
-    tag.loadR( "labelTicks", &efI );
-    if ( efI.isNull() ) {
-      strcpy( str, "" );
-    }
-    else {
-      snprintf( str, 31, "%-d", efI.value() );
-    }
-    labelTicksExpStr.setRaw( str );
-
-    tag.loadR( "majorTicks", &efI );
-    if ( efI.isNull() ) {
-      strcpy( str, "" );
-    }
-    else {
-      snprintf( str, 31, "%-d", efI.value() );
-    }
-    majorTicksExpStr.setRaw( str );
-
-    tag.loadR( "minorTicks", &efI );
-    if ( efI.isNull() ) {
-      strcpy( str, "" );
-    }
-    else {
-      snprintf( str, 31, "%-d", efI.value() );
-    }
-    minorTicksExpStr.setRaw( str );
-
-  }
+  tag.loadR( "labelTicks", &labelTicksExpStr, emptyStr );
+  tag.loadR( "majorTicks", &majorTicksExpStr, emptyStr );
+  tag.loadR( "minorTicks", &minorTicksExpStr, emptyStr );
 
   tag.loadR( "border", &border, &zero );
   tag.loadR( "limitsFromDb", &limitsFromDb, &zero );
 
-
-  if ( ( ( major == 4 ) && ( minor > 0 ) ) || ( major > 4 ) ) {
-
-    tag.loadR( "precision", &precisionExpStr, emptyStr );
-    tag.loadR( "min", &readMinExpStr, emptyStr );
-    tag.loadR( "max", &readMaxExpStr, emptyStr );
-
-  }
-  else {
-
-    tag.loadR( "precision", &efI );
-    if ( efI.isNull() ) {
-      strcpy( str, "" );
-    }
-    else {
-      snprintf( str, 31, "%-d", efI.value() );
-    }
-    precisionExpStr.setRaw( str );
-
-    tag.loadR( "min", &efD );
-    if ( efD.isNull() ) {
-      strcpy( str, "" );
-    }
-    else {
-      snprintf( str, 31, "%-g", efD.value() );
-    }
-    readMinExpStr.setRaw( str );
-
-    tag.loadR( "max", &efD );
-    if ( efD.isNull() ) {
-      strcpy( str, "" );
-    }
-    else {
-      snprintf( str, 31, "%-g", efD.value() );
-    }
-    readMaxExpStr.setRaw( str );
-
-  }
+  tag.loadR( "precision", &precisionExpStr, emptyStr );
+  tag.loadR( "min", &readMinExpStr, emptyStr );
+  tag.loadR( "max", &readMaxExpStr, emptyStr );
 
   tag.loadR( "scaleFormat", 15, scaleFormat );
   tag.loadR( "orientation", 2, orienTypeEnumStr, orienTypeEnum,
@@ -780,7 +728,7 @@ efDouble efD;
   majorTicks = 2;
   minorTicks = 2;
   barOriginX = 0;
-  strcpy( fmt, "%.0-dg" );
+  strcpy( fmt, "%-g" );
 
   sprintf( str, fmt, readMin );
   if ( fs ) {
@@ -1105,7 +1053,7 @@ efDouble efD;
   majorTicks = 2;
   minorTicks = 2;
   barOriginX = 0;
-  strcpy( fmt, "%.0-dg" );
+  strcpy( fmt, "%-g" );
 
   sprintf( str, fmt, readMin );
   if ( fs ) {
@@ -1832,8 +1780,8 @@ int tX, tY;
 
   if ( deleteRequest ) return 1;
 
-  actWin->executeGc.setLineWidth( 1 );
-  actWin->executeGc.setLineStyle( LineSolid );
+  actWin->drawGc.setLineWidth( 1 );
+  actWin->drawGc.setLineStyle( LineSolid );
 
   actWin->drawGc.saveFg();
 
@@ -2261,7 +2209,7 @@ char fmt[31+1];
     if ( !opComplete ) {
 
       if ( blank( labelTicksExpStr.getExpanded() ) ) {
-        labelTicks = 2;
+        labelTicks = 0;
       }
       else {
         labelTicks = atol( labelTicksExpStr.getExpanded() );
@@ -2430,7 +2378,7 @@ int l;
   majorTicks = 2;
   minorTicks = 2;
   barOriginX = 0;
-  strcpy( fmt, "%.0-dg" );
+  strcpy( fmt, "%-g" );
 
   sprintf( str, fmt, readMin );
   if ( fs ) {
@@ -2469,7 +2417,7 @@ void activeBarClass::updateDimensions ( void )
 
   if ( horizontal ) {
 
-    minH = 5;
+    minH = 2;
     barY = y;
 
     barAreaX = x;
@@ -2534,7 +2482,7 @@ void activeBarClass::updateDimensions ( void )
   }
   else {  // vertical
 
-    minVertW = 5;
+    minVertW = 2;
     minVertH = 10;
 
     if ( ( strcmp( label, "" ) != 0 ) ||
@@ -2544,9 +2492,11 @@ void activeBarClass::updateDimensions ( void )
 
     if ( showScale ) {
       minVertH += fontHeight;
+      //???????????????????????
       minVertW += 4 + barStrLen + 10 + (int) rint( 0.5 * fontHeight );
     }
     else if ( border ) {
+      //???????????????????????
       minVertH += 8;
       minVertW += 4;
     }
@@ -3421,6 +3371,7 @@ double v;
 
     v = curReadV = readPvId->get_double();
 
+#if 0
     if ( limitsFromDb || blank( readMinExpStr.getExpanded() ) ) {
       readMin = readPvId->get_lower_disp_limit();
     }
@@ -3432,6 +3383,21 @@ double v;
     if ( limitsFromDb || blank( precisionExpStr.getExpanded() ) ) {
       precision = readPvId->get_precision();
     }
+#endif
+
+    if ( limitsFromDb ) {
+      readMin = readPvId->get_lower_disp_limit();
+    }
+
+    if ( limitsFromDb ) {
+      readMax = readPvId->get_upper_disp_limit();
+    }
+
+    if ( limitsFromDb ) {
+      precision = readPvId->get_precision();
+    }
+
+    if ( readMin == readMax ) readMax = readMin + 1;
 
     ni = 1;
 

@@ -1,9 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
-patched version by:  Kenshi Muto, Debian Project.
-* modified by:  Shige TAKENO
-LaTeX2HTML 2002-2-1 (1.70),
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -16,7 +13,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -28,33 +25,33 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H2><A NAME="SECTION00032000000000000000"></A>
 <A NAME="usingsca"></A>
 <BR>
-Using <B>labCA</B>
+Using <SPAN  CLASS="textbf">labCA</SPAN>
 </H2>
-<B>labCA</B> consists of a set of shared libraries which in turn reference
+<SPAN  CLASS="textbf">labCA</SPAN> consists of a set of shared libraries which in turn reference
 other shared libraries (most notably the channel access client libraries
-from EPICS BASE). It is of <B>crucial importance</B> that the operating
-system locates the correct versions at <B>run-time</B> (i.e. the same versions
-<B>labCA</B> was <B>linked</B> against). Otherwise, the run-time linker/loader
+from EPICS BASE). It is of <SPAN  CLASS="textbf">crucial importance</SPAN> that the operating
+system locates the correct versions at <SPAN  CLASS="textbf">run-time</SPAN> (i.e. the same versions
+<SPAN  CLASS="textbf">labCA</SPAN> was <SPAN  CLASS="textbf">linked</SPAN> against). Otherwise, the run-time linker/loader
 could fail to load the required objects -- leaving the user (expecially
-in <B>matlab</B>) at the prompt with obscure error messages.
+in <SPAN  CLASS="textbf">matlab</SPAN>) at the prompt with obscure error messages.
 
 <P>
-Under <B>linux</B> or <B>solaris</B>, the <TT>LD_LIBRARY_PATH</TT> environment
+Under <SPAN  CLASS="textbf">linux</SPAN> or <SPAN  CLASS="textbf">solaris</SPAN>, the <TT>LD_LIBRARY_PATH</TT> environment
 variable or the <TT>ld.so.conf / ldconfig</TT> facility are used to point
 to the executable shared libraries (located in <TT>lib/&lt;arch&gt;</TT>).
 If using a binary distribution, the <TT>PATH</TT> variable also should point
-to <TT>bin/&lt;arch&gt;</TT> so that the <B>CA repeater</B> executable is found.
+to <TT>bin/&lt;arch&gt;</TT> so that the <SPAN  CLASS="textbf">CA repeater</SPAN> executable is found.
 If you build from source using your own EPICS base installation then
-we assume that locating the <B>CA repeater</B> has already been taken
+we assume that locating the <SPAN  CLASS="textbf">CA repeater</SPAN> has already been taken
 care of.
 
 <P>
-Under <B>win32</B>, the <TT>PATH</TT> environment variable must point to the
-correct EPICS BASE and <B>labCA</B> DLLs (located in <TT>bin/&lt;arch&gt;</TT>).
+Under <SPAN  CLASS="textbf">win32</SPAN>, the <TT>PATH</TT> environment variable must point to the
+correct EPICS BASE and <SPAN  CLASS="textbf">labCA</SPAN> DLLs (located in <TT>bin/&lt;arch&gt;</TT>).
 
 <P>
-Note that the paths to the correct EPICS BASE and <B>labCA</B> shared libraries
-must be set up <B>prior</B> to starting the <B>scilab</B> or <B>matlab</B> application.
+Note that the paths to the correct EPICS BASE and <SPAN  CLASS="textbf">labCA</SPAN> shared libraries
+must be set up <SPAN  CLASS="textbf">prior</SPAN> to starting the <SPAN  CLASS="textbf">scilab</SPAN> or <SPAN  CLASS="textbf">matlab</SPAN> application.
 It is usually not possible to change the system search
 path from within an application.
 
@@ -70,8 +67,8 @@ of a different release are found somewhere.
 <LI>a ``innocent-looking'' directory present in <TT>LD_LIBRARY_PATH</TT>
 before EPICS BASE actually contains shared libraries of an older release.
 </LI>
-<LI>Note that the system search path is <B>not</B> identical with the
-<B>matlab</B> path -- changing the <B>matlab</B> path (from withing <B>matlab</B>)
+<LI>Note that the system search path is <SPAN  CLASS="textbf">not</SPAN> identical with the
+<SPAN  CLASS="textbf">matlab</SPAN> path -- changing the <SPAN  CLASS="textbf">matlab</SPAN> path (from withing <SPAN  CLASS="textbf">matlab</SPAN>)
 has no influence on the system search path.
 </LI>
 </UL>
@@ -79,11 +76,11 @@ has no influence on the system search path.
 <P>
 
 <H3><A NAME="SECTION00032100000000000000">
-Using <B>labCA</B> with <B>scilab</B></A>
+Using <SPAN  CLASS="textbf">labCA</SPAN> with <SPAN  CLASS="textbf">scilab</SPAN></A>
 </H3>
 Set up the shared library search path (as described above) and start
-<B>scilab</B>. Run the <TT><B>labCA</B>.sce</TT> script which was generated by the build process
-(<TT>&lt;<B>labCA</B>-top&gt;/bin/&lt;arch&gt;/<B>labCA</B>.sce</TT>) to load the <B>labCA</B> interface.
+<SPAN  CLASS="textbf">scilab</SPAN>. Run the <TT><SPAN  CLASS="textbf">labCA</SPAN>.sce</TT> script which was generated by the build process
+(<TT>&lt;<SPAN  CLASS="textbf">labCA</SPAN>-top&gt;/bin/&lt;arch&gt;/<SPAN  CLASS="textbf">labCA</SPAN>.sce</TT>) to load the <SPAN  CLASS="textbf">labCA</SPAN> interface.
 The script also adds to the <TT>%helps</TT> variable making on-line
 help available.
 
@@ -92,31 +89,31 @@ The script can be installed at any convenient location -- the lines
 setting up the <TT>%helps</TT> path need to be adapted in this case.
 
 <P>
-It is also possible to permanently link <B>labCA</B> to <B>scilab</B>. Consult
-the <B>scilab</B> documentation for more information.
+It is also possible to permanently link <SPAN  CLASS="textbf">labCA</SPAN> to <SPAN  CLASS="textbf">scilab</SPAN>. Consult
+the <SPAN  CLASS="textbf">scilab</SPAN> documentation for more information.
 
 <P>
 
 <H3><A NAME="SECTION00032200000000000000">
-Using <B>labCA</B> with <B>matlab</B></A>
+Using <SPAN  CLASS="textbf">labCA</SPAN> with <SPAN  CLASS="textbf">matlab</SPAN></A>
 </H3>
 Every entry point / <TT>lcaXXX</TT> routine 
 is contained in a separate
-shared object (AKA ``<TT>mex</TT>-'') file in the <TT>&lt;<B>labCA</B>-top&gt;/bin/&lt;arch&gt;/labca</TT><A NAME="tex2html13"
-  HREF="#foot816"><SUP>12</SUP></A> directory
-which must be added to the <B>matlab</B> search path.
-Note that this is in <B>addition</B>
+shared object (AKA ``<TT>mex</TT>-'') file in the <TT>&lt;<SPAN  CLASS="textbf">labCA</SPAN>-top&gt;/bin/&lt;arch&gt;/labca</TT><A NAME="tex2html13"
+  HREF="#foot816"><SUP><SPAN CLASS="arabic">12</SPAN></SUP></A> directory
+which must be added to the <SPAN  CLASS="textbf">matlab</SPAN> search path.
+Note that this is in <SPAN  CLASS="textbf">addition</SPAN>
 to setting the system library search path which must be performed prior
-to starting <B>matlab</B> (see previous section).
+to starting <SPAN  CLASS="textbf">matlab</SPAN> (see previous section).
 All necessary objects and libraries are transparently loaded simply
 by invoking any of the entry point routines. Note that on-line help
 files are also installed to be located automatically.
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot816">...<TT>&lt;<B>labCA</B>-top&gt;/bin/&lt;arch&gt;/labca</TT></A><A
- HREF="Using.html#tex2html13"><SUP>12</SUP></A></DT>
+<DT><A NAME="foot816">... CLASS="textbf">labCA</SPAN>-top&gt;/bin/&lt;arch&gt;/labca</TT></A><A
+ HREF="Using.html#tex2html13"><SUP><SPAN CLASS="arabic">12</SPAN></SUP></A></DT>
 <DD>
-the extra subdirectory was added in order for the <B>matlab</B> <TT>help</TT> command
+the extra subdirectory was added in order for the <SPAN  CLASS="textbf">matlab</SPAN> <TT>help</TT> command
 to easily locate the <TT>Contents.m</TT> file when the user types <TT>help labca</TT>.
 
 
@@ -124,8 +121,8 @@ to easily locate the <TT>Contents.m</TT> file when the user types <TT>help labca
 </DL>
 <BR><HR>
 <ADDRESS>
-for EPICS management
-2007-11-16
+till
+2007-10-13
 </ADDRESS>
 </BODY>
 </HTML>

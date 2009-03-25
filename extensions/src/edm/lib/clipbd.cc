@@ -1,4 +1,4 @@
-/* $Id: clipbd.cc,v 1.1.1.2 2005/10/27 14:39:48 saa Exp $ */
+/* $Id: clipbd.cc,v 1.4 2005/10/17 21:40:57 williams Exp $ */
 
 /* AUTHOR: Till Straumann (PTB/1999) */
 

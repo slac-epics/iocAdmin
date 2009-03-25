@@ -352,6 +352,7 @@ double range;
 double minFvOrg, maxFvOrg;
 int outOfRange, newSelect;
 int shadeColorSaved, shadeColorInRange;
+int colorSelected, colorOutofWindow, colorOutofRange;
 int rangeIndex, keyRestore;
 class textEntry *valueEntry;
 class textEntry *incEntry;

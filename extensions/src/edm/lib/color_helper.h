@@ -1,4 +1,4 @@
-// $Id: color_helper.h,v 1.1.1.1 2001/08/27 23:31:08 saa Exp $ -*- c++ -*-
+// $Id: color_helper.h,v 1.3 2001/08/27 23:31:08 kasemir Exp $ -*- c++ -*-
 //
 //  color_helper.h
 

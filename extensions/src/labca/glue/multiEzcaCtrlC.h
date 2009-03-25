@@ -1,6 +1,6 @@
 #ifndef MULTI_EZCA_CTRLC_H
 #define MULTI_EZCA_CTRLC_H
-/* $Id: multiEzcaCtrlC.h,v 1.2 2007/11/16 16:45:05 ernesto Exp $ */
+/* $Id: multiEzcaCtrlC.h,v 1.2 2004/01/30 01:45:33 till Exp $ */
 
 /* interface to Ctrl-C handling */
 

@@ -202,7 +202,7 @@ static void rdc_edit_update (
   XtPointer call )
 {
 
-int i, more;
+int i, ii;
 relatedDisplayClass *rdo = (relatedDisplayClass *) client;
 
   rdo->actWin->setChanged();
@@ -221,6 +221,7 @@ relatedDisplayClass *rdo = (relatedDisplayClass *) client;
     rdo->symbolsExpStr[0].setRaw( "" );
     rdo->replaceSymbols[0] = 0;
     rdo->numDsps = 0;
+    ii = 0;
   }
   else {
     rdo->closeAction[0] = rdo->buf->bufCloseAction[0];
@@ -232,34 +233,22 @@ relatedDisplayClass *rdo = (relatedDisplayClass *) client;
     rdo->symbolsExpStr[0].setRaw( rdo->buf->bufSymbols[0] );
     rdo->replaceSymbols[0] = rdo->buf->bufReplaceSymbols[0];
     rdo->numDsps = 1;
+    ii = 1;
   }
 
-  if ( rdo->numDsps ) {
-    more = 1;
-    for ( i=1; (i<rdo->maxDsps) && more; i++ ) {
-      rdo->displayFileName[i].setRaw( rdo->buf->bufDisplayFileName[i] );
-      if ( blank( rdo->displayFileName[i].getRaw() ) ) {
-        rdo->closeAction[i] = 0;
-        rdo->setPostion[i] = 0;
-        rdo->allowDups[i] = 0;
-        rdo->cascade[i] = 0;
-        rdo->propagateMacros[i] = 1;
-        rdo->label[i].setRaw( "" );
-        rdo->symbolsExpStr[i].setRaw( "" );
-        rdo->replaceSymbols[i] = 0;
-        more = 0;
-      }
-      else {
-        rdo->closeAction[i] = rdo->buf->bufCloseAction[i];
-        rdo->setPostion[i] = rdo->buf->bufSetPostion[i];
-        rdo->allowDups[i] = rdo->buf->bufAllowDups[i];
-        rdo->cascade[i] = rdo->buf->bufCascade[i];
-        rdo->propagateMacros[i] = rdo->buf->bufPropagateMacros[i];
-        rdo->label[i].setRaw( rdo->buf->bufLabel[i] );
-        rdo->symbolsExpStr[i].setRaw( rdo->buf->bufSymbols[i] );
-        rdo->replaceSymbols[i] = rdo->buf->bufReplaceSymbols[i];
-        (rdo->numDsps)++;
-      }
+  for ( i=ii; i<rdo->maxDsps; i++ ) {
+    if ( !blank( rdo->buf->bufDisplayFileName[i] ) ) {
+      rdo->displayFileName[ii].setRaw( rdo->buf->bufDisplayFileName[i] );
+      rdo->closeAction[ii] = rdo->buf->bufCloseAction[i];
+      rdo->setPostion[ii] = rdo->buf->bufSetPostion[i];
+      rdo->allowDups[ii] = rdo->buf->bufAllowDups[i];
+      rdo->cascade[ii] = rdo->buf->bufCascade[i];
+      rdo->propagateMacros[ii] = rdo->buf->bufPropagateMacros[i];
+      rdo->label[ii].setRaw( rdo->buf->bufLabel[i] );
+      rdo->symbolsExpStr[ii].setRaw( rdo->buf->bufSymbols[i] );
+      rdo->replaceSymbols[ii] = rdo->buf->bufReplaceSymbols[i];
+      (rdo->numDsps)++;
+      ii++;
     }
   }
 
@@ -463,8 +452,14 @@ activeWindowListPtr cur;
     }
 
     if ( okToClose ) {
-      aw->returnToEdit( 1 );
-      aw = NULL;
+      if ( aw->okToDeactivate() ) {
+        aw->returnToEdit( 1 );
+        aw = NULL;
+      }
+      else {
+        aw->closeDeferred( 20 );
+        aw = NULL;
+      }
     }
 
   }
@@ -708,6 +703,7 @@ static int setPosEnum[3] = {
   tag.loadBoolW( "icon", &icon, &zero );
   tag.loadBoolW( "swapButtons", &swapButtons, &zero );
   tag.loadW( "helpCommand", &helpCommandExpString, emptyStr );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -887,6 +883,7 @@ static int setPosEnum[3] = {
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -1684,10 +1681,11 @@ char title[32], *ptr;
     buf->bufPropagateMacros[i] = propagateMacros[i];
 
     if ( symbolsExpStr[i].getRaw() ) {
-      strncpy( buf->bufSymbols[i], symbolsExpStr[i].getRaw(), 255 );
+      strncpy( buf->bufSymbols[i], symbolsExpStr[i].getRaw(), maxSymbolLen );
+      buf->bufSymbols[i][maxSymbolLen] = 0;
     }
     else {
-      strncpy( buf->bufSymbols[i], "", 255 );
+      strncpy( buf->bufSymbols[i], "", maxSymbolLen );
     }
 
     buf->bufReplaceSymbols[i] = replaceSymbols[i];
@@ -1754,7 +1752,8 @@ char title[32], *ptr;
   ef.addTextField( relatedDisplayClass_str36, 35, buf->bufLabel[0], 127 );
   ef.addTextField( relatedDisplayClass_str37, 35, buf->bufDisplayFileName[0],
    127 );
-  ef.addTextField( relatedDisplayClass_str26, 35, buf->bufSymbols[0], 255 );
+  ef.addTextField( relatedDisplayClass_str26, 35, buf->bufSymbols[0],
+   maxSymbolLen );
   ef.addOption( relatedDisplayClass_str23, relatedDisplayClass_str24,
    &buf->bufReplaceSymbols[0] );
   ef.addToggle( relatedDisplayClass_str25, &buf->bufPropagateMacros[0] );
@@ -1780,7 +1779,7 @@ char title[32], *ptr;
     ef1->addLabel( relatedDisplayClass_str39 );
     ef1->addTextField( "", 35, buf->bufDisplayFileName[i], 127 );
     ef1->addLabel( relatedDisplayClass_str40 );
-    ef1->addTextField( "", 35, buf->bufSymbols[i], 255 );
+    ef1->addTextField( "", 35, buf->bufSymbols[i], maxSymbolLen );
     ef1->endSubForm();
 
     ef1->beginLeftSubForm();
@@ -2679,10 +2678,10 @@ void relatedDisplayClass::popupDisplay (
 
 activeWindowListPtr cur;
 int i, ii, dup, numDeleted, l, stat, newX, newY;
-char name[127+1], symbolsWithSubs[255+1];
+char name[127+1], symbolsWithSubs[maxSymbolLen+1];
 pvValType destV;
 unsigned int crc;
-char *tk, *context, buf[255+1], *fileTk, *fileContext, fileBuf[255+1],
+char *tk, *context, buf[maxSymbolLen+1], *fileTk, *fileContext, fileBuf[maxSymbolLen+1],
  *result, msg[79+1];
 FILE *f;
 expStringClass symbolsFromFile;
@@ -2708,8 +2707,8 @@ char prefix[127+1];
   // allow the syntax: @filename s1=v1,s2=v2,...
   // which means read symbols from file and append list
   gotSymbolsFromFile = 0;
-  strncpy( buf, symbolsExpStr[index].getExpanded(), 255 );
-  buf[255] = 0;
+  strncpy( buf, symbolsExpStr[index].getExpanded(), maxSymbolLen );
+  buf[maxSymbolLen] = 0;
   context = NULL;
   tk = strtok_r( buf, " \t\n", &context );
   if ( tk ) {
@@ -2723,7 +2722,7 @@ char prefix[127+1];
           symbolsFromFile.setRaw( "" );
 	}
 	else {
-	  result = fgets( fileBuf, 255, f );
+	  result = fgets( fileBuf, maxSymbolLen, f );
 	  if ( result ) {
             fileContext = NULL;
             fileTk = strtok_r( fileBuf, "\n", &fileContext );
@@ -2754,19 +2753,19 @@ char prefix[127+1];
       // append inline list to file contents
       tk = strtok_r( NULL, "\n", &context );
       if ( tk ) {
-        strncpy( fileBuf, symbolsFromFile.getRaw(), 255 );
-        fileBuf[255] = 0;
+        strncpy( fileBuf, symbolsFromFile.getRaw(), maxSymbolLen );
+        fileBuf[maxSymbolLen] = 0;
         if ( blank(fileBuf) ) {
           strcpy( fileBuf, "" );
 	}
         else {
-          Strncat( fileBuf, ",", 255 );
+          Strncat( fileBuf, ",", maxSymbolLen );
 	}
-	Strncat( fileBuf, tk, 255 );
+	Strncat( fileBuf, tk, maxSymbolLen );
         symbolsFromFile.setRaw( fileBuf );
       }
       // do special substitutions
-      actWin->substituteSpecial( 255, symbolsFromFile.getExpanded(),
+      actWin->substituteSpecial( maxSymbolLen, symbolsFromFile.getExpanded(),
        symbolsWithSubs );
       gotSymbolsFromFile = 1;
     }
@@ -2774,7 +2773,8 @@ char prefix[127+1];
 
   if ( !gotSymbolsFromFile ) {
     // do special substitutions
-    actWin->substituteSpecial( 255, symbolsExpStr[index].getExpanded(),
+    actWin->substituteSpecial( maxSymbolLen,
+     symbolsExpStr[index].getExpanded(),
      symbolsWithSubs );
   }
 
@@ -2787,22 +2787,27 @@ char prefix[127+1];
 
       case ProcessVariable::Type::real:
         destV.d = atof( sourceExpString[i].getExpanded() );
-        destPvId[i]->put( destV.d );
+        destPvId[i]->put(
+         XDisplayName(actWin->appCtx->displayName), destV.d );
         break;
 
       case ProcessVariable::Type::integer:
         destV.l = atol( sourceExpString[i].getExpanded() );
-        destPvId[i]->put( destV.l );
+        destPvId[i]->put(
+         XDisplayName(actWin->appCtx->displayName), destV.l );
         break;
 
       case ProcessVariable::Type::text:
         strncpy( destV.str, sourceExpString[i].getExpanded(), 39 );
-        destPvId[i]->putText( destV.str );
+        destV.str[39] = 0;
+        destPvId[i]->putText(
+         XDisplayName(actWin->appCtx->displayName), destV.str );
         break;
 
       case ProcessVariable::Type::enumerated:
         destV.s = (short) atol( sourceExpString[i].getExpanded() );
-        destPvId[i]->put( destV.s );
+        destPvId[i]->put(
+         XDisplayName(actWin->appCtx->displayName), destV.s );
         break;
 
       }
@@ -2912,10 +2917,12 @@ char prefix[127+1];
           l = strlen(actWin->macros[i]) + 1;
           newMacros[i] = (char *) new char[l];
           strcpy( newMacros[i], actWin->macros[i] );
+          newMacros[i][l-1] = 0;
 
           l = strlen(actWin->expansions[i]) + 1;
           newValues[i] = (char *) new char[l];
           strcpy( newValues[i], actWin->expansions[i] );
+          newValues[i][l-1] = 0;
 
           numNewMacros++;
 
@@ -2929,10 +2936,12 @@ char prefix[127+1];
           l = strlen(actWin->appCtx->macros[i]) + 1;
           newMacros[i] = (char *) new char[l];
           strcpy( newMacros[i], actWin->appCtx->macros[i] );
+          newMacros[i][l-1] = 0;
 
           l = strlen(actWin->appCtx->expansions[i]) + 1;
           newValues[i] = (char *) new char[l];
           strcpy( newValues[i], actWin->appCtx->expansions[i] );
+          newValues[i][l-1] = 0;
 
           numNewMacros++;
 
@@ -2945,6 +2954,7 @@ char prefix[127+1];
     max = 100 - numNewMacros;
     stat = parseSymbolsAndValues( symbolsWithSubs, max,
      &newMacros[numNewMacros], &newValues[numNewMacros], &numFound );
+
     numNewMacros += numFound;
 
   }
@@ -2981,8 +2991,8 @@ char prefix[127+1];
       // delete entry i
 
       if ( !useSmallArrays ) {
-        delete newMacros[i];
-        delete newValues[i];
+        delete[] newMacros[i];
+        delete[] newValues[i];
       }
 
       for ( ii=i; ii<numNewMacros-1; ii++ ) {
@@ -3044,8 +3054,8 @@ char prefix[127+1];
 	// cleanup
         if ( !useSmallArrays ) {
           for ( i=0; i<numNewMacros; i++ ) {
-            delete newMacros[i];
-            delete newValues[i];
+            delete[] newMacros[i];
+            delete[] newValues[i];
           }
         }
         goto done;
@@ -3075,8 +3085,8 @@ char prefix[127+1];
   if ( !useSmallArrays ) {
 
     for ( i=0; i<numNewMacros; i++ ) {
-      delete newMacros[i];
-      delete newValues[i];
+      delete[] newMacros[i];
+      delete[] newValues[i];
     }
 
   }
@@ -3138,8 +3148,8 @@ void relatedDisplayClass::btnUp (
     }
   }
 
-  //if ( numDsps == 1 ) {
-  if ( numMenuItems == 1 ) {
+  if ( numDsps == 1 ) {
+  //if ( numMenuItems == 1 ) {
     if ( button3Popup ) {
       needClose = 1;
       actWin->addDefExeNode( aglPtr );
@@ -3178,9 +3188,12 @@ int focus;
 
   if ( !enabled ) return;
 
-  //if ( ( buttonNumber == 3 ) && ( buttonState == 5 ) ) {
+  if ( ( numDsps > 1 ) && button3Popup ) return;
+
   if ( !blank( helpCommandExpString.getExpanded() ) ) {
-    if ( ( buttonNumber == 3 ) && ( buttonState == 0 ) ) {
+    if (  ( buttonNumber == 3 ) &&
+         !( buttonState & ShiftMask ) &&
+         !( buttonState & ControlMask ) ) {
       if ( helpItem != -1 ) {
         if ( helpItem < numDsps ) popupDisplay( helpItem );
       }
@@ -3201,7 +3214,6 @@ int focus;
   }
 
   focus = useFocus;
-  //if ( numDsps > 1 ) focus = 0;
   if ( numMenuItems > 1 ) focus = 0;
 
   if ( focus ) {
@@ -3221,10 +3233,8 @@ int focus;
 
   }
 
-  //if ( numDsps < 1 ) return;
   if ( numMenuItems < 1 ) return;
 
-  //if ( numDsps == 1 ) {
   if ( numMenuItems == 1 ) {
     posX = x + _x - be->x;
     posY = y + _y - be->y;
@@ -3250,14 +3260,15 @@ int focus;
 
     activeGraphicClass::pointerIn( me, me->x, me->y, buttonState );
 
-  }
+    if ( !blankOrComment( helpCommandExpString.getExpanded() ) ) {
+      actWin->cursor.set( XtWindow(actWin->executeWidget),
+       CURSOR_K_WILL_OPEN_WITH_HELP );
+    }
+    else {
+      actWin->cursor.set( XtWindow(actWin->executeWidget),
+       CURSOR_K_WILL_OPEN );
+    }
 
-  if ( !blankOrComment( helpCommandExpString.getExpanded() ) ) {
-    actWin->cursor.set( XtWindow(actWin->executeWidget),
-     CURSOR_K_WILL_OPEN_WITH_HELP );
-  }
-  else {
-    actWin->cursor.set( XtWindow(actWin->executeWidget), CURSOR_K_WILL_OPEN );
   }
 
 }
@@ -3461,8 +3472,14 @@ activeWindowListPtr cur;
       }
 
       if ( okToClose ) {
-        aw->returnToEdit( 1 );
-        aw = NULL;
+        if ( aw->okToDeactivate() ) {
+          aw->returnToEdit( 1 );
+          aw = NULL;
+	}
+        else {
+          aw->closeDeferred( 20 );
+          aw = NULL;
+	}
       }
       else {
         aw = NULL;

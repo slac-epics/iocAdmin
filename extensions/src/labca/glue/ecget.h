@@ -1,4 +1,4 @@
-/* $Id: ecget.h,v 1.2 2007/11/16 16:45:04 ernesto Exp $ */
+/* $Id: ecget.h,v 1.1 2004/02/11 23:06:10 till Exp $ */
 
 /* Public header for 'ecdrget' */
 

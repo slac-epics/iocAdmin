@@ -350,6 +350,19 @@ int get_scale_params (
   char *format
 );
 
+int formatString (
+  double value,
+  char *string,
+  int len
+);
+
+int formatString (
+  double value,
+  char *string,
+  int len,
+  char *fmt
+);
+
 void drawXLinearTimeScale (
   Display *d,
   Window win,
@@ -389,6 +402,67 @@ void drawXLinearScale (
   int x,
   int y,
   int scaleLen,
+  double adj_min,
+  double adj_max,
+  int num_label_ticks,
+  int majors_per_label,
+  int minors_per_major,
+  unsigned int scaleColor,
+  unsigned int bgColor,
+  int labelGrid,
+  int majorGrid,
+  int minorGrid,
+  int gridHeight,
+  unsigned int gridColor,
+  fontInfoClass *fi,
+  char *fontTag,
+  XFontStruct *fs,
+  int annotateScale,
+  int xminConstrained,
+  int xmaxConstrained,
+  int erase
+);
+
+void drawXLinearScale (
+  Display *d,
+  Window win,
+  gcClass *gc,
+  int drawScale,
+  int x,
+  int y,
+  int scaleLen,
+  double adj_min,
+  double adj_max,
+  int num_label_ticks,
+  int majors_per_label,
+  int minors_per_major,
+  unsigned int scaleColor,
+  unsigned int bgColor,
+  int labelGrid,
+  int majorGrid,
+  int minorGrid,
+  int gridHeight,
+  unsigned int gridColor,
+  fontInfoClass *fi,
+  char *fontTag,
+  XFontStruct *fs,
+  int annotateScale,
+  int xminConstrained,
+  int xmaxConstrained,
+  int erase,
+  char* fmt
+);
+
+void drawXLinearScale2 (
+  Display *d,
+  Window win,
+  gcClass *gc,
+  int drawScale,
+  int x,
+  int y,
+  int scaleLen,
+  double cur_min,
+  double cur_max,
   double adj_min,
   double adj_max,
   int num_label_ticks,
@@ -530,6 +604,67 @@ void drawYLinearScale (
   int erase
 );
 
+void drawYLinearScale (
+  Display *d,
+  Window win,
+  gcClass *gc,
+  int drawScale,
+  int x,
+  int y,
+  int scaleHeight,
+  double adj_min,
+  double adj_max,
+  int num_label_ticks,
+  int majors_per_label,
+  int minors_per_major,
+  unsigned int scaleColor,
+  unsigned int bgColor,
+  int labelGrid,
+  int majorGrid,
+  int minorGrid,
+  int gridLen,
+  unsigned int gridColor,
+  fontInfoClass *fi,
+  char *fontTag,
+  XFontStruct *fs,
+  int annotateScale,
+  int xminConstrained,
+  int xmaxConstrained,
+  int erase,
+  char *fmt
+);
+
+void drawYLinearScale2 (
+  Display *d,
+  Window win,
+  gcClass *gc,
+  int drawScale,
+  int x,
+  int y,
+  int scaleHeight,
+  double cur_min,
+  double cur_max,
+  double adj_min,
+  double adj_max,
+  int num_label_ticks,
+  int majors_per_label,
+  int minors_per_major,
+  unsigned int scaleColor,
+  unsigned int bgColor,
+  int labelGrid,
+  int majorGrid,
+  int minorGrid,
+  int gridLen,
+  unsigned int gridColor,
+  fontInfoClass *fi,
+  char *fontTag,
+  XFontStruct *fs,
+  int annotateScale,
+  int xminConstrained,
+  int xmaxConstrained,
+  int erase
+);
+
 void drawY2LinearScale (
   Display *d,
   Window win,
@@ -538,6 +673,37 @@ void drawY2LinearScale (
   int x,
   int y,
   int scaleHeight,
+  double adj_min,
+  double adj_max,
+  int num_label_ticks,
+  int majors_per_label,
+  int minors_per_major,
+  unsigned int scaleColor,
+  unsigned int bgColor,
+  int labelGrid,
+  int majorGrid,
+  int minorGrid,
+  int gridLen,
+  unsigned int gridColor,
+  fontInfoClass *fi,
+  char *fontTag,
+  XFontStruct *fs,
+  int annotateScale,
+  int xminConstrained,
+  int xmaxConstrained,
+  int erase
+);
+
+void drawY2LinearScale2 (
+  Display *d,
+  Window win,
+  gcClass *gc,
+  int drawScale,
+  int x,
+  int y,
+  int scaleHeight,
+  double cur_min,
+  double cur_max,
   double adj_min,
   double adj_max,
   int num_label_ticks,

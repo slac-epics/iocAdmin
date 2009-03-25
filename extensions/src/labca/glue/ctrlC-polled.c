@@ -1,4 +1,4 @@
-/* $Id: ctrlC-polled.c,v 1.2 2007/11/16 16:45:04 ernesto Exp $ */
+/* $Id: ctrlC-polled.c,v 1.3 2007/05/09 19:08:52 till Exp $ */
 
 /* scilab Ctrl-C handling */
 

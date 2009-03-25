@@ -23,6 +23,10 @@
 #include "path_list.h"
 #include "app_pkg.h"
 
+#ifdef index
+#undef index
+#endif
+
 static void plc_select (
   Widget w,
   XtPointer client,
@@ -137,9 +141,14 @@ char *pTitle;
 
   display = XtDisplay( top );
 
-  shell = XtVaAppCreateShell( "edm", "edm",
-   topLevelShellWidgetClass,
-   XtDisplay(top),
+  //shell = XtVaAppCreateShell( "edm", "edm",
+  // topLevelShellWidgetClass,
+  // XtDisplay(top),
+  // XtNmappedWhenManaged, False,
+  // NULL );
+
+  shell = XtVaCreatePopupShell( "edm", topLevelShellWidgetClass,
+   top,
    XtNmappedWhenManaged, False,
    NULL );
 

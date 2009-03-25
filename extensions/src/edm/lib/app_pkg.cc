@@ -35,6 +35,89 @@ typedef struct libRecTag {
 
 static int g_needXtInit = 1;
 
+static void extractPosition (
+  char *str,
+  char *filePart,
+  int max,
+  int *gotPosition,
+  int *posx,
+  int *posy
+) {
+
+char buf[1023+1], *tk, *ctx, *err;
+int ok;
+
+  strncpy( buf, str, 1023 );
+  buf[1023] = 0;
+
+  ok = 1;
+
+  ctx = NULL;
+  tk = strtok_r( buf, "?", &ctx );
+
+  if ( tk ) {
+
+    strncpy( filePart, tk, max );
+    filePart[max] = 0;
+
+    tk = strtok_r( NULL, "?", &ctx );
+
+    if ( tk ) {
+
+      err = NULL;
+      *posx = strtod( tk, &err );
+      if ( err ) {
+	if ( strcmp( err, "" ) != 0 ) {
+	  ok = 0;
+	}
+      }
+
+      tk = strtok_r( NULL, "?", &ctx );
+
+      if ( tk ) {
+
+        err = NULL;
+        *posy = strtod( tk, &err );
+        if ( err ) {
+	  if ( strcmp( err, "" ) != 0 ) {
+	    ok = 0;
+	  }
+        }
+
+      }
+      else {
+
+        ok = 0;
+
+      }
+
+    }
+    else {
+
+      ok = 0;
+
+    }
+
+  }
+  else {
+
+    ok = 0;
+
+  }
+
+  if ( ok ) {
+    *gotPosition = 1;
+  }
+  else {
+    strncpy( filePart, str, max );
+    filePart[max] = 0;
+    *gotPosition = 0;
+    *posx = 0;
+    *posy = 0;
+  }
+
+}
+
 static int httpPath (
   char *path
  ) {
@@ -359,13 +442,26 @@ libRecPtr head, tail, cur, prev, next;
 
   if ( strcmp( op, global_str8 ) == 0 ) {  // show
 
+    fprintf( stderr, "\n" );
+
+    strcpy( line, "version" );
+    cfunc = (CHARFUNC) dlsym( dllHandle, line );
+    if ((error = dlerror()) == NULL)  {
+      fprintf( stderr, "Built with edm version: %s\n", (*cfunc)() );
+    }
+    else {
+      fprintf( stderr, "edm version not registered\n" );
+    }
+
+    fprintf( stderr, "\n" );
+
     strcpy( line, "author" );
     cfunc = (CHARFUNC) dlsym( dllHandle, line );
     if ((error = dlerror()) == NULL)  {
-      fprintf( stderr, "\nAuthor: %s\n", (*cfunc)() );
+      fprintf( stderr, "Author: %s\n", (*cfunc)() );
     }
     else {
-      fprintf( stderr, "\nAuthor name not registered\n" );
+      fprintf( stderr, "Author name not registered\n" );
     }
 
     fprintf( stderr, "\n" );
@@ -400,15 +496,15 @@ libRecPtr head, tail, cur, prev, next;
         index = 42;
       else
         index = strlen(line) + 5;
-      Strncat( line, "                                        ", 255 );
-      strncpy( &line[index], typeNamePtr, 255 );
+      Strncat( line, "                                             ", 255 );
+      strncpy( &line[index], typeNamePtr, 255-index );
 
       if ( strlen(line) < 50 )
         index = 55;
       else
         index = strlen(line) + 5;
-      Strncat( line, "                                        ", 255 );
-      strncpy( &line[index], textPtr, 255 );
+      Strncat( line, "                                                       ", 255 );
+      strncpy( &line[index], textPtr, 255-index );
 
       fprintf( stderr, "%s\n", line );
 
@@ -659,6 +755,8 @@ static void managePvComponents (
 
 typedef int (*PVREGFUNC)( char **, char ** );
 PVREGFUNC func;
+typedef char *(*CHARFUNC)( void );
+CHARFUNC cfunc;
 
 int stat, index, comment, fileExists, fileEmpty, doAdd, alreadyExists;
 char *classNamePtr, *textPtr, *error;
@@ -809,6 +907,17 @@ libRecPtr head, tail, cur, prev, next;
 
     fprintf( stderr, "\n" );
 
+    strcpy( line, "version" );
+    cfunc = (CHARFUNC) dlsym( dllHandle, line );
+    if ((error = dlerror()) == NULL)  {
+      fprintf( stderr, "Built with edm version: %s\n", (*cfunc)() );
+    }
+    else {
+      fprintf( stderr, "edm version not registered\n" );
+    }
+
+    fprintf( stderr, "\n" );
+
     strcpy( line, "firstPvRegRecord" );
     func = (PVREGFUNC) dlsym( dllHandle, line );
     if ((error = dlerror()) != NULL)  {
@@ -839,8 +948,8 @@ libRecPtr head, tail, cur, prev, next;
         index = 45;
       else
         index = strlen(line) + 5;
-      Strncat( line, "                                        ", 255 );
-      strncpy( &line[index], textPtr, 255 );
+      Strncat( line, "                                             ", 255 );
+      strncpy( &line[index], textPtr, 255-index );
 
       fprintf( stderr, "%s\n", line );
 
@@ -1867,6 +1976,18 @@ int found;
 
 }
 
+void viewEnv_cb (
+  Widget w,
+  XtPointer client,
+  XtPointer call )
+{
+
+appContextClass *apco = (appContextClass *) client;
+
+  apco->showEnv();
+
+}
+
 void help_cb (
   Widget w,
   XtPointer client,
@@ -2569,7 +2690,7 @@ void appContextClass::expandFileName (
   int maxSize )
 {
 
-unsigned int i;
+unsigned int i, l, first, more;
 int state, noPrefix;
 
   if ( index >= numPaths ) {
@@ -2627,15 +2748,23 @@ int state, noPrefix;
     Strncat( expandedName, inName, maxSize );
   }
 
-  if ( strlen(expandedName) > strlen(ext) ) {
-    if ( strcmp( &expandedName[strlen(expandedName)-strlen(ext)], ext )
-     != 0 ) {
-      Strncat( expandedName, ext, maxSize );
+
+  // if no extension specified, add ext from argument
+
+  l = strlen(expandedName);
+  more = 1;
+  first = 0;
+  for ( i=l-1; (i>=0) && more; i-- ) {
+    if ( expandedName[i] == '/' ) {
+      more = 0;
+      first = i;
     }
   }
-  else {
+  if ( !strstr( &expandedName[first], "." ) ) {
     Strncat( expandedName, ext, maxSize );
   }
+
+  return;
 
 }
 
@@ -3588,6 +3717,15 @@ int i, numVisible;
   XtAddCallback( viewFontMappingB, XmNactivateCallback, viewFontMapping_cb,
    (XtPointer) this );
 
+  str = XmStringCreateLocalized( appContextClass_str144 );
+  viewEnvB = XtVaCreateManagedWidget( "pb", xmPushButtonWidgetClass,
+   viewPullDown,
+   XmNlabelString, str,
+   NULL );
+  XmStringFree( str );
+  XtAddCallback( viewEnvB, XmNactivateCallback, viewEnv_cb,
+   (XtPointer) this );
+
   // --------------------------------------------------------------------
 
   if ( numPaths <= 30 ) {
@@ -3703,7 +3841,7 @@ int i, numVisible;
 
   XtVaSetValues( menuBar,
    XmNmenuHelpWidget, helpCascade,
-   0 );
+   NULL );
 
   XtManageChild( menuBar );
 
@@ -4032,6 +4170,8 @@ static void displayParamInfo ( void ) {
 
   fprintf( stderr, global_str97 );
 
+  fprintf( stderr, global_str107 );
+
   fprintf( stderr, global_str103 );
   fprintf( stderr, global_str105 );
 
@@ -4287,6 +4427,9 @@ fileListPtr curFile;
 	}
 	else if ( strcmp( argv[n], global_str100 ) == 0 ) { //disable scroll bars
           useScrollBars = 0;
+	}
+	else if ( strcmp( argv[n], global_str106 ) == 0 ) { //noautomsg
+          msgBox.setAutoOpen( 0 );
 	}
 
         else {
@@ -4747,6 +4890,8 @@ int state;
 char *macTk, *macBuf, macTmp[255+1];
 int stat;
 char name[127+1], prefix[127+1];
+char filePart[255+1];
+int gotPosition, posx, posy;
 
   //fprintf( stderr, "list = [%s]\n", list );
 
@@ -4876,7 +5021,15 @@ char name[127+1], prefix[127+1];
           cur->node.realize();
           cur->node.setGraphicEnvironment( &ci, &fi );
 
-          cur->node.storeFileName( tk );
+          extractPosition( tk, filePart, 255, &gotPosition, &posx, &posy );
+
+	  if ( gotPosition ) {
+	    cur->x = posx;
+	    cur->y = posy;
+	    cur->requestPosition = 1;
+	  }
+
+          cur->node.storeFileName( filePart );
 
           cur->requestOpen = 1;
           requestFlag++;
@@ -5802,8 +5955,10 @@ activeWindowListPtr cur;
   cur = head->flink;
   while ( cur != head ) {
 
-    if ( !cur->node.okToDeactivate() ) {
-      return 0;
+    if ( cur->node.windowState != AWC_COMPLETE_DEACTIVATE ) {
+      if ( !cur->node.okToDeactivate() ) {
+        return 0;
+      }
     }
 
     cur = cur->flink;
@@ -5849,3 +6004,308 @@ actionsPtr curAct;
   thread_unlock( actionsLock );
 
 }
+
+void appContextClass::showEnv ( void ) {
+
+char *envPtr, text[255+1];
+
+  snprintf( text, 255, "Environment:" );
+  postMessage( text );
+
+  envPtr = getenv( environment_str2 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str2, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str2 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str3 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str3, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str3 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str4 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str4, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str4 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str5 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str5, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str5 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str7 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str7, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str7 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str8 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str8, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str8 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str9 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str9, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str9 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str10 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str10, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str10 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str11 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str11, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str11 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str12 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str12, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str12 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str13 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str13, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str13 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str14 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str14, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str14 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str15 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str15, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str15 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str16 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str16, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str16 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( environment_str17 );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", environment_str17, envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", environment_str17 );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMCOMMENTS" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMCOMMENTS", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMCOMMENTS" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMHTTPDOCROOT" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMHTTPDOCROOT", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMHTTPDOCROOT" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "CALC_ENV" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "CALC_ENV", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "CALC_ENV" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMCOLORMODE" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMCOLORMODE", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMCOLORMODE" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMPRINTER" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMPRINTER", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMPRINTER" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMSERVERS" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMSERVERS", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMSERVERS" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+
+  // site specific vars
+
+  snprintf( text, 255, " " );
+  postMessage( text );
+  snprintf( text, 255, "  (Site Related)" );
+  postMessage( text );
+
+  envPtr = getenv( "EDMRDDHS" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMRDDHS", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMRDDHS" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+
+// diagnostic vars
+
+  snprintf( text, 255, " " );
+  postMessage( text );
+  snprintf( text, 255, "  (Diagnostic)" );
+  postMessage( text );
+
+  envPtr = getenv( "EDMSUPERVISORMODE" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMSUPERVISORMODE", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMSUPERVISORMODE" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMGENDOC" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMGENDOC", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMGENDOC" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMDEBUGMODE" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMDEBUGMODE", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMDEBUGMODE" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMDIAGNOSTICMODE" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMDIAGNOSTICMODE", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMDIAGNOSTICMODE" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  envPtr = getenv( "EDMXSYNC" );
+  if ( envPtr ) {
+    snprintf( text, 255, "  %s=[%s]", "EDMXSYNC", envPtr );
+  }
+  else {
+    snprintf( text, 255, "  %s=[]", "EDMXSYNC" );
+  }
+  text[255] = 0;
+  postMessage( text );
+
+  snprintf( text, 255, " " );
+  postMessage( text );
+
+}
+
+Widget appContextClass::apptop ( void ) {
+
+  return appTop;
+
+}
+

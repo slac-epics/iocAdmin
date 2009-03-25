@@ -599,6 +599,14 @@ int value, n, nIn, nOut;
       return;
     }
 
+    {
+      int flags, status;
+      flags = fcntl( sockfd, F_GETFD );
+      if ( flags >= 0 ) {
+        status = fcntl( sockfd, F_SETFD, flags | FD_CLOEXEC );
+      }
+    }
+
     value = 1;
     len = sizeof(value);
     stat = setsockopt( sockfd, SOL_SOCKET, SO_KEEPALIVE,
@@ -674,6 +682,14 @@ nextHost:
   if ( sockfd == -1 ) {
     //perror( "" );
     return;
+  }
+
+  {
+    int flags, status;
+    flags = fcntl( sockfd, F_GETFD );
+    if ( flags >= 0 ) {
+      status = fcntl( sockfd, F_SETFD, flags | FD_CLOEXEC );
+    }
   }
 
   value = 1;
@@ -981,7 +997,7 @@ int stat;
     stat = pend_event( 0.05 );
 
   } while ( 1 );
-
+  return 0;
 }
 
 #ifdef __linux__
@@ -1047,6 +1063,14 @@ int *portNumPtr = (int *) thread_get_app_data( h );
     if ( sockfd == -1 ) {
       perror( "socket" );
       goto err_return;
+    }
+
+    {
+      int flags, status;
+      flags = fcntl( sockfd, F_GETFD );
+      if ( flags >= 0 ) {
+        status = fcntl( sockfd, F_SETFD, flags | FD_CLOEXEC );
+      }
     }
 
     value = 1;
@@ -1240,6 +1264,7 @@ Display *testDisplay;
   *restart = 0;
   *convertOnly = 0;
   *crawl = 0;
+  *verbose = 0;
 
   // check first for component management commands
   if ( argc > 1 ) {
@@ -1397,6 +1422,8 @@ Display *testDisplay;
           setReadOnly();
 	}
         else if ( strcmp( argv[n], global_str100 ) == 0 ) {
+	}
+        else if ( strcmp( argv[n], global_str106 ) == 0 ) { //noautomsg
 	}
         else {
           *local = 1;

@@ -11,18 +11,26 @@
 #define VIDEO_MAX_LOAD_FACTOR 4
 #define VIDEO_MAX_DATA_WIDTH 10000
 #define VIDEO_MAX_DATA_HEIGHT 10000
+#define VIDEO_NBITSPERPIXEL_DEFAULT 8
 #define VIDEO_MAJOR_VERSION 4
-#define VIDEO_MINOR_VERSION 0
+#define VIDEO_MINOR_VERSION 1
 #define VIDEO_RELEASE 1
 
 #include <time.h>
-#include <stream.h>
+#include <iostream>
+
+//#ifdef SOLARIS
+//#include <iostream.h>
+//#else
+//#include <stream.h>
+//#endif
 
 #include <act_grf.h>
 #include <act_win.h>
 #include <app_pkg.h>
 #include <entry_form.h>
 #include <pv_factory.h>
+#include "edm.version"
 
 //#include "widget.h"
 #include "image.h"
@@ -45,6 +53,7 @@ class TwoDProfileMonitor : public activeGraphicClass
     int yBuf;
     int wBuf;
     int hBuf;
+    int nBitsPerPixelBuf;
     char dataPvBuf[activeGraphicClass::MAX_PV_NAME+1];
     char widthPvBuf[activeGraphicClass::MAX_PV_NAME+1];
     char heightPvBuf[activeGraphicClass::MAX_PV_NAME+1];
@@ -65,6 +74,7 @@ class TwoDProfileMonitor : public activeGraphicClass
     struct timeval lasttv;
     unsigned long average_time_usec;
     int opComplete;
+    int nBitsPerPixel;
 
     // widget-specific stuff
     //widgetData wd;
@@ -633,7 +643,7 @@ public:
   
     int read (TwoDProfileMonitor* mon,
               FILE *fptr,
-              int *x, int *y, int *w, int *h,
+              int *x, int *y, int *w, int *h, int *nBitsPerPixel,
               expStringClass *dataPvStr,
               expStringClass *widthPvStr,
               expStringClass *heightPvStr,
@@ -655,6 +665,7 @@ public:
         loadR ( "heightPvStr", heightPvStr, (char *) "" ); 
         loadR ( "dataWidth", dataWidth);
         loadR ( "pvBasedDataSize", pvBasedDataSize);
+        loadR ( "nBitsPerPixel", nBitsPerPixel );
         stat = readTags ( fptr, "endObjectProperties" );
         if (major > VIDEO_MAJOR_VERSION ||
             (major == VIDEO_MAJOR_VERSION && minor > VIDEO_MINOR_VERSION))
@@ -673,7 +684,7 @@ public:
         return stat;
     }
     int write (FILE *fptr,
-               int *x, int *y, int *w, int *h,
+               int *x, int *y, int *w, int *h, int *nBitsPerPixel,
                expStringClass *dataPvStr,
                expStringClass *widthPvStr,
                expStringClass *heightPvStr,
@@ -697,6 +708,7 @@ public:
         loadW ( "heightPvStr", heightPvStr, (char *) "" ); 
         loadW ( "dataWidth", dataWidth);
         loadW ( "pvBasedDataSize", pvBasedDataSize);
+        loadW ( "nBitsPerPixel", nBitsPerPixel );
         loadW ( "endObjectProperties" );
         loadW ( "" );
   
@@ -749,11 +761,27 @@ static int libRecIndex = 0;
 
 static libRecType libRec[] = 
 {
-    { "TwoDProfileMonitor", global_str2, "New Monitor" }
+    { "TwoDProfileMonitorClass", global_str2, "Hoff Video" }
 };
 
 extern "C" 
 {
+
+    char *version ( void ) {
+
+    static char *v = VERSION;
+
+      return v;
+
+    }
+
+    char *author ( void ) {
+
+    static char *a = "Lawrence T. Hoff (hoff@bnl.gov)";
+
+      return a;
+
+    }
 
     int firstRegRecord (char **className,
                         char **typeName,
@@ -881,7 +909,7 @@ int TwoDProfileMonitor::activate ( int pass,
         if ( !opComplete ) {
 	  _edmDebug();
           img = new imageClass( actWin->d, actWin->ci->getColorMap(),
-           actWin->executeGc.normGC(), w, h );
+           actWin->executeGc.normGC(), w, h, nBitsPerPixel );
           opComplete = 1;
         }
 
@@ -1075,6 +1103,7 @@ void TwoDProfileMonitor::editApply (Widget w,
     me->y = me->yBuf;
     me->w = me->wBuf;
     me->h = me->hBuf;
+    me->nBitsPerPixel = me->nBitsPerPixelBuf;
     me->sboxX = me->xBuf;
     me->sboxY = me->yBuf;
     me->sboxW = me->wBuf;
@@ -1149,11 +1178,13 @@ void TwoDProfileMonitor::editCommon ( activeWindowClass *actWin,
     yBuf = y;
     wBuf = w;
     hBuf = h;
+    nBitsPerPixelBuf = nBitsPerPixel;
 
     ef.addTextField ("X", 30, &xBuf);
     ef.addTextField ("Y", 30, &yBuf);
     ef.addTextField ("Widget Width", 30, &wBuf);
     ef.addTextField ("Widget Height", 30, &hBuf);
+    ef.addTextField ("Bits per pixel", 30, &nBitsPerPixelBuf);
     // copy out, we'll copy in during "Apply"
     strncpy (dataPvBuf, dataPvStr.getRaw (), sizeof (dataPvBuf) - 1);
     ef.addTextField ("Data PV", 30, dataPvBuf, sizeof (dataPvBuf) - 1);
@@ -1201,6 +1232,7 @@ int TwoDProfileMonitor::createInteractive (activeWindowClass *actWin,
     this->y = y;
     this->w = w;
     this->h = h;
+    this->nBitsPerPixel = VIDEO_NBITSPERPIXEL_DEFAULT;
 
     draw ();
   
@@ -1219,8 +1251,9 @@ int TwoDProfileMonitor::createFromFile (FILE *fptr,
     // use tag class and name to read from file
     TwoDProfileMonitorTags tag;
   
+    nBitsPerPixel = 8;  
     if ( !(1 & tag.read ( this,
-                          fptr, &x, &y, &w, &h, &dataPvStr,
+                          fptr, &x, &y, &w, &h, &nBitsPerPixel, &dataPvStr,
                           &widthPvStr, &heightPvStr,
                           &dataWidth, &pvBasedDataSize ) ) )
     {
@@ -1248,7 +1281,7 @@ int TwoDProfileMonitor::save ( FILE *fptr )
 {
     // use tag class to serialize data
     TwoDProfileMonitorTags tag;
-    return tag.write ( fptr, &x, &y, &w, &h, &dataPvStr,
+    return tag.write ( fptr, &x, &y, &w, &h, &nBitsPerPixel, &dataPvStr,
                        &widthPvStr, &heightPvStr,
                        &dataWidth, &pvBasedDataSize );
   
@@ -1507,6 +1540,3 @@ void TwoDProfileMonitor::sizeUpdate (ProcessVariable *pv,
     me->actWin->appCtx->proc->unlock ();
 #endif
 }
-
-
-

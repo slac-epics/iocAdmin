@@ -133,6 +133,8 @@ float orientation;
 int selected; // if true, then is selected
 int editMode;
 
+unknownTagList unknownTags;
+
 activeGraphicClass *nextToEdit; // for group edits
 int inGroup;
 
@@ -397,6 +399,11 @@ virtual int drawSelectBoxCorners ( void );
 virtual int drawSelectBox ( void );
 
 virtual int getSelectBoxOperation (
+  int controlKeyPressed,
+  int _x,
+  int _y );
+
+virtual int getSelectBoxOperation (
   int _x,
   int _y );
 
@@ -577,6 +584,11 @@ virtual int movePoint (
   pointPtr curPoint,
   int x,
   int y );
+
+virtual int movePointRel (
+  pointPtr curPoint,
+  int xofs,
+  int yofs );
 
 virtual int lineEditComplete ( void );
 

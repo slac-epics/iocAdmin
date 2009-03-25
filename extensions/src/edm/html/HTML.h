@@ -2,11 +2,11 @@
 * HTML.h : XmHTML Widget public header file.
 *			Resource defines, enumerations and structures.
 *
-* This file Version	$Revision: 1.1.1.1 $
+* This file Version	$Revision: 1.1 $
 *
 * Creation date:		Tue Apr 15 23:39:26 GMT+0100 1997
 * Last modification: 	$Date: 2004/02/28 01:30:24 $
-* By:					$Author: saa $
+* By:					$Author: sinclair $
 * Current State:		$State: Exp $
 *
 * Author:				newt
@@ -32,15 +32,11 @@
 *
 *****/
 /*****
-* $Source: /afs/slac/g/lcls/cvs/epics/extensions/src/edm/html/HTML.h,v $
+* $Source: /sns/ADE/cvsroot/epics/supTop/extensions/1.1/src/edm/html/HTML.h,v $
 *****/
 /*****
 * ChangeLog 
 * $Log: HTML.h,v $
-* Revision 1.1.1.1  2004/02/28 01:30:24  saa
-* EDM version 1-10-1zc from:
-* http://ics-web1.sns.ornl.gov/edm/info/show.php?mon=May&theDay=12&year=2005
-*
 * Revision 1.1  2004/02/28 01:30:24  sinclair
 * Adding these back in after accidental delete
 *

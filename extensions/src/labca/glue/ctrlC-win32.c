@@ -1,4 +1,4 @@
-/* $Id: ctrlC-win32.c,v 1.2 2007/11/16 16:45:04 ernesto Exp $ */
+/* $Id: ctrlC-win32.c,v 1.7 2006/04/14 23:45:28 till Exp $ */
 
 /* Ctrl-C processing for WIN32 */
 

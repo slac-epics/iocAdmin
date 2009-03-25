@@ -131,6 +131,9 @@ int i, value;
 
     if ( w == mmuxo->pb[i] ) {
       value = i;
+      //mmuxo->controlPvId->put(
+      // XDisplayName(mmuxo->actWin->appCtx->displayName),
+      // value );
       mmuxo->controlPvId->put( value );
       return;
     }
@@ -213,7 +216,8 @@ int i, ii;
   mmuxo->eraseSelectBoxCorners();
   mmuxo->erase();
 
-  strncpy( mmuxo->fontTag, mmuxo->fm.currentFontTag(), 63+1 );
+  strncpy( mmuxo->fontTag, mmuxo->fm.currentFontTag(), 63 );
+  mmuxo->fontTag[63] = 0;
   mmuxo->actWin->fi->loadFontTag( mmuxo->fontTag );
   mmuxo->actWin->drawGc.setFontTag( mmuxo->fontTag, mmuxo->actWin->fi );
   mmuxo->actWin->fi->getTextFontList( mmuxo->fontTag, &mmuxo->fontList );
@@ -253,7 +257,8 @@ int i, ii;
   mmuxo->initialStateExpStr.setRaw( mmuxo->eBuf->bufInitialState );
 
   for ( i=0; i<MMUX_MAX_STATES; i++ ) {
-    strncpy( mmuxo->tag[i], mmuxo->eBuf->bufTag[i], MMUX_MAX_STRING_SIZE+1 );
+    strncpy( mmuxo->tag[i], mmuxo->eBuf->bufTag[i], MMUX_MAX_STRING_SIZE );
+    mmuxo->tag[i][MMUX_MAX_STRING_SIZE] = 0;
     if ( strlen(mmuxo->tag[i]) == 0 ) {
       strcpy( mmuxo->tag[i], "?" );
     }
@@ -261,8 +266,10 @@ int i, ii;
 
   for ( i=0; i<MMUX_MAX_STATES; i++ ) {
     for ( ii=0; ii<MMUX_MAX_ENTRIES; ii++ ) {
-      strncpy( mmuxo->m[i][ii], mmuxo->eBuf->bufM[i][ii], MMUX_MAX_STRING_SIZE+1 );
-      strncpy( mmuxo->e[i][ii], mmuxo->eBuf->bufE[i][ii], MMUX_MAX_STRING_SIZE+1 );
+      strncpy( mmuxo->m[i][ii], mmuxo->eBuf->bufM[i][ii], MMUX_MAX_STRING_SIZE );
+      mmuxo->m[i][ii][MMUX_MAX_STRING_SIZE] = 0;
+      strncpy( mmuxo->e[i][ii], mmuxo->eBuf->bufE[i][ii], MMUX_MAX_STRING_SIZE );
+      mmuxo->e[i][ii][MMUX_MAX_STRING_SIZE] = 0;
     }
   }
 
@@ -392,12 +399,15 @@ activeGraphicClass *mmuxo = (activeGraphicClass *) this;
   }
 
   for ( i=0; i<MMUX_MAX_STATES; i++ ) {
-    strncpy( tag[i], source->tag[i], MMUX_MAX_STRING_SIZE+1 );
+    strncpy( tag[i], source->tag[i], MMUX_MAX_STRING_SIZE );
+    tag[i][MMUX_MAX_STRING_SIZE] = 0;
   }
   for ( i=0; i<MMUX_MAX_STATES; i++ ) {
     for ( ii=0; ii<MMUX_MAX_ENTRIES; ii++ ) {
-      strncpy( m[i][ii], source->m[i][ii], MMUX_MAX_STRING_SIZE+1 );
-      strncpy( e[i][ii], source->e[i][ii], MMUX_MAX_STRING_SIZE+1 );
+      strncpy( m[i][ii], source->m[i][ii], MMUX_MAX_STRING_SIZE );
+      m[i][ii][MMUX_MAX_STRING_SIZE] = 0;
+      strncpy( e[i][ii], source->e[i][ii], MMUX_MAX_STRING_SIZE );
+      e[i][ii][MMUX_MAX_STRING_SIZE] = 0;
     }
   }
 
@@ -405,7 +415,8 @@ activeGraphicClass *mmuxo = (activeGraphicClass *) this;
   mac = NULL;
   exp = NULL;
 
-  strncpy( fontTag, source->fontTag, 63+1 );
+  strncpy( fontTag, source->fontTag, 63 );
+  fontTag[63] = 0;
   fs = actWin->fi->getXFontStruct( fontTag );
   actWin->fi->getTextFontList( fontTag, &fontList );
 
@@ -486,7 +497,8 @@ int menuMuxClass::createInteractive (
   w = _w;
   h = _h;
 
-  strncpy( fontTag, actWin->defaultBtnFontTag, 63+1 );
+  strncpy( fontTag, actWin->defaultBtnFontTag, 63 );
+  fontTag[63] = 0;
   actWin->fi->loadFontTag( fontTag );
   fs = actWin->fi->getXFontStruct( fontTag );
   actWin->fi->getTextFontList( fontTag, &fontList );
@@ -560,6 +572,7 @@ char *emptyStr = "";
     itemTag.loadW( tmpV[i], MMUX_MAX_STRING_SIZE+1, tmpBufV[i][0], numItems,
      emptyStr );
   }
+  itemTag.loadW( unknownTags );
   itemTag.loadW( "endObjectProperties" );
   itemTag.loadW( "" );
 
@@ -656,6 +669,7 @@ char *emptyStr = "";
 
   itemTag.init();
   itemTag.loadR( "beginObjectProperties" );
+  itemTag.loadR( unknownTags );
   itemTag.loadR( "major", &major );
   itemTag.loadR( "minor", &minor );
   itemTag.loadR( "release", &release );
@@ -946,12 +960,15 @@ char title[32], *ptr;
   }
 
   ptr = actWin->obj.getNameFromClass( "menuMuxClass" );
-  if ( ptr )
-    strncpy( title, ptr, 31+1 );
-  else
-    strncpy( title, menuMuxClass_str2, 31+1 );
+  if ( ptr ) {
+    strncpy( title, ptr, 31 );
+  }
+  else {
+    strncpy( title, menuMuxClass_str2, 31 );
+  }
+  title[31] = 0;
 
-  Strncat( title, menuMuxClass_str3, 31+1 );
+  Strncat( title, menuMuxClass_str3, 31 );
 
   eBuf->bufX = x;
   eBuf->bufY = y;
@@ -967,26 +984,35 @@ char title[32], *ptr;
   eBuf->bufBgColor = bgColor.pixelIndex();
   eBuf->bufBgColorMode = bgColorMode;
 
-  if ( controlPvExpStr.getRaw() )
+  if ( controlPvExpStr.getRaw() ) {
     strncpy( eBuf->bufControlPvName, controlPvExpStr.getRaw(),
      PV_Factory::MAX_PV_NAME );
-  else
+  }
+  else {
     strcpy( eBuf->bufControlPvName, "" );
+  }
+  eBuf->bufControlPvName[PV_Factory::MAX_PV_NAME] = 0;
 
   for ( i=0; i<MMUX_MAX_STATES; i++ ) {
-    strncpy( eBuf->bufTag[i], tag[i], MMUX_MAX_STRING_SIZE+1 );
+    strncpy( eBuf->bufTag[i], tag[i], MMUX_MAX_STRING_SIZE );
+    eBuf->bufTag[i][MMUX_MAX_STRING_SIZE] = 0;
   }
   for ( i=0; i<MMUX_MAX_STATES; i++ ) {
     for ( ii=0; ii<MMUX_MAX_ENTRIES; ii++ ) {
-      strncpy( eBuf->bufM[i][ii], m[i][ii], MMUX_MAX_STRING_SIZE+1 );
-      strncpy( eBuf->bufE[i][ii], e[i][ii], MMUX_MAX_STRING_SIZE+1 );
+      strncpy( eBuf->bufM[i][ii], m[i][ii], MMUX_MAX_STRING_SIZE );
+      eBuf->bufM[i][ii][MMUX_MAX_STRING_SIZE] = 0;
+      strncpy( eBuf->bufE[i][ii], e[i][ii], MMUX_MAX_STRING_SIZE );
+      eBuf->bufE[i][ii][MMUX_MAX_STRING_SIZE] = 0;
     }
   }
 
-  if ( initialStateExpStr.getRaw() )
-    strncpy( eBuf->bufInitialState, initialStateExpStr.getRaw(), 15+1 );
-  else
-    strncpy( eBuf->bufInitialState, "0", 15+1 );
+  if ( initialStateExpStr.getRaw() ) {
+    strncpy( eBuf->bufInitialState, initialStateExpStr.getRaw(), 15 );
+  }
+  else {
+    strncpy( eBuf->bufInitialState, "0", 15 );
+  }
+  eBuf->bufInitialState[15] = 0;
 
   ef.create( actWin->top, actWin->appCtx->ci.getColorMap(),
    &actWin->appCtx->entryFormX,
@@ -1331,6 +1357,7 @@ char string[MMUX_MAX_STRING_SIZE+1];
     else {
       strcpy( string, "?" );
     }
+    string[MMUX_MAX_STRING_SIZE] = 0;
 
     drawText( actWin->executeWidget, &actWin->executeGc, fs, tX, tY,
      XmALIGNMENT_CENTER, string );
@@ -1430,8 +1457,10 @@ int i, ii, count;
   for ( i=0; i<MMUX_MAX_ENTRIES; i++ ) {
     if ( ( strcmp( m[n][i], "" ) != 0 ) &&
          ( strcmp( e[n][i], "" ) != 0 ) ) {
-      strncpy( mac[ii], m[n][i], MMUX_MAX_STRING_SIZE+1 );
-      strncpy( exp[ii], e[n][i], MMUX_MAX_STRING_SIZE+1 );
+      strncpy( mac[ii], m[n][i], MMUX_MAX_STRING_SIZE );
+      mac[ii][MMUX_MAX_STRING_SIZE] = 0;
+      strncpy( exp[ii], e[n][i], MMUX_MAX_STRING_SIZE );
+      exp[ii][MMUX_MAX_STRING_SIZE] = 0;
       ii++;
     }
   }
@@ -1505,8 +1534,10 @@ int i, ii, n, count;
   for ( i=0; i<MMUX_MAX_ENTRIES; i++ ) {
     if ( ( strcmp( m[n][i], "" ) != 0 ) &&
          ( strcmp( e[n][i], "" ) != 0 ) ) {
-      strncpy( mac[ii], m[n][i], MMUX_MAX_STRING_SIZE+1 );
-      strncpy( exp[ii], e[n][i], MMUX_MAX_STRING_SIZE+1 );
+      strncpy( mac[ii], m[n][i], MMUX_MAX_STRING_SIZE );
+      mac[ii][MMUX_MAX_STRING_SIZE] = 0;
+      strncpy( exp[ii], e[n][i], MMUX_MAX_STRING_SIZE );
+      exp[ii][MMUX_MAX_STRING_SIZE] = 0;
       ii++;
     }
   }
@@ -1889,7 +1920,8 @@ int n;
     for ( i=0; i<numStates; i++ ) {
 
       stateString[i] = new char[strlen(tag[i])+1];
-      strncpy( stateString[i], tag[i], strlen(tag[i])+1 );
+      strncpy( stateString[i], tag[i], strlen(tag[i]) );
+      stateString[i][strlen(tag[i])] = 0;
 
       str = XmStringCreate( stateString[i], fontTag );
 
@@ -1944,9 +1976,11 @@ int n;
     stat = drawActive();
 
     if ( !firstEvent ) {
-      actWin->preReexecute();
-      actWin->setNoRefresh();
-      actWin->appCtx->reactivateActiveWindow( actWin );
+      stat = actWin->preReexecute();
+      if ( stat & 1 ) {
+        actWin->setNoRefresh();
+        actWin->appCtx->reactivateActiveWindow( actWin );
+      }
     }
     firstEvent = 0;
 
@@ -2094,6 +2128,7 @@ void *create_menuMuxClassPtr ( void ) {
 menuMuxClass *ptr;
 
   ptr = new menuMuxClass;
+
   return (void *) ptr;
 
 }

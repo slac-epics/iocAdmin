@@ -615,8 +615,14 @@ activeWindowListPtr cur;
     }
 
     if ( okToClose ) {
-      aw->returnToEdit( 1 );
-      aw = NULL;
+      if ( aw->okToDeactivate() ) {
+        aw->returnToEdit( 1 );
+        aw = NULL;
+      }
+      else {
+        aw->closeDeferred( 20 );
+        aw = NULL;
+      }
     }
 
   }
@@ -783,6 +789,7 @@ static int setPosEnum[3] = {
   tag.loadW( "appendType", useType, numDsps, &zero );
   tag.loadW( "appendSpecificType", useSpecType, numDsps, &zero );
   tag.loadW( "appendDimension", useDim, numDsps, &zero );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -908,6 +915,7 @@ static int setPosEnum[3] = {
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -1659,6 +1667,8 @@ Atom importList[2];
       else {
         textFontList = NULL;
       }
+
+      strcpy( entryValue, "" );
 
       tf_widget = XtVaCreateManagedWidget( "", xmTextFieldWidgetClass,
        actWin->executeWidget,
@@ -2652,8 +2662,14 @@ activeWindowListPtr cur;
       }
 
       if ( okToClose ) {
-        aw->returnToEdit( 1 );
-        aw = NULL;
+        if ( aw->okToDeactivate() ) {
+          aw->returnToEdit( 1 );
+          aw = NULL;
+	}
+        else {
+          aw->closeDeferred( 20 );
+          aw = NULL;
+	}
       }
       else {
         aw = NULL;

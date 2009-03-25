@@ -1,4 +1,4 @@
-/* $Id: clipbd.h,v 1.1.1.1 2004/01/05 21:35:19 saa Exp $ */
+/* $Id: clipbd.h,v 1.3 2004/01/05 21:35:19 sinclair Exp $ */
 #ifndef CLIPBD_H
 #define CLIPBD_H
 

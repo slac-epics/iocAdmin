@@ -1228,6 +1228,7 @@ int visInverted;
       // read in group properties
       tag.init();
       tag.loadR( "beginObjectProperties" );
+      tag.loadR( unknownTags );
       tag.loadR( "major", &major );
       tag.loadR( "minor", &minor );
       tag.loadR( "release", &release );
@@ -1683,6 +1684,7 @@ int i, saveX, saveY, origX, origY, origW, origH;
   tag.loadBoolW( "useOriginalColors", &useOriginalColors, &zero );
   tag.loadW( "fgColor", actWin->ci, &fgColor );
   tag.loadW( "bgColor", actWin->ci, &bgColor );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -1840,6 +1842,7 @@ int resizeStat, readSymfileStat, i, n1, n2, saveW, saveH;
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -2429,7 +2432,8 @@ int num;
     }
     colorPvId = NULL;
 
-    notControlPvConnected = (int) pow(2,numPvs) - 1;
+    //notControlPvConnected = (int) pow(2,numPvs) - 1; <-- solaris compile prob
+    notControlPvConnected = (1 << numPvs) - 1;
 
     if ( numPvs ) {
 

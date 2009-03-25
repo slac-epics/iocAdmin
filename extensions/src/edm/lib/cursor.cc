@@ -18,6 +18,9 @@
 
 #include "cursor.h"
 
+// set non-zero to disable special cursor shapes
+static int noSpecialCursors = 0;
+
 cursorClass::cursorClass ( void )
 {
 
@@ -33,6 +36,7 @@ cursorClass::cursorClass ( void )
   run = (Cursor) NULL;
   runWithHelp = (Cursor) NULL;
   upDown = (Cursor) NULL;
+  pntrWithHelp = (Cursor) NULL;
 
 }
 
@@ -49,6 +53,7 @@ cursorClass::~cursorClass ( void )
   if ( run ) XFreeCursor( display, run );
   if ( runWithHelp ) XFreeCursor( display, runWithHelp );
   if ( upDown ) XFreeCursor( display, upDown );
+  if ( pntrWithHelp ) XFreeCursor( display, pntrWithHelp );
 
 }
 
@@ -57,6 +62,37 @@ void cursorClass::create (
   Window rootWin,
   Colormap cmap )
 {
+
+#define pntrWithHelp_width 32
+#define pntrWithHelp_height 32
+#define pntrWithHelp_x_hot 5
+#define pntrWithHelp_y_hot 3
+
+static char pntrWithHelp_bits[] = {
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3c, 0x00, 0x00, 0x00, 0x42,
+   0x20, 0x00, 0x00, 0x40, 0x60, 0x00, 0x00, 0x40, 0xe0, 0x00, 0x00, 0x60,
+   0xe0, 0x01, 0x00, 0x30, 0xe0, 0x03, 0x00, 0x08, 0xe0, 0x07, 0x00, 0x08,
+   0xe0, 0x0f, 0x00, 0x08, 0xe0, 0x1f, 0x00, 0x00, 0xe0, 0x3f, 0x00, 0x08,
+   0xe0, 0x03, 0x00, 0x00, 0xe0, 0x06, 0x00, 0x00, 0x60, 0x06, 0x00, 0x00,
+   0x20, 0x0c, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00,
+   0x00, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+static char pntrWithHelp_mask_bits[] = {
+   0x00, 0x00, 0x00, 0x7e, 0x00, 0x00, 0x00, 0xff, 0x30, 0x00, 0x00, 0xff,
+   0x70, 0x00, 0x00, 0xe7, 0xf0, 0x00, 0x00, 0xf0, 0xf0, 0x01, 0x00, 0xf0,
+   0xf0, 0x03, 0x00, 0xfc, 0xf0, 0x07, 0x00, 0x7c, 0xf0, 0x0f, 0x00, 0x1c,
+   0xf0, 0x1f, 0x00, 0x1c, 0xf0, 0x3f, 0x00, 0x1c, 0xf0, 0x7f, 0x00, 0x1c,
+   0xf0, 0x7f, 0x00, 0x1c, 0xf0, 0x0f, 0x00, 0x00, 0xf0, 0x0f, 0x00, 0x00,
+   0x70, 0x1e, 0x00, 0x00, 0x30, 0x1e, 0x00, 0x00, 0x00, 0x3c, 0x00, 0x00,
+   0x00, 0x3c, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 #define cross_width 16
 #define cross_height 16
@@ -438,10 +474,12 @@ static char no_mask_bits[] = {
    willOpen_y_hot );
 
   willOpenWithHelpShape = XCreatePixmapFromBitmapData ( dsp, rootWin,
-   willOpenWithHelp_bits, willOpenWithHelp_width, willOpenWithHelp_height, 1, 0, 1 );
+   willOpenWithHelp_bits, willOpenWithHelp_width, willOpenWithHelp_height,
+   1, 0, 1 );
 
   willOpenWithHelpMask = XCreatePixmapFromBitmapData ( dsp, rootWin,
-   willOpenWithHelp_mask_bits, willOpenWithHelp_width, willOpenWithHelp_height, 1, 0, 1 );
+   willOpenWithHelp_mask_bits, willOpenWithHelp_width, willOpenWithHelp_height,
+   1, 0, 1 );
 
   willOpenWithHelp = XCreatePixmapCursor( dsp, willOpenWithHelpShape,
    willOpenWithHelpMask, &shapeColor, &maskColor, willOpenWithHelp_x_hot,
@@ -476,6 +514,18 @@ static char no_mask_bits[] = {
   upDown = XCreatePixmapCursor( dsp, upDownShape,
    upDownMask, &shapeColor, &maskColor, upDown_x_hot,
    upDown_y_hot );
+
+  pntrWithHelpShape = XCreatePixmapFromBitmapData ( dsp, rootWin,
+   pntrWithHelp_bits, pntrWithHelp_width, pntrWithHelp_height,
+   1, 0, 1 );
+
+  pntrWithHelpMask = XCreatePixmapFromBitmapData ( dsp, rootWin,
+   pntrWithHelp_mask_bits, pntrWithHelp_width, pntrWithHelp_height,
+   1, 0, 1 );
+
+  pntrWithHelp = XCreatePixmapCursor( dsp, pntrWithHelpShape,
+   pntrWithHelpMask, &shapeColor, &maskColor, pntrWithHelp_x_hot,
+   pntrWithHelp_y_hot );
 
 }
 
@@ -514,6 +564,11 @@ int cursorClass::set (
     break;
 
   case CURSOR_K_WILL_SET:
+    if ( noSpecialCursors ) {
+      XUndefineCursor( display, win );
+      curCursor = (Cursor) NULL;
+      break;
+    }
     XDefineCursor( display, win, willSet );
     curCursor = willSet;
     break;
@@ -529,11 +584,21 @@ int cursorClass::set (
     break;
 
   case CURSOR_K_RUN:
+    if ( noSpecialCursors ) {
+      XUndefineCursor( display, win );
+      curCursor = (Cursor) NULL;
+      break;
+    }
     XDefineCursor( display, win, run );
     curCursor = run;
     break;
 
   case CURSOR_K_RUN_WITH_HELP:
+    if ( noSpecialCursors ) {
+      XUndefineCursor( display, win );
+      curCursor = (Cursor) NULL;
+      break;
+    }
     XDefineCursor( display, win, runWithHelp );
     curCursor = runWithHelp;
     break;
@@ -541,6 +606,16 @@ int cursorClass::set (
   case CURSOR_K_UPDOWN:
     XDefineCursor( display, win, upDown );
     curCursor = upDown;
+    break;
+
+  case CURSOR_K_PNTR_WITH_HELP:
+    if ( noSpecialCursors ) {
+      XUndefineCursor( display, win );
+      curCursor = (Cursor) NULL;
+      break;
+    }
+    XDefineCursor( display, win, pntrWithHelp );
+    curCursor = pntrWithHelp;
     break;
 
   default:

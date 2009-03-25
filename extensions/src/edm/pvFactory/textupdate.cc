@@ -10,7 +10,7 @@
 #include "textupdate.h"
 #include "app_pkg.h"
 #include "act_win.h"
-#include "epics_pv_factory.h"
+#include "pv_factory.h"
 #include "cvtFast.h"
 
 static int g_transInit = 1;
@@ -262,6 +262,7 @@ static int alignEnum[3] = {
   tag.loadW( "fontAlign", 3, alignEnumStr, alignEnum, &alignment, &left );
   tag.loadW( "lineWidth", &line_width );
   tag.loadBoolW( "lineAlarm", &is_line_alarm_sensitive, &zero );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -348,6 +349,7 @@ static int alignEnum[3] = {
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -1461,20 +1463,24 @@ void edmTextentryClass::text_entered_callback(Widget w,
                     ProcessVariable::Type::enumerated)
                 {
                     num = strtod(text, 0);
-                    me->pv->put(num);
+                    me->pv->put(
+                     XDisplayName(me->actWin->appCtx->displayName),num);
                 }
                 else
                 {
-                    me->pv->put(text);
+                    me->pv->put(
+                     XDisplayName(me->actWin->appCtx->displayName),text);
                 }
                 break;
             case dm_hex:
                 hexnum = strtol(text, 0, 16);
                 // fprintf( stderr,"Text: %s -> %d\n", text, hexnum);
-                me->pv->put(hexnum);
+                me->pv->put(
+                 XDisplayName(me->actWin->appCtx->displayName),hexnum);
                 break;
             default:
-                me->pv->put(text);
+                me->pv->put(
+                 XDisplayName(me->actWin->appCtx->displayName),text);
         }
     }
     XtFree(text);

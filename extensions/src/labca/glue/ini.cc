@@ -1,4 +1,4 @@
-/* $Id: ini.cc,v 1.2 2007/11/16 16:45:04 ernesto Exp $ */
+/* $Id: ini.cc,v 1.30 2007/06/20 07:33:30 strauman Exp $ */
 
 /* xlabcaglue library initializer */
 
@@ -257,7 +257,7 @@ CtrlCStateRec saved;
 /* don't print to stderr because that
  * doesn't go to scilab's main window...
  */
-mexPrintf((char*)"Initializing labCA Release '$Name: extensions-R3-14-8-2-lcls2 $'...\n");
+mexPrintf((char*)"Initializing labCA Release '$Name: labca_3_1 $'...\n");
 mexPrintf((char*)"Author: Till Straumann <strauman@slac.stanford.edu>\n");
 
 #ifdef MATLAB_APP

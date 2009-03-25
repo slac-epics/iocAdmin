@@ -1,3 +1,0 @@
-#RULES.Vx
-include $(EPICS_BASE)/config/RULES.Vx
-inc:: $(INSTALL_INCREC)

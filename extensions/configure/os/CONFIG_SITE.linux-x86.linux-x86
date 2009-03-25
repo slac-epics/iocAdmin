@@ -33,26 +33,26 @@ XPM_INC = /usr/X11R6/include
 #TK_TCL = /usr/lib
 #IDL =
 
-CMLOG = /afs/slac/g/lcls/cmlog
+CMLOG = /pcds/package/cmlog
 CMLOG_INC = $(CMLOG)/include
 CMLOG_LIB = $(CMLOG)/lib/Linux-i386
 CMLOG_BIN = $(CMLOG)/bin/Linux-i386
 
-MATLAB = /afs/slac/package/matlab/linux/14.3
-MATLAB_ARCH_EXT = glx
+#MATLAB = /afs/slac/package/matlab/linux/14.3
+#MATLAB_ARCH_EXT = glx
 
-TK_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
-TK_INC = /afs/slac/package/tcl/common/8.0/include
-TCL_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
-TCL_INC = /afs/slac/package/tcl/common/8.0/include
+#TK_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
+#TK_INC = /afs/slac/package/tcl/common/8.0/include
+#TCL_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
+#TCL_INC = /afs/slac/package/tcl/common/8.0/include
 #DP_LIB = /usr/lib
 #DP_INC = /usr/include
-BLT_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
-BLT_INC = /afs/slac/package/tcl/common/8.0/include
+#BLT_LIB = /afs/slac/package/tcl/i386_linux24/8.0/lib
+#BLT_INC = /afs/slac/package/tcl/common/8.0/include
 
-JAVA_DIR = /afs/slac/package/java/i386_linux2/jdk1.5
-JAVA_INC = $(JAVA_DIR)/include
-JAVA_INCLUDES += -I$(JAVA_INC) -I$(JAVA_INC)/linux -I$(COMMON_DIR)
+#JAVA_DIR = /afs/slac/package/java/i386_linux2/jdk1.5
+#JAVA_INC = $(JAVA_DIR)/include
+#JAVA_INCLUDES += -I$(JAVA_INC) -I$(JAVA_INC)/linux -I$(COMMON_DIR)
 
 #INTERVIEWS_BIN=/usr/local/interviews/bin/O.Linux
 

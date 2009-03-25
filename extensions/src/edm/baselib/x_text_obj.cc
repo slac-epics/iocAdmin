@@ -368,6 +368,7 @@ activeXTextClass::activeXTextClass ( void ) {
   lineThk = 1;
   bufValue = NULL;
   eBuf = NULL;
+  savedDims = 0;
 
 }
 
@@ -432,6 +433,8 @@ activeGraphicClass *ago = (activeGraphicClass *) this;
 
   bufValue = NULL;
   eBuf = NULL;
+
+  savedDims = 0;
 
   setBlinkFunction( (void *) doBlink );
 
@@ -663,6 +666,7 @@ static int alignEnum[3] = {
 
   tag.init();
   tag.loadR( "beginObjectProperties" );
+  tag.loadR( unknownTags );
   tag.loadR( "major", &major );
   tag.loadR( "minor", &minor );
   tag.loadR( "release", &release );
@@ -1231,6 +1235,7 @@ static int alignEnum[3] = {
   tag.loadBoolW( "autoSize", &autoSize, &zero );
   tag.loadBoolW( "border", &border, &zero );
   tag.loadW( "lineWidth", &lineThk, &one );
+  tag.loadW( unknownTags );
   tag.loadW( "endObjectProperties" );
   tag.loadW( "" );
 
@@ -1531,6 +1536,11 @@ int activeXTextClass::activate (
 
     if ( !opComplete ) {
 
+      savedX = x;
+      savedW = w;
+      savedH = h;
+      savedDims = 1;
+
       connection.init();
       initEnable();
 
@@ -1572,6 +1582,14 @@ int activeXTextClass::activate (
       updateDimensions();
 
       if ( autoSize && fs ) {
+        if ( alignment == XmALIGNMENT_CENTER ) {
+          x = x - stringBoxWidth/2 + w/2;
+          sboxX = x;
+	}
+        else if ( alignment == XmALIGNMENT_END ) {
+          x = x - stringBoxWidth + w;
+          sboxX = x;
+	}
         sboxW = w = stringBoxWidth;
         sboxH = h = stringBoxHeight;
       }
@@ -1664,6 +1682,13 @@ int activeXTextClass::deactivate (
 {
 
   if ( pass == 1 ) {
+
+  if ( savedDims ) {
+    savedDims = 0;
+    x = sboxX = savedX;
+    w = sboxW = savedW;
+    h = sboxH = savedH;
+  }
 
   activeMode = 0;
 
