@@ -1,3 +1,8 @@
 #!/bin/sh
-
-java -cp $(dirname $0)/../lib/VisualDCT.jar com.cosylab.vdct.VisualDCT
+if [ -z "${VDCT_CLASSPATH}" ]; then
+	echo "ERROR: VDCT environment is not configured"
+	echo "This may be because you forgot to run epicsenv.sh"
+	echo "or because VDCT java files could not be found."
+	exit 1
+fi
+java -cp ${VDCT_CLASSPATH} com.cosylab.vdct.VisualDCT

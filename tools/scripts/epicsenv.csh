@@ -42,25 +42,16 @@ endif
 
 set EPICS_BASE = `make -f ${TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} EPICS_BASE`
 set EPICS_EXTENSIONS = `make -f ${TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} EPICS_EXTENSIONS`
-set VDCT = `make -f ${TOOLS_DIR}/lib/Makefile.displayvar EPICS_SITE_TOP=${EPICS_TOOLS_SITE_TOP} VDCT`
 
 set EPICS_HOST_ARCH = `${EPICS_BASE}/startup/EpicsHostArch.pl`
 
 # Set path to utilities provided by EPICS and its extensions
 setenv PATH "${PATH}:${EPICS_BASE}/bin/${EPICS_HOST_ARCH}:${TOOLS_DIR}/bin"
 setenv PATH "${PATH}:${EPICS_EXTENSIONS}/bin/${EPICS_HOST_ARCH}"
-setenv PATH "${PATH}:${VDCT}/bin"
 
 # Set path to libraries provided by EPICS and its extensions (required by EPICS tools)
 setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${EPICS_BASE}/lib/${EPICS_HOST_ARCH}"
 setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${EPICS_EXTENSIONS}/lib/${EPICS_HOST_ARCH}"
-
-# Java is required by vdct
-if ( ! ${?CLASSPATH} ) then
-	setenv CLASSPATH "${EPICS_EXTENSIONS}/javalib"
-else
-	setenv CLASSPATH "${CLASSPATH}:${EPICS_EXTENSIONS}/javalib"
-endif
 
 # The following setup is for EDM
 setenv EDMWEBBROWSER mozilla
@@ -73,4 +64,6 @@ setenv EDMFILTERS $EDMFILES
 
 # The following setup is for vdct
 # WARNING: java-1.6.0-sun must be installed on the machine running vdct!!!
-#alias vdct 'java -cp ${VDCT}/lib/VisualDCT.jar com.cosylab.vdct.VisualDCT'
+if ( -e ${EPICS_EXTENSIONS}/javalib/VisualDCT.jar ) then
+	setenv VDCT_CLASSPATH "${EPICS_EXTENSIONS}/javalib/VisualDCT.jar"
+endif

@@ -32,7 +32,7 @@ DIRS += ChannelWatcher
 DIRS += StripTool
 DIRS += alh
 DIRS += km
-#DIRS += labca
+DIRS += labca
 DIRS += probe
 DIRS += msi
 DIRS += dbreport
@@ -41,5 +41,6 @@ DIRS += ts
 DIRS += gnuregex
 DIRS += gateway
 DIRS += ChannelArchiver
+DIRS += vdct
 
 include $(TOP)/configure/RULES_TOP
