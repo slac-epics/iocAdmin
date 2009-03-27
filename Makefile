@@ -14,7 +14,6 @@ DIRS+=tools
 DIRS+=base
 DIRS+=extensions
 DIRS+=modules
-DIRS+=vdct
 
 all:
 
