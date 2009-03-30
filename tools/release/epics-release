@@ -117,7 +117,7 @@ def package_release(strPackage, strVersion):
 	# If it is a patch we won't have to modify the branch we release
 	# for a normal release we cannot know yet what will be released
 	# (all we know is the revision of the released branch)
-	if dictConfig["patch"]:
+	if dictConfig["patch"] or dictConfig["update"]:
 		strReleaseBranchRev = dictConfig["svnrev"]
 		strBranch = strReleaseBranch
 		strBranchRev = dictConfig["svnrev"]
@@ -178,7 +178,7 @@ def package_release(strPackage, strVersion):
 	strMessage=""" "RELEASE EPICS Package=%s Version=%s Branch=%s Revision=%s" """ \
 				% (strPackage, strVersion, strBranch, strBranchRev)
 	# Create a branch named branches/releases/strPackage/strVersion if it is not a patch
-	if not dictConfig["patch"]:
+	if not dictConfig["patch"] and not dictConfig["update"]:
 		print "Creating new branch for the release ...",
 		sys.stdout.flush()
 		try:
@@ -392,6 +392,7 @@ dictConfig["svnrev"] = "HEAD"
 dictConfig["svnrepo"] = "file:///afs/slac/g/pcds/vol2/svn/pcds/epics"
 dictConfig["prefix"] = "/pcds/package/epics"
 dictConfig["patch"] = False
+dictConfig["update"] = False
 dictConfig["debug"] = False
 dictConfig["keeptmp"] = False
 dictConfig["grpowner"] = "lab-admin"
@@ -427,6 +428,9 @@ try:
 			print "\t(where RELEASE_SITE is located)."
 			print "\t(default is %s)" % (dictConfig["prefix"])
 			print "--patch: tell the script the release already exists."
+			print "--update: same as --patch except that it will update"
+			print "\tthe dependencies of the package to what is in the"
+			print "\trelease area RELEASE_SITE."
 			print "--help: display this message."
 			print "--debug: display more info when an error occurs."
 			print "--keeptmp: does not erase the temp directory being used.\n"
@@ -449,6 +453,8 @@ try:
 			dictConfig["keeptmp"] = True
 		elif sys.argv[i] == "--patch":
 			dictConfig["patch"] = True
+		elif sys.argv[i] == "--update":
+			dictConfig["update"] = True
 		elif re.match("[^=]*=[^=]*", sys.argv[i]) != None:
 			strPackages = strPackages + " " +sys.argv[i]
 		else:
