@@ -64,6 +64,12 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 MSI=$(EPICS_EXTENSIONS)/bin/$(EPICS_HOST_ARCH)/msi
 
 # =============================================================
+# Location of external packages required by various EPICS
+# Components
+# =============================================================
+EXTERNAL_PACKAGES=/pcds/package
+
+# =============================================================
 # Location of the PCDS development tools that are not part of 
 # EPICS (but are provided in this repository).
 # Note: scripts expect TOOLS_MODULE_VERSION to be self described

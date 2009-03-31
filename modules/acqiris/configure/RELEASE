@@ -38,4 +38,4 @@ include $(EPICS_SITE_CONFIG)
 # NOTE: it is normal for IPAC_MODULE_VERSION not to be defined, it will
 # be inserted by the release script.
 
-ACQIRIS_DRIVER=/pcds/package/external/acqiris_V00-00-00
+ACQIRIS_DRIVER=${EXTERNAL_PACKAGES}/acqiris

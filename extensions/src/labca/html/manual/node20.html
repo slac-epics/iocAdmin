@@ -1,23 +1,27 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>lcaDelay</TITLE>
-<META NAME="description" CONTENT="lcaDelay">
+<TITLE>lcaGetTimeout, lcaSetTimeout</TITLE>
+<META NAME="description" CONTENT="lcaGetTimeout, lcaSetTimeout">
 <META NAME="keywords" CONTENT="manual">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
 
+<LINK REL="next" HREF="node21.html">
 <LINK REL="previous" HREF="node19.html">
 <LINK REL="up" HREF="node2.html">
 <LINK REL="next" HREF="node21.html">
@@ -25,25 +29,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html279"
+<A NAME="tex2html292"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
-<A NAME="tex2html277"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html290"
   HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
-<A NAME="tex2html273"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html284"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html280"
-  HREF="node21.html">Building and Using labCA</A>
-<B> Up:</B> <A NAME="tex2html278"
+<B> Next:</B> <A NAME="tex2html293"
+  HREF="node21.html">lcaDebugOn, lcaDebugOff</A>
+<B> Up:</B> <A NAME="tex2html291"
   HREF="node2.html">Supported EZCA Calls</A>
-<B> Previous:</B> <A NAME="tex2html274"
-  HREF="node19.html">lcaNewMonitorValue</A>
+<B> Previous:</B> <A NAME="tex2html285"
+  HREF="node19.html">lcaGetRetryCount, lcaSetRetryCount</A>
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -51,59 +55,55 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html281"
+<LI><A NAME="tex2html294"
   HREF="node20.html#SECTION000218100000000000000">Calling Syntax</A>
-<LI><A NAME="tex2html282"
+<LI><A NAME="tex2html295"
   HREF="node20.html#SECTION000218200000000000000">Description</A>
-<LI><A NAME="tex2html283"
-  HREF="node20.html#SECTION000218300000000000000">Parameters</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
 <H2><A NAME="SECTION000218000000000000000"></A>
-<A NAME="lcadelay"></A>
+<A NAME="timeout"></A>
 <BR>
-lcaDelay
+lcaGetTimeout, lcaSetTimeout
 </H2>
 
 <H3><A NAME="SECTION000218100000000000000">
 Calling Syntax</A>
 </H3>
 <PRE>
-lcaDelay(timeout)
+currentTimeout = lcaGetTimeout()
+lcaSetTimeout(newTimeout)
 </PRE>
 <H3><A NAME="SECTION000218200000000000000">
 Description</A>
 </H3>
-Delay execution of <I>scilab</I> or <I>matlab</I> for the specified time
-to handle channel access activity (monitors). 
-<EM>Using this call is not needed under EPICS-3.14</EM> since monitors
-are transparently handled by separate threads. These ``worker threads''
-receive data from CA on monitored channels ``in the background'' while
-<I>scilab</I>/<I>matlab</I> are processing arbitrary calculations.
-You only need to poll the library for the data being ready using the
-<A HREF="node19.html#lcanewmonitorvalue"><TT>lcaNewMonitorValue()</TT></A>) routine.
+Retrieve / set the <B>ezca</B> library timeout parameter (consult the <B>ezca</B>
+documentation for more information). Note that the semantics of the
+timeout parameter has changed with <B>labCA</B> version 3. The library no longer
+pends for CA activity in multiples of this timeout value but returns
+control to <B>scilab</B> as soon as the underlying CA request completes.
 
 <P>
-Under 3.13 however, the user must periodically call <TT>lcaDelay()</TT> or
-another  <I>labCA</I> routine in order to yield the CPU to the CA
-library.
-
-<H3><A NAME="SECTION000218300000000000000">
-Parameters</A>
-</H3>
-<DL>
-<DT><STRONG>timeout</STRONG></DT>
-<DD>A timeout value in seconds.
-</DD>
-</DL>
+However, <B>labCA</B> checks for ``Ctrl-C'' key events every time
+(and only when) the timeout expires. Hence, it is convenient to
+choose a value <IMG
+ WIDTH="28" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;1$">s.
 
 <P>
+The <EM>maximal</EM> time spent waiting for connections and/or data equals the
+timeout multiplied by the
+<A HREF="node19.html#retrycnt">retry count</A>.
+
+<P>
+<BR>
 <BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>

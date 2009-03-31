@@ -20,7 +20,7 @@ rebuild:        clean install
 
 buildInstall:	$(INSTALL_EDLS) $(INSTALL_GIFS) $(INSTALL_PNGS)
 
-realclean: clean
+realclean:: clean
 
 clean::
 	@echo "Cleaning"

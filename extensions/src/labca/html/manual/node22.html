@@ -1,50 +1,53 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Build</TITLE>
-<META NAME="description" CONTENT="Build">
+<TITLE>lcaSetSeverityWarnLevel</TITLE>
+<META NAME="description" CONTENT="lcaSetSeverityWarnLevel">
 <META NAME="keywords" CONTENT="manual">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
 
 <LINK REL="next" HREF="node23.html">
 <LINK REL="previous" HREF="node21.html">
-<LINK REL="up" HREF="node21.html">
+<LINK REL="up" HREF="node2.html">
 <LINK REL="next" HREF="node23.html">
 </HEAD>
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html304"
+<A NAME="tex2html316"
   HREF="node23.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
-<A NAME="tex2html302"
-  HREF="node21.html">
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html314"
+  HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
-<A NAME="tex2html296"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html308"
   HREF="node21.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html305"
-  HREF="node23.html">Using labCA</A>
-<B> Up:</B> <A NAME="tex2html303"
-  HREF="node21.html">Building and Using labCA</A>
-<B> Previous:</B> <A NAME="tex2html297"
-  HREF="node21.html">Building and Using labCA</A>
+<B> Next:</B> <A NAME="tex2html317"
+  HREF="node23.html">lcaDelay</A>
+<B> Up:</B> <A NAME="tex2html315"
+  HREF="node2.html">Supported EZCA Calls</A>
+<B> Previous:</B> <A NAME="tex2html309"
+  HREF="node21.html">lcaDebugOn, lcaDebugOff</A>
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -52,191 +55,62 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html306"
-  HREF="node22.html#SECTION00031100000000000000">Prerequisites</A>
-<LI><A NAME="tex2html307"
-  HREF="node22.html#SECTION00031200000000000000">Configuration</A>
-<LI><A NAME="tex2html308"
-  HREF="node22.html#SECTION00031300000000000000">Building <I>labCA</I></A>
+<LI><A NAME="tex2html318"
+  HREF="node22.html#SECTION000220100000000000000">Calling Syntax</A>
+<LI><A NAME="tex2html319"
+  HREF="node22.html#SECTION000220200000000000000">Description</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H2><A NAME="SECTION00031000000000000000">
-Build</A>
-</H2>
-<I>labCA</I> comes with a `<TT>configure</TT>' subdirectory and Makefiles conforming to the
-EPICS build system. Following a configuration step which involves editing
-two small files, '<TT>make</TT>' is executed to install the generated libraries
-and scripts.
-
-<P>
-Note that EPICS 3.13 is being deprecated. This is the last version of <I>labCA</I>
-supporting the old EPICS build system. In order to use it, you must manually
-replace all <TT>Makefile</TT>s by the respective <TT>Makefile.R13</TT>s and you
-have to edit the <TT>CONFIG</TT> and <TT>RELEASE</TT> files in the <TT>config</TT>
-rather than the <TT>configure</TT> directory.
-
-<P>
-Prior to invoking the <I>scilab</I> or <I>matlab</I> application, the system
-must be properly set up in order for the applications to locate the
-<I>labCA</I> and channel access libraries.
-
-<P>
-
-<H3><A NAME="SECTION00031100000000000000">
-Prerequisites</A>
-</H3>
-<I>labCA</I> needs an EPICS BASE installation that was built <I>with shared
-libraries</I>. The main reason being that <I>matlab</I>'s <I>mex</I> files cannot
-have multiple entry points. Hence, when statically linking multiple <I>mex</I>
-files against <I>ezca, ca, Com</I> etc. multiple copies of those libraries
-would end up in the running <I>matlab</I> application with possible adverse
-effects. It should be possible to build and use the <I>scilab</I> interface
-with static libraries -- minor tweaks to the Makefiles might be necessary.
-
-<P>
-<I>labCA</I> has been tested with <I>matlab</I>-6.5, <I>matlab</I>-7.0 and <I>scilab</I>-2.7 .. <I>scilab</I>-4.0
-under a variety of EPICS releases ranging from 3.13.2
-to 3.14.8.2 on <I>linux-x86</I>, <I>linux-ppc</I>, <I>solaris-sparc-gnu</I>
-and <I>win32</I>.
-
-<P>
-Note that the binary distribution of <I>labCA</I> usually ships with the
-necessary EPICS base libraries so there is no need to download anything
-besides <I>labCA</I>. The <I>linux</I>
-and <I>solaris</I> versions have these libraries built-in, the <I>win32</I>
-version comes with the appropriate DLLs.
-
-<P>
-
-<H3><A NAME="SECTION00031200000000000000">
-Configuration</A>
-</H3>
-Two files, `<TT>configure/CONFIG</TT>' and `<TT>configure/RELEASE</TT>' need to
-be adapted to the user's installation:
-<DL>
-<DT><STRONG><TT>CONFIG:</TT></STRONG></DT>
-<DD>A handful of configuration parameters must be defined
-in this file.
-<DL>
-<DT><STRONG><TT>MAKEFOR:</TT></STRONG></DT>
-<DD>Setting the <TT>MAKEFOR</TT> variable
-determines the target application program the interface library is
-built for. Valid settings are <TT>MAKEFOR=SCILAB</TT> or <TT>MAKEFOR=MATLAB</TT>.
-Any setting other than <TT>MATLAB</TT> is treated like <TT>SCILAB</TT>.
-
-<P>
-</DD>
-<DT><STRONG><TT>CONFIG_USE_CTRLC:</TT></STRONG></DT>
-<DD>Set this to <TT>YES</TT> or <TT>NO</TT> to enable
-or disable, respectively, code for handling ``Ctrl-C'' keystroke sequences.
-When enabled, <I>labCA</I> operations (<EM>except for</EM> <TT>lcaDelay</TT>) may be aborted
-by hitting ``Ctrl-C''.
-Note that <I>labCA</I> polls for an ``abort condition'' with a granularity of the
-<A HREF="node14.html#timeout"><I>ezca</I> timeout parameter</A>.
-Unfortunately, neither <I>matlab</I> nor <I>scilab</I> feature a documented API for handling
-Ctrl-C events and therefore Ctrl-C support - the implementation using undocumented
-features of <I>labCA</I> and <I>matlab</I>- must be considered ``experimental''
-i.e., it might cause problems on certain operating system and/or <I>scilab</I>/<I>matlab</I>
-versions.
-
-<P>
-</DD>
-<DT><STRONG><TT>INSTALL_LOCATION:</TT></STRONG></DT>
-<DD>Set this variable to install in a location
-different from the <I>labCA</I> top directory.
-</DD>
-</DL>
-</DD>
-<DT><STRONG><TT>RELEASE:</TT></STRONG></DT>
-<DD>In this file, paths to the EPICS base (`<TT>EPICS_BASE</TT>'
-variable) and <I>scilab</I> (`<TT>SCILABDIR</TT>' variable) or <I>matlab</I> (`<TT>MATLABDIR</TT>'
-variable) installations must be specified.
-
-<P>
-Under <I>win32</I>, an additional variable
-`<TT>MATLIB_SUBDIR</TT>' must be set directing the build process to select the correct
-<TT>libmx.lib</TT> and <TT>libmex.lib</TT> library variants. The setting of this variable
-is compiler dependent.
-<DL>
-<DT><STRONG><TT>MATLABDIR=&lt;path&gt;</TT></STRONG></DT>
-<DD><TT>&lt;path&gt;</TT> defining the <I>matlab</I> installation
-directory where the `<TT>extern</TT>' subdirectory can be found (e.g.
-<TT>/opt/matlabR14beta2</TT>).
-</DD>
-<DT><STRONG><TT>SCILABDIR=&lt;path&gt;</TT></STRONG></DT>
-<DD><TT>&lt;path&gt;</TT> defining the <I>scilab</I> installation
-directory where the `<TT>routines</TT>' subdirectory can be found (e.g.
-<TT>/usr/lib/scilab-2.7</TT>).
-</DD>
-<DT><STRONG><TT>MATLIB_SUBDIR=&lt;pathelem&gt;</TT></STRONG></DT>
-<DD><TT>&lt;pathelem&gt;</TT> chosing the subdirectory
-corresponding to the C-compiler that is used for the build. (e.g. 
-<TT>win32/microsoft/msvc60</TT> for the microsoft visual c++ 6.0 compiler).
-</DD>
-</DL>
-</DD>
-</DL>
-Any irrelevant variables (such as <TT>MATLABDIR</TT> if <TT>MAKEFOR=SCILAB</TT>)
-are ignored.
-
-<P>
-Note that the EPICS build system has problems with path names containing
-white space as they are commonly used on <I>win32</I>. Although I have
-tried to work around this, you still might encounter problems. I found
-that setting the environment variable <TT>MATLAB</TT> to point to the <I>matlab</I>
-directory helped (<I>cygwin</I>). It is best to avoid white space in path
-names, however.
-
-<P>
-
-<H3><A NAME="SECTION00031300000000000000">
-Building <I>labCA</I></A>
-</H3>
-After setting the
-`<TT>EPICS_HOST_ARCH</TT>' (for EPICS 3.14) and `<TT>HOST_ARCH</TT>' (EPICS 3.13)
-environment variables, <I>GNU</I> make is invoked in the <I>labCA</I> top 
-directory. Note that the compiler toolchain must be found in the system
-<TT>PATH</TT><A NAME="tex2html6"
-  HREF="#foot631"><SUP>6</SUP></A>.
-
-<P>
-<BR><HR><H4>Footnotes</H4>
-<DL>
-<DT><A NAME="foot631">...<TT>PATH</TT></A><A
- HREF="node22.html#tex2html6"><SUP>6</SUP></A></DT>
-<DD>
-Under <I>win32</I>, the <I>msvc</I> compiler features a <TT>.BAT</TT> file for
-setting up the necessary environment.
-
-
-</DD>
-</DL><HR>
-<!--Navigation Panel-->
-<A NAME="tex2html304"
-  HREF="node23.html">
-<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
-<A NAME="tex2html302"
-  HREF="node21.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
-<A NAME="tex2html296"
-  HREF="node21.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+<H2><A NAME="SECTION000220000000000000000"></A>
+<A NAME="swarnlevel"></A>
 <BR>
-<B> Next:</B> <A NAME="tex2html305"
-  HREF="node23.html">Using labCA</A>
-<B> Up:</B> <A NAME="tex2html303"
-  HREF="node21.html">Building and Using labCA</A>
-<B> Previous:</B> <A NAME="tex2html297"
-  HREF="node21.html">Building and Using labCA</A>
-<!--End of Navigation Panel-->
+lcaSetSeverityWarnLevel
+</H2>
+
+<H3><A NAME="SECTION000220100000000000000">
+Calling Syntax</A>
+</H3>
+<PRE>
+lcaSetSeverityWarnLevel(newlevel)
+</PRE>
+<H3><A NAME="SECTION000220200000000000000">
+Description</A>
+</H3>
+Set the warning threshold for <TT>lcaGet()</TT> operations.
+A warning message is printed when retrieving a PV with a severity bigger
+or equal to the warning level. Supported values are 0..3 (No alarm,
+minor alarm, major alarm, invalid alarm). The initial/default value is 3.
+
+<P>
+If a value <IMG
+ WIDTH="48" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;=10$"> is passed, the threshold for refusing to read the <TT>.VAL</TT>
+field of PVs with an <B>INVALID</B> severity can be changed. The rejection
+can be switched off completely by passing 14 (<!-- MATH
+ $= 10 + INVALID\_ALARM + 1$
+ -->
+<IMG
+ WIDTH="233" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$= 10 + INVALID\_ALARM + 1$">)
+or made more sensitive by passing a value of less than 13 (<!-- MATH
+ $=10 + INVALID\_ALARM$
+ -->
+<IMG
+ WIDTH="205" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$=10 + INVALID\_ALARM$">),
+the default.
+
+<P>
+<BR>
+<BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>

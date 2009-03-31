@@ -1,6 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -13,7 +16,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -22,19 +25,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 
-<H2><A NAME="SECTION00022000000000000000"></A>
+<H2><A NAME="SECTION00023000000000000000"></A>
 <A NAME="lcaget"></A>
 <BR>
 lcaGet
 </H2>
 
-<H3><A NAME="SECTION00022100000000000000">
+<H3><A NAME="SECTION00023100000000000000">
 Calling Syntax</A>
 </H3>
 <PRE>
 [value, timestamp] = lcaGet(pvs, nmax, type)
 </PRE>
-<H3><A NAME="SECTION00022200000000000000">
+<H3><A NAME="SECTION00023200000000000000">
 Description</A>
 </H3>
 Read a number of <I>m</I> PVs, which may be scalars or arrays of
@@ -53,7 +56,7 @@ the `type' argument described below.
 
 <P>
 
-<H3><A NAME="SECTION00022300000000000000">
+<H3><A NAME="SECTION00023300000000000000">
 Parameters</A>
 </H3>
 <DL>
@@ -120,8 +123,8 @@ was requested by setting the `type' argument to `<TT>char</TT>').
 
 <P>
 <I>labCA</I> checks the channel access severity of the retrieved PVs and
-fills the rows corresponding to <I>INVALID</I> PVs with NaN<A NAME="tex2html5"
-  HREF="#foot628"><SUP>5</SUP></A>. In addition, warning
+fills the rows corresponding to <I>INVALID</I> PVs with NaN<A NAME="tex2html9"
+  HREF="#foot802"><SUP>8</SUP></A>. In addition, warning
 messages are printed to the console if a PV's alarm status exceeds
 a <A HREF="lcaSetSeverityWarnLevel.html#swarnlevel">configurable threshold</A>.
 The refusal to read PVs with <I>INVALID</I> severity can be tuned using
@@ -135,7 +138,7 @@ and fractional nanoseconds (imaginary part) elapsed since
 00:00:00 UTC, Jan. 1, 1970.
 </DD>
 </DL>
-<H3><A NAME="SECTION00022400000000000000">
+<H3><A NAME="SECTION00023400000000000000">
 Examples</A>
 </H3>
 <PRE>
@@ -160,8 +163,8 @@ Examples</A>
 <P>
 <BR><HR><H4>Footnotes</H4>
 <DL>
-<DT><A NAME="foot628">...NaN</A><A
- HREF="lcaGet.html#tex2html5"><SUP>5</SUP></A></DT>
+<DT><A NAME="foot802">...NaN</A><A
+ HREF="lcaGet.html#tex2html9"><SUP>8</SUP></A></DT>
 <DD>
 Actually, all fields of an EPICS database record share a common
 severity, (which itself is a field/PV -- the .SEVR field). However,
@@ -175,8 +178,8 @@ they refer to a record's .VAL field.
 </DL>
 <BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>

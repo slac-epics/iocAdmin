@@ -1,6 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -13,7 +16,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -22,36 +25,35 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 
-<H2><A NAME="SECTION000218000000000000000"></A>
+<H2><A NAME="SECTION000221000000000000000"></A>
 <A NAME="lcadelay"></A>
 <BR>
 lcaDelay
 </H2>
 
-<H3><A NAME="SECTION000218100000000000000">
+<H3><A NAME="SECTION000221100000000000000">
 Calling Syntax</A>
 </H3>
 <PRE>
 lcaDelay(timeout)
 </PRE>
-<H3><A NAME="SECTION000218200000000000000">
+<H3><A NAME="SECTION000221200000000000000">
 Description</A>
 </H3>
-Delay execution of <I>scilab</I> or <I>matlab</I> for the specified time
+Delay execution of <B>scilab</B> or <B>matlab</B> for the specified time
 to handle channel access activity (monitors). 
 <EM>Using this call is not needed under EPICS-3.14</EM> since monitors
 are transparently handled by separate threads. These ``worker threads''
 receive data from CA on monitored channels ``in the background'' while
-<I>scilab</I>/<I>matlab</I> are processing arbitrary calculations.
-You only need to poll the library for the data being ready using the
-<A HREF="lcaNewMonitorValue.html#lcanewmonitorvalue"><TT>lcaNewMonitorValue()</TT></A>) routine.
+<B>scilab</B>/<B>matlab</B> are processing arbitrary calculations.
+You only need to either poll the library for the data being ready using the
+<A HREF="lcaNewMonitorValue.html#lcanewmonitorvalue"><TT>lcaNewMonitorValue()</TT></A>) routine
+or block for data becoming available using
+<A HREF="lcaNewMonitorWait.html#lcanewmonitorwait"><TT>lcaNewMonitorWait</TT></A>.
 
 <P>
-Under 3.13 however, the user must periodically call <TT>lcaDelay()</TT> or
-another  <I>labCA</I> routine in order to yield the CPU to the CA
-library.
 
-<H3><A NAME="SECTION000218300000000000000">
+<H3><A NAME="SECTION000221300000000000000">
 Parameters</A>
 </H3>
 <DL>
@@ -63,8 +65,8 @@ Parameters</A>
 <P>
 <BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>

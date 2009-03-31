@@ -1,19 +1,22 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>lcaSetSeverityWarnLevel</TITLE>
-<META NAME="description" CONTENT="lcaSetSeverityWarnLevel">
+<TITLE>lcaGetStatus</TITLE>
+<META NAME="description" CONTENT="lcaGetStatus">
 <META NAME="keywords" CONTENT="manual">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -26,25 +29,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html227"
+<A NAME="tex2html241"
   HREF="node17.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
-<A NAME="tex2html225"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html239"
   HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
-<A NAME="tex2html219"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html233"
   HREF="node15.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html228"
-  HREF="node17.html">lcaClear</A>
-<B> Up:</B> <A NAME="tex2html226"
+<B> Next:</B> <A NAME="tex2html242"
+  HREF="node17.html">lcaGetPrecision</A>
+<B> Up:</B> <A NAME="tex2html240"
   HREF="node2.html">Supported EZCA Calls</A>
-<B> Previous:</B> <A NAME="tex2html220"
-  HREF="node15.html">lcaDebugOn, lcaDebugOff</A>
+<B> Previous:</B> <A NAME="tex2html234"
+  HREF="node15.html">lcaGetGraphicLimits</A>
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -52,52 +55,59 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html229"
+<LI><A NAME="tex2html243"
   HREF="node16.html#SECTION000214100000000000000">Calling Syntax</A>
-<LI><A NAME="tex2html230"
+<LI><A NAME="tex2html244"
   HREF="node16.html#SECTION000214200000000000000">Description</A>
+<LI><A NAME="tex2html245"
+  HREF="node16.html#SECTION000214300000000000000">Parameters</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H2><A NAME="SECTION000214000000000000000"></A>
-<A NAME="swarnlevel"></A>
-<BR>
-lcaSetSeverityWarnLevel
+<H2><A NAME="SECTION000214000000000000000">
+lcaGetStatus</A>
 </H2>
 
 <H3><A NAME="SECTION000214100000000000000">
 Calling Syntax</A>
 </H3>
 <PRE>
-lcaSetSeverityWarnLevel(newlevel)
+[severity, status, timestamp] = lcaGetStatus(pvs)
 </PRE>
 <H3><A NAME="SECTION000214200000000000000">
 Description</A>
 </H3>
-Set the warning threshold for <TT>lcaGet()</TT> operations.
-A warning message is printed when retrieving a PV with a severity bigger
-or equal to the warning level. Supported values are 0..3 (No alarm,
-minor alarm, major alarm, invalid alarm). The initial/default value is 3.
+Retrieve the alarm severity and status of a number of PVs along
+with their timestamp.
+
+<H3><A NAME="SECTION000214300000000000000">
+Parameters</A>
+</H3>
+<DL>
+<DT><STRONG>pvs</STRONG></DT>
+<DD>Column vector (in matlab: <B>m x 1</B> <B>cell-</B> matrix)
+of <B>m</B> strings.
+
+</DD>
+<DT><STRONG>severity</STRONG></DT>
+<DD><B>m x 1</B> column vector of the alarm severities.
+</DD>
+<DT><STRONG>status</STRONG></DT>
+<DD><B>m x 1</B> column vector of the alarm status.
+</DD>
+<DT><STRONG>timestamp</STRONG></DT>
+<DD><B>m x 1</B> <B>complex</B> column vector holding the
+PV <A HREF="node3.html#tsformat">timestamps</A>.
+</DD>
+</DL>
 
 <P>
-If a value &gt;=10 is passed, the threshold for refusing to read the <TT>.VAL</TT>
-field of PVs with an <I>INVALID</I> severity can be changed. The rejection
-can be switched off completely by passing 14 (<IMG
- WIDTH="233" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img1.png"
- ALT="$= 10 + INVALID\_ALARM + 1$">)
-or made more sensitive by passing a value of less than 13 (<IMG
- WIDTH="205" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img2.png"
- ALT="$=10 + INVALID\_ALARM$">),
-the default.
-
-<P>
+<BR>
 <BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>

@@ -1,6 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
@@ -13,7 +16,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -22,26 +25,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 
-<H2><A NAME="SECTION000217000000000000000"></A>
+<H2><A NAME="SECTION00029000000000000000"></A>
 <A NAME="lcanewmonitorvalue"></A>
 <BR>
 lcaNewMonitorValue
 </H2>
 
-<H3><A NAME="SECTION000217100000000000000">
+<H3><A NAME="SECTION00029100000000000000">
 Calling Syntax</A>
 </H3>
 <PRE>
 [flags] = lcaNewMonitorValue(pvs, type)
 </PRE>
-<H3><A NAME="SECTION000217200000000000000">
+<H3><A NAME="SECTION00029200000000000000">
 Description</A>
 </H3>
 Check if monitored PVs need to be read, i.e, if fresh data are available (e.g., due to
 initial connection or changes in value and/or severity status). Reading the actual
 data must be done using <A HREF="lcaGet.html#lcaget"><TT>lcaGet</TT></A>.
 
-<H3><A NAME="SECTION000217300000000000000">
+<H3><A NAME="SECTION00029300000000000000">
 Parameters</A>
 </H3>
 <DL>
@@ -59,47 +62,46 @@ See <A HREF="lcaGet.html#typearg">here</A> for more information.
 <P>
 Note that monitors are specific to a particular data type and therefore
 <TT>lcaNewMonitorValue</TT> will only report the status for a monitor that had been established
-(by <TT>lcaSetMonitor</TT>) with a matching type.
+(by <A HREF="lcaSetMonitor.html#lcasetmonitor"><TT>lcaSetMonitor</TT></A>) with a matching type.
 Using the ``native'' type, which is the default, for both calls
 satisfies this condition.
 </DD>
 <DT><STRONG>flags</STRONG></DT>
 <DD>Column vector of flag values. A value of zero indicates that no new data are available -
-the monitored PV has not changed since it was last read (i.e., the data <EM>not the flag</EM>).
-A value of one indicates that new data are available for reading (<TT>lcaGet</TT>). A negative
-The flag value can be negative, indicating a problem e.g.,
-<DL>
-<DT><STRONG>-1:</STRONG></DT>
-<DD>no monitor established (<A HREF="lcaSetMonitor.html#lcasetmonitor"><TT>lcaSetMonitor</TT></A> never
-  called for this PV/data type),
-</DD>
-<DT><STRONG>-2:</STRONG></DT>
-<DD>non-existing PV (no successful CA search so far),
-</DD>
-<DT><STRONG>-3:</STRONG></DT>
-<DD>invalid type argument,
-</DD>
-<DT><STRONG>-4:</STRONG></DT>
-<DD>invalid PV argument,
-</DD>
-<DT><STRONG>-10:</STRONG></DT>
-<DD>currently no connection.
+the monitored PV has not changed since it was last read (the data, that is, <EM>not the flag</EM>).
+A value of one indicates that new data are available for reading (<TT>lcaGet</TT>).
+
+<P>
+<EM>NOTE: As of <I>labCA</I> version 3 the <TT>flags</TT> no longer report error conditions.
+Errors are now reported in the 
+<A HREF="Error.html#errorhandling">standard way</A>,
+i.e., by aborting the <I>labCA</I> call.
+Errors can be caught by the standard <I>scilab</I> <TT>try</TT>-<TT>catch</TT>-<TT>end</TT>
+construct. The <A HREF="lcaLastError.html#lcalasterror"><TT>lcaLastError</TT></A> routine can be used to obtain
+status information for individual channels if <TT>lcaNewMonitorValue</TT> fails on
+a vector of PVs.</EM>
+
+<P>
+See also <A HREF="lcaNewMonitorWait.html#lcanewmonitorwait"><TT>lcaNewMonitorWait</TT></A>.
 </DD>
 </DL>
-</DD>
-</DL>
-<H3><A NAME="SECTION000217400000000000000">
+<H3><A NAME="SECTION00029400000000000000">
 Examples</A>
 </H3>
 <PRE>
-lcaNewMonitorValue('PV')
+try and(lcaNewMonitorValue(pvvec))
+	vals = lcaGet(pvvec)
+catch
+    errs = lcaLastError()
+	handleErrs(errs)
+end
 </PRE>
 
 <P>
 <BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>

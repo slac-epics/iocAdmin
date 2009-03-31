@@ -1,23 +1,59 @@
-# RELEASE Location of external products
+#RELEASE Location of external products
 #
-# Run "gnumake clean uninstall install" in the application
-# top directory each time this file is changed.
+# IF YOU MAKE ANY CHANGES to this file you MUST at least run
+# "gnumake" in this directory afterwards; you usually need
+# EPICS extensions main RELEASE file
 #
-# NOTE: The build does not check dependencies on files
-# external to this application. Thus you should run
-# "gnumake clean uninstall install" in the top directory
-# each time EPICS_BASE, SNCSEQ, or any other external
-# module defined in the RELEASE file is rebuilt.
+# Host/target specific settings can be specified in files named
+#  RELEASE.$(EPICS_HOST_ARCH).Common
+#  RELEASE.Common.$(T_A)
+#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
 
-# If you don't want to install into $(TOP) then
-# define INSTALL_LOCATION_APP here
+# Check that you specified the EPICS config file
+ifndef EPICS_SITE_CONFIG
+$(error EPICS_SITE_CONFIG undefined)
+endif
 
-#INSTALL_LOCATION_APP=<fullpathname>
+# Site configuration, if it does not exist, no big deal
+include $(EPICS_SITE_CONFIG)
 
-##########################################
-## Tell us where EPICS base is installed
+# =================================================================
+# Define EPICS_EXTENSIONS
+# EPICS_BASE usually appears last so other apps can override stuff:
+# =================================================================
+EPICS_EXTENSIONS=$(EPICS_SITE_TOP)/extensions/$(EXTENSIONS_MODULE_VERSION)
 
-#EPICS_BASE=/opt/epics/base
+# =================================================================
+# Define EPICS_BASE
+# EPICS_BASE usually appears last so other apps can override stuff:
+# =================================================================
+EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+
+# =============================================================
+# Define location of module tree with respect to
+# EPICS_SITE_TOP
+# =============================================================
+EPICS_MODULES=$(EPICS_SITE_TOP)/modules
+
+# ===============================================================
+# Define the version of modules needed by
+# IOC apps or other Support apps
+# Make sure that you look at the website to discover
+# the appropriate version dependencies
+# http://www-group.slac.stanford.edu/cdsoft/epics/swModules3.htm
+# ===============================================================
+# NOTE: do not set unless you want to use a released version
+
+# ============================================================
+# External Support
+# ============================================================
+# example: IPAC=$(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
+# NOTE: it is normal for IPAC_MODULE_VERSION not to be defined, it will
+# be inserted by the release script.
+
+# ========================================================================================
+#If using macro substitutions, point MSI at the binary:
+# ========================================================================================
 
 ##########################################
 # For the following definitions
@@ -57,41 +93,5 @@
 # Tell us where MATLAB is installed (only
 # needed if MAKEFOR=MATLAB [in CONFIG])
 
-#MATLABDIR=/opt/matlab/2006b
+MATLABDIR=${EXTERNAL_PACKAGES}/matlab
 
-#you can also use EPICS_HOST_ARCH - specific
-#paths -- see above
-
-##########################################
-# Finally, we need to know what compiler
-# you use to get the correct matlab libmx and
-# libmex versions. This points to the compiler
-# specific subdir (example for MS visual C / matlab R2006b)
-# ONLY NEEDED ON WINDOZE (setting is ignored on
-# other platforms) where the 'libmex.lib' and
-# 'libmx.lib' are found.
-
-#MATLIB_SUBDIR=win32/microsoft/msvc70
-
-######### NOTHING USER-CONFIGURABLE BELOW HERE
-#
-#         SLAC specific paths are optionally 
-#         included from RELEASE-SLAC; the file
-#         (not included in the distribution) is used
-#         by me (TS) for development + testing)
-#         I use this setup so that I can leave
-#         this RELEASE template alone...
-#########
-
-# convertRelease.pl is too stupid to recognize '-include'
-# so we use this ugly trick:
-ifndef EPICS_BASE
-# if we have no definition of EPICS_BASE; hence
-# there must be RELEASE-SLAC file
-include $(TOP)/configure/RELEASE-SLAC
-else
-# otherwise it's optional but convertRelease.pl will
-# find the 'include' line above and use it to
-# generate CONFIG_APP_INCLUDE
--include $(TOP)/configure/RELEASE-SLAC
-endif

@@ -1,19 +1,22 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 
-<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+<!--Converted with jLaTeX2HTML 2002-2-1 (1.70) JA patch-2.0
+patched version by:  Kenshi Muto, Debian Project.
+* modified by:  Shige TAKENO
+LaTeX2HTML 2002-2-1 (1.70),
 original version by:  Nikos Drakos, CBLU, University of Leeds
 * revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
 * with significant contributions from:
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>lcaGetControlLimits</TITLE>
-<META NAME="description" CONTENT="lcaGetControlLimits">
+<TITLE>lcaGetNelem</TITLE>
+<META NAME="description" CONTENT="lcaGetNelem">
 <META NAME="keywords" CONTENT="manual">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
 
-<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META NAME="Generator" CONTENT="jLaTeX2HTML v2002-2-1 JA patch-2.0">
 <META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
 
 <LINK REL="STYLESHEET" HREF="manual.css">
@@ -26,25 +29,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <BODY >
 <!--Navigation Panel-->
-<A NAME="tex2html126"
+<A NAME="tex2html132"
   HREF="node9.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/next.png"></A> 
-<A NAME="tex2html124"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html130"
   HREF="node2.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/up.png"></A> 
-<A NAME="tex2html118"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html124"
   HREF="node7.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
- SRC="http://www.slac.stanford.edu/comp/unix/package/tex/latex2html/icons/prev.png"></A>   
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
 <BR>
-<B> Next:</B> <A NAME="tex2html127"
-  HREF="node9.html">lcaGetGraphicLimits</A>
-<B> Up:</B> <A NAME="tex2html125"
+<B> Next:</B> <A NAME="tex2html133"
+  HREF="node9.html">lcaSetMonitor</A>
+<B> Up:</B> <A NAME="tex2html131"
   HREF="node2.html">Supported EZCA Calls</A>
-<B> Previous:</B> <A NAME="tex2html119"
-  HREF="node7.html">lcaGetNelem</A>
+<B> Previous:</B> <A NAME="tex2html125"
+  HREF="node7.html">lcaPutNoWait</A>
 <BR>
 <BR>
 <!--End of Navigation Panel-->
@@ -52,30 +55,33 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL>
-<LI><A NAME="tex2html128"
+<LI><A NAME="tex2html134"
   HREF="node8.html#SECTION00026100000000000000">Calling Syntax</A>
-<LI><A NAME="tex2html129"
+<LI><A NAME="tex2html135"
   HREF="node8.html#SECTION00026200000000000000">Description</A>
-<LI><A NAME="tex2html130"
+<LI><A NAME="tex2html136"
   HREF="node8.html#SECTION00026300000000000000">Parameters</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
 <H2><A NAME="SECTION00026000000000000000">
-lcaGetControlLimits</A>
+lcaGetNelem</A>
 </H2>
 
 <H3><A NAME="SECTION00026100000000000000">
 Calling Syntax</A>
 </H3>
 <PRE>
-[lowLimit, hiLimit] = lcaGetControlLimits(pvs)
+numberOfElements = lcaGetNelem(pvs)
 </PRE>
 <H3><A NAME="SECTION00026200000000000000">
 Description</A>
 </H3>
-Retrieve the control limits associated with a number of PVs.
+Retrieve the element count of a number of PVs. Note that this is not
+necessarily the number of <I>valid</I> elements (e.g. the actual number
+of values read from a device into a waveform) but the maximum number
+of elements a PV can hold.
 
 <H3><A NAME="SECTION00026300000000000000">
 Parameters</A>
@@ -86,19 +92,17 @@ Parameters</A>
 of <I>m</I> strings.
 
 </DD>
-<DT><STRONG>lowLimit</STRONG></DT>
-<DD><I>m x 1</I> column vector of the PV's low control limit.
-</DD>
-<DT><STRONG>hiLimit</STRONG></DT>
-<DD><I>m x 1</I> column vector of the PV's high control limit.
+<DT><STRONG>numberOfElements</STRONG></DT>
+<DD><I>m x 1</I> column vector of the PV's number
+of elements (``array dimension'').
 </DD>
 </DL>
 
 <P>
 <BR><HR>
 <ADDRESS>
-Till Straumann
-2006-04-16
+Remi Machet
+2009-03-30
 </ADDRESS>
 </BODY>
 </HTML>
