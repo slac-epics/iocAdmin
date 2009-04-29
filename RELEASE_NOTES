@@ -10,11 +10,11 @@
 #--------------------------------------------------------------
 #  Mod:
 #        29-Apr-2009, K. Luchini         (LUCHINI):
-#           release iocAdmin-R2-0-0
+#           release iocAdmin-R3-0-0
 #
 #=============================================================
 #
-iocAdmin-R2-1-4: Apr 29, 2009
+iocAdmin-R3-0-0: Apr 29, 2009
 Built against EPICS R3.14.8.2 and RTEMS 4.9.1 (base-R3-14-8-2-lcls3)
 
 iocAdmin-R2-1-4: Mar 23, 2009
