@@ -1,5 +1,22 @@
-Release Notes
--------------
+#==============================================================
+#
+#  Name: RELEASE_NOTES
+#
+#  Rem: This files describes release notes for
+#       iocAdmin support.
+#
+#  Auth: dd-mmm-yyyy, Stephanie Allison  (SAA)
+#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
+#--------------------------------------------------------------
+#  Mod:
+#        29-Apr-2009, K. Luchini         (LUCHINI):
+#           release iocAdmin-R2-0-0
+#
+#=============================================================
+#
+iocAdmin-R2-1-4: Apr 29, 2009
+Built against EPICS R3.14.8.2 and RTEMS 4.9.1 (base-R3-14-8-2-lcls3)
+
 iocAdmin-R2-1-4: Mar 23, 2009
   * devIocStats/src/devIocStatsAnalog.c - add support for number of records.
     Fix bad bug in update rate initialization.  Add a check for valid rate.
