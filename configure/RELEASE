@@ -8,7 +8,7 @@
 # change this easily when relocating software.
 # ==============================================================
 include $(TOP)/RELEASE_SITE
-EPICS_SITE_TOP=/afs/slac/g/lcls/epics
+#EPICS_SITE_TOP=/afs/slac/g/lcls/epics
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
 # ========================================================================================
@@ -32,12 +32,12 @@ BASE_MODULE_VERSION=base-R3-14-8-2-lcls3
 # Define the version of modules needed by
 # IOC apps or other Support apps - used by testIocStatsApp
 # =============================================================
-SNCSEQ_MODULE_VERSION=seq-R2-0-11-lcls1
+#SNCSEQ_MODULE_VERSION=seq-R2-0-11-lcls1
 
 # ============================================================
 # External Support - used by testIocStatsApp
 # ============================================================
-SNCSEQ=$(EPICS_MODULES)/seq/$(SNCSEQ_MODULE_VERSION)
+#SNCSEQ=$(EPICS_MODULES)/seq/$(SNCSEQ_MODULE_VERSION)
 
 # =================================================================
 # Define EPICS_BASE
