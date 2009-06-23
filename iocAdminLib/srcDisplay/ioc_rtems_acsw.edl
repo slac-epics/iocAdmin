@@ -215,7 +215,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Heartbeat Errors in Last 10 Sec."
+  "Heartbeat Errors in Last 20 Sec."
 }
 endObjectProperties
 
