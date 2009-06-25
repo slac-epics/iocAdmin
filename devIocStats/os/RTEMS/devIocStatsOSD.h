@@ -52,15 +52,18 @@
 #include <rtems/libcsupport.h>
 #include <rtems/libio_.h>
 #include <rtems/rtems_bsdnet.h>
+#include <sys/mbuf.h>
+#include <sys/socket.h>
+#include <net/if.h>
+#include <net/if_var.h>
+
 #undef malloc
 #undef free
 
-#define kernelVersion() "RTEMS-"RTEMS_VERSION
-#define sysBspRev()     "<Unimplemented>"
+#include <string.h>
+#include <stdlib.h>
 
-#define MAX_FILES   rtems_libio_number_iops
 #define sysBootLine rtems_bsdnet_bootp_cmdline
-#define FDTABLE_INUSE(i) (rtems_libio_iops[i].flags & LIBIO_FLAGS_OPEN)
 /* Override default STARTUP environment variable to use INIT */
 #undef  STARTUP
 #define STARTUP "INIT"
@@ -68,21 +71,10 @@
 
 #ifdef RTEMS_BSP_PGM_EXEC_AFTER /* only defined on uC5282 */
 #define reboot(x) bsp_reset(0)
-#elif   (defined(__PPC__) && ((__RTEMS_MAJOR__ > 4) \
-     || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 8)))
+#elif   (__RTEMS_MAJOR__ > 4) \
+         || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 9) \
+         || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ == 9 && __RTEMS_REVISION__ > 0)
 #define reboot(x) bsp_reset()
 #else
 #define reboot(x) rtemsReboot()
 #endif
-/* Use alternate to cpuBurn if SECONDS_TO_BURN is not defined */
-#ifndef  SECONDS_TO_BURN
-#define SECONDS_TO_BURN 0
-#endif
-
-typedef struct {
-  unsigned long numBytesFree;
-  unsigned long numBytesAlloc;
-  unsigned long numBlocksFree;  /* not supported */
-  unsigned long numBlocksAlloc; /* not supported */
-  unsigned long maxBlockSizeFree;
-} memInfo;

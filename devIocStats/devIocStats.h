@@ -27,9 +27,11 @@
  *
  */
 
+/* Cluster info pool types */
 #define DATA_POOL 0
 #define SYS_POOL  1
 
+/* devIocStats value types (different update rates) */
 #define MEMORY_TYPE	0
 #define LOAD_TYPE	1
 #define FD_TYPE		2
@@ -37,7 +39,7 @@
 #define STATIC_TYPE	4
 #define TOTAL_TYPES	5
 
-/* The following defines may be redefined in devIocStatsOSD.h below. */
+/* Names of environment variables (may be redefined in OSD include) */
 #define STARTUP  "STARTUP"
 #define ST_CMD   "ST_CMD"
 #define ENGINEER "ENGINEER"
@@ -45,44 +47,68 @@
 
 #include "devIocStatsOSD.h"
 
-typedef int clustInfo[2][CLUSTSIZES][4];
+typedef int clustInfo[CLUSTSIZES][4];
 
-/*
- * Shared between devIocStatsAnalog.c and devIocStatsString.c
- */
+typedef struct {
+    unsigned long numBytesTotal;
+    unsigned long numBytesFree;
+    unsigned long numBytesAlloc;
+    unsigned long numBlocksFree;
+    unsigned long numBlocksAlloc;
+    unsigned long maxBlockSizeFree;
+} memInfo;
 
-/*
- * virtual OS layer for devIocStats.c
- */
-typedef struct devIocStatsVirtualOS {
-  /*
-   * Called at ai_init for any initialization needed for the other routines.
-   */
-  int  (*pInit)        (void);
-  /*
-   * Get strings for startup script, engineer, and location
-   */
-  void (*pGetSScript)  (char ***sp, char ***st);
-  void (*pGetEngineer) (char ***eng);
-  void (*pGetLocation) (char ***loc);
-  /*
-   * Get memory information
-   */
-  int (*pGetMemInfo) (memInfo * ppartStats);
-  /*
-   * Get number of suspended tasks
-   */
-  int (*pGetSuspendedTasks) (void);
-  /*
-   * Get CPU usage
-   */
-  double (*pGetCpuUsage) (void);
-  /*
-   * Get cluster information and IF errors
-   */
-  void (*pGetClustInfo)   (int dataPool, clustInfo clustinfo);
-  void (*pGetTotalClusts) (int dataPool, int *mbufnumber);
-  void (*pGetIFErrors)    (int *iferrors);
+typedef struct {
+    int used;
+    int max;
+} fdInfo;
 
-}devIocStatsVirtualOS;
-const extern devIocStatsVirtualOS *pdevIocStatsVirtualOS;
+typedef struct {
+    int ierrors;
+    int oerrors;
+} ifErrInfo;
+
+/* Functions (API) for OSD layer */
+/* All funcs return 0 (OK) / -1 (ERROR) */
+
+/* CPU Usage */
+extern int devIocStatsInitCpuUsage (void);
+extern int devIocStatsGetCpuUsage (double *pval);
+
+/* FD Usage */
+extern int devIocStatsInitFDUsage (void);
+extern int devIocStatsGetFDUsage (fdInfo *pval);
+
+/* Memory Usage */
+extern int devIocStatsInitMemUsage (void);
+extern int devIocStatsGetMemUsage (memInfo *pval);
+
+/* Suspended Tasks */
+extern int devIocStatsInitSuspTasks (void);
+extern int devIocStatsGetSuspTasks (int *pval);
+
+/* Cluster Info */
+extern int devIocStatsInitClusterInfo (void);
+extern int devIocStatsGetClusterInfo (int pool, clustInfo *pval);
+extern int devIocStatsGetClusterUsage (int pool, int *pval);
+
+/* Network Interface Errors */
+extern int devIocStatsInitIFErrors (void);
+extern int devIocStatsGetIFErrors (ifErrInfo *pval);
+
+/* Boot Info */
+extern int devIocStatsInitBootInfo (void);
+extern int devIocStatsGetStartupScript (char **pval);
+extern int devIocStatsGetBootLine (char **pval);
+extern int devIocStatsGetEngineer (char **pval);
+extern int devIocStatsGetLocation (char **pval);
+
+/* System Info */
+extern int devIocStatsInitSystemInfo (void);
+extern int devIocStatsGetBSPVersion (char **pval);
+extern int devIocStatsGetKernelVersion (char **pval);
+
+/* Host Info */
+extern int devIocStatsInitHostInfo (void);
+extern int devIocStatsGetPwd (char **pval);
+extern int devIocStatsGetHostname (char **pval);

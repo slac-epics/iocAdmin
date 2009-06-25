@@ -31,10 +31,21 @@
 #include <rebootLib.h>
 #include <memLib.h>
 #include <sysLib.h>
+#include <taskLib.h>
+#include <hostLib.h>
+#include <bootLib.h>
 #include <end.h>
+#include <smObjLib.h>
+#include <ipProto.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 /* for fdStats */
 #include <private/iosLibP.h>
+
+/* for IFErrors */
+#include <private/muxLibP.h>
 
 #ifndef _WRS_VXWORKS_MAJOR
 #define _WRS_VXWORKS_MAJOR 5
@@ -50,11 +61,9 @@
 #define CLUSTSIZES 10
 #endif
 /* Must use cpuBurn to determine cpu usage */
-#ifndef  SECONDS_TO_BURN
+#ifndef SECONDS_TO_BURN
 #define SECONDS_TO_BURN 5
 #endif
-
-typedef MEM_PART_STATS memInfo;
 
 extern char *sysBootLine;
 
