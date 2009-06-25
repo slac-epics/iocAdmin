@@ -3,7 +3,6 @@
 #
 epicsEnvSet("ENGINEER","<engineer>")
 epicsEnvSet("LOCATION","<location>")
-epicsEnvSet("LOGNAME","<logname>")
 # Soft IOCs only
 #epicsEnvSet("STARTUP","<startup>")
 #epicsEnvSet("ST_CMD","st.cmd")
