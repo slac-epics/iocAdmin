@@ -13,7 +13,7 @@ include $(TOP)/configure/CONFIG
 #
 
 RESTORES += iocAdmin.cwConfig
-
+RESTORES += iocAdminSoft.cwConfig
 
 include $(TOP)/configure/RULES
 #----------------------------------------
