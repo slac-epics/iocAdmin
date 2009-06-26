@@ -63,28 +63,6 @@ record(stringin, "$(IOCNAME):BOOTLINE6") {
   field(PINI, "YES")
 }
 
-record(stringin, "$(IOCNAME):BSP_REV") {
-  field(DESC, "BSP Revision")
-  field(DTYP, "IOC stats")
-  field(INP, "@bsp_rev")
-  field(PINI, "YES")
-}
-
-record(ai, "$(IOCNAME):DAT_MBUF_FREE") {
-  field(DESC, "Min % Free Data MBUFs")
-  field(DTYP, "IOC stats")
-  field(SCAN, "I/O Intr")
-  field(EGU, "%")
-  field(INP, "@min_data_mbuf")
-}
-
-record(ai, "$(IOCNAME):DAT_MBUF_MAX") {
-  field(DESC, "Number of Data MBUFs")
-  field(DTYP, "IOC stats")
-  field(INP, "@data_mbuf")
-  field(PINI, "YES")
-}
-
 record(ai, "$(IOCNAME):SYS_MBUF_FREE") {
   field(DESC, "Min % Free Sys MBUFs")
   field(DTYP, "IOC stats")

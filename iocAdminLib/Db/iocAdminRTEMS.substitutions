@@ -1,8 +1,8 @@
 #==============================================================================
 #
-# Abs:  IOC Administration Records for RTOS IOCs
+# Abs:  IOC Administration Records for RTEMS IOCs
 #
-# Name: iocAdmin.substitutions
+# Name: iocAdminRTEMS.substitutions
 #
 #==============================================================================
 #
@@ -12,11 +12,6 @@ pattern { IOCNAME }
 	{ $(IOC)  }
 }
 file iocRTOS.db
-{
-pattern { IOCNAME }
-	{ $(IOC)  }
-}
-file iocVxWorksOnly.db
 {
 pattern { IOCNAME }
 	{ $(IOC)  }
@@ -43,20 +38,11 @@ file iocCluster.db
 {
 #                   Pool   Size
 pattern { IOCNAME ,  P   ,  S   , TYPE   }
-# Data Pool - not supported in RTEMS
-	{ $(IOC)  ,  0   ,  0   , Data   }
-	{ $(IOC)  ,  0   ,  1   , Data   }
-# 2 to 7 - not supported in RTEMS
-	{ $(IOC)  ,  0   ,  2   , Data   }
-	{ $(IOC)  ,  0   ,  3   , Data   }
-	{ $(IOC)  ,  0   ,  4   , Data   }
-	{ $(IOC)  ,  0   ,  5   , Data   }
-	{ $(IOC)  ,  0   ,  6   , Data   }
-	{ $(IOC)  ,  0   ,  7   , Data   }
 # System Pool
 	{ $(IOC)  ,  1   ,  0   , System }
 	{ $(IOC)  ,  1   ,  1   , System }
-# 2 to 7 - not supported in RTEMS
+# 2 to 7 - not supported in RTEMS, but instantiated anyway so same display
+# can be used for both RTEMS and VxWorks.
 	{ $(IOC)  ,  1   ,  2   , System }
 	{ $(IOC)  ,  1   ,  3   , System }
 	{ $(IOC)  ,  1   ,  4   , System }
