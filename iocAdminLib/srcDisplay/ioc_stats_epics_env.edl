@@ -3,15 +3,15 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 10
-y 99
-w 530
-h 300
+x 40
+y 53
+w 520
+h 370
 font "helvetica-bold-r-18.0"
 ctlFont "helvetica-bold-r-18.0"
 btnFont "helvetica-bold-r-18.0"
 fgColor index 14
-bgColor index 3
+bgColor index 6
 textColor index 14
 ctlFgColor1 index 14
 ctlFgColor2 index 1
@@ -20,48 +20,10 @@ ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
 title "$(ioc) EPICS Env Vars"
+showGrid
 snapToGrid
 gridSize 5
 endScreenProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 5
-y 1
-w 349
-h 27
-font "helvetica-bold-r-24.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "EPICS Environment Variables"
-}
-autoSize
-endObjectProperties
-
-# (Exit Button)
-object activeExitButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 470
-y 5
-w 50
-h 35
-fgColor index 1
-bgColor index 25
-topShadowColor index 1
-botShadowColor index 14
-label "EXIT"
-font "helvetica-bold-r-14.0"
-3d
-endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -69,12 +31,13 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 0
+x 10
 y 50
-w 530
-h 1
-lineColor index 14
-fillColor index 14
+w 500
+h 310
+lineColor index 3
+fill
+fillColor index 3
 endObjectProperties
 
 # (Static Text)
@@ -83,30 +46,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 25
-w 335
-h 25
-font "helvetica-bold-r-24.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "$(ioc)                                      "
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 5
+x 15
 y 80
-w 207
-h 16
-font "helvetica-bold-r-14.0"
+w 172
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -122,18 +66,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
+x 280
 y 80
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_RPTR_PORT"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -142,11 +88,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 60
-w 190
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 55
+w 157
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -162,18 +108,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 60
+x 280
+y 55
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_SRVR_PORT"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -182,11 +130,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 160
-w 205
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 180
+w 172
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -202,18 +150,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 160
+x 280
+y 180
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_CONN_TIME"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -222,11 +172,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 100
-w 162
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 105
+w 135
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -242,18 +192,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 210
-y 100
+x 190
+y 105
 w 310
-h 15
+h 20
 controlPv "$(ioc):CA_ADDR_LIST"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -262,11 +214,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 120
-w 211
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 130
+w 176
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -282,18 +234,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 120
+x 280
+y 130
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_AUTO_ADDR"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -302,11 +256,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 180
-w 285
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 205
+w 240
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -322,18 +276,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 180
+x 280
+y 205
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_SRCH_TIME"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -342,11 +298,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 200
-w 247
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 230
+w 206
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -362,18 +318,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 200
+x 280
+y 230
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_BEAC_TIME"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -382,11 +340,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 140
-w 228
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 155
+w 194
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -402,18 +360,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 140
+x 280
+y 155
 w 150
-h 15
+h 20
 controlPv "$(ioc):CA_MAX_ARRAY"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -422,11 +382,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 220
-w 127
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 255
+w 108
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -442,18 +402,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 215
-y 220
-w 300
-h 15
+x 190
+y 255
+w 310
+h 20
 controlPv "$(ioc):TIMEZONE"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -462,11 +424,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 240
-w 147
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 280
+w 123
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -482,18 +444,20 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 240
+x 280
+y 280
 w 150
-h 15
+h 20
 controlPv "$(ioc):TS_NTP_INET"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
 endObjectProperties
 
 # (Textupdate)
@@ -502,18 +466,19 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 260
+x 280
+y 305
 w 150
-h 15
+h 20
 controlPv "$(ioc):IOC_LOG_PORT"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineAlarm
 endObjectProperties
 
 # (Static Text)
@@ -522,11 +487,11 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 260
-w 167
-h 16
-font "helvetica-bold-r-14.0"
+x 15
+y 305
+w 138
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -542,18 +507,56 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 295
-y 280
+x 280
+y 330
 w 150
-h 15
+h 20
 controlPv "$(ioc):IOC_LOG_INET"
 displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
+bgColor index 12
 fill
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-14.0"
 fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 15
+y 330
+w 132
+h 14
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "EPICS_IOC_LOG_INET"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 520
+h 40
+lineColor index 54
+fill
+fillColor index 54
+lineWidth 0
 endObjectProperties
 
 # (Static Text)
@@ -563,16 +566,64 @@ major 4
 minor 1
 release 0
 x 5
-y 280
-w 158
-h 16
-font "helvetica-bold-r-14.0"
+y 0
+w 200
+h 40
+font "helvetica-medium-r-14.0"
 fgColor index 14
-bgColor index 3
+bgColor index 53
 useDisplayBg
 value {
-  "EPICS_IOC_LOG_INET"
+  "EPICS Environment Variables"
+  "$(ioc)"
 }
-autoSize
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 455
+y 10
+w 50
+h 25
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+label "Exit"
+font "helvetica-medium-r-12.0"
+3d
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 350
+y 10
+w 95
+h 25
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Home Screen..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "lcls_main"
+}
+setPosition {
+  0 "parentWindow"
+}
+replaceSymbols {
+  0 1
+}
 endObjectProperties
 
