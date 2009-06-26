@@ -12,6 +12,8 @@ testIocStats_registerRecordDeviceDriver(pdbbase)
 
 ## Load record instances
 dbLoadRecords("db/iocAdmin.db","IOC=IOCTEST")
+# Soft IOCs use this instead.
+#dbLoadRecords("db/iocAdminSoft.db","IOC=IOCTEST")
 
 iocInit()
 
