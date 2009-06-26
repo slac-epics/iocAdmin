@@ -12,10 +12,12 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 DB += ioc.db
+DB += iocRTOS.db
 DB += iocEnvVar.db
 DB += iocCluster.db
 DB += access.db
 DB += iocAdmin.db
+DB += iocAdminSoft.db
 DB += baseSecurity.acf
 
 #

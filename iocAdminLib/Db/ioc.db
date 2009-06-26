@@ -97,15 +97,15 @@ record(ai, "$(IOCNAME):FD_CNT") {
   field(DESC, "Allocated File Descriptors")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
-  field(FLNK, "$(IOCNAME):FD_FREE.VAL  PP MS")
+  field(FLNK, "$(IOCNAME):FD_FREE  PP MS")
   field(INP, "@fd")
 }
 
 record(calc, "$(IOCNAME):FD_FREE") {
   field(DESC, "Available FDs")
   field(CALC, "B>0?B-A:C")
-  field(INPA, "$(IOCNAME):FD_CNT.VAL  NPP MS")
-  field(INPB, "$(IOCNAME):FD_MAX.VAL  NPP MS")
+  field(INPA, "$(IOCNAME):FD_CNT  NPP MS")
+  field(INPB, "$(IOCNAME):FD_MAX  NPP MS")
   field(INPC, "1000")
   field(HOPR, "150")
   field(LOLO, "5")
@@ -120,6 +120,7 @@ record(ai, "$(IOCNAME):LOAD") {
   field(DTYP, "IOC stats")
   field(INP, "@cpu")
   field(EGU, "%")
+  field(PREC, "1")
   field(HOPR, "100")
   field(HIHI, "80")
   field(HIGH, "70")
@@ -152,17 +153,12 @@ record(ai, "$(IOCNAME):MEM_FREE") {
   field(EGU, "byte")
 }
 
-record(ai, "$(IOCNAME):MEM_BLK_FREE") {
-  field(DESC, "Maximum Free Memory Block")
+record(ai, "$(IOCNAME):MEM_MAX") {
+  field(DESC, "Maximum Memory")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
-  field(INP, "@max_free")
+  field(INP, "@total_bytes")
   field(EGU, "byte")
-  field(HOPR, "50000000")
-  field(LOLO, "100000")
-  field(LOW, "500000")
-  field(LLSV, "MAJOR")
-  field(LSV, "MINOR")
 }
 
 record(ao, "$(IOCNAME):CA_UPD_TIME") {
@@ -227,55 +223,6 @@ record(stringin, "$(IOCNAME):ST_SCRIPT2") {
   field(PINI, "YES")
 }
 
-record(stringin, "$(IOCNAME):BOOTLINE1") {
-  field(DESC, "Boot Line Part1")
-  field(DTYP, "IOC stats")
-  field(INP, "@bootline_1")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):BOOTLINE2") {
-  field(DESC, "Boot Line Part2")
-  field(DTYP, "IOC stats")
-  field(INP, "@bootline_2")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):BOOTLINE3") {
-  field(DESC, "Boot Line Part3")
-  field(DTYP, "IOC stats")
-  field(INP, "@bootline_3")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):BOOTLINE4") {
-  field(DESC, "Boot Line Part4")
-  field(DTYP, "IOC stats")
-  field(INP, "@bootline_4")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):BOOTLINE5") {
-  field(DESC, "Boot Line Part5")
-  field(DTYP, "IOC stats")
-  field(INP, "@bootline_5")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):BOOTLINE6") {
-  field(DESC, "Boot Line Part6")
-  field(DTYP, "IOC stats")
-  field(INP, "@bootline_6")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):BSP_REV") {
-  field(DESC, "BSP Revision")
-  field(DTYP, "IOC stats")
-  field(INP, "@bsp_rev")
-  field(PINI, "YES")
-}
-
 record(stringin, "$(IOCNAME):KERNEL_VERS") {
   field(DESC, "Kernel Version")
   field(DTYP, "IOC stats")
@@ -309,50 +256,6 @@ record(stringin, "$(IOCNAME):APP_DIR2") {
   field(DTYP, "IOC stats")
   field(INP, "@pwd2")
   field(PINI, "YES")
-}
-
-record(ai, "$(IOCNAME):DAT_MBUF_FREE") {
-  field(DESC, "Min % Free Data MBUFs")
-  field(DTYP, "IOC stats")
-  field(SCAN, "I/O Intr")
-  field(EGU, "%")
-  field(INP, "@min_data_mbuf")
-}
-
-record(ai, "$(IOCNAME):DAT_MBUF_MAX") {
-  field(DESC, "Number of Data MBUFs")
-  field(DTYP, "IOC stats")
-  field(INP, "@data_mbuf")
-  field(PINI, "YES")
-}
-
-record(ai, "$(IOCNAME):SYS_MBUF_FREE") {
-  field(DESC, "Min % Free Sys MBUFs")
-  field(DTYP, "IOC stats")
-  field(SCAN, "I/O Intr")
-  field(EGU, "%")
-  field(INP, "@min_sys_mbuf")
-}
-
-record(ai, "$(IOCNAME):SYS_MBUF_MAX") {
-  field(DESC, "Number of System MBUFs")
-  field(DTYP, "IOC stats")
-  field(INP, "@sys_mbuf")
-  field(PINI, "YES")
-}
-
-record(ai, "$(IOCNAME):IFI_ERR_CNT") {
-  field(DESC, "IF Input Errors")
-  field(DTYP, "IOC stats")
-  field(SCAN, "I/O Intr")
-  field(INP, "@inp_errs")
-}
-
-record(ai, "$(IOCNAME):IFO_ERR_CNT") {
-  field(DESC, "IF Output Errors")
-  field(DTYP, "IOC stats")
-  field(SCAN, "I/O Intr")
-  field(INP, "@out_errs")
 }
 
 record(stringin, "$(IOCNAME):UPTIME") {
