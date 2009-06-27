@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 490
-y 24
+x 71
+y 47
 w 540
-h 785
+h 750
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -32,9 +32,9 @@ major 4
 minor 0
 release 0
 x 10
-y 610
+y 635
 w 270
-h 165
+h 110
 lineColor index 3
 fill
 fillColor index 3
@@ -94,7 +94,7 @@ release 0
 x 10
 y 295
 w 520
-h 205
+h 230
 lineColor index 3
 fill
 fillColor index 3
@@ -785,7 +785,7 @@ major 4
 minor 1
 release 0
 x 15
-y 350
+y 375
 w 118
 h 14
 font "helvetica-medium-r-12.0"
@@ -805,7 +805,7 @@ major 10
 minor 0
 release 0
 x 15
-y 370
+y 395
 w 230
 h 25
 controlPv "$(ioc):APP_DIR1"
@@ -827,7 +827,7 @@ major 10
 minor 0
 release 0
 x 245
-y 370
+y 395
 w 230
 h 25
 controlPv "$(ioc):APP_DIR2"
@@ -849,7 +849,7 @@ major 4
 minor 1
 release 0
 x 15
-y 400
+y 425
 w 75
 h 14
 font "helvetica-medium-r-12.0"
@@ -869,7 +869,7 @@ major 10
 minor 0
 release 0
 x 15
-y 420
+y 445
 w 230
 h 25
 controlPv "$(ioc):ST_SCRIPT1"
@@ -891,7 +891,7 @@ major 10
 minor 0
 release 0
 x 245
-y 420
+y 445
 w 230
 h 25
 controlPv "$(ioc):ST_SCRIPT2"
@@ -960,15 +960,58 @@ major 4
 minor 1
 release 0
 x 15
-y 450
-w 99
+y 355
+w 76
 h 14
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "RTEMS Boot Line"
+  "BSP Revision"
+}
+autoSize
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 110
+y 350
+w 270
+h 20
+controlPv "$(ioc):BSP_REV"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 15
+y 475
+w 53
+h 14
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Boot Line"
 }
 autoSize
 endObjectProperties
@@ -980,7 +1023,7 @@ major 10
 minor 0
 release 0
 x 15
-y 470
+y 495
 w 230
 h 25
 controlPv "$(ioc):BOOTLINE1"
@@ -1002,7 +1045,7 @@ major 4
 minor 0
 release 0
 x 10
-y 505
+y 530
 w 270
 h 100
 lineColor index 3
@@ -1017,7 +1060,7 @@ major 4
 minor 0
 release 0
 x 295
-y 505
+y 530
 w 235
 h 40
 lineColor index 3
@@ -1032,7 +1075,7 @@ major 10
 minor 0
 release 0
 x 80
-y 530
+y 555
 w 85
 h 20
 controlPv "$(ioc):MEM_FREE"
@@ -1054,7 +1097,7 @@ major 10
 minor 0
 release 0
 x 80
-y 555
+y 580
 w 85
 h 20
 controlPv "$(ioc):MEM_USED"
@@ -1076,7 +1119,7 @@ major 10
 minor 0
 release 0
 x 185
-y 560
+y 585
 w 85
 h 30
 controlPv "$(ioc):MEM_BLK_FREE"
@@ -1098,7 +1141,7 @@ major 4
 minor 1
 release 0
 x 15
-y 510
+y 535
 w 94
 h 14
 font "helvetica-medium-r-12.0"
@@ -1118,7 +1161,7 @@ major 4
 minor 1
 release 0
 x 20
-y 535
+y 560
 w 26
 h 14
 font "helvetica-medium-r-12.0"
@@ -1138,7 +1181,7 @@ major 4
 minor 1
 release 0
 x 20
-y 555
+y 580
 w 28
 h 14
 font "helvetica-medium-r-12.0"
@@ -1158,7 +1201,7 @@ major 4
 minor 1
 release 0
 x 195
-y 530
+y 555
 w 75
 h 28
 font "helvetica-medium-r-12.0"
@@ -1234,7 +1277,7 @@ major 4
 minor 1
 release 0
 x 305
-y 520
+y 545
 w 57
 h 14
 font "helvetica-medium-r-12.0"
@@ -1254,7 +1297,7 @@ major 10
 minor 0
 release 0
 x 405
-y 510
+y 535
 w 95
 h 30
 controlPv "$(ioc):LOAD"
@@ -1274,8 +1317,28 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 20
+x 160
 y 640
+w 41
+h 14
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "MBUFs"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 20
+y 675
 w 41
 h 14
 font "helvetica-medium-r-12.0"
@@ -1295,7 +1358,7 @@ major 4
 minor 1
 release 0
 x 20
-y 670
+y 705
 w 24
 h 14
 font "helvetica-medium-r-12.0"
@@ -1308,22 +1371,74 @@ value {
 autoSize
 endObjectProperties
 
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 75
+y 720
+w 95
+h 20
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Cluster Info"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_stats_clust"
+}
+menuLabel {
+  0 "$(ioc) System Cluster Info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "pool=SYS,name=System,idx=1"
+}
+endObjectProperties
+
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
 release 0
-x 15
-y 615
-w 85
+x 110
+y 650
+w 40
 h 14
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "System MBUFs"
+  "System"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 215
+y 650
+w 26
+h 14
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Data"
 }
 autoSize
 endObjectProperties
@@ -1335,10 +1450,52 @@ major 10
 minor 0
 release 0
 x 75
-y 635
+y 670
 w 95
 h 20
 controlPv "$(ioc):SYS_MBUF_FREE"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 180
+y 670
+w 95
+h 20
+controlPv "$(ioc):DAT_MBUF_FREE"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Textupdate)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 180
+y 695
+w 95
+h 20
+controlPv "$(ioc):DAT_MBUF_MAX"
 fgColor index 16
 fgAlarm
 bgColor index 12
@@ -1356,7 +1513,7 @@ major 4
 minor 0
 release 0
 x 295
-y 550
+y 580
 w 235
 h 80
 lineColor index 3
@@ -1371,7 +1528,7 @@ major 4
 minor 1
 release 0
 x 300
-y 555
+y 585
 w 99
 h 14
 font "helvetica-medium-r-12.0"
@@ -1391,7 +1548,7 @@ major 10
 minor 0
 release 0
 x 405
-y 570
+y 600
 w 95
 h 30
 controlPv "$(ioc):FD_FREE"
@@ -1413,7 +1570,7 @@ major 10
 minor 0
 release 0
 x 405
-y 605
+y 635
 w 95
 h 20
 controlPv "$(ioc):FD_MAX"
@@ -1435,7 +1592,7 @@ major 4
 minor 1
 release 0
 x 315
-y 580
+y 610
 w 26
 h 14
 font "helvetica-medium-r-12.0"
@@ -1455,7 +1612,7 @@ major 4
 minor 1
 release 0
 x 315
-y 610
+y 640
 w 24
 h 14
 font "helvetica-medium-r-12.0"
@@ -1475,9 +1632,9 @@ major 4
 minor 0
 release 0
 x 295
-y 635
+y 670
 w 235
-h 70
+h 75
 lineColor index 3
 fill
 fillColor index 3
@@ -1490,7 +1647,7 @@ major 4
 minor 1
 release 0
 x 300
-y 640
+y 675
 w 55
 h 14
 font "helvetica-medium-r-12.0"
@@ -1510,7 +1667,7 @@ major 4
 minor 1
 release 0
 x 310
-y 665
+y 700
 w 27
 h 14
 font "helvetica-medium-r-12.0"
@@ -1530,7 +1687,7 @@ major 4
 minor 1
 release 0
 x 310
-y 690
+y 725
 w 37
 h 14
 font "helvetica-medium-r-12.0"
@@ -1550,7 +1707,7 @@ major 10
 minor 0
 release 0
 x 405
-y 655
+y 690
 w 95
 h 20
 controlPv "$(ioc):IFI_ERR_CNT"
@@ -1572,7 +1729,7 @@ major 10
 minor 0
 release 0
 x 405
-y 680
+y 715
 w 95
 h 20
 controlPv "$(ioc):IFO_ERR_CNT"
@@ -1594,7 +1751,7 @@ major 10
 minor 0
 release 0
 x 245
-y 470
+y 495
 w 230
 h 25
 controlPv "$(ioc):BOOTLINE2"
@@ -1639,7 +1796,7 @@ major 10
 minor 0
 release 0
 x 75
-y 660
+y 695
 w 95
 h 20
 controlPv "$(ioc):SYS_MBUF_MAX"
@@ -1660,7 +1817,7 @@ major 10
 minor 0
 release 0
 x 80
-y 580
+y 605
 w 85
 h 20
 controlPv "$(ioc):MEM_MAX"
@@ -1682,7 +1839,7 @@ major 4
 minor 1
 release 0
 x 20
-y 575
+y 600
 w 52
 h 28
 font "helvetica-medium-r-12.0"
@@ -1696,279 +1853,35 @@ value {
 autoSize
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
+# (Related Display)
+object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 1
+minor 2
 release 0
-x 50
-y 700
-w 24
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Size"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 90
-y 700
-w 45
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Clusters"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 155
-y 700
-w 26
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Free"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 205
-y 700
-w 35
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Usage"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 105
-y 685
-w 69
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "System Pool"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
+x 180
 y 720
-w 50
+w 95
 h 20
-controlPv "$(ioc):CLUST_1_0_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
 font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 200
-y 720
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_0_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 145
-y 720
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_0_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 35
-y 720
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_0_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 745
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_1_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 200
-y 745
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_1_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 145
-y 745
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_1_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 35
-y 745
-w 50
-h 20
-controlPv "$(ioc):CLUST_1_1_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
+buttonLabel "Cluster Info"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_stats_clust"
+}
+menuLabel {
+  0 "$(ioc) Data Cluster Info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "pool=DAT,name=Data,idx=0"
+}
 endObjectProperties
 

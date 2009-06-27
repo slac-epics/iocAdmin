@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 487
-y 82
+x 248
+y 77
 w 480
-h 580
+h 310
 font "helvetica-bold-r-18.0"
 ctlFont "helvetica-bold-r-18.0"
 btnFont "helvetica-bold-r-18.0"
@@ -19,26 +19,11 @@ ctlBgColor1 index 3
 ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
-title "$(ioc) Cluster"
+title "$(ioc) $(name) Pool"
 showGrid
 snapToGrid
 gridSize 5
 endScreenProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 305
-w 455
-h 265
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -65,7 +50,7 @@ x 365
 y 140
 w 85
 h 25
-controlPv "$(ioc):SYS_MBUF_FREE"
+controlPv "$(ioc):$(pool)_MBUF_FREE"
 fgColor index 16
 fgAlarm
 bgColor index 12
@@ -86,7 +71,7 @@ x 365
 y 195
 w 85
 h 25
-controlPv "$(ioc):SYS_MBUF_MAX"
+controlPv "$(ioc):$(pool)_MBUF_MAX"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -186,14 +171,14 @@ minor 1
 release 0
 x 205
 y 55
-w 79
+w 85
 h 16
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "System Pool"
+  "$(name) Pool"
 }
 autoSize
 endObjectProperties
@@ -204,32 +189,11 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 15
-y 95
-w 65
-h 20
-controlPv "$(ioc):CLUST_1_0_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
 x 95
 y 95
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_0_1"
+controlPv "$(ioc):CLUST_$(idx)_0_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -250,7 +214,7 @@ x 245
 y 95
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_0_3"
+controlPv "$(ioc):CLUST_$(idx)_0_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -271,7 +235,7 @@ x 170
 y 95
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_0_2"
+controlPv "$(ioc):CLUST_$(idx)_0_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -292,7 +256,7 @@ x 15
 y 120
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_1_0"
+controlPv "$(ioc):CLUST_$(idx)_1_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -313,7 +277,7 @@ x 95
 y 120
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_1_1"
+controlPv "$(ioc):CLUST_$(idx)_1_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -334,7 +298,7 @@ x 245
 y 120
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_1_3"
+controlPv "$(ioc):CLUST_$(idx)_1_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -355,7 +319,7 @@ x 170
 y 120
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_1_2"
+controlPv "$(ioc):CLUST_$(idx)_1_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -376,7 +340,7 @@ x 15
 y 145
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_2_0"
+controlPv "$(ioc):CLUST_$(idx)_2_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -397,7 +361,7 @@ x 95
 y 145
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_2_1"
+controlPv "$(ioc):CLUST_$(idx)_2_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -418,7 +382,7 @@ x 245
 y 145
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_2_3"
+controlPv "$(ioc):CLUST_$(idx)_2_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -439,7 +403,7 @@ x 170
 y 145
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_2_2"
+controlPv "$(ioc):CLUST_$(idx)_2_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -460,7 +424,7 @@ x 15
 y 170
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_3_0"
+controlPv "$(ioc):CLUST_$(idx)_3_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -481,7 +445,7 @@ x 95
 y 170
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_3_1"
+controlPv "$(ioc):CLUST_$(idx)_3_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -502,7 +466,7 @@ x 245
 y 170
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_3_3"
+controlPv "$(ioc):CLUST_$(idx)_3_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -523,7 +487,7 @@ x 170
 y 170
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_3_2"
+controlPv "$(ioc):CLUST_$(idx)_3_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -544,7 +508,7 @@ x 15
 y 195
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_4_0"
+controlPv "$(ioc):CLUST_$(idx)_4_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -565,7 +529,7 @@ x 95
 y 195
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_4_1"
+controlPv "$(ioc):CLUST_$(idx)_4_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -586,7 +550,7 @@ x 245
 y 195
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_4_3"
+controlPv "$(ioc):CLUST_$(idx)_4_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -607,7 +571,7 @@ x 170
 y 195
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_4_2"
+controlPv "$(ioc):CLUST_$(idx)_4_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -628,7 +592,7 @@ x 15
 y 220
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_5_0"
+controlPv "$(ioc):CLUST_$(idx)_5_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -649,7 +613,7 @@ x 95
 y 220
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_5_1"
+controlPv "$(ioc):CLUST_$(idx)_5_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -670,7 +634,7 @@ x 245
 y 220
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_5_3"
+controlPv "$(ioc):CLUST_$(idx)_5_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -691,7 +655,7 @@ x 170
 y 220
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_5_2"
+controlPv "$(ioc):CLUST_$(idx)_5_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -712,7 +676,7 @@ x 15
 y 245
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_6_0"
+controlPv "$(ioc):CLUST_$(idx)_6_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -733,7 +697,7 @@ x 95
 y 245
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_6_1"
+controlPv "$(ioc):CLUST_$(idx)_6_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -754,7 +718,7 @@ x 245
 y 245
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_6_3"
+controlPv "$(ioc):CLUST_$(idx)_6_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -775,7 +739,7 @@ x 170
 y 245
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_6_2"
+controlPv "$(ioc):CLUST_$(idx)_6_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -796,7 +760,7 @@ x 15
 y 270
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_7_0"
+controlPv "$(ioc):CLUST_$(idx)_7_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -817,7 +781,7 @@ x 95
 y 270
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_7_1"
+controlPv "$(ioc):CLUST_$(idx)_7_1"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -838,7 +802,7 @@ x 245
 y 270
 w 95
 h 20
-controlPv "$(ioc):CLUST_1_7_3"
+controlPv "$(ioc):CLUST_$(idx)_7_3"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -859,7 +823,7 @@ x 170
 y 270
 w 65
 h 20
-controlPv "$(ioc):CLUST_1_7_2"
+controlPv "$(ioc):CLUST_$(idx)_7_2"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -926,26 +890,6 @@ bgColor index 3
 useDisplayBg
 value {
   "MBUFs"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 15
-y 555
-w 157
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "* Not applicable for RTEMS."
 }
 autoSize
 endObjectProperties
@@ -1029,7 +973,7 @@ fgColor index 14
 bgColor index 53
 useDisplayBg
 value {
-  "IOC Cluster Diagnostics"
+  "IOC $(name) Pool Cluster Info"
   "$(ioc)"
 }
 endObjectProperties
@@ -1040,154 +984,11 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 365
-y 395
-w 85
-h 25
-controlPv "$(ioc):DAT_MBUF_FREE"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 365
-y 450
-w 85
-h 25
-controlPv "$(ioc):DAT_MBUF_MAX"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 35
-y 330
-w 24
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Size"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 105
-y 330
-w 45
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Clusters"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 190
-y 330
-w 26
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Free"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 270
-y 330
-w 35
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Usage"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 205
-y 310
-w 73
-h 16
-font "helvetica-medium-r-14.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Data Pool *"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
 x 15
-y 350
+y 95
 w 65
 h 20
-controlPv "$(ioc):CLUST_0_0_0"
+controlPv "$(ioc):CLUST_$(idx)_0_0"
 displayMode "decimal"
 fgColor index 16
 fgAlarm
@@ -1196,696 +997,5 @@ fill
 font "helvetica-medium-r-14.0"
 lineWidth 2
 lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 350
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_0_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 350
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_0_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 350
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_0_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 375
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_1_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 375
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_1_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 375
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_1_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 375
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_1_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 400
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_2_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 400
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_2_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 400
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_2_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 400
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_2_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 425
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_3_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 425
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_3_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 425
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_3_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 425
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_3_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 450
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_4_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 450
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_4_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 450
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_4_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 450
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_4_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 475
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_5_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 475
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_5_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 475
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_5_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 475
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_5_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 500
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_6_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 500
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_6_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 500
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_6_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 500
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_6_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 15
-y 525
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_7_0"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 95
-y 525
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_7_1"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 525
-w 95
-h 20
-controlPv "$(ioc):CLUST_0_7_3"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 170
-y 525
-w 65
-h 20
-controlPv "$(ioc):CLUST_0_7_2"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 370
-y 375
-w 72
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Total % Free"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 390
-y 430
-w 24
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Max"
-}
-autoSize
 endObjectProperties
 
