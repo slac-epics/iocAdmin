@@ -11,6 +11,7 @@ record(ai, "$(IOCNAME):DAT_MBUF_FREE") {
   field(SCAN, "I/O Intr")
   field(EGU, "%")
   field(INP, "@min_data_mbuf")
+  field(FLNK, "$(DAT_MBUF_FLNK)")
 }
 
 record(ai, "$(IOCNAME):DAT_MBUF_MAX") {

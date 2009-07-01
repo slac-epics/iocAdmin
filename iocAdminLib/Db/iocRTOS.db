@@ -69,6 +69,7 @@ record(ai, "$(IOCNAME):SYS_MBUF_FREE") {
   field(SCAN, "I/O Intr")
   field(EGU, "%")
   field(INP, "@min_sys_mbuf")
+  field(FLNK, "$(SYS_MBUF_FLNK)")
 }
 
 record(ai, "$(IOCNAME):SYS_MBUF_MAX") {
