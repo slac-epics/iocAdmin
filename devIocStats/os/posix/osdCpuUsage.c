@@ -23,7 +23,7 @@
  */
 
 #ifdef SOLARIS
-// Is in stdlib.h elsewhere, not available on WIN32
+/* Is in stdlib.h elsewhere, not available on WIN32 */
 #include <sys/loadavg.h>
 #endif
 
@@ -64,6 +64,7 @@ int devIocStatsGetCpuUsage (double *pval)
     wrapping.  So treat the return value as an unsigned long and
     don't check the return value. */
     cpuFract = (delTime > 0) ? (double)(ULONG_DIFF(cpuCurCount,cpuPrevCount))/delTime/CLOCKS_PER_SEC : 0.0;
+    if (cpuFract > 1.0) cpuFract = 1.0;
 
     /* Reset the previous values */
     prevTime = curTime;
