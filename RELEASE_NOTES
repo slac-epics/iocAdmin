@@ -1,19 +1,37 @@
-#==============================================================
-#
-#  Name: RELEASE_NOTES
-#
-#  Rem: This files describes release notes for
-#       iocAdmin support.
-#
-#  Auth: dd-mmm-yyyy, Stephanie Allison  (SAA)
-#  Rev:  dd-mmm-yyyy, Reviewer's Name    (USERNAME)
-#--------------------------------------------------------------
-#  Mod:
-#        29-Apr-2009, K. Luchini         (LUCHINI):
-#           release iocAdmin-R3-0-0
-#
-#=============================================================
-#
+Release Notes for iocAdmin
+--------------------------
+
+iocAdmin-R3-1-0: July 1, 2009
+  * devIocStats - Ralph Lange made changes.  Here are his notes:
+	Functionality is basically as before, the main work (quite a bit more 
+	than I expected) being the split-up of all the devIocStatsOSD.c files 
+	into functionally separate source files. (So that any single 
+	functionality may be not implemented for an architecture and fall-back 
+	to os/posix or os/default.) That split-up includes new names and APIs 
+	between the generic part of the device support and the OSD parts, 
+	which I tried to streamline, which allowed for some serious code 
+	simplifications in the generic parts. I also made sure the new APIs 
+	will make it a lot easier to support waveform records.
+
+	I fixed a few bugs in the code (IFerrors and uptime under vxWorks) and 
+	added (in the attached version) kernel version and CPU usage info for 
+	posix systems.
+
+	Added mem->total to the meminfo structure to create reasonable 
+	information on soft IOC implementations with virtual memory 
+	organization:
+	   total:  on this host - physically installed memory.
+	   used:   for this IOC - physical memory used at the moment (RSS)
+	   free:   on this host - physical memory that is available to 
+		   processes  (free plus cache plus buffers)
+	Added memory implementation for Linux, FD usage implementations for 
+	Linux and Solaris.
+  * iocAdminLib/srcDisplay - LCLS display update.
+  * iocAdminLib/Db - Add iocAdminSoft and iocAdminRTEMS databases for soft 
+    and RTEMS IOCs.  Add MEM_MAX.  Process CLUST records only after MBUF_FREE
+    records are processed.
+  * iocAdminLib/srcRestore - Add iocAdminSoft.cwConfig for soft IOCs.
+
 iocAdmin-R3-0-0: Apr 29, 2009
 Built against EPICS R3.14.8.2 and RTEMS 4.9.1 (base-R3-14-8-2-lcls3)
 

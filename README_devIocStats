@@ -1,4 +1,4 @@
-README_devIocStats		Last Updated 03/24/2009
+README_devIocStats		Last Updated 07/01/2009
 ------------------
 
 I - General Notes on devIocStats - All Operating Systems
@@ -10,7 +10,11 @@ String (stringin) Records (DTYP = "IOC stats"), INP = @one of the following:
 					Default - uses STARTUP and ST_CMD
 					environment variables.
 		bootline_[1-6]		-CPU bootline (6 records)
+					 (not implemented for soft IOCs and
+					  set to "<not implemented>")
  		bsp_rev			-CPU board support package revision
+					 (not available for soft IOCs and
+					  set to "<not available>")
 		kernel_ver		-OS kernel build version
 		epics_ver		-EPICS base version
                 engineer                -IOC Engineer
@@ -25,7 +29,7 @@ String (stringin) Records (DTYP = "IOC stats"), INP = @one of the following:
 	Except for up_time, the support is static.  The record only needs to 
 	be processed once, for which SCAN=Passive and PINI=YES is recommended.
 
-	When a string cannot be determined, the PV will show "not available" 
+	When a string cannot be determined, the PV will show "<not available>" 
 	or "<not implemented>" or some other variation.
 
 String (stringin) Records (DTYP = "IOC epics var"), INP = @<EPICS variable>
@@ -45,35 +49,46 @@ String (stringin) Records (DTYP = "IOC env var"), INP = @<environment variable>
 	recommended.
 
 	If the environment variable does not exist, the PV will show 
-	"not available".
+	"<not available>".
 
 Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
 =========================================================================
-		free_bytes	 - number of bytes in IOC not allocated
-		allocated_bytes  - number of bytes allocated
-		max_free	 - size of largest free block
-		free_blocks	 - number of blocks in IOC not allocated
-		allocated_blocks - number of blocks allocated
-		cpu		 - estimated percent IOC usage by tasks
-		suspended_tasks	 - number of suspended tasks
-		fd		 - number of file descriptors currently in use
-		max_fd		 - max number of file descriptors
+                records		 - number of records
 		ca_clients	 - number of current CA clients
 		ca_connections	 - number of current CA connections
-                min_data_mbuf    - minimum percent free data   MBUFs
+		suspended_tasks	 - number of suspended tasks
+	The following are implemented for RTEMS, vxWorks, and some soft IOCs 
+	(see notes below for exceptions):
+		free_bytes	 - number of bytes not allocated
+				   on this machine
+		allocated_bytes  - number of bytes allocated
+				   (for soft IOCs, physical memory used 
+				    at the moment (RSS))
+		total_bytes      - number of bytes physically installed
+				   on this machine
+		cpu		 - estimated percent IOC usage by tasks
+		fd		 - number of file descriptors currently in use
+		max_fd		 - max number of file descriptors
+	The following are implemented for RTEMS and vxWorks IOCs only and
+        set to 0 for other types of IOCs:
+		max_free	 - size of largest free block
                 min_sys_mbuf	 - minimum percent free system MBUFs
-                data_mbuf	 - number of data   MBUFs
                 sys_mbuf	 - number of system MBUFs
-                inp_errs	 - number of IF input  errors* 
-                out_errs	 - number of IF output errors*
-                records		 - number of records
+                inp_errs	 - number of IF input  errors 
+                out_errs	 - number of IF output errors
+	The following are implemented for vxWorks IOCs only and
+        set to 0 for other types of IOCs::
+		free_blocks	 - number of blocks in IOC not allocated
+		allocated_blocks - number of blocks allocated 
+                min_data_mbuf    - minimum percent free data MBUFs
+                data_mbuf	 - number of data MBUFs
 
-* Not available for vxWorks 6.
-
-Analog In (ai) Records for Cluster Statistics 
+Analog In (ai) Records for Cluster Statistics (RTEMS and vxWorks IOCs only)
 (DTYP = "IOC stats clusts"), INP = @clust_info <pool> <index> <type> where:
 ==========================================================================
 		pool		 - 0 (data) or 1 (system)
+				   (the data pool is not implemented for RTEMS
+                                    and all data pool values are set to 0)
 		index		 - index into cluster array
 		type		 - 0=size, 1=clusters, 2=free, 3=usage
 
@@ -95,17 +110,7 @@ Subroutine (sub) Records, SNAM = one of the following:
 II - Notes on Soft IOC Implementation of devIocStats
 ----------------------------------------------------
 
-(1) bootline_[1-6], bsp_rev, and kernel_ver currently not implemented and
-    will show "not available".
-
-(2) Currently all analog inputs are set to zero or 1E9 except for 
-    ca_clients, ca_connections, and suspended_tasks.  The following are set 
-    to 1E9:
-		free_bytes
-		max_free
-		free_blocks
-
-(3) There is a bug in EPICS 3.14.8.2 base/src/libCom/taskwd/taskwd.c which
+(1) There is a bug in EPICS 3.14.8.2 base/src/libCom/taskwd/taskwd.c which
     results in the soft IOC crashing when a task suspends.  The taskwd.c fix
     is to change this line in the taskwdTask function from:
                                 TASKWDANYFUNCPRR pcallback = pt->callback;
@@ -116,8 +121,13 @@ II - Notes on Soft IOC Implementation of devIocStats
     tasks.  Some (many?) support modules that create tasks neglect to call 
     taskwdInsert.
 
-(4) The reboot subroutine record will exit the IOC process.  It is assumed
+(2) The reboot subroutine record will exit the IOC process.  It is assumed
     some soft IOC managing process will automatically restart the soft IOC. 
+
+(3) CPU calculation does not work for symmetric multiprocessing (SMP) linux 
+    machines or WIN32 machines.
+
+(4) File descriptor and memory usage available for Linux only.
 
 III - Notes on RTEMS Implementation of devIocStats by Till Straumann
 --------------------------------------------------------------------
@@ -207,7 +217,7 @@ CPU Load Estimate from miscu_cpu_load_percentage in ssrlApps
 	3.603457
 	Cexp@ioclab1>
 
-CPU Load Estimate using the cpuBurn Method
+CPU Load Estimate using the cpuBurn Method (no longer available for RTEMS)
 ==========================================
 
 - The CPU load estimate works as follows:
@@ -270,16 +280,15 @@ is that the RTEMS application is terminated using 'exit()' which
 should allow a firmware monitor to resume. However, on some boards
 this is not possible (and 'exit' would not by itself reset the hardware).
 
-On the BSP's I implemented or modified I have added the 'rtemsReboot()'
-function which performs a hard reset of the CPU (but not necessarily a
-VME reset).
+For rtems 4.9.1, the bsp_reset function is available on most BSP's which 
+performs a hard reset of the CPU (but not necessarily a VME reset).
 
 
 Misc IOC Info
 =============
 
 The startup script, engineer and ioc_location information is simply
-read from environment variables "INIT", "IOC_ENGINEER" and "IOC_LOCATION",
+read from environment variables "INIT", "ENGINEER" and "LOCATION",
 respectively. Of course, these variables (in particular "INIT") must
 somehow be set e.g., (when using GeSys) via the BOOTP commandline.
 This could have been implemented in a more 'vxworks-alike' way by

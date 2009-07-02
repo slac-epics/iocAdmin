@@ -1,4 +1,4 @@
-Instructions for iocAdmin users                    Last Updated 02/09/2009
+Instructions for iocAdmin users                    Last Updated 06/26/2009
 --------------------------------
 
 The iocAdmin package contains databases and libraries to add ioc administration
@@ -32,7 +32,9 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 
 (4) Install the iocAdmin database by adding to xxxApp/Db/Makefile:
 
-   DB_INSTALLS += $(IOCADMIN)/db/iocAdmin.db
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdmin.db      (VxWorks IOCs)
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdminRTEMS.db (RTEMS   IOCs)
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdminSoft.db  (soft    IOCs)
    DB_INSTALLS += $(IOCADMIN)/db/access.db        (if required by next step)
    DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
 
@@ -89,7 +91,12 @@ II - Adding iocAdmin to your IOC startup file:
 
 (2) Add iocAdmin database to st.cmd (before iocInit):
 
+    VxWorks IOCs only:
     dbLoadRecords("db/iocAdmin.db", "IOC=<iocname>")
+    RTEMS IOCs only:
+    dbLoadRecords("db/iocAdminRTEMS.db", "IOC=<iocname>")
+    Soft IOCs only:
+    dbLoadRecords("db/iocAdminSoft.db", "IOC=<iocname>")
 
 (3) If baseSecurity.acf is not included in the ioc application's own
     acf file, add these lines (before iocInit):
@@ -109,7 +116,11 @@ III - Adding iocAdmin to CA Clients:
          should also be added.  Use this template to create the 
 	 <ioc>.cwConfig file:
 
+	RTEMS and VxWorks IOCs only:
 	$(IOCADMIN)/restore/iocAdmin.cwConfig
+
+	Soft IOCs only:
+	$(IOCADMIN)/restore/iocAdminSoft.cwConfig
 
     (1b) Device-Specific Records - For every device instantiating the 
          access.db database, add these lines to the channel watcher 
@@ -140,9 +151,9 @@ III - Adding iocAdmin to CA Clients:
 	All IOCs:
 	<iocname>:CA_CLNT_CNT
 	<iocname>:CA_CONN_CNT
-
-	RTEMS IOCs only:
 	<iocname>:FD_FREE
+
+	RTEMS and VxWorks IOCs only:
 	<iocname>:MEM_FREE
 	<iocname>:MEM_BLK_FREE
 	<iocname>:SYS_MBUF_FREE
@@ -158,11 +169,14 @@ III - Adding iocAdmin to CA Clients:
     the following PVs and include them in <iocname>:STATSUMY on the ALH soft 
     IOC:
 
+	All IOCs:
 	<iocname>:CA_CLNT_CNT
 	<iocname>:CA_CONN_CNT
 	<iocname>:SUSP_TASK_CNT
 	<iocname>:FD_FREE
+	<iocname>:HEARTBEATSUM (from the ALH soft IOC)
+
+	RTEMS and VxWorks IOCs only:
 	<iocname>:LOAD
 	<iocname>:MEM_BLK_FREE
-	<iocname>:HEARTBEATSUM (from the ALH soft IOC)
 
