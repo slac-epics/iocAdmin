@@ -33,7 +33,9 @@ iocAdmin-R3-1-0: July 1, 2009
   * iocAdminLib/srcRestore - Add iocAdminSoft.cwConfig for soft IOCs.
 
 iocAdmin-R3-0-0: Apr 29, 2009
-Built against EPICS R3.14.8.2 and RTEMS 4.9.1 (base-R3-14-8-2-lcls3)
+  * Built against EPICS R3.14.8.2 and RTEMS 4.9.1 (base-R3-14-8-2-lcls3)
+  * devIocStats/os/RTEMS/devIocStatsOSD.h - change by Sue Witherspoon so that
+    bsp_reset is only used for PPC and uC5282.
 
 iocAdmin-R2-1-4: Mar 23, 2009
   * devIocStats/src/devIocStatsAnalog.c - add support for number of records.
