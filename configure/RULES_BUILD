@@ -1,0 +1,26 @@
+# RULES_BUILD
+#
+#	iocAdmin rules
+#
+
+ifdef IOCADMIN
+
+INSTALL_IOCRELEASE_EDLS=$(IOCRELEASE_EDLS:%=$(INSTALL_EDL)/%)
+INSTALL_IOCRELEASE_DBS=$(IOCRELEASE_DB:%=$(INSTALL_DB)/%)
+
+#--------------------------------------------------
+# Rules
+
+buildInstall : $(INSTALL_IOCRELEASE_DBS) $(INSTALL_IOCRELEASE_EDLS)
+
+# Create database for module version PVs
+$(INSTALL_IOCRELEASE_DBS) : $(INSTALL_DB)/%.db : $(TOP)/configure/RELEASE
+	$(RM) $@
+	$(IOCADMIN)/bin/$(EPICS_HOST_ARCH)/iocReleaseCreateDb.py $< >$@
+
+# Create display for module version PVs
+$(INSTALL_IOCRELEASE_EDLS): $(INSTALL_EDL)/%.edl : $(TOP)/configure/RELEASE
+	$(RM) $@
+	$(IOCADMIN)/bin/$(EPICS_HOST_ARCH)/iocReleaseCreateEDL.py $< >$@
+
+endif
