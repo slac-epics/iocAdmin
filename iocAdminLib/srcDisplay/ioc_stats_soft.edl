@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 246
-y 143
+x 40
+y 115
 w 540
 h 595
 font "helvetica-medium-r-12.0"
@@ -49,7 +49,7 @@ release 0
 x 325
 y 45
 w 205
-h 185
+h 205
 lineColor index 3
 fill
 fillColor index 3
@@ -1078,9 +1078,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 410
-y 165
-w 100
+x 400
+y 160
+w 110
 h 25
 fgColor index 14
 bgColor index 4
@@ -1107,9 +1107,9 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 410
-y 195
-w 100
+x 400
+y 190
+w 110
 h 25
 fgColor index 14
 bgColor index 4
@@ -1351,5 +1351,31 @@ value {
   "Maximum"
 }
 autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 400
+y 220
+w 110
+h 25
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Release Versions"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "$(rel)"
+}
+setPosition {
+  0 "parentWindow"
+}
 endObjectProperties
 
