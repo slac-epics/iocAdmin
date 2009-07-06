@@ -16,6 +16,7 @@ dbLoadRecords("db/iocAdmin.db","IOC=IOCTEST")
 #dbLoadRecords("db/iocAdminRTEMS.db","IOC=IOCTEST")
 ## or load only those records for Soft IOCs
 #dbLoadRecords("db/iocAdminSoft.db","IOC=IOCTEST")
+dbLoadRecords("db/testIocStatsRelease.db","IOC=IOCTEST")
 
 iocInit()
 

@@ -1,6 +1,8 @@
 TOP=../..
 
 include $(TOP)/configure/CONFIG
+IOCADMIN=$(TOP)
+
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
@@ -24,6 +26,11 @@ testIocStats_LIBS += devIocStats
 testIocStats_LIBS += seq
 testIocStats_LIBS += pv
 testIocStats_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+#=============================
+
+IOCRELEASE_DB += testIocStatsRelease.db
+IOCRELEASE_EDLS += testIocStatsRelease.edl
 
 #=============================
 
