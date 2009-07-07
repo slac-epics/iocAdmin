@@ -1,7 +1,7 @@
 Release Notes for iocAdmin
 --------------------------
 
-iocAdmin-R3-1-0: July 1, 2009
+iocAdmin-R3-1-0: July 7, 2009
   * devIocStats - Ralph Lange made changes.  Here are his notes:
 	Functionality is basically as before, the main work (quite a bit more 
 	than I expected) being the split-up of all the devIocStatsOSD.c files 
@@ -27,10 +27,14 @@ iocAdmin-R3-1-0: July 1, 2009
 	Added memory implementation for Linux, FD usage implementations for 
 	Linux and Solaris.
   * iocAdminLib/srcDisplay - LCLS display update.
+  * iocAdminLib/src - Added python scripts by Dayle Kotturi for automatically
+    creating a database and display with RELEASE module versions..
   * iocAdminLib/Db - Add iocAdminSoft and iocAdminRTEMS databases for soft 
     and RTEMS IOCs.  Add MEM_MAX.  Process CLUST records only after MBUF_FREE
     records are processed.
   * iocAdminLib/srcRestore - Add iocAdminSoft.cwConfig for soft IOCs.
+  * configure/RULES_BUILD - Add rules for building a database and display
+    with RELEASE module versions.
 
 iocAdmin-R3-0-0: Apr 29, 2009
   * Built against EPICS R3.14.8.2 and RTEMS 4.9.1 (base-R3-14-8-2-lcls3)
