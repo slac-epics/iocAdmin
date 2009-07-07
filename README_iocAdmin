@@ -1,4 +1,4 @@
-Instructions for iocAdmin users                    Last Updated 06/26/2009
+Instructions for iocAdmin users                    Last Updated 07/06/2009
 --------------------------------
 
 The iocAdmin package contains databases and libraries to add ioc administration
@@ -21,24 +21,41 @@ I - Adding the iocAdmin package to your IOC application:
 
 IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 
-(2) Link the iocAdmin libraries into your app by adding to xxxApp/src/Makefile:
+(2) Link the iocAdmin libraries into your app by adding to 
+    <xxx>App/src/Makefile:
 
-   xxx_LIBS += devIocStats
+   <xxx>_LIBS += devIocStats
 
-(3) Add the following .dbd files to xxxApp/src/Makefile 
-    or to xxxApp/src/xxxInclude.dbd:
+(3) Add the following .dbd files to <xxx>App/src/Makefile 
+    or to <xxx>App/src/<xxx>Include.dbd:
 
-   xxx_DBD += iocAdmin.dbd
+   <xxx>_DBD += iocAdmin.dbd
 
-(4) Install the iocAdmin database by adding to xxxApp/Db/Makefile:
+(4) Install the iocAdmin database and create iocRelease.db by adding to 
+    <xxx>App/Db/Makefile:
 
    DB_INSTALLS += $(IOCADMIN)/db/iocAdmin.db      (VxWorks IOCs)
    DB_INSTALLS += $(IOCADMIN)/db/iocAdminRTEMS.db (RTEMS   IOCs)
    DB_INSTALLS += $(IOCADMIN)/db/iocAdminSoft.db  (soft    IOCs)
    DB_INSTALLS += $(IOCADMIN)/db/access.db        (if required by next step)
    DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
+   IOCRELEASE_DB += iocRelease.db
 
-(5) For each device, or device attribute, used by higher-level software 
+(5) Create the ioc application RELEASE module version display by adding to 
+    <xxx>App/srcDisplay/Makefile or <xxx>App/src/Makefile (if srcDisplay does
+    not already exist):
+
+   IOCRELEASE_EDLS += <xxx>Release.edl
+
+    where <xxx> is a unique name for your ioc application.
+
+    NOTE: The iocRelease database and <xxx>Release display assume that each 
+    module used by the application has a line in configure/RELEASE as follows:
+	<module>_MODULE_VERION =  <module>-<version>
+    It also assumes that modules are not specified in any file included
+    by configure/RELEASE.
+
+(6) For each device, or device attribute, used by higher-level software 
     (ie, feedback), an ACCESS mode and FBCK state soft mbbo records are
     required and used by the higher-level software to determine proper 
     configuration and display.  Both records must be saved and restored 
@@ -73,7 +90,7 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 	}
     See iocAdminLib/Db/access.doc for requirements and discussion.
 
-(6) Optional - include baseSecurity.acf in any existing acf file that is
+(7) Optional - include baseSecurity.acf in any existing acf file that is
     built in the ioc application.
 
 II - Adding iocAdmin to your IOC startup file:
@@ -98,7 +115,11 @@ II - Adding iocAdmin to your IOC startup file:
     Soft IOCs only:
     dbLoadRecords("db/iocAdminSoft.db", "IOC=<iocname>")
 
-(3) If baseSecurity.acf is not included in the ioc application's own
+(3) Add iocRelease database to st.cmd (before iocInit):
+
+    dbLoadRecords("db/iocRelease.db", "IOC=<iocname>")
+
+(4) If baseSecurity.acf is not included in the ioc application's own
     acf file, add these lines (before iocInit):
 
     asSetFilename("<path>/db/baseSecurity.acf")
@@ -139,8 +160,16 @@ III - Adding iocAdmin to CA Clients:
 	ioc_rtems_crat - RTEMS IOC using the crate interface to power cycle.
 	ioc_rtems_none - RTEMS IOC without a crate interface or AC switch.
 	ioc_rtems_nosupport - RTEMS IOC with a unsupported crate interface
+	ioc_soft       - Soft IOC
+	Set the "ioc" macro to the ioc name and the "rel" macro to the
+	name of the <xxx>Release display created by the application build in
+	step I.
 
-    (2b) Device-Specific Display - For each device instantiating the access.db
+    (2b) If necessary, copy the application's 
+	 <xxx>App/display/<xxx>Release.edl to the proper directory so it is
+	 found in $EDMDATAFILES.
+
+    (2c) Device-Specific Display - For each device instantiating the access.db
 	 database, add choice or menu buttons for ACCESS and FBCK on the 
 	 device single-unit diagnostic display and/or subsystem display 
 	 showing the device status.
