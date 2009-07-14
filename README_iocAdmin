@@ -1,4 +1,4 @@
-Instructions for iocAdmin users                    Last Updated 07/06/2009
+Instructions for iocAdmin users                    Last Updated 07/14/2009
 --------------------------------
 
 The iocAdmin package contains databases and libraries to add ioc administration
@@ -41,21 +41,13 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
    DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
    IOCRELEASE_DB += iocRelease.db
 
-(5) Create the ioc application RELEASE module version display by adding to 
-    <xxx>App/srcDisplay/Makefile or <xxx>App/src/Makefile (if srcDisplay does
-    not already exist):
-
-   IOCRELEASE_EDLS += <xxx>Release.edl
-
-    where <xxx> is a unique name for your ioc application.
-
-    NOTE: The iocRelease database and <xxx>Release display assume that each 
+    NOTE: The iocRelease database assumes that each 
     module used by the application has a line in configure/RELEASE as follows:
 	<module>_MODULE_VERION =  <module>-<version>
     It also assumes that modules are not specified in any file included
     by configure/RELEASE.
 
-(6) For each device, or device attribute, used by higher-level software 
+(5) For each device, or device attribute, used by higher-level software 
     (ie, feedback), an ACCESS mode and FBCK state soft mbbo records are
     required and used by the higher-level software to determine proper 
     configuration and display.  Both records must be saved and restored 
@@ -90,7 +82,7 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 	}
     See iocAdminLib/Db/access.doc for requirements and discussion.
 
-(7) Optional - include baseSecurity.acf in any existing acf file that is
+(6) Optional - include baseSecurity.acf in any existing acf file that is
     built in the ioc application.
 
 II - Adding iocAdmin to your IOC startup file:
@@ -161,15 +153,9 @@ III - Adding iocAdmin to CA Clients:
 	ioc_rtems_none - RTEMS IOC without a crate interface or AC switch.
 	ioc_rtems_nosupport - RTEMS IOC with a unsupported crate interface
 	ioc_soft       - Soft IOC
-	Set the "ioc" macro to the ioc name and the "rel" macro to the
-	name of the <xxx>Release display created by the application build in
-	step I.
+	Set the "ioc" macro to the ioc database name.
 
-    (2b) If necessary, copy the application's 
-	 <xxx>App/display/<xxx>Release.edl to the proper directory so it is
-	 found in $EDMDATAFILES.
-
-    (2c) Device-Specific Display - For each device instantiating the access.db
+    (2b) Device-Specific Display - For each device instantiating the access.db
 	 database, add choice or menu buttons for ACCESS and FBCK on the 
 	 device single-unit diagnostic display and/or subsystem display 
 	 showing the device status.
