@@ -30,7 +30,6 @@ testIocStats_LIBS += $(EPICS_BASE_IOC_LIBS)
 #=============================
 
 IOCRELEASE_DB += testIocStatsRelease.db
-IOCRELEASE_EDLS += testIocStatsRelease.edl
 
 #=============================
 
