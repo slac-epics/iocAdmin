@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 494
-y 54
+x 296
+y 68
 w 540
 h 785
 font "helvetica-medium-r-12.0"
@@ -1178,16 +1178,16 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 400
+x 365
 y 160
-w 110
+w 125
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Alarm Limits"
+buttonLabel "Alarm Limits..."
 numPvs 4
 numDsps 1
 displayFileName {
@@ -1207,16 +1207,16 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 400
+x 365
 y 190
-w 110
+w 125
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "EPICS Env Vars"
+buttonLabel "EPICS Env Vars..."
 numPvs 4
 numDsps 1
 displayFileName {
@@ -1978,23 +1978,32 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 400
+x 365
 y 220
-w 110
+w 125
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Release Versions"
+buttonLabel "Release Versions,,,"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "$(rel)"
+  0 "ioc_stats_release"
 }
 setPosition {
   0 "parentWindow"
+}
+symbols {
+  0 "ioc=$(ioc),idx=0,p=1"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
 }
 endObjectProperties
 
