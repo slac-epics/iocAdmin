@@ -1,6 +1,13 @@
 Release Notes for iocAdmin
 --------------------------
 
+iocAdmin-R3-1-1: July 14, 2009
+  * iocAdminLib/srcDisplay - LCLS display update - add ioc_stats_release.edl.
+  * iocAdminLib/src - Remove python script for automatically
+    creating a display with RELEASE module versions..
+  * configure/RULES_BUILD - Remove rule for building a display
+    with RELEASE module versions.
+  
 iocAdmin-R3-1-0: July 7, 2009
   * devIocStats - Ralph Lange made changes.  Here are his notes:
 	Functionality is basically as before, the main work (quite a bit more 
