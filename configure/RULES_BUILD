@@ -7,30 +7,20 @@ ifeq ($(findstring Host,$(VALID_BUILDS)),Host)
 ifdef IOCADMIN
 
 INSTALL_IOCRELEASE_DBS=$(IOCRELEASE_DB:%=$(INSTALL_DB)/%)
-INSTALL_IOCRELEASE_EDLS=$(IOCRELEASE_EDLS:%=$(INSTALL_EDL)/%)
 
 #--------------------------------------------------
 # Rules
 
-build : $(IOCRELEASE_EDLS) $(IOCRELEASE_DB)
-buildInstall : $(INSTALL_IOCRELEASE_DBS) $(INSTALL_IOCRELEASE_EDLS)
+build : $(IOCRELEASE_DB)
+buildInstall : $(INSTALL_IOCRELEASE_DBS)
 
 # Create database for module version PVs
 $(IOCRELEASE_DB)   : $(TOP)/configure/RELEASE
 	$(RM) $@
 	$(IOCADMIN)/bin/$(EPICS_HOST_ARCH)/iocReleaseCreateDb.py $< >$@
 
-# Create display for module version PVs
-$(IOCRELEASE_EDLS) : $(TOP)/configure/RELEASE
-	$(RM) $@
-	$(IOCADMIN)/bin/$(EPICS_HOST_ARCH)/iocReleaseCreateEDL.py $< >$@
-
 $(INSTALL_DB)/%: %
 	@echo "Installing db file $@"
-	@$(INSTALL) -d -m 644 $< $(@D)
-
-$(INSTALL_EDL)/%: %
-	@echo "Installing edl file $@"
 	@$(INSTALL) -d -m 644 $< $(@D)
 
 endif
