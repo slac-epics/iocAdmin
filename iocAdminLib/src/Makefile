@@ -14,7 +14,6 @@ DBD += iocAdmin.dbd
 #=============================
 
 SCRIPTS_HOST += iocReleaseCreateDb.py
-SCRIPTS_HOST += iocReleaseCreateEDL.py
 
 LIBRARY = iocAdmin
 

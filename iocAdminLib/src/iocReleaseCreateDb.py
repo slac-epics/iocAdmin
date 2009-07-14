@@ -17,6 +17,8 @@ def export_db_file(module_versions, path=None):
     """
 
     out_file = sys.stdout
+    idx = 0
+    idxMax = 20
 
     if path:
         try:
@@ -41,12 +43,23 @@ def export_db_file(module_versions, path=None):
         strip off the _MODULE_VERSION from key for PV NAME
         """
         x = key.replace("_MODULE_VERSION","",1)
-        print >> out_file, 'record(stringin, "$(IOC):%s") {' % x
-        print >> out_file, '  field(DESC, "%s")' % key
+        if idx >= idxMax: break
+        print >> out_file, 'record(stringin, "$(IOC):RELEASE%02d") {' % idx
+        print >> out_file, '  field(DESC, "%s")' % x
         print >> out_file, '  field(PINI, "YES")' 
         print >> out_file, '  field(VAL, "%s")' % module_version
         print >> out_file, '  #field(ASG, "some read only grp")' 
         print >> out_file, '}'
+        idx = idx + 1
+        
+    while idx < idxMax:
+        print >> out_file, 'record(stringin, "$(IOC):RELEASE%02d") {' % idx
+        print >> out_file, '  field(DESC, "Not Applicable")'
+        print >> out_file, '  field(PINI, "YES")' 
+        print >> out_file, '  field(VAL, "Not Applicable")'
+        print >> out_file, '  #field(ASG, "some read only grp")' 
+        print >> out_file, '}'
+        idx = idx + 1
     
     if out_file != sys.stdout:
         out_file.close()
