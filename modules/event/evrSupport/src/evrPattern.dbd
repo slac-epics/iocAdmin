@@ -1,5 +1,0 @@
-function(evrPatternProcInit)
-function(evrPatternProc)
-function(evrPatternState)
-function(evrPatternSim)
-function(evrPatternSimTest)

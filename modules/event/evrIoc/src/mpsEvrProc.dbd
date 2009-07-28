@@ -1,3 +1,0 @@
-function(mpsEvrProcInit)
-function(mpsEvrProc)
-registrar(mpsEvrRegister)

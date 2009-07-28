@@ -1,6 +1,0 @@
-# Following avoid cross compilations
-CROSS_COMPILER_TARGET_ARCHS=
-
-# Add path to Acqiris driver files
-USR_INCLUDES += -I$(ACQIRIS_DRIVER)/usr/include
-USR_LDFLAGS += -L$(ACQIRIS_DRIVER)/usr/lib

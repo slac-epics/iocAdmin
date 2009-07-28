@@ -1,5 +1,0 @@
-This is the plcAdmin package, which provides a set of PLC diagnostics and
-statistics to EPICS.  This package has three parts: a ladder logic routine to 
-be loaded in a PLC, an EPICS database to read the information from the PLC, 
-and an EDM screen to show the PLC information.  Instructions for setting up 
-and using plcAdmin are located in the doc subdirectory.

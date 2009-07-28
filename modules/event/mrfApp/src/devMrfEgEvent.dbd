@@ -1,2 +1,0 @@
-include "egeventRecord.dbd"
-device (egevent, VME_IO, devEgEvent, "MRF Event Generator")

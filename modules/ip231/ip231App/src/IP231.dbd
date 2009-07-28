@@ -1,3 +1,0 @@
-# Acromag IP231 DAC driver and device support
-device(ao, INST_IO, devAoIP231, "IP231")
-driver(drvIP231)

@@ -1,6 +1,0 @@
-# ASCII-type Engine config.
-# Convert to XML format:
-# ConvertEngineConfig.pl -d ../engineconfig.dtd  test.lst  >test.xml
-ramp1 1 Monitor
-ramp2 10
-ramp2_threshold 1 Monitor Disable

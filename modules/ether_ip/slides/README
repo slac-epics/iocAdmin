@@ -1,7 +1,0 @@
-
-These are slides used for a LANL LANSCE8/SNS4 mini-review that
-involved the EtherIP support.
-
-To fully re-tex, one needs the LaTeX setup from e.g. RedHat9 including
-pdfscreen and pdflatex. In addition, the open graphviz-1.10 software
-was used to draw the *.dot diagrams.

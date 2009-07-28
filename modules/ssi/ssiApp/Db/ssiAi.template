@@ -1,7 +1,0 @@
-#  position
-record(ai,"$(SSI):aiRead$(E)") { 
-        field(DESC,"SSI reading from sensor $(E)")
-        field(DTYP,"SSI")
-        field(INP,"#C0 S$(INDEX) @")
-        field(SCAN,".1 second")
-}

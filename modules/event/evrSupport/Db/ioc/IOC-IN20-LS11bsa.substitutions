@@ -1,9 +1,0 @@
-#
-# BSA records
-
-file bsaPWREdef.db {
-#          Device        ,loc'n , IOC unit, timing system  
-  pattern {    DEVICE    , LOC  ,  UN , SLCLNK                  }
-	  { LASR:IN20:156, IN20 , LS11, ""                      }
-	  { LASR:IN20:196, IN20 , LS11, ""                      }
-}

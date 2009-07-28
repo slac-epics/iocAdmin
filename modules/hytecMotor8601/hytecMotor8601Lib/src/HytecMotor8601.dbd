@@ -1,3 +1,0 @@
-device( longin, VME_IO, devLiHytec8601Motor, "Hytec8601Counter")
-device(     ai, VME_IO, devAiHytec8601Motor, "Hytec8601Location")
-driver( drvHytec8601)

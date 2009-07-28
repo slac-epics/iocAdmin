@@ -1,5 +1,0 @@
-digraph RTree
-{
-	node [shape = record, height=.1];
-	node44 [ label="<f0>0-0|<f1>0-0|<f2>0-0"];
-}

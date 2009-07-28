@@ -1,2 +1,0 @@
-$EPICS/base/bin/solaris-sparc-gnu/makeBaseApp.pl -t example genSub
-$EPICS/base/bin/solaris-sparc-gnu/makeBaseApp.pl -i -a  vxWorks-ppc604_long -t example genSub

@@ -1,3 +1,0 @@
-include "bsaRecord.dbd"
-device (ao,  INST_IO, devAoBsa, "BSA")
-device (bsa, INST_IO, devBsa,   "BSA")
