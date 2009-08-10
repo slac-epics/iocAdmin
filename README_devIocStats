@@ -124,8 +124,8 @@ II - Notes on Soft IOC Implementation of devIocStats
 (2) The reboot subroutine record will exit the IOC process.  It is assumed
     some soft IOC managing process will automatically restart the soft IOC. 
 
-(3) CPU calculation does not work for symmetric multiprocessing (SMP) linux 
-    machines or WIN32 machines.
+(3) CPU calculation does not work on multi-core linux machines or WIN32 
+    machines.
 
 (4) File descriptor and memory usage available for Linux only.
 
