@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 185
-y 138
+x 602
+y 49
 w 280
 h 456
 font "helvetica-medium-r-12.0"
@@ -114,7 +114,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -132,7 +132,7 @@ font "helvetica-medium-r-12.0"
 fontAlign "right"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -178,7 +178,7 @@ replaceSymbols {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -238,7 +238,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -260,7 +260,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -320,7 +320,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -361,7 +361,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -498,7 +498,7 @@ value {
 lineWidth 0
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -538,7 +538,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -579,18 +579,31 @@ value {
 }
 endObjectProperties
 
-# (Group)
-object activeGroupClass
+# (Related Display)
+object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 0
+minor 2
 release 0
-x 128
-y 264
-w 128
+x 80
+y 296
+w 120
 h 24
-
-beginGroup
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "More IOC Stats..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "iocscreens/ioc_stats.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
 
 # (Related Display)
 object relatedDisplayClass
@@ -611,41 +624,11 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_softreset_confirm_soft"
+  0 "iocscreens/ioc_softreset_confirm_soft.edl"
 }
 setPosition {
   0 "parentWindow"
 }
 colorPv "$(ioc):SYSRESET.SEVR"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 80
-y 296
-w 120
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "More IOC Stats..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ioc_stats"
-}
-setPosition {
-  0 "parentWindow"
-}
 endObjectProperties
 
