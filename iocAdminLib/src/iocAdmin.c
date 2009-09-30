@@ -25,10 +25,12 @@
 #ifdef __rtems__
 #include <bsp.h>
 #endif
+#include <stdio.h>
 #include <subRecord.h>
 #include <registryFunction.h>
 #include <epicsExport.h>
 #include <epicsExit.h>
+#include <epicsThread.h>
 
 /*
  * Taken from /afs/slac/g/spear/epics/site/src/iocMonLib/src/svgm.c
@@ -51,7 +53,10 @@ ution
          */
            /* JT: We want to call exit handlers - especially to
               ASYN to release serial ports.*/
+                printf( "Force EPICS atexit handlers to run...\n" );
                 epicsExitCallAtExits();
+                epicsThreadSleep(2.0);
+                printf( "Initiate soft reboot...\n" );
 		rtemsReboot();
 #else
                 epicsExit(0);

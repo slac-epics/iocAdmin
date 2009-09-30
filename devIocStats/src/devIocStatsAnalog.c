@@ -835,8 +835,11 @@ static long rebootProc(struct subRecord *psub)
       (psub->c < 0.5) && (psub->d < 0.5) &&
       (psub->e < 0.5) && (psub->f < 0.5) &&
       (psub->l > 0.5)) {
-     epicsPrintf("IOC reboot started\n");
-     epicsThreadSleep(1.0);
+     epicsPrintf("IOC reboot process started...\n");
+     epicsPrintf("Calling EPICS atexit handlers...\n");
+     epicsExitCallAtExits();
+     epicsThreadSleep(2.0);
+     epicsPrintf("Initiating rebot...\n");
      reboot((int)(psub->g + 0.1));
   }
   return(0);
