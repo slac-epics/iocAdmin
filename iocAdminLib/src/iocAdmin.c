@@ -49,6 +49,9 @@ ution
                 /* FIXME: with a newer BSP version epicsExit() should also
                  *        work on beatnik.
          */
+           /* JT: We want to call exit handlers - especially to
+              ASYN to release serial ports.*/
+                epicsExitCallAtExits();
 		rtemsReboot();
 #else
                 epicsExit(0);
