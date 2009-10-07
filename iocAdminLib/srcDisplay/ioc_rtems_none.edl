@@ -70,7 +70,7 @@ x 8
 y 0
 w 272
 h 40
-font "helvetica-medium-r-12.0"
+font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 53
 useDisplayBg
@@ -164,11 +164,12 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Home..."
+buttonLabel "Home"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "lcls_main"
+  #0 "lcls_main"
+  0 "AMOHome"
 }
 setPosition {
   0 "parentWindow"
