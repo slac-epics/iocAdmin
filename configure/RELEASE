@@ -33,6 +33,14 @@ EXTENSIONS_MODULE_VERSION=R3.14.9-0.4.0
 # =================================================================
 EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
+# =================================================================
+# By default EPICS is not build for the build machine architecture 
+# in PCDS environment
+# If you would like the EPICS module to be build for 
+# EPICS_HOST_ARCH set this variable
+# =================================================================
+BUILD_FOR_HOST_ARCH=1
+
 # Site configuration, if it does not exist, no big deal
 include $(EPICS_SITE_CONFIG)
 
