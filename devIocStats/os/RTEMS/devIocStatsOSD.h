@@ -34,6 +34,9 @@
  *                  area which is independent of the malloc heap.
  *                  Some system-internal data structures are
  *                  allocated from the workspace area.
+ *                  So far, support for monitoring the workspace area 
+ *                  has not been implemented (although it would be
+ *                  straightforward to do.
  *
  *              The RTEMS/BSD stack has only one pool of mbufs
  *              and only uses two sizes: MSIZE (128b) for 'ordinary'
@@ -56,14 +59,6 @@
 
 #undef malloc
 #undef free
-
-# if   (__RTEMS_MAJOR__ > 4) \
-   || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
-#define RTEMS_PROTECTED_HEAP
-#include <rtems/score/protectedheap.h>
-# else
-#include <rtems/score/apimutex.h>
-# endif
 
 #include <string.h>
 #include <stdlib.h>

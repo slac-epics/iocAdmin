@@ -9,7 +9,7 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
-/* osdBootInfo.c - Boot info strings: default implementation */
+/* osdBootInfo.c - Boot info strings: default implementation = do nothing */
 
 /*
  *  Author: Ralph Lange (HZB/BESSY)
@@ -20,18 +20,32 @@
  *
  */
 
-#define SYSBOOTLINE_NEEDED
 #include <devIocStats.h>
+
+static char *notimpl = "<not implemented>";
 
 int devIocStatsInitBootInfo (void) { return 0; }
 
 int devIocStatsGetStartupScript (char **pval)
 {
-    return devIocStatsGetStartupScriptDefault(pval);
+    *pval = notimpl;
+    return -1;
 }
 
 int devIocStatsGetBootLine (char **pval)
 {
-    *pval = sysBootLine;
-    return 0;
+    *pval = notimpl;
+    return -1;
+}
+
+int devIocStatsGetEngineer (char **pval)
+{
+    *pval = notimpl;
+    return -1;
+}
+
+int devIocStatsGetLocation (char **pval)
+{
+    *pval = notimpl;
+    return -1;
 }

@@ -1,38 +1,26 @@
-README_devIocStats		Last Updated 04/16/2015
+README_devIocStats		Last Updated 07/01/2009
 ------------------
 
 I - General Notes on devIocStats - All Operating Systems
 --------------------------------------------------------
 
-Include either devIocStats.dbd OR devVxStats.dbd in the IOC application, 
-not both.  devIocStats.dbd (preferred) provides DTYPs that start with 
-"IOC" and devVxStats.dbd provides DTYPs that start with "VX" 
-(included for backwards compatibility).
-
 String (stringin) Records (DTYP = "IOC stats"), INP = @one of the following:
 ============================================================================
 		startup_script_[12]	-path of startup script (2 records)
 					Default - uses STARTUP and ST_CMD
-					environment variables or startup and
-				        st_cmd symbols.  If STARTUP
-					is not available, uses 
-					IOCSH_STARTUP_SCRIPT.
+					environment variables.
 		bootline_[1-6]		-CPU bootline (6 records)
-					 (set to "<not implemented> for all
-					  except RTEMS and vxWorks)
+					 (not implemented for soft IOCs and
+					  set to "<not implemented>")
  		bsp_rev			-CPU board support package revision
-					 (set to "<not available> for all
-					  except RTEMS and vxWorks)
+					 (not available for soft IOCs and
+					  set to "<not available>")
 		kernel_ver		-OS kernel build version
 		epics_ver		-EPICS base version
                 engineer                -IOC Engineer
-					Default - uses ENGINEER env var or
-					engineer symbol.  If ENGINEER is
-					not available, uses LOGNAME or USER
-					env var.
+					Default - uses ENGINEER env var.
                 location                -IOC Location
-					Default - uses LOCATION env var or
-					location symbol.
+					Default - uses LOCATION env var.
                 hostname                -IOC Host Name from gethostname
                 pwd[1-2]                -IOC Current Working Directory 
 					  (2 records) from getcwd
@@ -69,11 +57,8 @@ Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
 		ca_clients	 - number of current CA clients
 		ca_connections	 - number of current CA connections
 		suspended_tasks	 - number of suspended tasks
-	The following two are implemented for posix systems only: 
-		proc_id	 	 - process ID
-		parent_proc_id   - parent process ID
 	The following are implemented for RTEMS, vxWorks, and some soft IOCs 
-	(see notes below for exceptions and more detail):
+	(see notes below for exceptions):
 		free_bytes	 - number of bytes not allocated
 				   on this machine
 		allocated_bytes  - number of bytes allocated
@@ -81,15 +66,9 @@ Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
 				    at the moment (RSS))
 		total_bytes      - number of bytes physically installed
 				   on this machine
-                sys_cpuload	 - estimated percent CPU load on the system 
-                no_of_cpus       - number of CPU cores on the system
-                ioc_cpuload      - estimated percent CPU utilization by this 
-				   IOC
+		cpu		 - estimated percent IOC usage by tasks
 		fd		 - number of file descriptors currently in use
 		max_fd		 - max number of file descriptors
-	  Note - free_bytes, total_bytes, sys_cpuload, no_of_cpus
-	         can be instantiated once per system instead of per IOC
-		 if desired (ie, when multiple IOCs run on the same system).
 	The following are implemented for RTEMS and vxWorks IOCs only and
         set to 0 for other types of IOCs:
 		max_free	 - size of largest free block
@@ -98,16 +77,11 @@ Analog In (ai) Records (DTYP = "IOC stats"), INP = @one of the following:
                 inp_errs	 - number of IF input  errors 
                 out_errs	 - number of IF output errors
 	The following are implemented for vxWorks IOCs only and
-        set to 0 for other types of IOCs:
+        set to 0 for other types of IOCs::
 		free_blocks	 - number of blocks in IOC not allocated
 		allocated_blocks - number of blocks allocated 
                 min_data_mbuf    - minimum percent free data MBUFs
                 data_mbuf	 - number of data MBUFs
-	The following are implemented for RTEMS IOCs only and
-        set to 0 for other types of IOCs:
-                workspace_alloc_bytes - number of RAM workspace allocated bytes
-                workspace_free_bytes  - number of RAM workspace free bytes
-                workspace_total_bytes - number of RAM workspace total bytes
 
 Analog In (ai) Records for Cluster Statistics (RTEMS and vxWorks IOCs only)
 (DTYP = "IOC stats clusts"), INP = @clust_info <pool> <index> <type> where:
@@ -132,13 +106,17 @@ Analog Out (ao) Records (DTYP = "IOC stats"), OUT = @one of the following:
 Subroutine (sub) Records, SNAM = one of the following:
 ======================================================
 		rebootProc	 - System reset or epics exit.
-		scanMon		 - Calculate time between record updates.
-				   Set INAM to scanMonInit.
 
 II - Notes on Soft IOC Implementation of devIocStats
 ----------------------------------------------------
 
-(1) The suspended task count will only include tasks that call 
+(1) There is a bug in EPICS 3.14.8.2 base/src/libCom/taskwd/taskwd.c which
+    results in the soft IOC crashing when a task suspends.  The taskwd.c fix
+    is to change this line in the taskwdTask function from:
+                                TASKWDANYFUNCPRR pcallback = pt->callback;
+    to:
+                                TASKWDANYFUNCPRR pcallback = ptany->callback;
+    Note that the suspended task count will only includes tasks that call 
     taskwdInsert on startup, including all of iocCore tasks and all sequence 
     tasks.  Some (many?) support modules that create tasks neglect to call 
     taskwdInsert.
@@ -146,29 +124,12 @@ II - Notes on Soft IOC Implementation of devIocStats
 (2) The reboot subroutine record will exit the IOC process.  It is assumed
     some soft IOC managing process will automatically restart the soft IOC. 
 
-(3) None of the available methods returns a true value for CPU utilization 
-    for multi-threaded applications on multi-core systems.  
+(3) CPU calculation does not work for symmetric multiprocessing (SMP) linux 
+    machines or WIN32 machines.
 
-(4) Implementation of system CPU utilization on Linux and Solaris show the 
-    same values as "top".  A posix implementation that uses getrusage() is
-    provided for MacOS where everything else seems to be unavailable.
+(4) File descriptor and memory usage available for Linux only.
 
-(5) Implementation of IOC CPU utilization return 0%-100% of CPU load with 
-    respect to the system (divided by the number of CPUs where applicable).
-    On Solaris, this matches the "top" results. On Linux, "top" 
-    normalizes the process values per core 
-    (so that top_value = ioc_cpuload*no_of_cpus).  To allow showing or changing 
-    the normalization, support for the number of CPUs is provided so that a 
-    calc record can be used to get the desired value.
-
-(6) Memory usage is available for Linux only.
-
-(7) The following records can be instantied per system instead of per IOC 
-    if desired (value is the same for all IOCs on the same system):
-	free_bytes, total_bytes, sys_cpuload, no_of_cpus
-
-
-IV - Notes on RTEMS Implementation of devIocStats by Till Straumann
+III - Notes on RTEMS Implementation of devIocStats by Till Straumann
 --------------------------------------------------------------------
 
 Memory / Heap Statistics
@@ -188,6 +149,9 @@ Memory / Heap Statistics
   area which is independent of the malloc heap.
   Some system-internal data structures are
   allocated from the workspace area.
+  So far, support for monitoring the workspace area
+  has not been implemented (although it would be
+  straightforward to do).
 
 CPU Load Estimate from the IDLE Task (from Phil Sorensen at CHESS)
 ====================================
@@ -252,6 +216,44 @@ CPU Load Estimate from miscu_cpu_load_percentage in ssrlApps
 	Cexp@ioclab1> miscu_cpu_load_percentage()
 	3.603457
 	Cexp@ioclab1>
+
+CPU Load Estimate using the cpuBurn Method (no longer available for RTEMS)
+==========================================
+
+- The CPU load estimate works as follows:
+
+       1) during initialization (it is assumed the CPU is otherwise
+          idle at this time) a busy loop is executed for a fixed amount
+          of time and the code uses the number of iterations done
+          as a measure for a 'unloaded' CPU.
+
+       2) when EPICS is up, a very low priority task is scheduled
+          periodically and executes the same busy loop counting
+          iterations during a fixed time interval.
+          The idea is that any higher priority work will preempt
+          the spinning task and thus reduce the number of iterations
+          it is able to perform. The ratio of iterations under load
+          to iterations while idle is an estimate for CPU load.
+
+   This algorithm has a few gotchas:
+
+       1) implementation of the busy-loop was inappropriate for a
+          modern compiler (which could notice that the loop doesn't
+          do anything and therefore optimize it away).
+          I replaced the code by something that should not be removed
+          by the compiler.
+       2) CPU load is only estimated during intervals the measuring
+          task is burning cycles. The algorithm is blind while the
+          task is sleeping.
+       3) Some modern CPUs would rather go into low-power sleep when
+          idle instead of burning cycles -- (unfortunately a chip-errata
+          of the mpc7450 prevents us from using sleep on the MVME6100)
+
+   Summary: IMO it would be better to use info from the OS scheduler
+            about CPU usage. Unfortunately, this info is not very
+            meaningful unless the scheduler uses a high-resolution
+            clock for billing [available with RTEMS 4.9 on select
+            architectures].
 
 Networking (Mbufs)
 ==================

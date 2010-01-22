@@ -1,15 +1,18 @@
-Instructions for iocAdmin users                    Last Updated 12/05/2012
+Instructions for iocAdmin users                    Last Updated 07/14/2009
 --------------------------------
 
 The iocAdmin package contains databases and libraries to add ioc administration
 PVs (including STARTTOD (ioc start time), TOD (time-of-day that updates 
 every second), SYSRESET (ioc restart command), access security PVs, etc) to an 
-ioc application.  This package includes general time records and IOC stats 
-(devIocStats) - see README_devIocStats for detail.
+ioc application.  This package also supports IOC stats (devIocStats) - see 
+README_devIocStats for detail.
 
 iocAdmin also provides access.db, a database template defining records for
 device attributes that are common across many IOC applications.  See I-5 
 below for more detail.
+
+Also provided is baseSecurity.acf, an access control file with ioc-related
+access rules and groups.
 
 I - Adding the iocAdmin package to your IOC application:
 -------------------------------------------------------
@@ -31,12 +34,11 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 (4) Install the iocAdmin database and create iocRelease.db by adding to 
     <xxx>App/Db/Makefile:
 
-   DB_INSTALLS += $(IOCADMIN)/db/iocAdminVxWorks.db (VxWorks IOCs)
-   DB_INSTALLS += $(IOCADMIN)/db/iocAdminRTEMS.db   (RTEMS   IOCs)
-   DB_INSTALLS += $(IOCADMIN)/db/iocAdminSoft.db    (soft    IOCs)
-   DB_INSTALLS += $(IOCADMIN)/db/access.db          (if required by next step)
-   DB_INSTALLS += $(IOCADMIN)/db/iocAdminScanMon.db (optional - ONLY if SCAN
-                                                     monitoring is required)
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdmin.db      (VxWorks IOCs)
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdminRTEMS.db (RTEMS   IOCs)
+   DB_INSTALLS += $(IOCADMIN)/db/iocAdminSoft.db  (soft    IOCs)
+   DB_INSTALLS += $(IOCADMIN)/db/access.db        (if required by next step)
+   DB_INSTALLS += $(IOCADMIN)/db/baseSecurity.acf
    IOCRELEASE_DB += iocRelease.db
 
     NOTE: The iocRelease database assumes that each 
@@ -59,7 +61,7 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
     The ACCESS record has state names of Online, Maintenance, Checkout, and 
     Offline and is set by operations.  It is not meant to be used by Channel 
     Access Security or for the actual device state which is set using a 
-    different record name by the IOC itself.  See iocAdmin/Db/access.doc 
+    different record name by the IOC itself.  See iocAdminLib/Db/access.doc 
     for requirements and discussion of the ACCESS record.
 
     The FBCK record has state names of Off, On, and Unavailable.  
@@ -78,8 +80,10 @@ IOCADMIN=/afs/slac/g/lcls/epics/modules/iocAdmin/iocAdmin-R<release>
 	pattern { DEV                                             }
 		{ <device or attribute name including ALL colons> }
 	}
-    See iocAdmin/Db/access.doc for requirements and discussion.
+    See iocAdminLib/Db/access.doc for requirements and discussion.
 
+(6) Optional - include baseSecurity.acf in any existing acf file that is
+    built in the ioc application.
 
 II - Adding iocAdmin to your IOC startup file:
 -----------------------------------------------
@@ -97,7 +101,7 @@ II - Adding iocAdmin to your IOC startup file:
 (2) Add iocAdmin database to st.cmd (before iocInit):
 
     VxWorks IOCs only:
-    dbLoadRecords("db/iocAdminVxWorks.db", "IOC=<iocname>")
+    dbLoadRecords("db/iocAdmin.db", "IOC=<iocname>")
     RTEMS IOCs only:
     dbLoadRecords("db/iocAdminRTEMS.db", "IOC=<iocname>")
     Soft IOCs only:
@@ -107,11 +111,13 @@ II - Adding iocAdmin to your IOC startup file:
 
     dbLoadRecords("db/iocRelease.db", "IOC=<iocname>")
 
-(4) If SCAN monitoring is required (most IOCs do not require these
-    records - discuss with Kukhee Kim first):
+(4) If baseSecurity.acf is not included in the ioc application's own
+    acf file, add these lines (before iocInit):
 
-    dbLoadRecords("db/iocAdminScanMon.db", "IOC=<iocname>")
+    asSetFilename("<path>/db/baseSecurity.acf")
+    asSetSubstitutions("IOC=<iocname>")
 
+    where <path> must be absolute.
 
 III - Adding iocAdmin to CA Clients:
 ------------------------------------
@@ -129,12 +135,7 @@ III - Adding iocAdmin to CA Clients:
 	Soft IOCs only:
 	$(IOCADMIN)/restore/iocAdminSoft.cwConfig
 
-    (1b) IOC Startup Counter - <iocname>:START_CNT keeps a count of the
-         number of times the ioc has started up.  In order for it to 
-	 work properly, the record must be saved and restored across
-	 ioc startup.  It is included in the above templates.
-
-    (1c) Device-Specific Records - For every device instantiating the 
+    (1b) Device-Specific Records - For every device instantiating the 
          access.db database, add these lines to the channel watcher 
          configuration file:
 
@@ -142,10 +143,7 @@ III - Adding iocAdmin to CA Clients:
 	<device name including ALL colons>FBCK /LOG
 
 (2) EDM:
-    (2a) For a new version of iocAdmin, copy or merge required display files 
-         from $(IOCADMIN)/display to $EDM/misc.
-
-    (2b) IOC Display - Choose the correct machine area for the IOC and add 
+    (2a) IOC Display - Choose the correct machine area for the IOC and add 
 	 the ioc to the proper network EDM displays:
 		$EDM/lcls/ntwk_<area>_main.edl
 		$EDM/lcls/ntwk_<area>_iocstatus.edl
@@ -154,12 +152,10 @@ III - Adding iocAdmin to CA Clients:
 	ioc_rtems_crat - RTEMS IOC using the crate interface to power cycle.
 	ioc_rtems_none - RTEMS IOC without a crate interface or AC switch.
 	ioc_rtems_nosupport - RTEMS IOC with a unsupported crate interface
-	ioc_rtems_camac_4crat, ioc_rtems_camac_5crat, ioc_rtems_camac_6crat, or
-	ioc_rtems_camac_crat - RTEMS IOC with camac crate(s).
 	ioc_soft       - Soft IOC
 	Set the "ioc" macro to the ioc database name.
 
-    (2c) Device-Specific Display - For each device instantiating the access.db
+    (2b) Device-Specific Display - For each device instantiating the access.db
 	 database, add choice or menu buttons for ACCESS and FBCK on the 
 	 device single-unit diagnostic display and/or subsystem display 
 	 showing the device status.
@@ -171,14 +167,12 @@ III - Adding iocAdmin to CA Clients:
 	<iocname>:CA_CLNT_CNT
 	<iocname>:CA_CONN_CNT
 	<iocname>:FD_FREE
-	<iocname>:START_CNT
 
 	RTEMS and VxWorks IOCs only:
 	<iocname>:MEM_FREE
 	<iocname>:MEM_BLK_FREE
 	<iocname>:SYS_MBUF_FREE
-	<iocname>:RAM_WS_FREE
-	<iocname>:IOC_CPU_LOAD
+	<iocname>:LOAD
 	<iocname>:IFI_ERR_CNT
 	<iocname>:IFO_ERR_CNT
 	<iocname>:CLUST_1_0_2
@@ -195,12 +189,9 @@ III - Adding iocAdmin to CA Clients:
 	<iocname>:CA_CONN_CNT
 	<iocname>:SUSP_TASK_CNT
 	<iocname>:FD_FREE
-	<iocname>:IOC_CPU_LOAD
 	<iocname>:HEARTBEATSUM (from the ALH soft IOC)
-	<iocname>:GTIM_ERR_CNT
 
 	RTEMS and VxWorks IOCs only:
-	<iocname>:MEM_FREE
+	<iocname>:LOAD
 	<iocname>:MEM_BLK_FREE
-	<iocname>:RAM_WS_FREE
 

@@ -62,9 +62,7 @@ typedef char * objName;
 #define RTEMS_OBJ_GET_NAME(tc,name) name = (tc)->Object.name
 # endif
 
-#if defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS) || \
-    (__RTEMS_MAJOR__ > 4) || \
-    (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 9)
+#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
 #define CPU_ELAPSED_TIME(tc) ((double)(tc)->cpu_time_used.tv_sec + ((double)tc->cpu_time_used.tv_nsec/1E9))
 #else
 #define CPU_ELAPSED_TIME(tc) ((double)(tc)->ticks_executed)
@@ -102,8 +100,8 @@ static void cpu_ticks(double *total, double *idle)
                 tc = (Thread_Control *)obj->local_table[y];
                 if (tc) {
                     *total += CPU_ELAPSED_TIME(tc);
-                    RTEMS_OBJ_GET_NAME( tc,  name );
-                    if (name && name[0]) {
+                    if (obj->is_string) {
+                        RTEMS_OBJ_GET_NAME( tc,  name );
                         if (name[0] == 'I' && name[1] == 'D' &&
                             name[2] == 'L' && name[3] == 'E') {
                             *idle = CPU_ELAPSED_TIME(tc);
@@ -124,11 +122,11 @@ int devIocStatsInitCpuUsage (void)
     return 0;
 }
 
-int devIocStatsGetCpuUsage (loadInfo *pval)
+extern int devIocStatsGetCpuUsage (double *pval)
 {
 #ifdef SSRLAPPSMISCUTILS
-    pval->cpuLoad = miscu_cpu_load_percentage(&prev_uptime, &prev_idletime);
-    if (isnan(pval->cpuLoad)) return -1; else return 0;
+    *pval = miscu_cpu_load_percentage(&prev_uptime, &prev_idletime);
+    if (isnan(*pval)) return -1; else return 0;
 #else
     double total;
     double idle;
@@ -148,9 +146,9 @@ int devIocStatsGetCpuUsage (loadInfo *pval)
     prev_idle = idle;
 
     if (delta_idle > delta_total)
-        pval->cpuLoad = 0.0;
+        *pval = 0.0;
     else
-        pval->cpuLoad = 100.0 - (delta_idle * 100.0 / delta_total);
+        *pval = 100.0 - (delta_idle * 100.0 / delta_total);
     return 0;
 #endif
 }

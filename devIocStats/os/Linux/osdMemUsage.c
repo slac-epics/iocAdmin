@@ -23,7 +23,6 @@
 #include <sys/resource.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <string.h>
 
 #include <devIocStats.h>
 
@@ -38,7 +37,7 @@ int devIocStatsGetMemUsage (memInfo *pval)
 {
     static char statmfile[] = "/proc/self/statm";
     static char memfile[]   = "/proc/meminfo";
-    unsigned long size, resident, value, total = 0, memfree = 0;
+    unsigned long size, resident, value, total, memfree = 0;
     char title[32] = "";
     char units[32] = "";
     int ret = 0;
@@ -68,9 +67,9 @@ int devIocStatsGetMemUsage (memInfo *pval)
         fclose(fp);
     }
 
-    pval->numBytesAlloc = (double)resident * (double)pagesize;
-    pval->numBytesFree  = (double)memfree;
-    pval->numBytesTotal = (double)total;
+    pval->numBytesAlloc = resident * pagesize;
+    pval->numBytesFree  = memfree;
+    pval->numBytesTotal = total;
 
     return 0;
 }

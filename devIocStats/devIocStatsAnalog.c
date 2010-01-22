@@ -1,6 +1,5 @@
 /*************************************************************************\
-* Copyright (c) 2009-2010 Helmholtz-Zentrum Berlin
-*     fuer Materialien und Energie GmbH.
+* Copyright (c) 2009 Helmholtz-Zentrum Berlin fuer Materialien und Energie.
 * Copyright (c) 2002 The University of Chicago, as Operator of Argonne
 *     National Laboratory.
 * Copyright (c) 2002 The Regents of the University of California, as
@@ -34,20 +33,11 @@
  * Modifications for LCLS/SPEAR at SLAC:
  * ----------------
  *  08-09-29    Stephanie Allison - moved os-specific parts to
- *              os/<os>/devIocStatsOSD.h and devIocStatsOSD.c.
+ *              os/<os>/devIocStatsOSD.h and devIocStatsOSD.c.  Added reboot.
  *              Split into devIocStatsAnalog, devIocStatsString,
  *              devIocStatTest.
  *  2009-05-15  Ralph Lange (HZB/BESSY)
  *              Restructured OSD parts
- *  2010-07-14  Ralph Lange (HZB/BESSY)
- *              Added CPU Utilization (IOC load), number of CPUs
- *  2010-08-12  Stephanie Allison (SLAC):
- *              Added RAM workspace support developed by
- *              Charlie Xu.
- *  2015-04-27  Stephanie Allison (SLAC):
- *              Added process ID and parent process ID.
- *              Perform statistics in a task separate from the low priority
- *              callback task.
  */
 
 /*
@@ -62,11 +52,8 @@
 		max_free	 - size of largest free block
 		free_blocks	 - number of blocks in IOC not allocated
 		allocated_blocks - number of blocks allocated
-                sys_cpuload	 - estimated percent CPU load on the system
-                ioc_cpuload      - estimated percent CPU utilization by this IOC
-                no_of_cpus       - number of CPU cores on the system
-              ( cpu		 - same as ioc_cpuload [for compatibility] )
-                suspended_tasks	 - number of suspended tasks
+		cpu		 - estimated percent IOC usage by tasks
+		suspended_tasks	 - number of suspended tasks
 		fd		 - number of file descriptors currently in use
 		max_fd		 - max number of file descriptors
 		ca_clients	 - number of current CA clients
@@ -78,11 +65,6 @@
                 inp_errs	 - number of IF input  errors
                 out_errs	 - number of IF output errors
 		records	         - number of records
-		proc_id	         - process ID
-		parent_proc_id	 - parent process ID
-                workspace_alloc_bytes - number of RAM workspace allocated bytes
-                workspace_free_bytes  - number of RAM workspace free bytes
-                workspace_total_bytes - number of RAM workspace total bytes
 
 	ai (DTYP="IOC stats clusts"):
                 clust_info <pool> <index> <type> where:
@@ -106,23 +88,31 @@
 		15 - CA scan rate
 */
 
+#include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <time.h>
 
+#include <epicsStdio.h>
+#include <epicsEvent.h>
 #include <epicsThread.h>
 #include <epicsTimer.h>
-#include <epicsMutex.h>
+#include <epicsTime.h>
+#include <epicsExport.h>
+#include <epicsPrint.h>
+#include <epicsExit.h>
 
+#include <taskwd.h>
 #include <rsrv.h>
 #include <dbAccess.h>
 #include <dbStaticLib.h>
 #include <dbScan.h>
 #include <devSup.h>
-#include <menuConvert.h>
 #include <aiRecord.h>
 #include <aoRecord.h>
+#include <subRecord.h>
 #include <recGbl.h>
-#include <epicsExport.h>
+#include <registryFunction.h>
 
 #include "devIocStats.h"
 
@@ -170,7 +160,8 @@ struct scanInfo
 	epicsTimerId  wd;
 	volatile int total;			/* total users connected */
 	volatile int on;			/* watch dog on? */
-	double rate_sec;	/* seconds */
+	volatile time_t last_read_sec;		/* last time seconds */
+	volatile unsigned long rate_sec;	/* seconds */
 };
 typedef struct scanInfo scanInfo;
 
@@ -192,12 +183,7 @@ static void statsAllocBytes(double*);
 static void statsAllocBlocks(double*);
 static void statsMaxFree(double*);
 static void statsTotalBytes(double*);
-static void statsWSFreeBytes(double*);
-static void statsWSAllocBytes(double*);
-static void statsWSTotalBytes(double*);
 static void statsCpuUsage(double*);
-static void statsCpuUtilization(double*);
-static void statsNoOfCpus(double*);
 static void statsSuspendedTasks(double*);
 static void statsFdUsage(double*);
 static void statsFdMax(double*);
@@ -210,19 +196,10 @@ static void statsSysMBuf(double*);
 static void statsIFIErrs(double *);
 static void statsIFOErrs(double *);
 static void statsRecords(double *);
-static void statsPID(double *);
-static void statsPPID(double *);
 
-struct {
-	char *name;
-	double scan_rate;
-} parmTypes[] = {
-	{ "memory_scan_rate",	10.0 },
-	{ "cpu_scan_rate",	20.0 },
-	{ "fd_scan_rate",	10.0 },
-	{ "ca_scan_rate", 	15.0 },
-	{ NULL,			0.0  },
-};
+/* rate in seconds (memory,cpu,fd,ca) */
+/* statsPutParms[] must be in the same order (see ao_init_record()) */
+static int scan_rate_sec[] = { 10,20,10,15,0 };
 
 static validGetParms statsGetParms[]={
 	{ "free_bytes",			statsFreeBytes,		MEMORY_TYPE },
@@ -231,28 +208,29 @@ static validGetParms statsGetParms[]={
 	{ "allocated_bytes",		statsAllocBytes,	MEMORY_TYPE },
 	{ "allocated_blocks",		statsAllocBlocks,	MEMORY_TYPE },
         { "total_bytes",		statsTotalBytes,	MEMORY_TYPE },
-        { "workspace_alloc_bytes",	statsWSAllocBytes,	MEMORY_TYPE },
-        { "workspace_free_bytes",	statsWSFreeBytes,	MEMORY_TYPE },
-        { "workspace_total_bytes",	statsWSTotalBytes,	MEMORY_TYPE },
-        { "sys_cpuload",		statsCpuUsage,		LOAD_TYPE },
-        { "ioc_cpuload",		statsCpuUtilization,	LOAD_TYPE },
-        { "cpu",			statsCpuUtilization,    LOAD_TYPE },
-        { "no_of_cpus",			statsNoOfCpus,		LOAD_TYPE },
-        { "suspended_tasks",		statsSuspendedTasks,	LOAD_TYPE },
+        { "cpu",			statsCpuUsage,		LOAD_TYPE },
+	{ "suspended_tasks",		statsSuspendedTasks,	LOAD_TYPE },
 	{ "fd",				statsFdUsage,		FD_TYPE },
         { "maxfd",			statsFdMax,	        FD_TYPE },
 	{ "ca_clients",			statsCAClients,		CA_TYPE },
 	{ "ca_connections",		statsCAConnects,	CA_TYPE },
 	{ "min_data_mbuf",		statsMinDataMBuf,	MEMORY_TYPE },
 	{ "min_sys_mbuf",		statsMinSysMBuf,	MEMORY_TYPE },
-	{ "data_mbuf",			statsDataMBuf,		MEMORY_TYPE },
-	{ "sys_mbuf",			statsSysMBuf,		MEMORY_TYPE },
+	{ "data_mbuf",			statsDataMBuf,		STATIC_TYPE },
+	{ "sys_mbuf",			statsSysMBuf,		STATIC_TYPE },
 	{ "inp_errs",			statsIFIErrs,		MEMORY_TYPE },
 	{ "out_errs",			statsIFOErrs,		MEMORY_TYPE },
 	{ "records",			statsRecords,           STATIC_TYPE },
-	{ "proc_id",			statsPID,               STATIC_TYPE },
-	{ "parent_proc_id",		statsPPID,              STATIC_TYPE },
 	{ NULL,NULL,0 }
+};
+
+/* These are in the same order as in scan_rate_sec[] */
+static char* statsPutParms[]={
+	"memory_scan_rate",
+	"cpu_scan_rate",
+	"fd_scan_rate",
+	"ca_scan_rate",
+	NULL
 };
 
 aStats devAiStats={ 6,NULL,ai_init,ai_init_record,ai_ioint_info,ai_read,NULL };
@@ -262,35 +240,24 @@ epicsExportAddress(dset,devAoStats);
 aStats devAiClusts = {6,NULL,ai_clusts_init,ai_clusts_init_record,NULL,ai_clusts_read,NULL };
 epicsExportAddress(dset,devAiClusts);
 
-static memInfo meminfo = {0.0,0.0,0.0,0.0,0.0,0.0};
-static memInfo workspaceinfo = {0.0,0.0,0.0,0.0,0.0,0.0};
+static memInfo meminfo = {0,0,0,0,0,0};
 static scanInfo scan[TOTAL_TYPES] = {{0}};
 static fdInfo fdusage = {0,0};
-static loadInfo loadinfo = {1,0.,0.};
-static int susptasknumber = 0;
 static int recordnumber = 0;
 static clustInfo clustinfo[2] = {{{0}},{{0}}};
 static int mbufnumber[2] = {0,0};
 static ifErrInfo iferrors = {0,0};
-static unsigned cainfo_clients = 0;
-static unsigned cainfo_connex  = 0;
 static epicsTimerQueueId timerQ = 0;
-static epicsMutexId scan_mutex;
 
 /* ---------------------------------------------------------------------- */
 
-/* 
- * Run timer task just below the low priority callback task and higher
- * than the default for the channel access tasks.  Also, set okToShare to 0
- * so that the task is dedicated to devIocStats.
- */
 static void timerQCreate(void*unused)
 {
-	timerQ = epicsTimerQueueAllocate(0, epicsThreadPriorityScanLow - 2);
+	timerQ = epicsTimerQueueAllocate(1,epicsThreadPriorityScanLow);
 }
 
 static epicsTimerId
-wdogCreate(void (*fn)(int), long arg)
+wdogCreate(void (*fn)(int), int arg)
 {
 	static epicsThreadOnceId inited = EPICS_THREAD_ONCE_INIT;
 
@@ -303,67 +270,8 @@ wdogCreate(void (*fn)(int), long arg)
 
 static void scan_time(int type)
 {
-    switch(type) {
-      case MEMORY_TYPE:
-      {
-	memInfo   meminfo_local = {0.0,0.0,0.0,0.0,0.0,0.0};
-	memInfo   workspaceinfo_local = {0.0,0.0,0.0,0.0,0.0,0.0};
-	int       mbufnumber_local[2] = {0,0};
-	ifErrInfo iferrors_local = {0,0};
-        devIocStatsGetMemUsage(&meminfo_local);
-        devIocStatsGetWorkspaceUsage(&workspaceinfo_local);
-	devIocStatsGetClusterUsage(SYS_POOL, &mbufnumber_local[SYS_POOL]);
-	devIocStatsGetClusterUsage(DATA_POOL, &mbufnumber_local[DATA_POOL]);
-	devIocStatsGetIFErrors(&iferrors_local);
-        epicsMutexLock(scan_mutex);
-	meminfo               = meminfo_local;
-	workspaceinfo         = workspaceinfo_local;
-	mbufnumber[SYS_POOL]  = mbufnumber_local[SYS_POOL];
-	mbufnumber[DATA_POOL] = mbufnumber_local[DATA_POOL];
-	iferrors              = iferrors_local;
-	devIocStatsGetClusterInfo(SYS_POOL, &clustinfo[SYS_POOL]);
-	devIocStatsGetClusterInfo(DATA_POOL, &clustinfo[DATA_POOL]);
-        epicsMutexUnlock(scan_mutex);
-	break;
-      }
-      case LOAD_TYPE:
-      {
-	loadInfo loadinfo_local = {1,0.,0.};
-	int      susptasknumber_local = 0;
-        devIocStatsGetCpuUsage(&loadinfo_local);
-        devIocStatsGetCpuUtilization(&loadinfo_local);
-        devIocStatsGetSuspTasks(&susptasknumber_local);
-        epicsMutexLock(scan_mutex);
-	loadinfo       = loadinfo_local;
-	susptasknumber = susptasknumber_local;
-        epicsMutexUnlock(scan_mutex);
-	break;
-      }
-      case FD_TYPE:
-      {
-	fdInfo   fdusage_local = {0,0};
-        devIocStatsGetFDUsage(&fdusage_local);
-        epicsMutexLock(scan_mutex);
-	fdusage = fdusage_local;
-        epicsMutexUnlock(scan_mutex);
-	break;
-      }
-      case CA_TYPE:
-      {
-        unsigned cainfo_clients_local = 0;
-        unsigned cainfo_connex_local  = 0;
-	casStatsFetch(&cainfo_connex_local, &cainfo_clients_local);
-        epicsMutexLock(scan_mutex);
-        cainfo_clients = cainfo_clients_local;
-        cainfo_connex  = cainfo_connex_local;
-        epicsMutexUnlock(scan_mutex);
-	break;
-      }
-      default:
-        break;
-    }
-    scanIoRequest(scan[type].ioscan);
-    if(scan[type].on)
+	scanIoRequest(scan[type].ioscan);
+	if(scan[type].on)
 		epicsTimerStartDelay(scan[type].wd, scan[type].rate_sec);
 }
 
@@ -378,7 +286,7 @@ static long ai_clusts_init(int pass)
 
 static long ai_init(int pass)
 {
-    long i;
+    int i;
 
     if (pass) return 0;
 
@@ -388,26 +296,16 @@ static long ai_init(int pass)
         scan[i].wd = wdogCreate(scan_time, i);
         scan[i].total = 0;
         scan[i].on = 0;
-        scan[i].rate_sec = parmTypes[i].scan_rate;
+        scan[i].rate_sec = scan_rate_sec[i];
+        scan[i].last_read_sec = 1000000;
     }
 
     /* Init OSD stuff */
-    scan_mutex = epicsMutexMustCreate();
     devIocStatsInitCpuUsage();
-    devIocStatsInitCpuUtilization(&loadinfo);
     devIocStatsInitFDUsage();
     devIocStatsInitMemUsage();
-    devIocStatsInitWorkspaceUsage();
     devIocStatsInitSuspTasks();
     devIocStatsInitIFErrors();
-    /* Get initial values of a few things that don't change much */
-    devIocStatsGetClusterInfo(SYS_POOL, &clustinfo[SYS_POOL]);
-    devIocStatsGetClusterInfo(DATA_POOL, &clustinfo[DATA_POOL]);
-    devIocStatsGetClusterUsage(SYS_POOL, &mbufnumber[SYS_POOL]);
-    devIocStatsGetClusterUsage(DATA_POOL, &mbufnumber[DATA_POOL]);
-    devIocStatsGetCpuUtilization(&loadinfo);
-    devIocStatsGetIFErrors(&iferrors);
-    devIocStatsGetFDUsage(&fdusage);
 
     /* Count EPICS records */
     if (pdbbase) {
@@ -458,7 +356,7 @@ static long ai_clusts_init_record(aiRecord *pr)
 		return S_db_badField;
 	}
 	/* Make sure record processing routine does not perform any conversion*/
-	pr->linr=menuConvertNO_CONVERSION;
+	pr->linr=0;
 	pr->dpvt=pvt;
 	return 0;
 }
@@ -494,7 +392,7 @@ static long ai_init_record(aiRecord* pr)
 	}
 
 	/* Make sure record processing routine does not perform any conversion*/
-	pr->linr=menuConvertNO_CONVERSION;
+	pr->linr=0;
 	pr->dpvt=pvt;
 	return 0;
 }
@@ -514,7 +412,7 @@ static long ao_init_record(aoRecord* pr)
 	parm = pr->out.value.instio.string;
 	for(type=0; type<TOTAL_TYPES; type++)
 	{
-		if(parmTypes[type].name && strcmp(parm,parmTypes[type].name)==0)
+		if(statsPutParms[type] && strcmp(parm,statsPutParms[type])==0)
 		{
 			pvt=(pvtArea*)malloc(sizeof(pvtArea));
 			pvt->index=type;
@@ -528,21 +426,18 @@ static long ao_init_record(aoRecord* pr)
 		return S_db_badField;
 	}
 
-	/* Initialize value with default if not set in db */
-	if (!pr->val)
-		pr->val=parmTypes[pvt->type].scan_rate;
+	/* Initialize value with default */
+	pr->rbv=pr->rval=scan_rate_sec[pvt->type];
 
 	/* Make sure record processing routine does not perform any conversion*/
-	pr->linr=menuConvertNO_CONVERSION;
+	pr->linr=0;
 	pr->dpvt=pvt;
-	return 2;
+	return 0;
 }
 
 static long ai_ioint_info(int cmd,aiRecord* pr,IOSCANPVT* iopvt)
 {
 	pvtArea* pvt=(pvtArea*)pr->dpvt;
-
-	if (!pvt) return S_dev_badInpType;
 
 	if(cmd==0) /* added */
 	{
@@ -565,15 +460,12 @@ static long ai_ioint_info(int cmd,aiRecord* pr,IOSCANPVT* iopvt)
 
 static long ao_write(aoRecord* pr)
 {
+	unsigned long sec=pr->val;
 	pvtArea	*pvt=(pvtArea*)pr->dpvt;
-	int type;
-
-	if (!pvt) return S_dev_badInpType;
-
-	type=pvt->type;
+	int		type=pvt->type;
         
-        if (pr->val > 0.0)
-          scan[type].rate_sec = pr->val;
+        if (sec > 0.0)
+          scan[type].rate_sec=sec;
         else
           pr->val = scan[type].rate_sec;
         pr->udf=0;
@@ -585,15 +477,10 @@ static long ai_clusts_read(aiRecord* prec)
 {
     pvtClustArea* pvt=(pvtClustArea*)prec->dpvt;
 
-    if (!pvt) return S_dev_badInpType;
-
-    if (pvt->size < CLUSTSIZES) {
-        epicsMutexLock(scan_mutex);
+    if (pvt->size < CLUSTSIZES)
         prec->val = clustinfo[pvt->pool][pvt->size][pvt->elem];
-        epicsMutexUnlock(scan_mutex);
-    } else {
+    else
         prec->val = 0;
-    }
     prec->udf = 0;
     return 2; /* don't convert */
 }
@@ -604,11 +491,7 @@ static long ai_read(aiRecord* pr)
     double val;
     pvtArea* pvt=(pvtArea*)pr->dpvt;
 
-    if (!pvt) return S_dev_badInpType;
-
-    epicsMutexLock(scan_mutex);
     statsGetParms[pvt->index].func(&val);
-    epicsMutexUnlock(scan_mutex);
     pr->val = val;
     pr->udf = 0;
     return 2; /* don't convert */
@@ -616,6 +499,28 @@ static long ai_read(aiRecord* pr)
 
 /* -------------------------------------------------------------------- */
 
+static void read_mem_stats(void)
+{
+	time_t nt;
+	time(&nt);
+
+	if((nt-scan[MEMORY_TYPE].last_read_sec)>=scan[MEMORY_TYPE].rate_sec)
+	{
+            devIocStatsGetMemUsage(&meminfo);
+            scan[MEMORY_TYPE].last_read_sec=nt;
+        }
+}
+
+static void read_fd_stats(void)
+{
+    time_t nt;
+    time(&nt);
+
+    if ((nt-scan[FD_TYPE].last_read_sec) >= scan[FD_TYPE].rate_sec) {
+        devIocStatsGetFDUsage(&fdusage);
+        scan[FD_TYPE].last_read_sec = nt;
+    }
+}
 
 static double minMBuf(int pool)
 {
@@ -635,107 +540,152 @@ static double minMBuf(int pool)
 
 static void statsFreeBytes(double* val)
 {
-    *val = meminfo.numBytesFree;
+	read_mem_stats();
+	*val=(double)meminfo.numBytesFree;
 }
 static void statsFreeBlocks(double* val)
 {
-    *val = meminfo.numBlocksFree;
+	read_mem_stats();
+	*val=(double)meminfo.numBlocksFree;
 }
 static void statsAllocBytes(double* val)
 {
-    *val = meminfo.numBytesAlloc;
+	read_mem_stats();
+	*val=(double)meminfo.numBytesAlloc;
 }
 static void statsAllocBlocks(double* val)
 {
-    *val = meminfo.numBlocksAlloc;
+	read_mem_stats();
+	*val=(double)meminfo.numBlocksAlloc;
 }
 static void statsMaxFree(double* val)
 {
-    *val = meminfo.maxBlockSizeFree;
+	read_mem_stats();
+	*val=(double)meminfo.maxBlockSizeFree;
 }
 static void statsTotalBytes(double* val)
 {
-    *val = meminfo.numBytesTotal;
-}
-static void statsWSAllocBytes(double* val)
-{
-    *val = workspaceinfo.numBytesAlloc;
-}
-static void statsWSFreeBytes(double* val)
-{
-    *val = workspaceinfo.numBytesFree;
-}
-static void statsWSTotalBytes(double* val)
-{
-    *val = workspaceinfo.numBytesTotal;
+    read_mem_stats();
+    *val=(double)meminfo.numBytesTotal;
 }
 static void statsCpuUsage(double* val)
 {
-    *val = loadinfo.cpuLoad;
-}
-static void statsCpuUtilization(double* val)
-{
-    *val = loadinfo.iocLoad;
-}
-static void statsNoOfCpus(double* val)
-{
-    *val = (double)loadinfo.noOfCpus;
+        double cpu = 0;
+        devIocStatsGetCpuUsage(&cpu);
+        *val = cpu;
 }
 static void statsSuspendedTasks(double *val)
 {
-    *val = (double)susptasknumber;
+        int i = 0;
+        devIocStatsGetSuspTasks(&i);
+        *val = (double)i;
 }
 static void statsFdUsage(double* val)
 {
-    *val = (double)fdusage.used;
+        read_fd_stats();
+        *val = (double)fdusage.used;
 }
 static void statsFdMax(double* val)
 {
-    *val = (double)fdusage.max;
+        read_fd_stats();
+        *val = (double)fdusage.max;
 }
 static void statsCAClients(double* val)
 {
-    *val = (double)cainfo_clients;
+        unsigned cainfo_clients = 0;
+        unsigned cainfo_connex  = 0;
+        
+	casStatsFetch(&cainfo_connex, &cainfo_clients);
+	*val=(double)cainfo_clients;
 }
 static void statsCAConnects(double* val)
 {
-    *val = (double)cainfo_connex;
+        unsigned cainfo_clients = 0;
+        unsigned cainfo_connex  = 0;
+	casStatsFetch(&cainfo_connex, &cainfo_clients);
+	*val=(double)cainfo_connex;
 }
 static void statsMinSysMBuf(double* val)
 {
+    devIocStatsGetClusterInfo(SYS_POOL, &clustinfo[SYS_POOL]);
     *val = minMBuf(SYS_POOL);
 }
 static void statsMinDataMBuf(double* val)
 {
+    devIocStatsGetClusterInfo(DATA_POOL, &clustinfo[DATA_POOL]);
     *val = minMBuf(DATA_POOL);
 }
 static void statsSysMBuf(double* val)
 {
+    devIocStatsGetClusterUsage(SYS_POOL, &mbufnumber[SYS_POOL]);
     *val = (double)mbufnumber[SYS_POOL];
 }
 static void statsDataMBuf(double* val)
 {
+    devIocStatsGetClusterUsage(DATA_POOL, &mbufnumber[DATA_POOL]);
     *val = (double)mbufnumber[DATA_POOL];
 }
 static void statsIFIErrs(double* val)
 {
+    devIocStatsGetIFErrors(&iferrors);
     *val = (double)iferrors.ierrors;
 }
 static void statsIFOErrs(double* val)
 {
+    devIocStatsGetIFErrors(&iferrors);
     *val = (double)iferrors.oerrors;
 }
 static void statsRecords(double *val)
 {
     *val = (double)recordnumber;
 }
-static void statsPID(double *val)
+
+/*====================================================
+
+  Name: rebootProc
+
+  Rem:  This function resets the network
+        devices and transfers control to
+        boot ROMs.
+
+        If any input A through F is greater
+        than zero, the reboot is not allowed;
+	these are "inhibits."  Unless input L
+	is equal to one, the reboot is not allowed;
+	this is an "enable."  The intention is to
+	feed a BO record with a one-shot timing of
+	a few seconds to it, which has to be set
+	within a small window before requesting the
+	reboot.
+	
+        Input G is the bitmask for the reboot
+        input argument.  The possible bits are
+        defined in sysLib.h.  If input G is
+        0 (default), the reboot will be normal
+        with countdown.  If the BOOT_CLEAR bit
+        is set, the memory will be cleared first.
+
+        A taskDelay is needed before the reboot
+        to allow the reboot message to be logged.
+
+  Side: Memory is cleared if BOOT_CLEAR is set.
+        A reboot is initiated.
+        A message is sent to the error log.
+
+  Ret: long
+           OK - Successful operation (Always)
+
+=======================================================*/
+static long rebootProc(struct subRecord *psub)
 {
-    *val = 0;
-    devIocStatsGetPID(val);
+  if ((psub->a < 0.5) && (psub->b < 0.5) &&
+      (psub->c < 0.5) && (psub->d < 0.5) &&
+      (psub->e < 0.5) && (psub->f < 0.5) &&
+      (psub->l > 0.5)) {
+     epicsPrintf("IOC reboot started\n");
+     epicsThreadSleep(1.0);
+     reboot((int)(psub->g + 0.1));
+  }
+  return(0);
 }
-static void statsPPID(double *val)
-{
-    *val = 0;
-    devIocStatsGetPPID(val);
-}
+epicsRegisterFunction(rebootProc);

@@ -20,8 +20,6 @@
  *
  */
 
-#include <taskwd.h>
-#include <epicsThread.h>
 #include <devIocStats.h>
 
 static int suspendedTasks = 0;

@@ -9,7 +9,7 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
-/* osdBootInfo.c - Boot info strings: vxWorks implementation */
+/* osdBootInfo.c - Boot info strings: posix implementation = get from environment or symbol */
 
 /*
  *  Author: Ralph Lange (HZB/BESSY)
@@ -21,6 +21,7 @@
  */
 
 #include <devIocStats.h>
+#include <epicsFindSymbol.h>
 
 #if 0
 #define BOOT_DEV_LEN            20  /* max chars in device name */
@@ -61,6 +62,7 @@ extern char * bootStringToStruct (
 #endif
 
 static const int stcmd_offset = offsetof(BOOT_PARAMS,startupScript);
+static char *notavail = "<not available>";
 static BOOT_PARAMS bps;
 
 int devIocStatsInitBootInfo (void) {
@@ -77,5 +79,28 @@ int devIocStatsGetStartupScript (char **pval)
 int devIocStatsGetBootLine (char **pval)
 {
     *pval = sysBootLine;
+    return 0;
+}
+
+int devIocStatsGetEngineer (char **pval)
+{
+    char *spbuf;
+    char *sp = notavail;
+
+    /* Get value from environment or global variable */
+    if ((spbuf = getenv(ENGINEER)) || (spbuf = epicsFindSymbol("engineer"))) sp = spbuf;
+    *pval = sp;
+    if (sp == notavail) return -1;
+    return 0;
+}
+int devIocStatsGetLocation (char **pval)
+{
+    char *spbuf;
+    char *sp = notavail;
+
+    /* Get value from environment or global variable */
+    if ((spbuf = getenv(LOCATION)) || (spbuf = epicsFindSymbol("location"))) sp = spbuf;
+    *pval = sp;
+    if (sp == notavail) return -1;
     return 0;
 }

@@ -53,20 +53,20 @@
 
 #if _WRS_VXWORKS_MAJOR >= 6
 #define MAX_FILES iosMaxFiles
-#if _WRS_VXWORKS_MINOR >= 6
-#define FDTABLE_INUSE(i) (iosFdTable[i])
-#else
 #define FDTABLE_INUSE(i) (iosFdTable[i] && (iosFdTable[i]->refCnt > 0))
-#endif
-#else /* _WRS_VXWORKS_MAJOR >= 6 */
+#define CLUSTSIZES CL_TBL_SIZE
+#else
 #define MAX_FILES maxFiles
 #define FDTABLE_INUSE(i) (fdTable[i].inuse)
+#define CLUSTSIZES 10
+#endif
+/* Must use cpuBurn to determine cpu usage */
+#ifndef SECONDS_TO_BURN
+#define SECONDS_TO_BURN 5
 #endif
 
-#define CLUSTSIZES CL_TBL_SIZE
-
-/* No support of getpid for vxWorks 5.4.  Maybe vxWorks 6? */
-#define getpid() -1
-#define getppid() -1
-
 extern char *sysBootLine;
+
+
+
+

@@ -2,23 +2,49 @@
 # Run "gnumake clean uninstall install" in the application
 # top directory each time this file is changed.
 
-#NOTE: MSI moved to CONFIG_SITE.
+# =============================================================
+# Define the top of the EPICS tree for your site.
+# We will build some tools/scripts that allow us to
+# change this easily when relocating software.
+# ==============================================================
+include $(TOP)/RELEASE_SITE
+#EPICS_SITE_TOP=/afs/slac/g/lcls/epics
+TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-# SNCSEQ required only if testIocStatsApp will be built.
-MAKE_TEST_IOC_APP=YES
-ifeq '$(MAKE_TEST_IOC_APP)' 'YES'
+# ========================================================================================
+# #If using macro substitutions, point MSI at the binary:
+EXTENSIONS_MODULE_VERSION=extensions-R3-14-8-2
+MSI=$(EPICS_SITE_TOP)/extensions/$(EXTENSIONS_MODULE_VERSION)/bin/$(EPICS_HOST_ARCH)/msi
+# ========================================================================================
+
+# =============================================================
+# Define location of module tree with respect to
+# EPICS_SITE_TOP
+# =============================================================
+EPICS_MODULES=$(EPICS_SITE_TOP)/modules
+
+# ==============================================================
+# Define the cvs module version of EPICS BASE that you will use
+# =============================================================
+BASE_MODULE_VERSION=base-R3-14-8-2-lcls3
+
 # =============================================================
 # Define the version of modules needed by
 # IOC apps or other Support apps - used by testIocStatsApp
 # =============================================================
-#SNCSEQ     = /usr/local/epics/R3.14.11/modules/soft/synApps_5_5/support/seq-2-0-12
-SNCSEQ = /afs/slac/g/spear/epics/modules/seq/seq
-#SNCSEQ = /afs/slac/g/lcls/epics/R3-15-1_1-0/modules/seq/seq-R2-1-17_1-0
-#SNCSEQ = /afs/slac/g/lcls/epics/R3-16-0/modules/seq/seq-2.2.3
-endif
-#EPICS_BASE = /usr/local/epics/R3.14.11/base
-EPICS_BASE=/afs/slac/g/spear/epics/base
-#EPICS_BASE=/afs/slac/g/lcls/epics/R3-15-1_1-0/base/base-R3-15-1_1-0
-#EPICS_BASE=/afs/slac/g/lcls/epics/R3-16-0/base/base-R3-16-0
+#SNCSEQ_MODULE_VERSION=seq-R2-0-11-lcls1
+
+# ============================================================
+# External Support - used by testIocStatsApp
+# ============================================================
+#SNCSEQ=$(EPICS_MODULES)/seq/$(SNCSEQ_MODULE_VERSION)
+
+# =================================================================
+# Define EPICS_BASE
+# EPICS_BASE usually appears last so other apps can override stuff:
+# =================================================================
+EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
 # End of file
+
+

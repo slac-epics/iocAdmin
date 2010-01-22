@@ -44,10 +44,7 @@ int devIocStatsGetFDUsage(fdInfo *pval)
 {
     int i, tot;
 
-/*
- *  The first 3 files are always standard in, standard out, and standard error.
- */
-    for (tot=3,i=3; i<MAX_FILES; i++) {
+    for (tot=0,i=0; i<MAX_FILES; i++) {
         if (FDTABLE_INUSE(i)) tot++;
     }
     pval->used = tot;

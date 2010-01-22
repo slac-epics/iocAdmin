@@ -16,10 +16,6 @@
  *  2009-05-15 Ralph Lange (HZB/BESSY)
  *     Restructured OSD parts
  *
- *  2011-03-25 E.Bjorklund (LANSCE)
- *     Translate between the devIocStats memeory info structure
- *     and its vxWorks 6 counterpart.
- *
  */
 
 /* osdMemUsage.c - vxWorks implementation */
@@ -35,36 +31,13 @@ int devIocStatsInitMemUsage (void) { return OK; }
 
 int devIocStatsGetMemUsage (memInfo *pmi) {
 
-/*==============================================================================
- * For VxWorks 6 and above, use memPartGetInfo to retrieve the data
- */
 #if _WRS_VXWORKS_MAJOR >= 6
-
-    *pmi = nope; /* Clear out the memory info structure */
-    MEM_PART_STATS vxPmi;       /* vxWorks memory partition info structure   */
-
-    int status = memPartInfoGet (memSysPartId, &vxPmi);
-    if (0 == status) {
-        pmi->numBytesTotal    = (double)vxPmi.numBytesFree + 
-	                        (double)vxPmi.numBytesAlloc;
-        pmi->numBytesFree     = (double)vxPmi.numBytesFree;
-        pmi->numBytesAlloc    = (double)vxPmi.numBytesAlloc;
-        pmi->numBlocksFree    = (double)vxPmi.numBlocksFree;
-        pmi->numBlocksAlloc   = (double)vxPmi.numBlocksAlloc;
-        pmi->maxBlockSizeFree = (double)vxPmi.maxBlockSizeFree;
-    }/* end if memPartInfoGet succeeded*/
-
-    return status;
-
-/*==============================================================================
- * For VxWorks 5, walk the list manually
- */
+    return memPartInfoGet(memSysPartId, pmi);
 #else
     /* Added by LTH because memPartInfoGet() has a bug when "walking" the list */
     FAST PART_ID partId = memSysPartId;
     BLOCK_HDR *  pHdr;
     DL_NODE *    pNode;
-    double nbf;
     *pmi = nope;
     if (ID_IS_SHARED (partId))  /* partition is shared? */
     {
@@ -81,17 +54,16 @@ int devIocStatsGetMemUsage (memInfo *pmi) {
         pHdr = NODE_TO_HDR (pNode);
         {
             pmi->numBlocksFree ++ ;
-	    nbf = 2.0 * (double)pHdr->nWords;
-            pmi->numBytesFree += nbf;
-            if(nbf > pmi->maxBlockSizeFree) 
-	        pmi->maxBlockSizeFree = nbf;
+            pmi->numBytesFree += 2 * pHdr->nWords;
+            if(2 * pHdr->nWords > pmi->maxBlockSizeFree) 
+                pmi->maxBlockSizeFree = 2 * pHdr->nWords;
         }
     }
-    pmi->numBytesAlloc = 2.0 * (double)partId->curWordsAllocated;
-    pmi->numBlocksAlloc = (double)partId->curBlocksAllocated;
+    pmi->numBytesAlloc = 2 * partId->curWordsAllocated;
+    pmi->numBlocksAlloc = partId->curBlocksAllocated;
     semGive (&partId->sem);
 
-    pmi->numBytesTotal = (double)((unsigned long)sysPhysMemTop());
+    pmi->numBytesTotal = sysPhysMemTop();
     return (OK);
 #endif
 }
