@@ -11,11 +11,6 @@ include $(TOP)/RELEASE_SITE
 #EPICS_SITE_TOP=/afs/slac/g/lcls/epics
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-# ========================================================================================
-# #If using macro substitutions, point MSI at the binary:
-EXTENSIONS_MODULE_VERSION=extensions-R3-14-8-2
-MSI=$(EPICS_SITE_TOP)/extensions/$(EXTENSIONS_MODULE_VERSION)/bin/$(EPICS_HOST_ARCH)/msi
-# ========================================================================================
 
 # =============================================================
 # Define location of module tree with respect to
@@ -26,13 +21,13 @@ EPICS_MODULES=$(EPICS_SITE_TOP)/modules
 # ==============================================================
 # Define the cvs module version of EPICS BASE that you will use
 # =============================================================
-BASE_MODULE_VERSION=base-R3-14-8-2-lcls3
+BASE_MODULE_VERSION=base-R3-14-8-2-lcls5
 
 # =============================================================
 # Define the version of modules needed by
 # IOC apps or other Support apps - used by testIocStatsApp
 # =============================================================
-#SNCSEQ_MODULE_VERSION=seq-R2-0-11-lcls1
+#SNCSEQ_MODULE_VERSION=seq-R2-0-11-lcls2
 
 # ============================================================
 # External Support - used by testIocStatsApp
