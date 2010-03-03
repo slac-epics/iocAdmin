@@ -3,6 +3,9 @@ Release Notes for iocAdmin
 iocAdmin-R3-2-1: Feb. 24, 2010
   * Built against rtems 4.9.3 and EPICS BASE:
     base-R3-14-8-2-lcls5 
+  * devIocStats/os/vxWorks/devIocStatsOSD.h - remove refCnt from 
+    FDTABLE_INUSE macro for vxWorks 6.6 and higher until a better fix
+    is implemented.
 
 iocAdmin-R3-1-1: July 14, 2009
   * iocAdminLib/srcDisplay - LCLS display update - add ioc_stats_release.edl.
