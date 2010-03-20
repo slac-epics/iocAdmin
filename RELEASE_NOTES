@@ -1,5 +1,9 @@
 Release Notes for iocAdmin
 --------------------------
+iocAdmin-R3-3-1: Mar. 20, 2010
+  * Built against rtems 4.9.4 and EPICS BASE:
+    base-R3-14-8-2-lcls6
+
 iocAdmin-R3-2-1: Feb. 24, 2010
   * Built against rtems 4.9.3 and EPICS BASE:
     base-R3-14-8-2-lcls5 
