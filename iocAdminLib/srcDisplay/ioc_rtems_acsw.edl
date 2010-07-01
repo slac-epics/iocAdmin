@@ -875,7 +875,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_softreset_confirm_acsw"
+  0 "iocscreens/ioc_softreset_confirm_acsw"
 }
 setPosition {
   0 "parentWindow"
