@@ -875,7 +875,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_acsw"
+  0 "iocscreens/ioc_softreset_confirm_acsw.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -924,7 +924,7 @@ buttonLabel "More IOC Stats..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats"
+  0 "iocscreens/ioc_stats.edl"
 }
 setPosition {
   0 "parentWindow"

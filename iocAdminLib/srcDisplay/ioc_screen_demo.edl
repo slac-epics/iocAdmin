@@ -272,7 +272,7 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "ioc_rtems_none.edl"
+buttonLabel "ioc-rtems-none"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -298,7 +298,7 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "ioc_rtems_crat.edl"
+buttonLabel "ioc-rtems-crat"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -324,7 +324,7 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "ioc_rtems_acsw.edl"
+buttonLabel "ioc-rtems-acsw"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -350,7 +350,7 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "ioc_rtems_nosupport.edl"
+buttonLabel "ioc-rtems-nosupport"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -376,7 +376,7 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "ioc_soft.edl"
+buttonLabel "ioc-soft"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -402,7 +402,7 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "ioc_rtems_power.edl"
+buttonLabel "ioc-rtems-power"
 numPvs 4
 numDsps 1
 displayFileName {

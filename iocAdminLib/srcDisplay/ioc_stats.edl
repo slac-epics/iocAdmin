@@ -1559,7 +1559,7 @@ buttonLabel "Clusters"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_clust"
+  0 "iocscreens/ioc_stats_clust.edl"
 }
 menuLabel {
   0 "$(ioc) Cluster Info"
@@ -1647,7 +1647,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reboot_confirm"
+  0 "iocscreens/ioc_reboot_confirm.edl"
 }
 setPosition {
   0 "parentWindow"
