@@ -1,53 +1,19 @@
-#RELEASE Location of external products
-#
-# IF YOU MAKE ANY CHANGES to this file you MUST at least run
-# "gnumake" in this directory afterwards; you usually need
-# to run "gnumake rebuild" in the application's top level
-# directory each time this file is changed.
-#
-# NOTE: The build does not check dependencies against files
-# that are outside this application, thus you should run
-# "gnumake distclean install" in the top directory each time
-# EPICS_BASE, SNCSEQ, or any other external module defined
-# in the RELEASE file is rebuilt.
-#
-# Host/target specific settings can be specified in files named
-#  RELEASE.$(EPICS_HOST_ARCH).Common
-#  RELEASE.Common.$(T_A)
-#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
+# RELEASE
+# Defines location of external products
 
-# Check that you specified the EPICS config file
-ifndef EPICS_SITE_CONFIG
-$(error EPICS_SITE_CONFIG undefined)
-endif
-
-# ===============================================================
-# Define version of "meta" modules - BASE and EXTENSIONS.  Must
-# be defined before loading $(EPICS_SITE_CONFIG)
-# ===============================================================
-BASE_MODULE_VERSION=R3.14.9-0.2.0
-EXTENSIONS_MODULE_VERSION=R3.14.9-0.4.0
+# Get site location for EPICS releases and tools
+include $(TOP)/RELEASE_SITE
 
 # =================================================================
 # Define EPICS_BASE
 # =================================================================
+BASE_MODULE_VERSION=R3.14.9-0.3.0
 EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
-# =================================================================
-# By default EPICS is not build for the build machine architecture 
-# in PCDS environment
-# If you would like the EPICS module to be build for 
-# EPICS_HOST_ARCH set this variable
-# =================================================================
-BUILD_FOR_HOST_ARCH=1
-
-# Site configuration, if it does not exist, no big deal
-include $(EPICS_SITE_CONFIG)
-
 # ===============================================================
-# Define the version of modules needed by
-# IOC apps or other Support apps
+# Define the version of modules needed, if any
 # ===============================================================
+# example: IPAC_MODULE_VERSION=R2.8.4-0.2.0
 
 # ============================================================
 # External Support
