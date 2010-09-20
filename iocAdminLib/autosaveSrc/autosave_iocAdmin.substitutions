@@ -1,0 +1,6 @@
+#
+# iocAdmin autosave sample substitutions file
+#
+file autosave_iocAdmin.template
+{
+}
