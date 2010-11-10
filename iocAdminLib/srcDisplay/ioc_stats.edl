@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 591
-y 263
+x 211
+y 51
 w 540
 h 700
 font "helvetica-bold-r-18.0"
@@ -76,8 +76,8 @@ minor 1
 release 0
 x 5
 y 1
-w 189
-h 27
+w 118
+h 32
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 3
@@ -102,7 +102,6 @@ h 1
 lineColor index 14
 fillColor index 14
 endObjectProperties
-
 
 # (Static Text)
 object activeXTextClass
@@ -572,6 +571,7 @@ fgColor index 14
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
+fontAlign "right"
 endObjectProperties
 
 # (Static Text)
@@ -646,6 +646,7 @@ fgColor index 14
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
+fontAlign "right"
 endObjectProperties
 
 # (Static Text)

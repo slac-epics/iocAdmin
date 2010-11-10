@@ -13,9 +13,6 @@ $(IOC):CA_CONN_CNT 1 monitor
 $(IOC):FD_FREE 1 monitor 
 
 # Archive these values at the specified rate
-$(IOC):SYS_MBUF_FREE 30 
-$(IOC):SR_0_Time 30 
-$(IOC):SR_1_Time 30 
 $(IOC):LOAD 30 
 $(IOC):MEM_FREE 30 
 $(IOC):SYS_MBUF_FREE 30 
