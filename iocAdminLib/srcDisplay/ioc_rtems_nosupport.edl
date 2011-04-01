@@ -573,7 +573,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_soft.edl"
+  0 "ioc_softreset_confirm_soft"
 }
 setPosition {
   0 "parentWindow"
@@ -604,7 +604,7 @@ buttonLabel "More IOC Stats..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_stats.edl"
+  0 "ioc_stats"
 }
 setPosition {
   0 "parentWindow"

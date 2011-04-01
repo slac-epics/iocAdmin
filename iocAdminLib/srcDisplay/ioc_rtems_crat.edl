@@ -828,7 +828,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_wiener7.edl"
+  0 "ioc_softreset_confirm_wiener7"
 }
 setPosition {
   0 "parentWindow"
@@ -875,7 +875,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_wiener21.edl"
+  0 "ioc_softreset_confirm_wiener21"
 }
 setPosition {
   0 "parentWindow"
@@ -1060,7 +1060,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_4.edl"
+  0 "ioc_softreset_confirm_4"
 }
 setPosition {
   0 "parentWindow"
@@ -1107,7 +1107,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_4.edl"
+  0 "ioc_softreset_confirm_4"
 }
 setPosition {
   0 "parentWindow"
@@ -1154,7 +1154,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_8.edl"
+  0 "ioc_softreset_confirm_8"
 }
 setPosition {
   0 "parentWindow"
@@ -1201,7 +1201,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_8.edl"
+  0 "ioc_softreset_confirm_8"
 }
 setPosition {
   0 "parentWindow"
@@ -1301,7 +1301,7 @@ buttonLabel "More IOC Stats..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_stats.edl"
+  0 "ioc_stats"
 }
 setPosition {
   0 "parentWindow"

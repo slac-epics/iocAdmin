@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 602
-y 49
+x 185
+y 138
 w 280
 h 456
 font "helvetica-medium-r-12.0"
@@ -35,9 +35,9 @@ x 0
 y 0
 w 280
 h 40
-lineColor index 56
+lineColor index 54
 fill
-fillColor index 56
+fillColor index 54
 lineWidth 0
 endObjectProperties
 
@@ -70,7 +70,7 @@ x 8
 y 0
 w 272
 h 40
-font "helvetica-bold-r-14.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 53
 useDisplayBg
@@ -105,7 +105,7 @@ x 8
 y 48
 w 40
 h 16
-font "helvetica-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -114,7 +114,7 @@ value {
 }
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -132,7 +132,7 @@ font "helvetica-medium-r-12.0"
 fontAlign "right"
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -164,11 +164,11 @@ bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Home"
+buttonLabel "Home..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "$(HOME)"
+  0 "lcls_main"
 }
 setPosition {
   0 "parentWindow"
@@ -178,7 +178,7 @@ replaceSymbols {
 }
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -238,7 +238,7 @@ value {
 }
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -260,7 +260,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -320,7 +320,7 @@ value {
 }
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -361,7 +361,7 @@ value {
 }
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -498,7 +498,7 @@ value {
 lineWidth 0
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -538,7 +538,7 @@ value {
 }
 endObjectProperties
 
-# (Text Update)
+# (Textupdate)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -579,31 +579,18 @@ value {
 }
 endObjectProperties
 
-# (Related Display)
-object relatedDisplayClass
+# (Group)
+object activeGroupClass
 beginObjectProperties
 major 4
-minor 2
+minor 0
 release 0
-x 80
-y 296
-w 120
+x 128
+y 264
+w 128
 h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "More IOC Stats..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "iocscreens/ioc_stats.edl"
-}
-setPosition {
-  0 "parentWindow"
-}
-endObjectProperties
+
+beginGroup
 
 # (Related Display)
 object relatedDisplayClass
@@ -624,11 +611,41 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_softreset_confirm_soft.edl"
+  0 "ioc_softreset_confirm_soft"
 }
 setPosition {
   0 "parentWindow"
 }
 colorPv "$(ioc):SYSRESET.SEVR"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 80
+y 296
+w 120
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "More IOC Stats..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_stats"
+}
+setPosition {
+  0 "parentWindow"
+}
 endObjectProperties
 
