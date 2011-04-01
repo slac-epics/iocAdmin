@@ -38,4 +38,4 @@ pathmunge $EPICS_SITE_TOP/extensions/current/bin/$EPICS_HOST_ARCH after
 unset pathmunge
 
 # Launch edm with iocAdmin demo screen
-edm -x -eolc -m "ioc=AMO:R14:IOC:41,HOME=AMOHome.edl,HOST=AMO-R14-IOC-41" iocAdminLib/srcDisplay/ioc_screen_demo.edl &
+edm -x -eolc -m "ioc=AMO:R14:IOC:10,HOME=AMOHome.edl,HOST=AMO-R14-IOC-10" iocAdminLib/srcDisplay/ioc_screen_demo.edl &

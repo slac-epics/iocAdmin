@@ -1,0 +1,37 @@
+#
+#	PCDS_RELEASE_NOTES
+#
+#	Please add comments for each PCDS release of this module
+#	describing any significant changes.
+#
+
+#############################################################
+R3.0.0-0.1.0: Apr  1, 2011
+	Merged in updates from lcls CVS repo w/ tag iocAdmin-R3-0-0
+	BASE_MODULE_VERSION=R3.14.9-0.3.0
+	SEQ_MODULE_VERSION=R2.0.11-1.0.0
+#############################################################
+R2.0.0-1.1.0: Nov 10, 2010
+	Fixed some duplicates in archive_iocAdmin.template
+	Set right and left justify for iocAdmin split directory strings
+	so the result looks like one string.
+#############################################################
+R2.0.0-1.0.0: Sep 21, 2010
+	Added RELEASE_SITE and updated configure/RELEASE to use it
+	Added files to generate autosave and archive templates
+#############################################################
+R2.0.0-0.8.0: Jul  8, 2010
+	Fixed remaining broken paths for iocAdmin screens
+#############################################################
+R2.0.0-0.7.0: Jun 30, 2010
+	Fixed paths for soft reset confirmation screens
+#############################################################
+R2.0.0-0.6.0: Jun  9, 2010
+	Added new screen for IOC's with iBootBar power control: ioc_rtems_power
+	Added new screen and launch script for developers: ioc_screen_demo.edl
+	Made home screen name be a macro $(HOME)
+#############################################################
+R2.0.0-0.5.0: May 24, 2010
+	Took $(IOCNAME) out of a DESC field so it
+		won't blow up on long IOC names
+#############################################################

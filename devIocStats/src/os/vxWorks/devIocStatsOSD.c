@@ -29,7 +29,6 @@
 #include "devIocStats.h"
 #include "epicsDynLink.h"
 
-#include <end.h>
 #ifdef END_MIB_2233 /* This is defined in end.h if 2233 drivers are suppored on the OS */
 #include <ipProto.h>
 #include <private/muxLibP.h>
@@ -184,10 +183,11 @@ static void getIFErrors(int *iferrors)
 	iferrors[0] = 0; iferrors[1] = 0;
 	
 #if _WRS_VXWORKS_MAJOR >= 6
+#if 0
 	TAILQ_FOREACH(ifp, (&ifnet_head), if_link)
+#endif
 #else
 	for (ifp = ifnet;  ifp != NULL;  ifp = ifp->if_next)
-#endif
 	{
 #ifdef END_MIB_2233 /* This is defined in end.h if 2233 drivers are suppored on the OS */
 		/* This block localizes the 2233 variables so we wont get unused variable warnings */
@@ -219,6 +219,7 @@ static void getIFErrors(int *iferrors)
 		iferrors[1] += ifp->if_oerrors;
 #endif /*END_MIB_2233*/
 	}
+#endif
 }
 
 static int getSuspendedTasks(void)

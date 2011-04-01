@@ -1,3 +1,18 @@
+# Used by Channel Access Security to determine access to this IOC.
+record(mbbo, "$(IOCNAME):ACCESS")
+{
+  field(DESC, "$(IOCNAME) Acc Mode")
+  field(ASG,  "IOCMANAGERS")
+  field(PINI, "YES")
+  field(ZRST, "Running")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Maintenance")
+  field(ONSV, "MINOR")
+  field(TWST, "Test")
+  field(TWSV, "MINOR")
+  field(THST, "OFFLINE")
+  field(THSV, "MAJOR")
+}
 record(stringin, "$(IOCNAME):STARTTOD")
 {
     field(DESC, "Time and date of startup")
@@ -62,6 +77,13 @@ record(ai, "$(IOCNAME):CA_CONN_CNT") {
   field(HIGH, "1000")
   field(HHSV, "MAJOR")
   field(HSV, "MINOR")
+}
+
+record(ai, "$(IOCNAME):RECORD_CNT") {
+  field(DESC, "Number of Records")
+  field(PINI, "YES")
+  field(DTYP, "IOC stats")
+  field(INP, "@records")
 }
 
 record(ai, "$(IOCNAME):FD_MAX") {
@@ -143,7 +165,7 @@ record(ai, "$(IOCNAME):MEM_BLK_FREE") {
   field(LSV, "MINOR")
 }
 
-record(ao, "$(IOCNAME):CA_UPD_RATE") {
+record(ao, "$(IOCNAME):CA_UPD_TIME") {
   field(DESC, "CA Check Update Period")
   field(DTYP, "IOC stats")
   field(OUT, "@ca_scan_rate")
@@ -152,6 +174,7 @@ record(ao, "$(IOCNAME):CA_UPD_RATE") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "15")
+  field(PINI, "YES")
 }
 
 record(ao, "$(IOCNAME):FD_UPD_TIME") {
@@ -163,6 +186,7 @@ record(ao, "$(IOCNAME):FD_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "20")
+  field(PINI, "YES")
 }
 
 record(ao, "$(IOCNAME):LOAD_UPD_TIME") {
@@ -174,6 +198,7 @@ record(ao, "$(IOCNAME):LOAD_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "10")
+  field(PINI, "YES")
 }
 
 record(ao, "$(IOCNAME):MEM_UPD_TIME") {
@@ -185,6 +210,7 @@ record(ao, "$(IOCNAME):MEM_UPD_TIME") {
   field(DRVL, "1")
   field(HOPR, "60")
   field(VAL, "10")
+  field(PINI, "YES")
 }
 
 record(stringin, "$(IOCNAME):ST_SCRIPT1") {

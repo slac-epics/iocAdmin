@@ -55,7 +55,7 @@
 	Note that the valid values for the parm field of the link
 	information are:
 
-	stringin:
+	stringin (DTYP = "IOC stats"):
 
 		Some values displayed by the string records are
 	 	longer than the 40 char string record length, so multiple 
@@ -76,12 +76,18 @@
 					Default - uses ENGINEER env var.
                 location                -IOC Location
 					Default - uses LOCATION env var.
-                logname                 -IOC Log Name
-					Default - uses LOGNAME env var.
                 hostname                -IOC Host Name from gethostname
                 pwd[1-2]                -IOC Current Working Directory
                                         (2 records) from getcwd
                 up_time                 -IOC Up Time
+                
+	stringin (DTYP = "IOC env var"):
+
+                <environment variable>
+
+	stringin (DTYP = "IOC epics var"):
+
+                <EPICS environment variable from envDefs.h>
 */
 
 #include <stdlib.h>
@@ -97,6 +103,7 @@
 #include "devSup.h"
 #include "stringinRecord.h"
 #include "recGbl.h"
+#include "envDefs.h"
 #include "devIocStats.h"
 
 #define MAX_NAME_SIZE (MAX_STRING_SIZE-1)
@@ -132,6 +139,10 @@ typedef struct validGetStrParms validGetStrParms;
 
 static long stringin_init_record(stringinRecord*);
 static long stringin_read(stringinRecord*);
+static long envvar_init_record(stringinRecord*);
+static long envvar_read(stringinRecord*);
+static long epics_init_record(stringinRecord*);
+static long epics_read(stringinRecord*);
 
 static void statsSScript1(char *);
 static void statsSScript2(char *);
@@ -150,7 +161,6 @@ static void statsUpTime(char *);
 static void statsHostName(char *);
 static void statsPwd1(char *);
 static void statsPwd2(char *);
-static void statsLogName(char *);
 
 static validGetStrParms statsGetStrParms[]={
 	{ "startup_script_1",		statsSScript1,		STATIC_TYPE },
@@ -170,12 +180,15 @@ static validGetStrParms statsGetStrParms[]={
         { "hostname",			statsHostName,		STATIC_TYPE },
         { "pwd1",			statsPwd1,		STATIC_TYPE },
         { "pwd2",			statsPwd2,		STATIC_TYPE },
-        { "logname",			statsLogName,		STATIC_TYPE },
 	{ NULL,NULL,0 }
 };
 
-sStats devStringinStats={5,NULL,NULL,stringin_init_record,NULL,stringin_read };
+sStats devStringinStats  ={5,NULL,NULL,stringin_init_record,NULL,stringin_read};
+sStats devStringinEnvVar ={5,NULL,NULL,envvar_init_record,  NULL,envvar_read  };
+sStats devStringinEpics  ={5,NULL,NULL,epics_init_record,   NULL,epics_read   };
 epicsExportAddress(dset,devStringinStats);
+epicsExportAddress(dset,devStringinEnvVar);
+epicsExportAddress(dset,devStringinEpics);
 
 static char *notavail = "not available";
 static time_t starttime;
@@ -217,6 +230,46 @@ static long stringin_init_record(stringinRecord* pr)
 	return 0;	/* success */
 }
 
+static long envvar_init_record(stringinRecord* pr)
+{
+	if(pr->inp.type!=INST_IO)
+	{
+		recGblRecordError(S_db_badField,(void*)pr,
+			"devStringinEnvVar (init_record) Illegal INP field");
+		return S_db_badField;
+	}
+	pr->dpvt = pr->inp.value.instio.string;
+	if(pr->dpvt==NULL)
+	{
+		recGblRecordError(S_db_badField,(void*)pr, 
+		   "devStringinEnvVar (init_record) Illegal INP parm field");
+		return S_db_badField;
+	}
+	return 0;	/* success */
+}
+
+static long epics_init_record(stringinRecord* pr)
+{
+        long status;
+        const ENV_PARAM **ppParam = env_param_list;
+  
+	status = envvar_init_record(pr);
+	if (status) return status;
+
+        /* Find a match with one of the EPICS env vars */
+        while (*ppParam) {
+          if (strcmp(pr->dpvt, (*ppParam)->name) == 0) {
+            pr->dpvt = (void *)*ppParam;
+            return 0;
+          }
+          ppParam++;
+        }
+        pr->dpvt = 0;
+        recGblRecordError(S_db_badField,(void*)pr,
+                "devStringinEnvVar (init_record) Illegal INP parm field");
+        return S_db_badField;
+}
+
 static long stringin_read(stringinRecord* pr)
 {
 	pvtArea* pvt=(pvtArea*)pr->dpvt;
@@ -224,7 +277,29 @@ static long stringin_read(stringinRecord* pr)
 	statsGetStrParms[pvt->index].func(pr->val);
 	pr->udf=0;
 	return(0);	/* success */
+}
 
+static long envvar_read(stringinRecord* pr)
+{
+	char **envvar = &notavail;
+        char *buf;
+        
+        if ( (buf=getenv((char *)pr->dpvt)) ) envvar = &buf;
+        strncpy(pr->val, *envvar, MAX_NAME_SIZE);
+        pr->val[MAX_NAME_SIZE]=0; 
+	pr->udf=0;
+	return(0);	/* success */
+}
+
+static long epics_read(stringinRecord* pr)
+{
+        if (pr->dpvt) {
+          pr->udf=0;
+          if (!envGetConfigParam((ENV_PARAM *)pr->dpvt,
+                                 MAX_STRING_SIZE, pr->val))
+            strcpy(pr->val, "");
+        }
+	return(0);	/* success */
 }
 
 /* -------------------------------------------------------------------- */
@@ -375,21 +450,12 @@ static void statsLocation(char *d)
         d[MAX_NAME_SIZE]=0; 
 }
 
-static void statsLogName(char *d)
-{
-	char **logname = &notavail;
-        char *buf;
-        
-        if ( (buf=getenv(LOGNAME)) ) logname = &buf;
-        strncpy(d, *logname, MAX_NAME_SIZE);
-        d[MAX_NAME_SIZE]=0; 
-}
-
 static void statsHostName(char *d)
 {
     if (gethostname(d, MAX_STRING_SIZE))
       strcpy(d, notavail);
 }
+
 static void statsPwd1(char *d)
 {
     char pwd[MAX_CWD_SIZE];
@@ -401,6 +467,7 @@ static void statsPwd1(char *d)
         d[MAX_NAME_SIZE]=0;
     }
 }
+
 static void statsPwd2(char *d)
 {
     char pwd[MAX_CWD_SIZE];
