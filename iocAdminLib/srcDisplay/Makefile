@@ -14,6 +14,7 @@ EDLS += ioc_rtems_acsw.edl
 EDLS += ioc_rtems_crat.edl
 EDLS += ioc_rtems_none.edl
 EDLS += ioc_rtems_nosupport.edl
+EDLS += ioc_rtems_power.edl
 EDLS += ioc_soft.edl
 EDLS += ioc_softreset_confirm_4.edl
 EDLS += ioc_softreset_confirm_8.edl
@@ -21,6 +22,7 @@ EDLS += ioc_softreset_confirm_acsw.edl
 EDLS += ioc_softreset_confirm_soft.edl
 EDLS += ioc_softreset_confirm_wiener21.edl
 EDLS += ioc_softreset_confirm_wiener7.edl
+EDLS += ioc_screen_demo.edl
 
 include $(TOP)/configure/RULES
 #----------------------------------------

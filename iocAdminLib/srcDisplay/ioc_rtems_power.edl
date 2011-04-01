@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 185
-y 138
-w 280
-h 632
+x 295
+y 24
+w 279
+h 456
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -114,14 +114,14 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 104
-y 616
+y 440
 w 168
 h 16
 controlPv "SIOC:SYS0:AL00:TOD"
@@ -132,14 +132,14 @@ font "helvetica-medium-r-12.0"
 fontAlign "right"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 8
-y 616
+y 440
 w 120
 h 16
 controlPv "SIOC:SYS0:AL00:MODE"
@@ -178,7 +178,7 @@ replaceSymbols {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -238,7 +238,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -260,7 +260,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -320,7 +320,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -361,7 +361,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -411,174 +411,10 @@ release 0
 x 8
 y 344
 w 264
-h 272
+h 88
 lineColor index 3
 fill
 fillColor index 3
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 16
-y 584
-w 72
-h 24
-fgColor index 14
-onColor index 4
-offColor index 4
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(acsw):$(plug)POWEROFF"
-pressValue "1"
-onLabel "Power Off"
-offLabel "Power Off"
-3d
-useEnumNumeric
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 96
-y 584
-w 72
-h 24
-fgColor index 14
-onColor index 4
-offColor index 4
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(acsw):$(plug)POWERON"
-pressValue "1"
-onLabel "Power On"
-offLabel "Power On"
-3d
-useEnumNumeric
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 176
-y 584
-w 80
-h 24
-fgColor index 14
-onColor index 4
-offColor index 4
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(acsw):$(plug)HARDRESET"
-pressValue "1"
-onLabel "Hard Reset"
-offLabel "Hard Reset"
-3d
-useEnumNumeric
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 104
-y 392
-w 152
-h 24
-
-beginGroup
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 104
-y 392
-w 152
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "$(acsw)..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "acsw_wti_8port"
-}
-setPosition {
-  0 "parentWindow"
-}
-endObjectProperties
-
-endGroup
-
-visPv "$(acsw):TYPE"
-visMin "9"
-visMax "10"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 104
-y 392
-w 152
-h 24
-
-beginGroup
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 104
-y 392
-w 152
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "$(acsw)..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "acsw_wti_4port"
-}
-setPosition {
-  0 "parentWindow"
-}
-endObjectProperties
-
-endGroup
-
-visPv "$(acsw):TYPE"
-visMin "8"
-visMax "9"
 endObjectProperties
 
 # (Static Text)
@@ -589,172 +425,19 @@ minor 1
 release 0
 x 8
 y 336
-w 88
-h 16
+w 121
+h 14
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
 value {
-  "Power Switch"
+  "Remote Power Switch"
 }
+autoSize
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 16
-y 552
-w 72
-h 24
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Power Status"
-}
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 104
-y 552
-w 48
-h 24
-controlPv "$(acsw):$(plug)POWERSTATE"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 16
-y 392
-w 80
-h 24
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Power Switch"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 16
-y 360
-w 72
-h 24
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Type"
-}
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 104
-y 360
-w 168
-h 24
-controlPv "$(acsw):TYPE.DESC"
-fgColor index 14
-bgColor index 12
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 104
-y 520
-w 152
-h 24
-controlPv "$(acsw):$(plug)NAME"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 16
-y 520
-w 88
-h 24
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Plug $(plug) Name"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 16
-y 488
-w 56
-h 24
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 12
-useDisplayBg
-value {
-  "Plug"
-}
-lineWidth 0
-endObjectProperties
-
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -795,67 +478,6 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 104
-y 456
-w 152
-h 24
-controlPv "$(acsw):LOCATION"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 16
-y 456
-w 88
-h 24
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Location"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 104
-y 488
-w 152
-h 24
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 16
-bgColor index 12
-value {
-  "$(plug)"
-}
-lineWidth 0
-endObjectProperties
-
 # (Related Display)
 object relatedDisplayClass
 beginObjectProperties
@@ -883,28 +505,6 @@ setPosition {
 colorPv "$(ioc):SYSRESET.SEVR"
 endObjectProperties
 
-# (Shell Command)
-object shellCmdClass
-beginObjectProperties
-major 4
-minor 2
-release 0
-x 104
-y 424
-w 152
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Web Interface..."
-numCmds 1
-command {
-  0 "konqueror $(acswhost)"
-}
-endObjectProperties
-
 # (Related Display)
 object relatedDisplayClass
 beginObjectProperties
@@ -928,6 +528,72 @@ displayFileName {
 }
 setPosition {
   0 "parentWindow"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 16
+y 368
+w 72
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Power ON"
+numCmds 1
+command {
+  0 "/reg/common/tools/bin/power $(HOST) on"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 104
+y 368
+w 72
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Power OFF"
+numCmds 1
+command {
+  0 "/reg/common/tools/bin/power $(HOST) off"
+}
+endObjectProperties
+
+# (Shell Command)
+object shellCmdClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 192
+y 368
+w 72
+h 24
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Hard Reset"
+numCmds 1
+command {
+  0 "/reg/common/tools/bin/power $(HOST) cycle"
 }
 endObjectProperties
 

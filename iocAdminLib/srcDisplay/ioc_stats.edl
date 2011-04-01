@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 426
-y 34
+x 211
+y 51
 w 540
 h 700
 font "helvetica-bold-r-18.0"
@@ -19,10 +19,26 @@ ctlBgColor1 index 3
 ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
-title "$(ioc)"
+title "IOC Diagnostics $(ioc)"
 snapToGrid
 gridSize 5
 endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 540
+h 48
+lineColor index 56
+fill
+fillColor index 56
+lineWidth 0
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -60,35 +76,17 @@ minor 1
 release 0
 x 5
 y 1
-w 189
-h 27
-font "helvetica-bold-r-24.0"
+w 118
+h 32
+font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
   "IOC Diagnostics"
+  "$(ioc)"
 }
 autoSize
-endObjectProperties
-
-# (Exit Button)
-object activeExitButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 480
-y 5
-w 50
-h 35
-fgColor index 1
-bgColor index 25
-topShadowColor index 1
-botShadowColor index 14
-label "EXIT"
-font "helvetica-bold-r-14.0"
-3d
 endObjectProperties
 
 # (Rectangle)
@@ -111,25 +109,6 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 5
-y 25
-w 385
-h 25
-font "helvetica-bold-r-24.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "$(ioc)                                      "
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
 x 10
 y 95
 w 56
@@ -144,7 +123,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -250,7 +229,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -268,7 +247,7 @@ fill
 font "helvetica-bold-r-14.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -286,7 +265,7 @@ fill
 font "helvetica-bold-r-14.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -306,7 +285,7 @@ font "helvetica-bold-r-18.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -346,7 +325,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -406,7 +385,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -444,7 +423,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -462,7 +441,7 @@ fill
 font "helvetica-bold-r-14.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -520,7 +499,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -538,7 +517,7 @@ fill
 font "helvetica-bold-r-14.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -576,7 +555,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -592,6 +571,7 @@ fgColor index 14
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
+fontAlign "right"
 endObjectProperties
 
 # (Static Text)
@@ -614,7 +594,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -632,7 +612,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -650,7 +630,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -666,6 +646,7 @@ fgColor index 14
 bgColor index 4
 fill
 font "helvetica-bold-r-12.0"
+fontAlign "right"
 endObjectProperties
 
 # (Static Text)
@@ -688,7 +669,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -726,7 +707,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -784,7 +765,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -802,7 +783,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -840,7 +821,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -858,7 +839,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -876,7 +857,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -894,7 +875,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -912,7 +893,7 @@ fill
 font "helvetica-bold-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -974,7 +955,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -994,7 +975,7 @@ font "helvetica-bold-r-18.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1067,7 +1048,7 @@ lineColor index 14
 fillColor index 3
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1140,7 +1121,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1159,7 +1140,7 @@ font "helvetica-bold-r-14.0"
 fontAlign "right"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1239,7 +1220,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1293,7 +1274,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1312,7 +1293,7 @@ fill
 font "helvetica-bold-r-14.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1404,7 +1385,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1423,7 +1404,7 @@ font "helvetica-bold-r-18.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1502,7 +1483,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1521,7 +1502,7 @@ font "helvetica-bold-r-18.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1579,7 +1560,7 @@ buttonLabel "Clusters"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_clust"
+  0 "iocscreens/ioc_stats_clust.edl"
 }
 menuLabel {
   0 "$(ioc) Cluster Info"
@@ -1667,7 +1648,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reboot_confirm"
+  0 "iocscreens/ioc_reboot_confirm.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -1681,26 +1662,45 @@ beginObjectProperties
 major 4
 minor 2
 release 0
-x 370
+x 410
 y 10
-w 95
-h 25
-fgColor index 1
-bgColor index 44
+w 56
+h 24
+fgColor index 14
+bgColor index 4
 topShadowColor index 1
-botShadowColor index 14
-font "helvetica-bold-r-14.0"
-buttonLabel "Alarm Limits"
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Home"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_limits"
-}
-menuLabel {
-  0 "$(ioc) Alarm Limits"
+  0 "AMOHome"
 }
 setPosition {
   0 "parentWindow"
 }
+replaceSymbols {
+  0 1
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 475
+y 10
+w 52
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+label "EXIT"
+font "helvetica-medium-r-12.0"
+3d
 endObjectProperties
 

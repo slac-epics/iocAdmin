@@ -26,7 +26,7 @@ record(calcout, "$(IOCNAME):HEARTBEAT")
 #
 record( sub, "$(IOCNAME):READACF")
 {
-    field( DESC, "$(IOCNAME) ACF Update")
+    field( DESC, "ACF Update Access Security")
     field( ASG,  "IOCMANAGERS")
     field( INAM, "asSubInit")
     field( SNAM, "asSubProcess")
