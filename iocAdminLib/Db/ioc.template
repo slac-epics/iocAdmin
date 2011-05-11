@@ -121,8 +121,8 @@ record(ai, "$(IOCNAME):LOAD") {
   field(INP, "@cpu")
   field(EGU, "%")
   field(HOPR, "100")
-  field(HIHI, "80")
-  field(HIGH, "70")
+  field(HIHI, "$(LOAD.HIHI=80)")
+  field(HIGH, "$(LOAD.HIGH=70)")
   field(HHSV, "MAJOR")
   field(HSV, "MINOR")
 }
@@ -150,6 +150,11 @@ record(ai, "$(IOCNAME):MEM_FREE") {
   field(DTYP, "IOC stats")
   field(INP, "@free_bytes")
   field(EGU, "byte")
+  field(HOPR, "$(MEM_FREE.HOPR=)")
+  field(LOLO, "$(MEM_FREE.LOLO=)")
+  field(LOW,  "$(MEM_FREE.LOW=)")
+  field(LLSV, "$(MEM_FREE.LLSV=)")
+  field(LSV,  "$(MEM_FREE.LSV=)")
 }
 
 record(ai, "$(IOCNAME):MEM_BLK_FREE") {
@@ -290,13 +295,6 @@ record(stringin, "$(IOCNAME):EPICS_VERS") {
   field(PINI, "YES")
 }
 
-record(stringin, "$(IOCNAME):LOCATION") {
-  field(DESC, "Location")
-  field(DTYP, "IOC stats")
-  field(INP, "@location")
-  field(PINI, "YES")
-}
-
 record(stringin, "$(IOCNAME):HOSTNAME") {
   field(DESC, "Host Name")
   field(DTYP, "IOC stats")
@@ -360,13 +358,6 @@ record(ai, "$(IOCNAME):IFO_ERR_CNT") {
   field(DTYP, "IOC stats")
   field(SCAN, "I/O Intr")
   field(INP, "@out_errs")
-}
-
-record(stringin, "$(IOCNAME):ENGINEER") {
-  field(DESC, "Cognizant Engineer")
-  field(DTYP, "IOC stats")
-  field(INP, "@engineer")
-  field(PINI, "YES")
 }
 
 record(stringin, "$(IOCNAME):UPTIME") {
