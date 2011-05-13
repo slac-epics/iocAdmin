@@ -100,7 +100,7 @@ record(ai, "$(IOCNAME):LOAD") {
   field(EGU, "%")
   field(HOPR, "100")
   field(HIHI, "80")
-  field(HIGH, "70")
+  field(HIGH, "50")
   field(HHSV, "MAJOR")
   field(HSV, "MINOR")
 }
@@ -128,6 +128,11 @@ record(ai, "$(IOCNAME):MEM_FREE") {
   field(DTYP, "IOC stats")
   field(INP, "@free_bytes")
   field(EGU, "byte")
+  field(HOPR, "50000000")
+  field(LOLO, "1000000")
+  field(LOW, "5000000")
+  field(LLSV, "MAJOR")
+  field(LSV, "MINOR")
 }
 
 record(ai, "$(IOCNAME):MEM_BLK_FREE") {
