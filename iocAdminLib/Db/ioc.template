@@ -121,8 +121,8 @@ record(ai, "$(IOCNAME):LOAD") {
   field(INP, "@cpu")
   field(EGU, "%")
   field(HOPR, "100")
-  field(HIHI, "80")
-  field(HIGH, "50")
+  field(HIHI, "$(LOAD.HIHI=80)")
+  field(HIGH, "$(LOAD.HIGH=50)")
   field(HHSV, "MAJOR")
   field(HSV, "MINOR")
 }
@@ -150,11 +150,11 @@ record(ai, "$(IOCNAME):MEM_FREE") {
   field(DTYP, "IOC stats")
   field(INP, "@free_bytes")
   field(EGU, "byte")
-  field(HOPR, "50000000")
-  field(LOLO, "1000000")
-  field(LOW, "5000000")
-  field(LLSV, "MAJOR")
-  field(LSV, "MINOR")
+  field(HOPR, "$(MEM_FREE.HOPR=50000000)")
+  field(LOLO, "$(MEM_FREE.LOLO=1000000)")
+  field(LOW,  "$(MEM_FREE.LOW=5000000)")
+  field(LLSV, "$(MEM_FREE.LLSV=MAJOR)")
+  field(LSV,  "$(MEM_FREE.LSV=MINOR)")
 }
 
 record(ai, "$(IOCNAME):MEM_BLK_FREE") {
