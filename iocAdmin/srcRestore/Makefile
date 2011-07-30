@@ -13,7 +13,7 @@ include $(TOP)/configure/CONFIG
 #
 
 # Rules for installing ChannelWatcher files:
-CFG +=  CONFIG_RESTORES
+CFG +=  CONFIG_RESTORE
 
 RESTORES += iocAdmin.cwConfig
 RESTORES += iocAdminSoft.cwConfig
