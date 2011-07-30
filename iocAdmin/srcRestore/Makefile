@@ -15,6 +15,10 @@ include $(TOP)/configure/CONFIG
 RESTORES += iocAdmin.cwConfig
 RESTORES += iocAdminSoft.cwConfig
 
+# Use this for EPICS R3-14-8-2
+RESTORES += iocAdmin_noAlias.cwConfig
+RESTORES += iocAdminSoft_noAlias.cwConfig
+
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
