@@ -12,6 +12,9 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 
+# Rules for installing ChannelWatcher files:
+CFG +=  CONFIG_RESTORES
+
 RESTORES += iocAdmin.cwConfig
 RESTORES += iocAdminSoft.cwConfig
 
