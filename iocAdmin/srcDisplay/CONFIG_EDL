@@ -1,0 +1,4 @@
+FILE_TYPE +=  EDLS
+INSTALL_EDLS = $(INSTALL_LOCATION)/display
+
+
