@@ -21,22 +21,25 @@
  * Modifications for LCLS/SPEAR at SLAC:
  * ----------------
  *  08-08-26    Till Straumann, ported to RTEMS.
+ *              Gathering heap statistics could be expensive;
+ *              I wouldn't want to run this too often w/o
+ *              knowing how it is implemented and how it could
+ *              impact the running system.
  *
- *              RTEMS notes:
- *                - RTEMS also uses a 'workspace' memory
- *                  area which is independent of the malloc heap.
- *                  Some system-internal data structures are
- *                  allocated from the workspace area.
- *                  So far, support for monitoring the workspace area 
- *                  has not been implemented (although it would be
- *                  straightforward to do.
+ *              Furthermore, vxStats reports 'free', 'used' and
+ *              'total' memory.  Unfortunately, it just assumes
+ *              'total = free + used' instead of the correct total
+ *              number (difference could give a hint about
+ *              fragmentation). However, if you know the true total
+ *              amount of memory you can estimate fragmentation in
+ *              your head...
  *
- *              The RTEMS/BSD stack has only one pool of mbufs
- *              and only uses two sizes: MSIZE (128b) for 'ordinary'
- *              mbufs, and MCLBYTES (2048b) for 'mbuf clusters'.
- *                 Therefore, the 'data' pool is empty. However,
- *              the calculation of MinDataMBuf always shows usage
- *              info of 100% free (but 100% of 0 is still 0).
+ *              RTEMS also uses a 'workspace' memory
+ *              area which is independent of the malloc heap.
+ *              Some system-internal data structures are
+ *              allocated from the workspace area.
+ *              Support for monitoring the workspace area 
+ *              is provided in osdWorkspaceUsage.c.
  *
  *  2009-05-15  Ralph Lange (HZB/BESSY)
  *              Restructured OSD parts
@@ -45,35 +48,24 @@
 
 #include <devIocStats.h>
 
-/* Heap implementation changed; we should use
- * malloc_free_space() which handles these changes
- * transparently but then we don't get the
- * 'bytesUsed' information.
- */
-# if   (__RTEMS_MAJOR__ > 4) \
-   || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
-#define RTEMS_MALLOC_IS_HEAP
-#include <rtems/score/protectedheap.h>
-# endif
-
 int devIocStatsInitMemUsage (void) { return 0; }
 
 int devIocStatsGetMemUsage (memInfo *pval)
 {
-#ifdef RTEMS_MALLOC_IS_HEAP
+#ifdef RTEMS_PROTECTED_HEAP
     extern Heap_Control RTEMS_Malloc_Heap;
     Heap_Control *h = &RTEMS_Malloc_Heap;
     Heap_Information_block info;
 
     _Protected_heap_Get_information(h, &info);
-#else /* RTEMS_MALLOC_IS_HEAP */
+#else /* RTEMS_PROTECTED_HEAP */
     extern rtems_id      RTEMS_Malloc_Heap;
     rtems_id h = RTEMS_Malloc_Heap;
     region_information_block info;
 
     rtems_region_get_information(h, &info);
     /* rtems' malloc_free_space() looks at 'largest' -- why not 'total'? */
-#endif /* RTEMS_MALLOC_IS_HEAP */
+#endif /* RTEMS_PROTECTED_HEAP */
     pval->numBytesTotal    = info.Free.total + info.Used.total;
     pval->numBytesFree     = info.Free.total;
     pval->numBytesAlloc    = info.Used.total;
