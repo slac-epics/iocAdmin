@@ -12,6 +12,8 @@ Edit the following files for EPICS base 3.14.8.2:
 iocAdmin-R3-1-6-RC1-lcls1: July 30, 2011
    * site specific customization along with latest release from the HEAD
      of the EPICS SourceForge SVN Repositiory.
+   * Add databases, screens, and ChannelWatcher Configs with no CPU Load Alias
+     This was sone to support EPICS R3-14-8-2
 
 iocStats-R3-1-5: Mar 31, 2011
   * Change by Eric Bjorklund:
