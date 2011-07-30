@@ -10,31 +10,20 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
-/* devIocStatsOSD.h - Header for OS dependent implementation part */
+/* osdCpuUtilization.c - CPU Utilization: default implementation = do nothing */
 
 /*
  *  Author: Ralph Lange (HZB/BESSY)
  *
  *  Modification History
- *  2009-05-25 Ralph Lange (HZB/BESSY)
- *     Restructured OSD parts
- *  2010-07-14  Ralph Lange (HZB/BESSY)
- *     Added CPU Utilization (IOC load), number of CPUs
  *
  */
 
-#include <string.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include <devIocStats.h>
 
-#include <epicsExit.h>
+int devIocStatsInitCpuUtilization (loadInfo *pval) {
+    pval->noOfCpus = NO_OF_CPUS;
+    return 0;
+}
 
-#define sysBspRev()     "<not implemented>"
-#define kernelVersion() "<not implemented>"
-#define sysBootLine     "<not implemented>"
-#define FDTABLE_INUSE(i) (0)
-#define MAX_FILES 0
-#define CLUSTSIZES 2
-#define reboot(x) epicsExit(0)
-#define NO_OF_CPUS sysconf(_SC_NPROCESSORS_CONF)
-#define TICKS_PER_SEC sysconf(_SC_CLK_TCK)
+int devIocStatsGetCpuUtilization (loadInfo *pval) { return -1; }
