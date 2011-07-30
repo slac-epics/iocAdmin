@@ -117,7 +117,11 @@ static void cpuUsageTask(void *parm)
     }
 }
 
-int devIocStatsGetCpuUsage(double *pval)
+/* FIXME: When the record is passive and processes long after the cpuUsageTask() finished its round,
+   this function returns old data.
+   Maybe the cpuUsageTask() should restart itself instead of being restarted by this? */
+
+int devIocStatsGetCpuUsage (loadInfo *pval)
 {
     if (cpuUsage.startSem) {
         if (cpuUsage.didNotComplete && cpuUsage.nBurnNow==0) {
@@ -139,7 +143,7 @@ int devIocStatsGetCpuUsage(double *pval)
     } else {
         cpuUsage.usage = 0.0;
     }
-    *pval = cpuUsage.usage;
+    pval->cpuLoad = cpuUsage.usage;
     return 0;
 }
 
@@ -153,7 +157,7 @@ int devIocStatsInitCpuUsage(void)
     if (tToWait > 0) {
         /*wait for a tick*/
         epicsTimeGetCurrent(&tStart);
-        do { 
+        do {
             epicsTimeGetCurrent(&tEnd);
         } while ( epicsTimeDiffInSeconds(&tEnd, &tStart) <= 0.0 );
         epicsTimeGetCurrent(&tStart);

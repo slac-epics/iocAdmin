@@ -31,9 +31,21 @@
 #include <rebootLib.h>
 #include <memLib.h>
 #include <sysLib.h>
+#include <taskLib.h>
+#include <hostLib.h>
+#include <bootLib.h>
+#include <end.h>
+#include <smObjLib.h>
+#include <ipProto.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 /* for fdStats */
 #include <private/iosLibP.h>
+
+/* for IFErrors */
+#include <private/muxLibP.h>
 
 #ifndef _WRS_VXWORKS_MAJOR
 #define _WRS_VXWORKS_MAJOR 5
@@ -41,14 +53,22 @@
 
 #if _WRS_VXWORKS_MAJOR >= 6
 #define MAX_FILES iosMaxFiles
-#define FDTABLE_INUSE(i) (iosFdTable[i] && (iosFdTable[i]->refCnt > 0))
-#define CLUSTSIZES CL_TBL_SIZE
+#if _WRS_VXWORKS_MINOR >= 6
+#define FDTABLE_INUSE(i) (iosFdTable[i])
 #else
+#define FDTABLE_INUSE(i) (iosFdTable[i] && (iosFdTable[i]->refCnt > 0))
+#endif
+#else /* _WRS_VXWORKS_MAJOR >= 6 */
 #define MAX_FILES maxFiles
 #define FDTABLE_INUSE(i) (fdTable[i].inuse)
-#define CLUSTSIZES 10
 #endif
-typedef MEM_PART_STATS memInfo;
+
+#define CLUSTSIZES CL_TBL_SIZE
+
+/* Must use cpuBurn to determine cpu usage */
+#ifndef SECONDS_TO_BURN
+#define SECONDS_TO_BURN 5
+#endif
 
 extern char *sysBootLine;
 

@@ -26,3 +26,11 @@
 # define INSTALL_LOCATION here
 #INSTALL_LOCATION=<fullpathname>
 
+# Uncomment this to use CPU load determination from ssrlApps/miscUtils
+# provided by Till Straumann.
+#USR_CFLAGS_RTEMS += -DSSRLAPPSMISCUTILS
+
+#EXTENSIONS_MODULE_VERSION=extensions-R3-14-8-2
+#MSI=$(EPICS_SITE_TOP)/extensions/$(EXTENSIONS_MODULE_VERSION)/bin/$(EPICS_HOST_ARCH)/msi
+MSI=msi
+

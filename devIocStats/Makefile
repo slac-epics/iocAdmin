@@ -1,8 +1,46 @@
-TOP = ..
+TOP=..
+
 include $(TOP)/configure/CONFIG
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *src*))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *Src*))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *db*))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *Db*))
-include $(TOP)/configure/RULES_DIRS
+#----------------------------------------
+#  ADD MACRO DEFINITIONS AFTER THIS LINE
+#=============================
+
+# For DTYP="IOC stats"
+DBD += devIocStats.dbd
+# For DTYP="VX stats"
+DBD += devVxStats.dbd
+
+INC += devIocStatsOSD.h
+
+#=============================
+
+LIBRARY_IOC = devIocStats
+
+devIocStats_LIBS = $(EPICS_BASE_IOC_LIBS)
+devIocStats_SYS_LIBS_solaris = kstat
+
+# OSI parts
+SRCS += devIocStatsAnalog.c
+SRCS += devIocStatsString.c
+SRCS += devIocStatsSub.c
+SRCS += devIocStatsTest.c
+
+# OSD parts
+SRCS += osdCpuUsage.c
+SRCS += osdCpuUtilization.c
+SRCS += osdFdUsage.c
+SRCS += osdMemUsage.c
+SRCS += osdWorkspaceUsage.c
+SRCS += osdClustInfo.c
+SRCS += osdSuspTasks.c
+SRCS += osdIFErrors.c
+SRCS += osdBootInfo.c
+SRCS += osdSystemInfo.c
+SRCS += osdHostInfo.c
+
+#===========================
+
+include $(TOP)/configure/RULES
+#----------------------------------------
+#  ADD RULES AFTER THIS LINE
 

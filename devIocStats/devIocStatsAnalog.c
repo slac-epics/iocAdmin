@@ -1,29 +1,20 @@
+/*************************************************************************\
+* Copyright (c) 2009-2010 Helmholtz-Zentrum Berlin
+*     fuer Materialien und Energie GmbH.
+* Copyright (c) 2002 The University of Chicago, as Operator of Argonne
+*     National Laboratory.
+* Copyright (c) 2002 The Regents of the University of California, as
+*     Operator of Los Alamos National Laboratory.
+* EPICS BASE Versions 3.13.7
+* and higher are distributed subject to a Software License Agreement found
+* in file LICENSE that is included with this distribution.
+\*************************************************************************/
+
 /* devIocStatsAnalog.c - Analog Device Support Routines for IOC statistics - based on */
 /* devVXStats.c - Device Support Routines for vxWorks statistics */
 /*
  *	Author: Jim Kowalkowski
  *	Date:  2/1/96
- *
- *	Experimental Physics and Industrial Control System (EPICS)
- *
- *	Copyright 1991, the Regents of the University of California,
- *	and the University of Chicago Board of Governors.
- *
- *	This software was produced under  U.S. Government contracts:
- *	(W-7405-ENG-36) at the Los Alamos National Laboratory,
- *	and (W-31-109-ENG-38) at Argonne National Laboratory.
- *
- *	Initial development by:
- *		The Controls and Automation Group (AT-8)
- *		Ground Test Accelerator
- *		Accelerator Technology Division
- *		Los Alamos National Laboratory
- *
- *	Co-developed with
- *		The Controls and Computing Group
- *		Accelerator Systems Division
- *		Advanced Photon Source
- *		Argonne National Laboratory
  *
  * Modifications at LBNL:
  * -----------------
@@ -38,33 +29,21 @@
  * Modifications for SNS at ORNL:
  * -----------------
  *	03-01-29	CAL 	Add stringin device support.
- *
  *	03-05-08	CAL	Add minMBuf
  *
  * Modifications for LCLS/SPEAR at SLAC:
  * ----------------
- *  08-08-26    Till Straumann, ported to RTEMS.
- *
- *              RTEMS notes:
- *                - RTEMS also uses a 'workspace' memory
- *                  area which is independent of the malloc heap.
- *                  Some system-internal data structures are
- *                  allocated from the workspace area.
- *                  So far, support for monitoring the workspace area 
- *                  has not been implemented (although it would be
- *                  straightforward to do.
- *
- *              The RTEMS/BSD stack has only one pool of mbufs
- *              and only uses two sizes: MSIZE (128b) for 'ordinary'
- *              mbufs, and MCLBYTES (2048b) for 'mbuf clusters'.
- *                 Therefore, the 'data' pool is empty. However,
- *              the calculation of MinDataMBuf always shows usage
- *              info of 100% free (but 100% of 0 is still 0).
- *
  *  08-09-29    Stephanie Allison - moved os-specific parts to
- *              os/<os>/devIocStatsOSD.h and devIocStatsOSD.c.  Added reboot.
+ *              os/<os>/devIocStatsOSD.h and devIocStatsOSD.c.
  *              Split into devIocStatsAnalog, devIocStatsString,
  *              devIocStatTest.
+ *  2009-05-15  Ralph Lange (HZB/BESSY)
+ *              Restructured OSD parts
+ *  2010-07-14  Ralph Lange (HZB/BESSY)
+ *              Added CPU Utilization (IOC load), number of CPUs
+ *  2010-08-12  Stephanie Allison (SLAC):
+ *              Added RAM workspace support developed by
+ *              Charlie Xu.
  */
 
 /*
@@ -74,12 +53,16 @@
 
 	ai (DTYP="IOC stats"):
 		free_bytes	 - number of bytes in IOC not allocated
+		total_bytes      - number of bytes physically installed
 		allocated_bytes  - number of bytes allocated
 		max_free	 - size of largest free block
 		free_blocks	 - number of blocks in IOC not allocated
 		allocated_blocks - number of blocks allocated
-		cpu		 - estimated percent IOC usage by tasks
-		suspended_tasks	 - number of suspended tasks
+                sys_cpuload	 - estimated percent CPU load on the system
+                ioc_cpuload      - estimated percent CPU utilization by this IOC
+                no_of_cpus       - number of CPU cores on the system
+              ( cpu		 - same as ioc_cpuload [for compatibility] )
+                suspended_tasks	 - number of suspended tasks
 		fd		 - number of file descriptors currently in use
 		max_fd		 - max number of file descriptors
 		ca_clients	 - number of current CA clients
@@ -90,14 +73,18 @@
                 sys_mbuf	 - number of system MBUFs
                 inp_errs	 - number of IF input  errors
                 out_errs	 - number of IF output errors
-                
+		records	         - number of records
+                workspace_alloc_bytes - number of RAM workspace allocated bytes
+                workspace_free_bytes  - number of RAM workspace free bytes
+                workspace_total_bytes - number of RAM workspace total bytes
+
 	ai (DTYP="IOC stats clusts"):
                 clust_info <pool> <index> <type> where:
 		   pool		 - 0 (data) or 1 (system)
 		   index         - index into cluster array
 		   type		 - 0=size, 1=clusters, 2=free, 3=usage
-                
-                
+
+
 	ao:
 		memoryScanRate	 - max rate at which new memory stats can be read
 		fdScanRate	 - max rate at which file descriptors can be counted
@@ -113,32 +100,23 @@
 		15 - CA scan rate
 */
 
-#include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <time.h>
 
-#include "epicsStdio.h"
-#include "epicsEvent.h"
-#include "epicsThread.h"
-#include "epicsTimer.h"
-#include "epicsTime.h"
-#include "epicsExport.h"
-#include "epicsPrint.h"
-#include "epicsExit.h"
+#include <epicsThread.h>
+#include <epicsTimer.h>
+#include <epicsExport.h>
 
-#include "taskwd.h"
-#include "rsrv.h"
-#include "dbAccess.h"
-#include "dbScan.h"
-#include "devSup.h"
-#include "aiRecord.h"
-#include "aoRecord.h"
-#include "subRecord.h"
-#include "recGbl.h"
-#include "registryFunction.h"
+#include <rsrv.h>
+#include <dbAccess.h>
+#include <dbStaticLib.h>
+#include <dbScan.h>
+#include <devSup.h>
+#include <aiRecord.h>
+#include <aoRecord.h>
+#include <recGbl.h>
+
 #include "devIocStats.h"
-
 
 struct aStats
 {
@@ -189,18 +167,6 @@ struct scanInfo
 };
 typedef struct scanInfo scanInfo;
 
-struct cpuUsageInfo
-{
-	epicsEventId startSem;
-	int		didNotComplete;
-	double          tNoContention;
-	double          tNow;
-	int		nBurnNoContention;
-	int		nBurnNow;
-	double		usage;
-};
-typedef struct cpuUsageInfo cpuUsageInfo;
-
 static long ai_init(int pass);
 static long ai_init_record(aiRecord*);
 static long ai_read(aiRecord*);
@@ -218,9 +184,15 @@ static void statsFreeBlocks(double*);
 static void statsAllocBytes(double*);
 static void statsAllocBlocks(double*);
 static void statsMaxFree(double*);
-static void statsProcessLoad(double*);
+static void statsTotalBytes(double*);
+static void statsWSFreeBytes(double*);
+static void statsWSAllocBytes(double*);
+static void statsWSTotalBytes(double*);
+static void statsCpuUsage(double*);
+static void statsCpuUtilization(double*);
+static void statsNoOfCpus(double*);
 static void statsSuspendedTasks(double*);
-static void statsFd(double*);
+static void statsFdUsage(double*);
 static void statsFdMax(double*);
 static void statsCAConnects(double*);
 static void statsCAClients(double*);
@@ -230,6 +202,7 @@ static void statsDataMBuf(double*);
 static void statsSysMBuf(double*);
 static void statsIFIErrs(double *);
 static void statsIFOErrs(double *);
+static void statsRecords(double *);
 
 /* rate in seconds (memory,cpu,fd,ca) */
 /* statsPutParms[] must be in the same order (see ao_init_record()) */
@@ -241,10 +214,17 @@ static validGetParms statsGetParms[]={
 	{ "max_free",		   	statsMaxFree,		MEMORY_TYPE },
 	{ "allocated_bytes",		statsAllocBytes,	MEMORY_TYPE },
 	{ "allocated_blocks",		statsAllocBlocks,	MEMORY_TYPE },
-	{ "cpu",			statsProcessLoad,	LOAD_TYPE },
-	{ "suspended_tasks",		statsSuspendedTasks,	LOAD_TYPE },
-	{ "fd",				statsFd,		FD_TYPE },
-	{ "maxfd",			statsFdMax,		STATIC_TYPE },
+        { "total_bytes",		statsTotalBytes,	MEMORY_TYPE },
+        { "workspace_alloc_bytes",	statsWSAllocBytes,	MEMORY_TYPE },
+        { "workspace_free_bytes",	statsWSFreeBytes,	MEMORY_TYPE },
+        { "workspace_total_bytes",	statsWSTotalBytes,	MEMORY_TYPE },
+        { "sys_cpuload",		statsCpuUsage,		LOAD_TYPE },
+        { "ioc_cpuload",		statsCpuUtilization,	LOAD_TYPE },
+        { "cpu",			statsCpuUtilization,    LOAD_TYPE },
+        { "no_of_cpus",			statsNoOfCpus,		STATIC_TYPE },
+        { "suspended_tasks",		statsSuspendedTasks,	LOAD_TYPE },
+	{ "fd",				statsFdUsage,		FD_TYPE },
+        { "maxfd",			statsFdMax,	        FD_TYPE },
 	{ "ca_clients",			statsCAClients,		CA_TYPE },
 	{ "ca_connections",		statsCAConnects,	CA_TYPE },
 	{ "min_data_mbuf",		statsMinDataMBuf,	MEMORY_TYPE },
@@ -253,6 +233,7 @@ static validGetParms statsGetParms[]={
 	{ "sys_mbuf",			statsSysMBuf,		STATIC_TYPE },
 	{ "inp_errs",			statsIFIErrs,		MEMORY_TYPE },
 	{ "out_errs",			statsIFOErrs,		MEMORY_TYPE },
+	{ "records",			statsRecords,           STATIC_TYPE },
 	{ NULL,NULL,0 }
 };
 
@@ -272,14 +253,15 @@ epicsExportAddress(dset,devAoStats);
 aStats devAiClusts = {6,NULL,ai_clusts_init,ai_clusts_init_record,NULL,ai_clusts_read,NULL };
 epicsExportAddress(dset,devAiClusts);
 
-static memInfo meminfo;
+static memInfo meminfo = {0,0,0,0,0,0};
+static memInfo workspaceinfo = {0,0,0,0,0,0};
 static scanInfo scan[TOTAL_TYPES] = {{0}};
-static cpuUsageInfo cpuUsage = {0};
-static int fdinfo = 0;
-static int suspendedTasks = 0;
-static clustInfo clustinfo = {{{0}}};
+static fdInfo fdusage = {0,0};
+static loadInfo loadinfo = {1,0.,0.};
+static int recordnumber = 0;
+static clustInfo clustinfo[2] = {{{0}},{{0}}};
 static int mbufnumber[2] = {0,0};
-static int iferrors[2]   = {0,0};
+static ifErrInfo iferrors = {0,0};
 static epicsTimerQueueId timerQ = 0;
 
 /* ---------------------------------------------------------------------- */
@@ -290,7 +272,7 @@ static void timerQCreate(void*unused)
 }
 
 static epicsTimerId
-wdogCreate(void (*fn)(int), int arg)
+wdogCreate(void (*fn)(int), long arg)
 {
 	static epicsThreadOnceId inited = EPICS_THREAD_ONCE_INIT;
 
@@ -307,158 +289,54 @@ static void scan_time(int type)
 	if(scan[type].on)
 		epicsTimerStartDelay(scan[type].wd, scan[type].rate_sec);
 }
-#ifdef USE_TASKFAULT
-static void taskFault(void *user, epicsThreadId tid)
-{
-        suspendedTasks++;
-}
-#endif
-#if 0
-/* This is not going to burn anything with a modern gcc
- * (which pre-computes the result AND knows that
- * sqrt has no side-effects). Unless we use the result
- * the whole routine is probably optimized away...
- * T.S, 2008.
- */
-static double cpuBurn()
-{
-	 int i;
-	 double result = 0.0;
-
-	 for(i=0;i<5; i++) result += sqrt((double)i);
-	 return(result);
-}
-#else
-static double cpuBurn()
-{
-  epicsTimeStamp then, now;
-  double         diff;
-
-  /* poll the clock for 500us */
-  epicsTimeGetCurrent(&then);
-  do {
-      epicsTimeGetCurrent(&now);
-      diff = epicsTimeDiffInSeconds(&now,&then);
-  } while ( diff < 0.0005 );
-  return diff;
-}
-#endif
-
-
-static void cpuUsageTask(void *parm)
-{
-	while(TRUE)
-	{
-		int	 i;
-		epicsTimeStamp tStart, tEnd;
-
-		epicsEventWait(cpuUsage.startSem);
-		cpuUsage.nBurnNow=0;
-		epicsTimeGetCurrent(&tStart);
-		for(i=0; i< cpuUsage.nBurnNoContention; i++)
-		{
-			cpuBurn();
-			epicsTimeGetCurrent(&tEnd);
-			cpuUsage.tNow = epicsTimeDiffInSeconds(&tEnd, &tStart);
-			++cpuUsage.nBurnNow;
-		}
-                cpuUsage.didNotComplete = FALSE;
-	}
-}
-
-static void cpuUsageStartMeasurement()
-{
-        if(cpuUsage.didNotComplete && cpuUsage.nBurnNow==0)
-	{
-		cpuUsage.usage = 100.0;
-	}
-	else
-	{
-		double temp;
-		double ticksNow,nBurnNow;
-
-		ticksNow = cpuUsage.tNow;
-		nBurnNow = (double)cpuUsage.nBurnNow;
-		ticksNow *= (double)cpuUsage.nBurnNoContention/nBurnNow;
-		temp = ticksNow - cpuUsage.tNoContention;
-		temp = 100.0 * temp/ticksNow;
-		if(temp<0.0 || temp>100.0) temp=0.0;/*take care of tick overflow*/
-		cpuUsage.usage = temp;
-	}
-	cpuUsage.didNotComplete = TRUE;
-	epicsEventSignal(cpuUsage.startSem);
-}
-
-static void cpuUsageInit(void)
-{
-	int		nBurnNoContention=0;
-	double  tToWait  = SECONDS_TO_BURN;
-	epicsTimeStamp  tStart, tEnd;
-
-        /* Initialize only if OS wants to spin */
-        if (tToWait > 0) {
-              /*wait for a tick*/
-              epicsTimeGetCurrent(&tStart);
-              do { 
-		epicsTimeGetCurrent(&tEnd);
-              } while ( epicsTimeDiffInSeconds(&tEnd, &tStart) <= 0.0 );
-              epicsTimeGetCurrent(&tStart);
-              while(TRUE)
-              {
-		cpuBurn();
-		epicsTimeGetCurrent(&tEnd);
-		if ( epicsTimeDiffInSeconds(&tEnd, &tStart) >= tToWait ) break;
-		nBurnNoContention++;
-              }
-              cpuUsage.nBurnNoContention = nBurnNoContention;
-              cpuUsage.nBurnNow          = nBurnNoContention;
-              cpuUsage.startSem = epicsEventMustCreate(epicsEventFull);
-              cpuUsage.tNoContention = tToWait;
-              cpuUsage.tNow          = tToWait;
-  /*
-   * FIXME: epicsThreadPriorityMin is not really the lowest
-   *        priority. We could use a native call to
-   *        lower our priority further but OTOH there is not
-   *        much going on at these low levels...
-   */
-              epicsThreadCreate(
-                "cpuUsageTask",
-                epicsThreadPriorityMin,
-                epicsThreadGetStackSize(epicsThreadStackMedium),
-                (EPICSTHREADFUNC)cpuUsageTask,
-                0);
-        } else {
-              cpuUsage.startSem = 0;
-        }
-}
 
 /* -------------------------------------------------------------------- */
 
-static long ai_clusts_init(int pass) 
+static long ai_clusts_init(int pass)
 {
-   return 0;
+    if (pass) return 0;
+    devIocStatsInitClusterInfo();
+    return 0;
 }
 
 static long ai_init(int pass)
 {
-	int i;
+    long i;
 
-	if(pass) return 0;
+    if (pass) return 0;
 
-	for(i=0;i<TOTAL_TYPES;i++)
-	{
-		scanIoInit(&scan[i].ioscan);
-		scan[i].wd=wdogCreate(scan_time, i);
-		scan[i].total=0;
-		scan[i].on=0;
-		scan[i].rate_sec=scan_rate_sec[i];
-		scan[i].last_read_sec=1000000;
-	}
-	cpuUsageInit();
-#ifdef USE_TASKFAULT
-        taskwdAnyInsert(NULL, taskFault, NULL);
-#endif
-	return 0;
+    /* Create timers */
+    for (i = 0; i < TOTAL_TYPES; i++) {
+        scanIoInit(&scan[i].ioscan);
+        scan[i].wd = wdogCreate(scan_time, i);
+        scan[i].total = 0;
+        scan[i].on = 0;
+        scan[i].rate_sec = scan_rate_sec[i];
+        scan[i].last_read_sec = 1000000;
+    }
+
+    /* Init OSD stuff */
+    devIocStatsInitCpuUsage();
+    devIocStatsInitCpuUtilization(&loadinfo);
+    devIocStatsInitFDUsage();
+    devIocStatsInitMemUsage();
+    devIocStatsInitWorkspaceUsage();
+    devIocStatsInitSuspTasks();
+    devIocStatsInitIFErrors();
+
+    /* Count EPICS records */
+    if (pdbbase) {
+        DBENTRY dbentry;
+        long	  status;
+        dbInitEntry(pdbbase,&dbentry);
+        status = dbFirstRecordType(&dbentry);
+        while (!status) {
+            recordnumber += dbGetNRecords(&dbentry);
+            status = dbNextRecordType(&dbentry);
+        }
+        dbFinishEntry(&dbentry);
+    }
+    return 0;
 }
 
 static long ai_clusts_init_record(aiRecord *pr)
@@ -566,7 +444,7 @@ static long ao_init_record(aoRecord* pr)
 	}
 
 	/* Initialize value with default */
-	pr->rbv=pr->rval=scan_rate_sec[--type];
+	pr->rbv=pr->rval=scan_rate_sec[pvt->type];
 
 	/* Make sure record processing routine does not perform any conversion*/
 	pr->linr=0;
@@ -577,6 +455,8 @@ static long ao_init_record(aoRecord* pr)
 static long ai_ioint_info(int cmd,aiRecord* pr,IOSCANPVT* iopvt)
 {
 	pvtArea* pvt=(pvtArea*)pr->dpvt;
+
+	if (!pvt) return S_dev_badInpType;
 
 	if(cmd==0) /* added */
 	{
@@ -601,32 +481,47 @@ static long ao_write(aoRecord* pr)
 {
 	unsigned long sec=pr->val;
 	pvtArea	*pvt=(pvtArea*)pr->dpvt;
-	int		type=pvt->type;
+	int type;
 
-	scan[type].rate_sec=sec;
+	if (!pvt) return S_dev_badInpType;
+
+	type=pvt->type;
+        
+        if (sec > 0.0)
+          scan[type].rate_sec=sec;
+        else
+          pr->val = scan[type].rate_sec;
+        pr->udf=0;
 	return 0;
 }
 
-static long ai_clusts_read(aiRecord* pr)
+/* Cluster info read - returning value from global array */
+static long ai_clusts_read(aiRecord* prec)
 {
-	pvtClustArea* pvt=(pvtClustArea*)pr->dpvt;
+    pvtClustArea* pvt=(pvtClustArea*)prec->dpvt;
 
-        if (pvt->size < CLUSTSIZES) {
-          pr->val = clustinfo[pvt->pool][pvt->size][pvt->elem];
-          pr->udf=0;
-        }
-	return 2; /* don't convert */
+    if (!pvt) return S_dev_badInpType;
+
+    if (pvt->size < CLUSTSIZES)
+        prec->val = clustinfo[pvt->pool][pvt->size][pvt->elem];
+    else
+        prec->val = 0;
+    prec->udf = 0;
+    return 2; /* don't convert */
 }
 
+/* Generic read - calling function from table */
 static long ai_read(aiRecord* pr)
 {
-	double val;
-	pvtArea* pvt=(pvtArea*)pr->dpvt;
+    double val;
+    pvtArea* pvt=(pvtArea*)pr->dpvt;
 
-	statsGetParms[pvt->index].func(&val);
-	pr->val=val;
-	pr->udf=0;
-	return 2; /* don't convert */
+    if (!pvt) return S_dev_badInpType;
+
+    statsGetParms[pvt->index].func(&val);
+    pr->val = val;
+    pr->udf = 0;
+    return 2; /* don't convert */
 }
 
 /* -------------------------------------------------------------------- */
@@ -638,50 +533,49 @@ static void read_mem_stats(void)
 
 	if((nt-scan[MEMORY_TYPE].last_read_sec)>=scan[MEMORY_TYPE].rate_sec)
 	{
-            if (!pdevIocStatsVirtualOS->pGetMemInfo) {
-                meminfo.numBytesFree     = 1E9;
-                meminfo.numBytesAlloc    = 0;
-                meminfo.numBlocksFree    = 1E9;
-                meminfo.numBlocksAlloc   = 0;
-                meminfo.maxBlockSizeFree = 1E9;
-                scan[MEMORY_TYPE].last_read_sec=nt;
-            } else if ((*pdevIocStatsVirtualOS->pGetMemInfo)(&meminfo)==0)
-                scan[MEMORY_TYPE].last_read_sec=nt;
+            devIocStatsGetMemUsage(&meminfo);
+            devIocStatsGetWorkspaceUsage(&workspaceinfo);
+            scan[MEMORY_TYPE].last_read_sec=nt;
         }
 }
 
 static void read_fd_stats(void)
 {
-	time_t nt;
-	int i,tot;
-	time(&nt);
+    time_t nt;
+    time(&nt);
 
-	if((nt-scan[FD_TYPE].last_read_sec)>=scan[FD_TYPE].rate_sec)
-	{
-		for(tot=0,i=0;i<MAX_FILES;i++)
-		{
-			if(FDTABLE_INUSE(i)) tot++;
-		}
-		fdinfo=tot;
-		scan[FD_TYPE].last_read_sec=nt;
-	}
+    if ((nt-scan[FD_TYPE].last_read_sec) >= scan[FD_TYPE].rate_sec) {
+        devIocStatsGetFDUsage(&fdusage);
+        scan[FD_TYPE].last_read_sec = nt;
+    }
 }
 
-static int minMBuf(int dataPool)
+static void read_load_stats(void)
 {
-	int i;
-	double lowest = 1.0, comp;
+    time_t nt;
+    time(&nt);
 
-	i = 0;
-	while ((clustinfo[dataPool][i][0] != 0) && (i < CLUSTSIZES))
-	{
-          if (clustinfo[dataPool][i][1] != 0) {
-		comp = ((double)clustinfo[dataPool][i][2])/clustinfo[dataPool][i][1];
-		if (comp < lowest) lowest = comp;
-          }
-          i++;
-	}
-	return ((int)(lowest * 100));
+    if ((nt-scan[LOAD_TYPE].last_read_sec) >= scan[LOAD_TYPE].rate_sec) {
+        devIocStatsGetCpuUsage(&loadinfo);
+        devIocStatsGetCpuUtilization(&loadinfo);
+        scan[LOAD_TYPE].last_read_sec = nt;
+    }
+}
+
+static double minMBuf(int pool)
+{
+    int i = 0;
+    double lowest = 1.0, comp;
+
+    while ((clustinfo[pool][i][0] != 0) && (i < CLUSTSIZES))
+    {
+        if (clustinfo[pool][i][1] != 0) {
+            comp = ((double)clustinfo[pool][i][2]) / clustinfo[pool][i][1];
+            if (comp < lowest) lowest = comp;
+        }
+        i++;
+    }
+    return (lowest * 100);
 }
 
 static void statsFreeBytes(double* val)
@@ -709,30 +603,55 @@ static void statsMaxFree(double* val)
 	read_mem_stats();
 	*val=(double)meminfo.maxBlockSizeFree;
 }
-static void statsProcessLoad(double* val)
+static void statsTotalBytes(double* val)
 {
-        if (cpuUsage.startSem) {
-          cpuUsageStartMeasurement();
-          *val=cpuUsage.usage;
-        } else {
-          *val = 0.0;
-        } 
+    read_mem_stats();
+    *val=(double)meminfo.numBytesTotal;
+}
+static void statsWSAllocBytes(double* val)
+{
+    read_mem_stats();
+    *val=(double)workspaceinfo.numBytesAlloc;
+}
+static void statsWSFreeBytes(double* val)
+{
+    read_mem_stats();
+    *val=(double)workspaceinfo.numBytesFree;
+}
+static void statsWSTotalBytes(double* val)
+{
+    read_mem_stats();
+    *val=(double)workspaceinfo.numBytesTotal;
+}
+static void statsCpuUsage(double* val)
+{
+    read_load_stats();
+    *val = loadinfo.cpuLoad;
+}
+static void statsCpuUtilization(double* val)
+{
+    read_load_stats();
+    *val = loadinfo.iocLoad;
+}
+static void statsNoOfCpus(double* val)
+{
+    *val = (double)loadinfo.noOfCpus;
 }
 static void statsSuspendedTasks(double *val)
 {
-        if (pdevIocStatsVirtualOS->pGetSuspendedTasks)
-          *val = (double)(*pdevIocStatsVirtualOS->pGetSuspendedTasks)();
-        else
-          *val = suspendedTasks;
+        int i = 0;
+        devIocStatsGetSuspTasks(&i);
+        *val = (double)i;
 }
-static void statsFd(double* val)
+static void statsFdUsage(double* val)
 {
-	read_fd_stats();
-	*val=(double)fdinfo;
+        read_fd_stats();
+        *val = (double)fdusage.used;
 }
 static void statsFdMax(double* val)
 {
-	*val=(double)MAX_FILES;
+        read_fd_stats();
+        *val = (double)fdusage.max;
 }
 static void statsCAClients(double* val)
 {
@@ -751,105 +670,35 @@ static void statsCAConnects(double* val)
 }
 static void statsMinSysMBuf(double* val)
 {
-        int min_sys_mbuf_percent;
-        if (pdevIocStatsVirtualOS->pGetClustInfo) {
-          (*pdevIocStatsVirtualOS->pGetClustInfo)(1, clustinfo); /* this refreshes data for all records that use it. */
-          min_sys_mbuf_percent = minMBuf(SYS_POOL);
-        } else {
-          min_sys_mbuf_percent = 0;
-        }
-        *val = (double)min_sys_mbuf_percent;
+    devIocStatsGetClusterInfo(SYS_POOL, &clustinfo[SYS_POOL]);
+    *val = minMBuf(SYS_POOL);
 }
 static void statsMinDataMBuf(double* val)
 {
-        int min_data_mbuf_percent;
-        if (pdevIocStatsVirtualOS->pGetClustInfo) {
-          (*pdevIocStatsVirtualOS->pGetClustInfo)(0, clustinfo); /* this refreshes data for all records that use it. */
-          min_data_mbuf_percent = minMBuf(DATA_POOL);
-        } else {
-          min_data_mbuf_percent = 0;
-        }
-        *val = (double)min_data_mbuf_percent;
+    devIocStatsGetClusterInfo(DATA_POOL, &clustinfo[DATA_POOL]);
+    *val = minMBuf(DATA_POOL);
 }
 static void statsSysMBuf(double* val)
 {
-        if (pdevIocStatsVirtualOS->pGetTotalClusts) {
-          (*pdevIocStatsVirtualOS->pGetTotalClusts)(SYS_POOL, mbufnumber);
-          *val = (double)mbufnumber[SYS_POOL];
-        } else {
-          *val = 0.0;
-        }
+    devIocStatsGetClusterUsage(SYS_POOL, &mbufnumber[SYS_POOL]);
+    *val = (double)mbufnumber[SYS_POOL];
 }
 static void statsDataMBuf(double* val)
 {
-        if (pdevIocStatsVirtualOS->pGetTotalClusts) {
-          (*pdevIocStatsVirtualOS->pGetTotalClusts)(DATA_POOL, mbufnumber);
-          *val = (double)mbufnumber[DATA_POOL];
-        } else {
-          *val = 0.0;
-        }
+    devIocStatsGetClusterUsage(DATA_POOL, &mbufnumber[DATA_POOL]);
+    *val = (double)mbufnumber[DATA_POOL];
 }
 static void statsIFIErrs(double* val)
 {
-        if (pdevIocStatsVirtualOS->pGetIFErrors) {
-          (*pdevIocStatsVirtualOS->pGetIFErrors)(iferrors);
-          *val = (double)iferrors[0];
-        } else {
-          iferrors[0] = iferrors[1] = 0;
-          *val = 0.0;
-        }
+    devIocStatsGetIFErrors(&iferrors);
+    *val = (double)iferrors.ierrors;
 }
 static void statsIFOErrs(double* val)
 {
-	*val = (double)iferrors[1];
+    devIocStatsGetIFErrors(&iferrors);
+    *val = (double)iferrors.oerrors;
 }
-
-/*====================================================
-
-  Name: rebootProc
-
-  Rem:  This function resets the network
-        devices and transfers control to
-        boot ROMs.
-
-        If any input A through F is greater
-        than zero, the reboot is not allowed;
-	these are "inhibits."  Unless input L
-	is equal to one, the reboot is not allowed;
-	this is an "enable."  The intention is to
-	feed a BO record with a one-shot timing of
-	a few seconds to it, which has to be set
-	within a small window before requesting the
-	reboot.
-	
-        Input G is the bitmask for the reboot
-        input argument.  The possible bits are
-        defined in sysLib.h.  If input G is
-        0 (default), the reboot will be normal
-        with countdown.  If the BOOT_CLEAR bit
-        is set, the memory will be cleared first.
-
-        A taskDelay is needed before the reboot
-        to allow the reboot message to be logged.
-
-  Side: Memory is cleared if BOOT_CLEAR is set.
-        A reboot is initiated.
-        A message is sent to the error log.
-
-  Ret: long
-           OK - Successful operation (Always)
-
-=======================================================*/
-static long rebootProc(struct subRecord *psub)
+static void statsRecords(double *val)
 {
-  if ((psub->a < 0.5) && (psub->b < 0.5) &&
-      (psub->c < 0.5) && (psub->d < 0.5) &&
-      (psub->e < 0.5) && (psub->f < 0.5) &&
-      (psub->l > 0.5)) {
-     epicsPrintf("IOC reboot started\n");
-     epicsThreadSleep(1.0);
-     reboot((int)(psub->g + 0.1));
-  }
-  return(0);
+    *val = (double)recordnumber;
 }
-epicsRegisterFunction(rebootProc);

@@ -52,29 +52,37 @@
 #include <rtems/libcsupport.h>
 #include <rtems/libio_.h>
 #include <rtems/rtems_bsdnet.h>
+#include <sys/mbuf.h>
+#include <sys/socket.h>
+#include <net/if.h>
+#include <net/if_var.h>
+
 #undef malloc
 #undef free
 
-#define kernelVersion() "RTEMS-"RTEMS_VERSION
-#define sysBspRev()     "<Unimplemented>"
+# if   (__RTEMS_MAJOR__ > 4) \
+   || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
+#define RTEMS_PROTECTED_HEAP
+#include <rtems/score/protectedheap.h>
+# else
+#include <rtems/score/apimutex.h>
+# endif
 
-#define MAX_FILES   rtems_libio_number_iops
+#include <string.h>
+#include <stdlib.h>
+
 #define sysBootLine rtems_bsdnet_bootp_cmdline
-#define FDTABLE_INUSE(i) (rtems_libio_iops[i].flags & LIBIO_FLAGS_OPEN)
 /* Override default STARTUP environment variable to use INIT */
 #undef  STARTUP
 #define STARTUP "INIT"
 #define CLUSTSIZES 2 /* only regular mbufs and clusters */
-#ifdef USE_epicsExit
-#define reboot(x) epicsExit(0)
+
+#ifdef RTEMS_BSP_PGM_EXEC_AFTER /* only defined on uC5282 */
+#define reboot(x) bsp_reset(0)
+#elif   (defined(__PPC__) && ((__RTEMS_MAJOR__ > 4) \
+         || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 9) \
+         || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ == 9 && __RTEMS_REVISION__ > 0)))
+#define reboot(x) bsp_reset()
 #else
 #define reboot(x) rtemsReboot()
 #endif
-
-typedef struct {
-  unsigned long numBytesFree;
-  unsigned long numBytesAlloc;
-  unsigned long numBlocksFree;  /* not supported */
-  unsigned long numBlocksAlloc; /* not supported */
-  unsigned long maxBlockSizeFree;
-} memInfo;

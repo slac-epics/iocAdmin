@@ -22,13 +22,15 @@
 
 #include <sys/resource.h>
 #include <dirent.h>
+#include <unistd.h>
+#include <stdio.h>
 
 #include <devIocStats.h>
 
 static char fddir[40] = "";
 
 int devIocStatsInitFDUsage (void) {
-    sprintf(fddir, "/proc/%d/fd", getpid());
+    sprintf(fddir, "/proc/%d/fd", (int)getpid());
     return 0;}
 
 int devIocStatsGetFDUsage (fdInfo *pval)
