@@ -13,6 +13,11 @@ EDLS += ioc_stats_release.edl
 EDLS += ioc_stats_soft.edl
 EDLS += ioc_stats_vxworks.edl
 EDLS += ioc_stats_scanmon.edl
+# Added for EPICS R3-14-8-2
+EDLS += ioc_stats_limits_noAlias.edl
+EDLS += ioc_stats_noAlias.edl
+EDLS += ioc_stats_soft_noAlias.edl
+EDLS += ioc_stats_vxworks_noAlias.edl
 
 include $(TOP)/configure/RULES
 #----------------------------------------
