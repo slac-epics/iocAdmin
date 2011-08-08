@@ -4,10 +4,12 @@
 # change this easily when relocating software.
 # ==============================================================
 EPICS_SITE_TOP=/reg/g/pcds/package/epics/3.14
+EPICS_HOST_ARCH=linux-x86_64
 
 # EPICS module releases are kept here
 EPICS_MODULES=$(EPICS_SITE_TOP)/modules
 
 # Use the latest version of msi to avoid dependency on the extensions version
 MSI=$(EPICS_SITE_TOP)/extensions/current/bin/$(EPICS_HOST_ARCH)/msi
+EPICS_HOST_ARCH=linux-x86_64
 
