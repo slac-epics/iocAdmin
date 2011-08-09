@@ -9,6 +9,25 @@ Edit the following files for EPICS base 3.14.8.2:
     - iocAdmin/srcDisplay and srcRestore - change IOC_CPU_LOAD in files to 
       the desired name.
  
+iocAdmin-R3-1-6-RC1-lcls_A: Aug. 9, 2011
+    Same as iocAdmin-R3-1-6-RC1-lcls1 but built against EPICS BASE R3-14-8-2-lcls6
+    
+iocAdmin-R3-1-6-RC1-lcls1: July 30, 2011
+   * site specific customization along with latest release from the HEAD
+     of the EPICS SourceForge SVN Repositiory.
+   * Add databases, screens, and ChannelWatcher Configs with no CPU Load Alias
+     This was sone to support EPICS R3-14-8-2
+   * Change by Judy Rock:
+    - iocAdmin/src/iocReleaseCreateDb.py - look for epics base version in 2nd
+      argument if not found in the first.
+    - configure/RULES_BUILD - add 2nd argument to iocReleaseCreateDb.py rule.
+  * Change by Sonya Hoobler:
+    - iocAdmin/srcDisplay/ioc_stats*.edl - correct READACF command.  Add
+      confirm display for reloading the access security file.
+  * Change by Stephanie Allison:
+    - iocAdmin/Db - remove baseSecurity.acf, remove ASGs in templates.
+      Add TODFORMAT macro to TOD (time-of-day) records.
+
 iocStats-R3-1-5: Mar 31, 2011
   * Change by Eric Bjorklund:
     - devIocStats/os/vxWorks/osdMemUsage.c - correct vxWorks meminfo structure
