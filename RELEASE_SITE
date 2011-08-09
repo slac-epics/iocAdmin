@@ -8,10 +8,10 @@
 # We will build some tools/scripts that allow us to
 # change this easily when relocating software.
 #==============================================================================
-EPICS_SITE_TOP=/afs/slac/g/lcls/epics
-BASE_SITE_TOP=/afs/slac/g/lcls/epics/base
-MODULES_SITE_TOP=/afs/slac/g/lcls/epics/modules
-IOC_SITE_TOP=/afs/slac/g/lcls/epics/iocTop
-EPICS_BASE_VER=base-R3-14-8-2-lcls6_p1
-WWW_DIR=/afs/slac/www/grp/lcls/controls
+EPICS_SITE_TOP=/usr/local/lcls/epics
+BASE_SITE_TOP=/usr/local/lcls/epics/base
+MODULES_SITE_TOP=/usr/local/lcls/epics/modules
+IOC_SITE_TOP=/usr/local/lcls/epics/iocTop
+EPICS_BASE_VER=base-R3-14-8-2-lcls6
+WWW_DIR=/usr/local/www/grp/lcls/controls
 #==============================================================================
