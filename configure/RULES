@@ -1,5 +1,13 @@
 #CONFIG
 include $(EPICS_BASE)/configure/RULES
 
+-include $(CONFIG)/RULES.Display
+
+-include $(CONFIG)/RULES.Restore
+
+-include $(CONFIG)/RULES.autosave
+
+-include $(CONFIG)/RULES.archive
+
 # Library should be rebuilt because LIBOBJS may have changed.
 $(LIBNAME): ../Makefile

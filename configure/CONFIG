@@ -13,6 +13,8 @@ include $(CONFIG)/CONFIG
 
 # Override for definition in base
 INSTALL_LOCATION = $(TOP)
+INSTALL_ARCHIVE = $(INSTALL_LOCATION)/archive
+INSTALL_AUTOSAVE = $(INSTALL_LOCATION)/autosave
 include $(TOP)/configure/CONFIG_SITE
 -include $(TOP)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH)
 -include $(TOP)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).Common
