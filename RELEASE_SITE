@@ -9,5 +9,5 @@ EPICS_SITE_TOP=/reg/g/pcds/package/epics/3.14
 EPICS_MODULES=$(EPICS_SITE_TOP)/modules
 
 # Use the latest version of msi to avoid dependency on the extensions version
-MSI=$(EPICS_SITE_TOP)/extensions/current/bin/$(EPICS_HOST_ARCH)/msi
+MSI=$(EPICS_SITE_TOP)/extensions/current/bin/linux-x86/msi
 
