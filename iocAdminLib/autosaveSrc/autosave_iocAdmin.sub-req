@@ -1,6 +1,6 @@
 #
 # iocAdmin autosave sample substitutions file
 #
-file autosave_iocAdmin.template
+file autosave_iocAdmin.tpl-req
 {
 }

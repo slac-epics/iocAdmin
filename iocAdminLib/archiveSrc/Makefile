@@ -7,11 +7,11 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # Archive request files, templates, substitutions like this
 # ARCHIVE += <file>.archive
-# ARCHIVE += <file>.substitutions
-# ARCHIVE += <file>.template
+# ARCHIVE += <file>.sub-arch
+# ARCHIVE += <file>.tpl-arch
 #
-ARCHIVE += archive_iocAdmin.substitutions
-ARCHIVE += archive_iocAdmin.template
+ARCHIVE += archive_iocAdmin.sub-arch
+ARCHIVE += archive_iocAdmin.tpl-arch
 
 include $(TOP)/configure/RULES
 #----------------------------------------

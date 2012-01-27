@@ -7,11 +7,11 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # Autosave request files, templates, substitutions like this
 # REQ += <file>.req
-# REQ += <file>.substitutions
-# REQ += <file>.template
+# REQ += <file>.sub-req
+# REQ += <file>.tpl-req
 #
-REQ += autosave_iocAdmin.substitutions
-REQ += autosave_iocAdmin.template
+REQ += autosave_iocAdmin.sub-req
+REQ += autosave_iocAdmin.tpl-req
 
 include $(TOP)/configure/RULES
 #----------------------------------------
