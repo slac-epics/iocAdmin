@@ -11,7 +11,6 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # ===============================================================
 # Define the version(s) of any other needed modules 
 # ===============================================================
-SEQ_MODULE_VERSION=R2.1.2-0.2.0
 
 # ============================================================
 # External Support module path definitions
@@ -26,5 +25,4 @@ SEQ_MODULE_VERSION=R2.1.2-0.2.0
 #
 # If your build fails, look for these paths in your build output
 # ============================================================
-SEQ=$(EPICS_MODULES)/seq/$(SEQ_MODULE_VERSION)
 
