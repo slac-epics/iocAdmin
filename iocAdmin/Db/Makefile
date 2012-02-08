@@ -25,10 +25,6 @@ DB += iocAdminVxWorks.db
 DB += iocAdminSoft.db
 DB += iocAdminRTEMS.db
 DB += iocAdminScanMon.db
-# Load these one on your IOC for EPICS R3-14-8-2
-DB += iocAdminVxWorks_noAlias.db
-DB += iocAdminSoft_noAlias.db
-DB += iocAdminRTEMS_noAlias.db
 
 #
 #----------------------------------------------------
