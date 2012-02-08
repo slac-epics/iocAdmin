@@ -9,29 +9,24 @@
 * in file LICENSE that is included with this distribution.
 \*************************************************************************/
 
-/* osdBootInfo.c - Boot info strings: default implementation */
+/* osdSystemInfo.c - System info strings: posix implementation = use uname() */
 
-/*
- *  Author: Ralph Lange (HZB/BESSY)
- *
- *  Modification History
- *  2009-05-20 Ralph Lange (HZB/BESSY)
- *     Restructured OSD parts
- *
- */
-
-#define SYSBOOTLINE_NEEDED
 #include <devIocStats.h>
 
-int devIocStatsInitBootInfo (void) { return 0; }
+static char *notavail = "<not available>";
 
-int devIocStatsGetStartupScript (char **pval)
-{
-    return devIocStatsGetStartupScriptDefault(pval);
+int devIocStatsInitSystemInfo (void) {
+    return 0;
 }
 
-int devIocStatsGetBootLine (char **pval)
+int devIocStatsGetBSPVersion (char **pval)
 {
-    *pval = sysBootLine;
+    *pval = notavail;
+    return -1;
+}
+
+int devIocStatsGetKernelVersion (char **pval)
+{
+    *pval = notavail;
     return 0;
 }
