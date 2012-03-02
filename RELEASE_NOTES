@@ -1,5 +1,20 @@
-Release Notes for iocStats
---------------------------
+iocAdmin-R3-1-8-lcls1:  Merged devIocStats-R3.1.8 from SourceForge with our iocAdmin
+                        here at SLAC.  
+                        The RELEASE_NOTES for iocStats-R3-1-8 apply in this release as well
+
+iocAdmin-R3-1-6-RC1-lcls_A: Aug. 9, 2011
+    Same as iocAdmin-R3-1-6-RC1-lcls1 but built against EPICS BASE R3-14-8-2-lcls6
+
+iocAdmin-R3-1-6-RC1-lcls1: July 30, 2011
+   * site specific customization along with latest release from the HEAD
+     of the EPICS SourceForge SVN Repositiory.
+   * Add databases, screens, and ChannelWatcher Configs with no CPU Load Alias
+     This was sone to support EPICS R3-14-8-2
+   * Change by Judy Rock:
+
+
+Release Notes devIocStats from SourceForge:
+------------------------------------------------------------------------------
 
 Note: iocStats releases above R3-1-3 require EPICS base 3.14.11 or above.  
 Edit the following files for EPICS base 3.14.8.2:
@@ -9,6 +24,7 @@ Edit the following files for EPICS base 3.14.8.2:
     - iocAdmin/srcDisplay and srcRestore - change IOC_CPU_LOAD in files to 
       the desired name.
  
+
 iocStats-R3-1-8: Dec 4, 2011
   * improvements for non-posix targets.
 
