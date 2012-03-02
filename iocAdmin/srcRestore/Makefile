@@ -12,8 +12,15 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 
+# Rules for installing ChannelWatcher files:
+CFG +=  CONFIG_RESTORE
+
 RESTORES += iocAdmin.cwConfig
 RESTORES += iocAdminSoft.cwConfig
+
+# Use this for EPICS R3-14-8-2
+RESTORES += iocAdmin_noAlias.cwConfig
+RESTORES += iocAdminSoft_noAlias.cwConfig
 
 include $(TOP)/configure/RULES
 #----------------------------------------
