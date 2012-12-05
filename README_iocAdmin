@@ -1,4 +1,4 @@
-Instructions for iocAdmin users                    Last Updated 05/19/2011
+Instructions for iocAdmin users                    Last Updated 12/05/2012
 --------------------------------
 
 The iocAdmin package contains databases and libraries to add ioc administration
@@ -129,7 +129,12 @@ III - Adding iocAdmin to CA Clients:
 	Soft IOCs only:
 	$(IOCADMIN)/restore/iocAdminSoft.cwConfig
 
-    (1b) Device-Specific Records - For every device instantiating the 
+    (1b) IOC Startup Counter - <iocname>:START_CNT keeps a count of the
+         number of times the ioc has started up.  In order for it to 
+	 work properly, the record must be saved and restored across
+	 ioc startup.  It is included in the above templates.
+
+    (1c) Device-Specific Records - For every device instantiating the 
          access.db database, add these lines to the channel watcher 
          configuration file:
 
@@ -137,7 +142,10 @@ III - Adding iocAdmin to CA Clients:
 	<device name including ALL colons>FBCK /LOG
 
 (2) EDM:
-    (2a) IOC Display - Choose the correct machine area for the IOC and add 
+    (2a) For a new version of iocAdmin, copy or merge required display files 
+         from $(IOCADMIN)/display to $EDM/misc.
+
+    (2b) IOC Display - Choose the correct machine area for the IOC and add 
 	 the ioc to the proper network EDM displays:
 		$EDM/lcls/ntwk_<area>_main.edl
 		$EDM/lcls/ntwk_<area>_iocstatus.edl
@@ -151,7 +159,7 @@ III - Adding iocAdmin to CA Clients:
 	ioc_soft       - Soft IOC
 	Set the "ioc" macro to the ioc database name.
 
-    (2b) Device-Specific Display - For each device instantiating the access.db
+    (2c) Device-Specific Display - For each device instantiating the access.db
 	 database, add choice or menu buttons for ACCESS and FBCK on the 
 	 device single-unit diagnostic display and/or subsystem display 
 	 showing the device status.
@@ -163,6 +171,7 @@ III - Adding iocAdmin to CA Clients:
 	<iocname>:CA_CLNT_CNT
 	<iocname>:CA_CONN_CNT
 	<iocname>:FD_FREE
+	<iocname>:START_CNT
 
 	RTEMS and VxWorks IOCs only:
 	<iocname>:MEM_FREE
@@ -188,9 +197,9 @@ III - Adding iocAdmin to CA Clients:
 	<iocname>:FD_FREE
 	<iocname>:IOC_CPU_LOAD
 	<iocname>:HEARTBEATSUM (from the ALH soft IOC)
+	<iocname>:GTIM_ERR_CNT
 
 	RTEMS and VxWorks IOCs only:
-	<iocname>:GTIM_ERR_CNT
 	<iocname>:MEM_FREE
 	<iocname>:MEM_BLK_FREE
 	<iocname>:RAM_WS_FREE
