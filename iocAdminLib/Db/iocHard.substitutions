@@ -1,0 +1,38 @@
+#==============================================================================
+#
+# Abs:  IOC Administration Records
+#
+# Name: iocHard.substitutions
+#
+#==============================================================================
+#
+file iocHard.template
+{
+	pattern
+	{ IOCNAME }
+	{ $(IOC)  }
+}
+
+file iocEnvVars.db
+{
+	pattern
+	{ IOCNAME }
+	{ $(IOC)  }
+}
+
+file osUsage.template
+{
+	pattern
+	{ IOCNAME }
+	{ $(IOC)  }
+}
+
+file iocCluster.db
+{
+#                   Pool   Size
+	pattern
+	{ IOCNAME ,  P   ,  S   , TYPE   }
+# System Pool
+	{ $(IOC)  ,  1   ,  0   , System }
+	{ $(IOC)  ,  1   ,  1   , System }
+}

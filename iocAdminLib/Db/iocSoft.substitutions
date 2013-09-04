@@ -1,0 +1,22 @@
+#==============================================================================
+#
+# Abs:  IOC Administration Records
+#
+# Name: iocSoft.substitutions
+#
+#==============================================================================
+#
+file iocSoft.template
+{
+	pattern
+	{ IOCNAME }
+	{ $(IOC)  }
+}
+
+file iocEnvVars.db
+{
+	pattern
+	{ IOCNAME }
+	{ $(IOC)  }
+}
+

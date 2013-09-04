@@ -1,0 +1,181 @@
+
+record(ai, "$(IOCNAME):FD_MAX")
+{
+  field(DESC, "Max File Descriptors")
+  field(PINI, "YES")
+  field(DTYP, "IOC stats")
+  field(INP, "@maxfd")
+}
+
+record(ai, "$(IOCNAME):FD_CNT")
+{
+  field(DESC, "Allocated File Descriptors")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(FLNK, "$(IOCNAME):FD_FREE.VAL  PP MS")
+  field(INP, "@fd")
+}
+
+record(calc, "$(IOCNAME):FD_FREE")
+{
+  field(DESC, "Available FDs")
+  field(CALC, "B>0?B-A:C")
+  field(INPA, "$(IOCNAME):FD_CNT.VAL  NPP MS")
+  field(INPB, "$(IOCNAME):FD_MAX.VAL  NPP MS")
+  field(INPC, "1000")
+  field(HOPR, "150")
+  field(LOLO, "5")
+  field(LOW, "20")
+  field(LLSV, "MAJOR")
+  field(LSV, "MINOR")
+}
+
+record(ai, "$(IOCNAME):LOAD")
+{
+  field(DESC, "CPU Load")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@cpu")
+  field(EGU, "%")
+  field(HOPR, "100")
+  field(HIHI, "$(LOAD.HIHI=80)")
+  field(HIGH, "$(LOAD.HIGH=70)")
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+}
+
+record(ai, "$(IOCNAME):SUSP_TASK_CNT")
+{
+  field(DESC, "Number Suspended Tasks")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@suspended_tasks")
+  field(HIHI, "1")
+  field(HHSV, "MAJOR")
+}
+
+record(ai, "$(IOCNAME):MEM_USED")
+{
+  field(DESC, "Allocated Memory")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@allocated_bytes")
+  field(EGU, "byte")
+}
+
+record(ai, "$(IOCNAME):MEM_FREE")
+{
+  field(DESC, "Free Memory")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@free_bytes")
+  field(EGU, "byte")
+  field(HOPR, "$(MEM_FREE.HOPR=)")
+  field(LOLO, "$(MEM_FREE.LOLO=)")
+  field(LOW,  "$(MEM_FREE.LOW=)")
+  field(LLSV, "$(MEM_FREE.LLSV=)")
+  field(LSV,  "$(MEM_FREE.LSV=)")
+}
+
+record(ai, "$(IOCNAME):MEM_BLK_FREE")
+{
+  field(DESC, "Maximum Free Memory Block")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@max_free")
+  field(EGU, "byte")
+  field(HOPR, "50000000")
+  field(LOLO, "100000")
+  field(LOW, "500000")
+  field(LLSV, "MAJOR")
+  field(LSV, "MINOR")
+}
+
+record(ao, "$(IOCNAME):FD_UPD_TIME")
+{
+  field(DESC, "FD Check Update Time")
+  field(DTYP, "IOC stats")
+  field(OUT, "@fd_scan_rate")
+  field(EGU, "sec")
+  field(DRVH, "60")
+  field(DRVL, "1")
+  field(HOPR, "60")
+  field(VAL, "20")
+  field(PINI, "YES")
+}
+
+record(ao, "$(IOCNAME):LOAD_UPD_TIME")
+{
+  field(DESC, "CPU Check Update Period")
+  field(DTYP, "IOC stats")
+  field(OUT, "@cpu_scan_rate")
+  field(EGU, "sec")
+  field(DRVH, "60")
+  field(DRVL, "1")
+  field(HOPR, "60")
+  field(VAL, "10")
+  field(PINI, "YES")
+}
+
+record(ao, "$(IOCNAME):MEM_UPD_TIME")
+{
+  field(DESC, "Memory Check Update Period")
+  field(DTYP, "IOC stats")
+  field(OUT, "@memory_scan_rate")
+  field(EGU, "sec")
+  field(DRVH, "60")
+  field(DRVL, "1")
+  field(HOPR, "60")
+  field(VAL, "10")
+  field(PINI, "YES")
+}
+
+record(ai, "$(IOCNAME):DAT_MBUF_FREE")
+{
+  field(DESC, "Min % Free Data MBUFs")
+  field(DTYP, "IOC stats")
+  field(SCAN, "I/O Intr")
+  field(EGU, "%")
+  field(INP, "@min_data_mbuf")
+}
+
+record(ai, "$(IOCNAME):DAT_MBUF_MAX")
+{
+  field(DESC, "Number of Data MBUFs")
+  field(DTYP, "IOC stats")
+  field(INP, "@data_mbuf")
+  field(PINI, "YES")
+}
+
+record(ai, "$(IOCNAME):SYS_MBUF_FREE")
+{
+  field(DESC, "Min % Free Sys MBUFs")
+  field(DTYP, "IOC stats")
+  field(SCAN, "I/O Intr")
+  field(EGU, "%")
+  field(INP, "@min_sys_mbuf")
+}
+
+record(ai, "$(IOCNAME):SYS_MBUF_MAX")
+{
+  field(DESC, "Number of System MBUFs")
+  field(DTYP, "IOC stats")
+  field(INP, "@sys_mbuf")
+  field(PINI, "YES")
+}
+
+record(ai, "$(IOCNAME):IFI_ERR_CNT")
+{
+  field(DESC, "IF Input Errors")
+  field(DTYP, "IOC stats")
+  field(SCAN, "I/O Intr")
+  field(INP, "@inp_errs")
+}
+
+record(ai, "$(IOCNAME):IFO_ERR_CNT")
+{
+  field(DESC, "IF Output Errors")
+  field(DTYP, "IOC stats")
+  field(SCAN, "I/O Intr")
+  field(INP, "@out_errs")
+}

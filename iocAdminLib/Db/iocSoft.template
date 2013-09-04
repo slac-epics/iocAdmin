@@ -1,0 +1,160 @@
+# Used by Channel Access Security to determine access to this IOC.
+record(mbbo, "$(IOCNAME):ACCESS")
+{
+  field(DESC, "$(IOCNAME) Acc Mode")
+  field(ASG,  "IOCMANAGERS")
+  field(PINI, "YES")
+  field(ZRST, "Running")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "Maintenance")
+  field(ONSV, "MINOR")
+  field(TWST, "Test")
+  field(TWSV, "MINOR")
+  field(THST, "OFFLINE")
+  field(THSV, "MAJOR")
+}
+record(stringin, "$(IOCNAME):STARTTOD")
+{
+    field(DESC, "Time and date of startup")
+    field(DTYP, "Soft Timestamp")
+    field(PINI, "YES")
+    field(INP, "@%m/%d/%Y %H:%M:%S")
+}
+record(stringin, "$(IOCNAME):TOD")
+{
+    field(DESC, "Current time and date")
+    field(DTYP, "Soft Timestamp")
+    field(SCAN, "1 second")
+    field(INP, "@%m/%d/%Y %H:%M:%S")
+}
+record(calcout, "$(IOCNAME):HEARTBEAT")
+{
+    field(DESC, "1 Hz counter since boot")
+    field(CALC, "(A<2147483647)?A+1:1")
+    field(SCAN, "1 second")
+    field(INPA, "$(IOCNAME):HEARTBEAT")
+}
+#
+# Using an existing internal set of subroutines, this
+# PV updates the Access Security mechanism dynamically.
+# The .acf file is re-read.
+#
+record( sub, "$(IOCNAME):READACF")
+{
+    field( DESC, "ACF Update Access Security")
+    field( ASG,  "IOCMANAGERS")
+    field( INAM, "asSubInit")
+    field( SNAM, "asSubProcess")
+    field( BRSV, "INVALID")
+}
+record(sub, "$(IOCNAME):SYSRESET")
+{
+    field(DESC, "IOC Restart" )
+    field(SNAM, "rebootProc")
+    field(BRSV,"INVALID")
+    field(L,"1")
+}
+
+record(ai, "$(IOCNAME):CA_CLNT_CNT")
+{
+  field(DESC, "Number of CA Clients")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@ca_clients")
+  field(HOPR, "200")
+  field(HIHI, "175")
+  field(HIGH, "100")
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+}
+
+record(ai, "$(IOCNAME):CA_CONN_CNT")
+{
+  field(DESC, "Number of CA Connections")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@ca_connections")
+  field(HOPR, "2000")
+  field(HIHI, "1750")
+  field(HIGH, "1000")
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+}
+
+record(ai, "$(IOCNAME):RECORD_CNT")
+{
+  field(DESC, "Number of Records")
+  field(PINI, "YES")
+  field(DTYP, "IOC stats")
+  field(INP, "@records")
+}
+
+record(ao, "$(IOCNAME):CA_UPD_TIME")
+{
+  field(DESC, "CA Check Update Period")
+  field(DTYP, "IOC stats")
+  field(OUT, "@ca_scan_rate")
+  field(EGU, "sec")
+  field(DRVH, "60")
+  field(DRVL, "1")
+  field(HOPR, "60")
+  field(VAL, "15")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):ST_SCRIPT1")
+{
+  field(DESC, "Startup Script Part1")
+  field(DTYP, "IOC stats")
+  field(INP, "@startup_script_1")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):ST_SCRIPT2")
+{
+  field(DESC, "Startup Script Part2")
+  field(DTYP, "IOC stats")
+  field(INP, "@startup_script_2")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):EPICS_VERS")
+{
+  field(DESC, "EPICS Version")
+  field(DTYP, "IOC stats")
+  field(INP, "@epics_ver")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):HOSTNAME")
+{
+  field(DESC, "Host Name")
+  field(DTYP, "IOC stats")
+  field(INP, "@hostname")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):APP_DIR1")
+{
+  field(DESC, "Application Directory Part 1")
+  field(DTYP, "IOC stats")
+  field(INP, "@pwd1")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):APP_DIR2")
+{
+  field(DESC, "Application Directory Part 2")
+  field(DTYP, "IOC stats")
+  field(INP, "@pwd2")
+  field(PINI, "YES")
+}
+
+record(stringin, "$(IOCNAME):UPTIME")
+{
+  field(DESC, "Elapsed Time since Start")
+  field(SCAN, "1 second")
+  field(DTYP, "IOC stats")
+  field(INP, "@up_time")
+  field(PINI, "YES")
+}

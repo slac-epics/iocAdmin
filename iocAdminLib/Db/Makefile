@@ -11,10 +11,12 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install)
 # databases, templates, substitutions like this
 #
-DB += ioc.db
 DB += ioc.template
 DB += iocStatus.template
 DB += iocEnvVar.db
+DB += iocEnvVars.db
+DB += iocHard.db
+DB += iocSoft.db
 DB += iocCluster.db
 DB += access.db
 DB += iocAdmin.db
