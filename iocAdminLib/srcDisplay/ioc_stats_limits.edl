@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
-title "$(ioc) Limits"
+title "$(IOC) Limits"
 snapToGrid
 gridSize 5
 endScreenProperties
@@ -92,7 +92,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "$(ioc)                                      "
+  "$(IOC)                                      "
 }
 endObjectProperties
 
@@ -126,7 +126,7 @@ x 280
 y 90
 w 80
 h 20
-controlPv "$(ioc):CA_CLNT_CNT"
+controlPv "$(IOC):CA_CLNT_CNT"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -146,7 +146,7 @@ x 280
 y 120
 w 80
 h 20
-controlPv "$(ioc):CA_CONN_CNT"
+controlPv "$(IOC):CA_CONN_CNT"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -186,7 +186,7 @@ x 280
 y 150
 w 80
 h 20
-controlPv "$(ioc):SUSP_TASK_CNT"
+controlPv "$(IOC):SUSP_TASK_CNT"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -226,7 +226,7 @@ x 280
 y 240
 w 80
 h 20
-controlPv "$(ioc):MEM_BLK_FREE"
+controlPv "$(IOC):MEM_BLK_FREE"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -246,7 +246,7 @@ x 280
 y 210
 w 80
 h 20
-controlPv "$(ioc):FD_FREE"
+controlPv "$(IOC):FD_FREE"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -266,7 +266,7 @@ x 280
 y 180
 w 80
 h 20
-controlPv "$(ioc):LOAD"
+controlPv "$(IOC):LOAD"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -348,7 +348,7 @@ x 370
 y 90
 w 60
 h 20
-controlPv "$(ioc):CA_CLNT_CNT.HIGH"
+controlPv "$(IOC):CA_CLNT_CNT.HIGH"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -372,7 +372,7 @@ x 440
 y 90
 w 60
 h 20
-controlPv "$(ioc):CA_CLNT_CNT.HIHI"
+controlPv "$(IOC):CA_CLNT_CNT.HIHI"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -436,7 +436,7 @@ x 370
 y 120
 w 60
 h 20
-controlPv "$(ioc):CA_CONN_CNT.HIGH"
+controlPv "$(IOC):CA_CONN_CNT.HIGH"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -460,7 +460,7 @@ x 440
 y 120
 w 60
 h 20
-controlPv "$(ioc):CA_CONN_CNT.HIHI"
+controlPv "$(IOC):CA_CONN_CNT.HIHI"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -484,7 +484,7 @@ x 440
 y 150
 w 60
 h 20
-controlPv "$(ioc):SUSP_TASK_CNT.HIHI"
+controlPv "$(IOC):SUSP_TASK_CNT.HIHI"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -508,7 +508,7 @@ x 370
 y 180
 w 60
 h 20
-controlPv "$(ioc):LOAD.HIGH"
+controlPv "$(IOC):LOAD.HIGH"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -532,7 +532,7 @@ x 440
 y 180
 w 60
 h 20
-controlPv "$(ioc):LOAD.HIHI"
+controlPv "$(IOC):LOAD.HIHI"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -616,7 +616,7 @@ x 130
 y 210
 w 65
 h 20
-controlPv "$(ioc):FD_FREE.LOLO"
+controlPv "$(IOC):FD_FREE.LOLO"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -640,7 +640,7 @@ x 205
 y 210
 w 65
 h 20
-controlPv "$(ioc):FD_FREE.LOW"
+controlPv "$(IOC):FD_FREE.LOW"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -664,7 +664,7 @@ x 130
 y 240
 w 65
 h 20
-controlPv "$(ioc):MEM_BLK_FREE.LOLO"
+controlPv "$(IOC):MEM_BLK_FREE.LOLO"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6
@@ -688,7 +688,7 @@ x 205
 y 240
 w 65
 h 20
-controlPv "$(ioc):MEM_BLK_FREE.LOW"
+controlPv "$(IOC):MEM_BLK_FREE.LOW"
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 6

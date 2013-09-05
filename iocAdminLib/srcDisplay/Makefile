@@ -4,25 +4,27 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 # Low-level stats displays
-EDLS += ioc_stats.edl
-EDLS += ioc_stats_clust.edl
-EDLS += ioc_stats_limits.edl
-EDLS += ioc_stats_reboot_confirm.edl
+EDL += ioc_stats.edl
+EDL += ioc_stats_soft.edl
+EDL += ioc_stats_clust.edl
+EDL += ioc_stats_clust_rtems.edl
+EDL += ioc_stats_limits.edl
+EDL += ioc_stats_reboot_confirm.edl
 
 # IOC display per type of IOC
-EDLS += ioc_rtems_acsw.edl
-EDLS += ioc_rtems_crat.edl
-EDLS += ioc_rtems_none.edl
-EDLS += ioc_rtems_nosupport.edl
-EDLS += ioc_rtems_power.edl
-EDLS += ioc_soft.edl
-EDLS += ioc_softreset_confirm_4.edl
-EDLS += ioc_softreset_confirm_8.edl
-EDLS += ioc_softreset_confirm_acsw.edl
-EDLS += ioc_softreset_confirm_soft.edl
-EDLS += ioc_softreset_confirm_wiener21.edl
-EDLS += ioc_softreset_confirm_wiener7.edl
-EDLS += ioc_screen_demo.edl
+EDL += ioc_rtems_acsw.edl
+EDL += ioc_rtems_crat.edl
+EDL += ioc_rtems_none.edl
+EDL += ioc_rtems_nosupport.edl
+EDL += ioc_rtems_power.edl
+EDL += ioc_soft.edl
+EDL += ioc_softreset_confirm_4.edl
+EDL += ioc_softreset_confirm_8.edl
+EDL += ioc_softreset_confirm_acsw.edl
+EDL += ioc_softreset_confirm_soft.edl
+EDL += ioc_softreset_confirm_wiener21.edl
+EDL += ioc_softreset_confirm_wiener7.edl
+EDL += ioc_screen_demo.edl
 
 include $(TOP)/configure/RULES
 #----------------------------------------

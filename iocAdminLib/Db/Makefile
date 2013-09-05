@@ -12,6 +12,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 DB += ioc.template
+DB += iocAdmin.substitutions
 DB += iocStatus.template
 DB += iocEnvVar.db
 DB += iocEnvVars.db
@@ -19,7 +20,6 @@ DB += iocHard.db
 DB += iocSoft.db
 DB += iocCluster.db
 DB += access.db
-DB += iocAdmin.db
 DB += baseSecurity.acf
 
 #

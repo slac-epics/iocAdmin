@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 5
 topShadowColor index 1
 botShadowColor index 11
-title "IOC Status - $(ioc)"
+title "IOC Status - $(IOC)"
 showGrid
 snapToGrid
 gridSize 4
@@ -76,7 +76,7 @@ bgColor index 53
 useDisplayBg
 value {
   "IOC Status"
-  "$(ioc)"
+  "$(IOC)"
 }
 endObjectProperties
 
@@ -276,7 +276,7 @@ buttonLabel "ioc-rtems-none"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_rtems_none.edl"
+  0 "iocScreens/ioc_rtems_none.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -302,7 +302,7 @@ buttonLabel "ioc-rtems-crat"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_rtems_crat.edl"
+  0 "iocScreens/ioc_rtems_crat.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -328,7 +328,7 @@ buttonLabel "ioc-rtems-acsw"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_rtems_acsw.edl"
+  0 "iocScreens/ioc_rtems_acsw.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -354,7 +354,7 @@ buttonLabel "ioc-rtems-nosupport"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_rtems_nosupport.edl"
+  0 "iocScreens/ioc_rtems_nosupport.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -380,7 +380,7 @@ buttonLabel "ioc-soft"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_soft.edl"
+  0 "iocScreens/ioc_soft.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -406,7 +406,7 @@ buttonLabel "ioc-rtems-power"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocscreens/ioc_rtems_power.edl"
+  0 "iocScreens/ioc_rtems_power.edl"
 }
 setPosition {
   0 "parentWindow"

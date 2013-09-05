@@ -19,7 +19,7 @@ ctlBgColor1 index 4
 ctlBgColor2 index 4
 topShadowColor index 1
 botShadowColor index 11
-title "IOC Reboot Confirmation - $(ioc)"
+title "IOC Reboot Confirmation - $(IOC)"
 showGrid
 snapToGrid
 gridSize 8
@@ -72,7 +72,7 @@ bgColor index 53
 useDisplayBg
 value {
   "IOC Reboot Confirmation"
-  "$(ioc)"
+  "$(IOC)"
 }
 endObjectProperties
 
@@ -112,7 +112,7 @@ bgColor index 0
 useDisplayBg
 value {
   "Are you sure you want to"
-  "reboot $(ioc)?"
+  "reboot $(IOC)?"
 }
 endObjectProperties
 
@@ -131,7 +131,7 @@ onColor index 4
 offColor index 4
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(ioc):SYSRESET"
+controlPv "$(IOC):SYSRESET"
 pressValue "1"
 releaseValue "0"
 onLabel "Reboot Now!"

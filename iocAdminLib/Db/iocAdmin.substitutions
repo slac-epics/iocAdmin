@@ -6,51 +6,11 @@
 #
 #==============================================================================
 #
-file ioc.template
+# use one of
+# file iocHard.template
+# file iocSoft.template
+
+file iocHard.template
 {
-pattern { IOCNAME }
-	{ $(IOC)  }
-}
-file iocEnvVar.db
-{
-pattern { IOCNAME, ENVNAME      , ENVVAR                          , ENVTYPE}
-	{ $(IOC) , LOCATION     , LOCATION                        , env    }
-	{ $(IOC) , ENGINEER     , ENGINEER                        , env    }
-	{ $(IOC) , CA_ADDR_LIST , EPICS_CA_ADDR_LIST              , epics  } 
-	{ $(IOC) , CA_CONN_TIME , EPICS_CA_CONN_TMO               , epics  } 
-	{ $(IOC) , CA_AUTO_ADDR , EPICS_CA_AUTO_ADDR_LIST         , epics  }
-	{ $(IOC) , CA_RPTR_PORT , EPICS_CA_REPEATER_PORT          , epics  }
-	{ $(IOC) , CA_SRVR_PORT , EPICS_CA_SERVER_PORT            , epics  }
-	{ $(IOC) , CA_MAX_ARRAY , EPICS_CA_MAX_ARRAY_BYTES        , epics  }
-	{ $(IOC) , CA_SRCH_TIME , EPICS_CA_MAX_SEARCH_PERIOD      , epics  }
-	{ $(IOC) , CA_BEAC_TIME , EPICS_CA_BEACON_PERIOD          , epics  }
-	{ $(IOC) , TIMEZONE     , EPICS_TIMEZONE                  , epics  }
-	{ $(IOC) , TS_NTP_INET  , EPICS_TS_NTP_INET               , epics  }
-	{ $(IOC) , IOC_LOG_PORT , EPICS_IOC_LOG_PORT              , epics  }
-	{ $(IOC) , IOC_LOG_INET , EPICS_IOC_LOG_INET              , epics  }
-}
-file iocCluster.db
-{
-#                   Pool   Size
-pattern { IOCNAME ,  P   ,  S   , TYPE   }
-# Data Pool - not supported in RTEMS
-	{ $(IOC)  ,  0   ,  0   , Data   }
-	{ $(IOC)  ,  0   ,  1   , Data   }
-# 2 to 7 - not supported in RTEMS
-	{ $(IOC)  ,  0   ,  2   , Data   }
-	{ $(IOC)  ,  0   ,  3   , Data   }
-	{ $(IOC)  ,  0   ,  4   , Data   }
-	{ $(IOC)  ,  0   ,  5   , Data   }
-	{ $(IOC)  ,  0   ,  6   , Data   }
-	{ $(IOC)  ,  0   ,  7   , Data   }
-# System Pool
-	{ $(IOC)  ,  1   ,  0   , System }
-	{ $(IOC)  ,  1   ,  1   , System }
-# 2 to 7 - not supported in RTEMS
-	{ $(IOC)  ,  1   ,  2   , System }
-	{ $(IOC)  ,  1   ,  3   , System }
-	{ $(IOC)  ,  1   ,  4   , System }
-	{ $(IOC)  ,  1   ,  5   , System }
-	{ $(IOC)  ,  1   ,  6   , System }
-	{ $(IOC)  ,  1   ,  7   , System }
+	{ IOC	= $(IOC)  }
 }

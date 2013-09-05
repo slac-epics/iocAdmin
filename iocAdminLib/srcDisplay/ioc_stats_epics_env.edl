@@ -19,7 +19,7 @@ ctlBgColor1 index 3
 ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
-title "$(ioc) EPICS Env Vars"
+title "$(IOC) EPICS Env Vars"
 snapToGrid
 gridSize 5
 endScreenProperties
@@ -92,7 +92,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "$(ioc)                                      "
+  "$(IOC)                                      "
 }
 endObjectProperties
 
@@ -126,7 +126,7 @@ x 295
 y 80
 w 150
 h 15
-controlPv "$(ioc):CA_RPTR_PORT"
+controlPv "$(IOC):CA_RPTR_PORT"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -166,7 +166,7 @@ x 295
 y 60
 w 150
 h 15
-controlPv "$(ioc):CA_SRVR_PORT"
+controlPv "$(IOC):CA_SRVR_PORT"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -206,7 +206,7 @@ x 295
 y 160
 w 150
 h 15
-controlPv "$(ioc):CA_CONN_TIME"
+controlPv "$(IOC):CA_CONN_TIME"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -246,7 +246,7 @@ x 210
 y 100
 w 310
 h 15
-controlPv "$(ioc):CA_ADDR_LIST"
+controlPv "$(IOC):CA_ADDR_LIST"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -286,7 +286,7 @@ x 295
 y 120
 w 150
 h 15
-controlPv "$(ioc):CA_AUTO_ADDR"
+controlPv "$(IOC):CA_AUTO_ADDR"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -326,7 +326,7 @@ x 295
 y 180
 w 150
 h 15
-controlPv "$(ioc):CA_SRCH_TIME"
+controlPv "$(IOC):CA_SRCH_TIME"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -366,7 +366,7 @@ x 295
 y 200
 w 150
 h 15
-controlPv "$(ioc):CA_BEAC_TIME"
+controlPv "$(IOC):CA_BEAC_TIME"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -406,7 +406,7 @@ x 295
 y 140
 w 150
 h 15
-controlPv "$(ioc):CA_MAX_ARRAY"
+controlPv "$(IOC):CA_MAX_ARRAY"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -446,7 +446,7 @@ x 215
 y 220
 w 300
 h 15
-controlPv "$(ioc):TIMEZONE"
+controlPv "$(IOC):TIMEZONE"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -486,7 +486,7 @@ x 295
 y 240
 w 150
 h 15
-controlPv "$(ioc):TS_NTP_INET"
+controlPv "$(IOC):TS_NTP_INET"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -506,7 +506,7 @@ x 295
 y 260
 w 150
 h 15
-controlPv "$(ioc):IOC_LOG_PORT"
+controlPv "$(IOC):IOC_LOG_PORT"
 displayMode "decimal"
 fgColor index 14
 fgAlarm
@@ -546,7 +546,7 @@ x 295
 y 280
 w 150
 h 15
-controlPv "$(ioc):IOC_LOG_INET"
+controlPv "$(IOC):IOC_LOG_INET"
 displayMode "decimal"
 fgColor index 14
 fgAlarm

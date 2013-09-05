@@ -11,3 +11,20 @@ devIocStats		- IOC statistics device support
 iocAdminLib		- LCLS-unique database, displays, and config files
 testIocStatsApp		- Application for testing devIocStats and iocAdminLib
 
+Note regarding no longer building iocAdmin.db:
+iocAdmin.substitutions has been simplified to just use
+iocSoft.db or iocHard.db.
+Just follow the example in iocAdmin.substitutions to
+update older iocAdmin.substitutions files to generate
+hard vs soft IOC specific PV lists.
+
+As part of this change, the screens link
+has been changed from iocscreens to iocScreens to conform with
+the rest of our screen links.   Also, the macro name for the
+IOC prefix in the screens has been changed from "ioc" to "IOC"
+to conform with the rest of our screens that all use IOC.
+
+Changing the name of the screen link will allow for an easier
+migration, as IOC's using prior iocAdmin versions will be able
+to coexist with new iocAdmin IOC's during the migration.
+
