@@ -7,10 +7,10 @@
 #==============================================================================
 #
 # use one of
-# file iocHard.template
-# file iocSoft.template
+# file iocHard.db
+# file iocSoft.db
 
-file iocHard.template
+file iocHard.db
 {
 	{ IOC	= $(IOC)  }
 }
