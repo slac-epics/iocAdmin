@@ -105,7 +105,6 @@
 
 #include <epicsThread.h>
 #include <epicsTimer.h>
-#include <epicsExport.h>
 
 #include <rsrv.h>
 #include <dbAccess.h>
@@ -115,6 +114,7 @@
 #include <aiRecord.h>
 #include <aoRecord.h>
 #include <recGbl.h>
+#include <epicsExport.h>
 
 #include "devIocStats.h"
 
@@ -163,7 +163,7 @@ struct scanInfo
 	volatile int total;			/* total users connected */
 	volatile int on;			/* watch dog on? */
 	volatile time_t last_read_sec;		/* last time seconds */
-	volatile unsigned long rate_sec;	/* seconds */
+	double rate_sec;	/* seconds */
 };
 typedef struct scanInfo scanInfo;
 
@@ -204,9 +204,16 @@ static void statsIFIErrs(double *);
 static void statsIFOErrs(double *);
 static void statsRecords(double *);
 
-/* rate in seconds (memory,cpu,fd,ca) */
-/* statsPutParms[] must be in the same order (see ao_init_record()) */
-static int scan_rate_sec[] = { 10,20,10,15,0 };
+struct {
+	char *name;
+	double scan_rate;
+} parmTypes[] = {
+	{ "memory_scan_rate",	10.0 },
+	{ "cpu_scan_rate",	20.0 },
+	{ "fd_scan_rate",	10.0 },
+	{ "ca_scan_rate", 	15.0 },
+	{ NULL,			0.0  },
+};
 
 static validGetParms statsGetParms[]={
 	{ "free_bytes",			statsFreeBytes,		MEMORY_TYPE },
@@ -237,15 +244,6 @@ static validGetParms statsGetParms[]={
 	{ NULL,NULL,0 }
 };
 
-/* These are in the same order as in scan_rate_sec[] */
-static char* statsPutParms[]={
-	"memory_scan_rate",
-	"cpu_scan_rate",
-	"fd_scan_rate",
-	"ca_scan_rate",
-	NULL
-};
-
 aStats devAiStats={ 6,NULL,ai_init,ai_init_record,ai_ioint_info,ai_read,NULL };
 epicsExportAddress(dset,devAiStats);
 aStats devAoStats={ 6,NULL,NULL,ao_init_record,NULL,ao_write,NULL };
@@ -253,8 +251,8 @@ epicsExportAddress(dset,devAoStats);
 aStats devAiClusts = {6,NULL,ai_clusts_init,ai_clusts_init_record,NULL,ai_clusts_read,NULL };
 epicsExportAddress(dset,devAiClusts);
 
-static memInfo meminfo = {0,0,0,0,0,0};
-static memInfo workspaceinfo = {0,0,0,0,0,0};
+static memInfo meminfo = {0.0,0.0,0.0,0.0,0.0,0.0};
+static memInfo workspaceinfo = {0.0,0.0,0.0,0.0,0.0,0.0};
 static scanInfo scan[TOTAL_TYPES] = {{0}};
 static fdInfo fdusage = {0,0};
 static loadInfo loadinfo = {1,0.,0.};
@@ -311,7 +309,7 @@ static long ai_init(int pass)
         scan[i].wd = wdogCreate(scan_time, i);
         scan[i].total = 0;
         scan[i].on = 0;
-        scan[i].rate_sec = scan_rate_sec[i];
+        scan[i].rate_sec = parmTypes[i].scan_rate;
         scan[i].last_read_sec = 1000000;
     }
 
@@ -429,7 +427,7 @@ static long ao_init_record(aoRecord* pr)
 	parm = pr->out.value.instio.string;
 	for(type=0; type<TOTAL_TYPES; type++)
 	{
-		if(statsPutParms[type] && strcmp(parm,statsPutParms[type])==0)
+		if(parmTypes[type].name && strcmp(parm,parmTypes[type].name)==0)
 		{
 			pvt=(pvtArea*)malloc(sizeof(pvtArea));
 			pvt->index=type;
@@ -443,8 +441,9 @@ static long ao_init_record(aoRecord* pr)
 		return S_db_badField;
 	}
 
-	/* Initialize value with default */
-	pr->rbv=pr->rval=scan_rate_sec[pvt->type];
+	/* Initialize value with default if not set in db */
+	if (!pr->val)
+		pr->val=parmTypes[pvt->type].scan_rate;
 
 	/* Make sure record processing routine does not perform any conversion*/
 	pr->linr=0;
@@ -479,7 +478,6 @@ static long ai_ioint_info(int cmd,aiRecord* pr,IOSCANPVT* iopvt)
 
 static long ao_write(aoRecord* pr)
 {
-	unsigned long sec=pr->val;
 	pvtArea	*pvt=(pvtArea*)pr->dpvt;
 	int type;
 
@@ -487,8 +485,8 @@ static long ao_write(aoRecord* pr)
 
 	type=pvt->type;
         
-        if (sec > 0.0)
-          scan[type].rate_sec=sec;
+        if (pr->val > 0.0)
+          scan[type].rate_sec = pr->val;
         else
           pr->val = scan[type].rate_sec;
         pr->udf=0;
@@ -581,47 +579,47 @@ static double minMBuf(int pool)
 static void statsFreeBytes(double* val)
 {
 	read_mem_stats();
-	*val=(double)meminfo.numBytesFree;
+	*val=meminfo.numBytesFree;
 }
 static void statsFreeBlocks(double* val)
 {
 	read_mem_stats();
-	*val=(double)meminfo.numBlocksFree;
+	*val=meminfo.numBlocksFree;
 }
 static void statsAllocBytes(double* val)
 {
 	read_mem_stats();
-	*val=(double)meminfo.numBytesAlloc;
+	*val=meminfo.numBytesAlloc;
 }
 static void statsAllocBlocks(double* val)
 {
 	read_mem_stats();
-	*val=(double)meminfo.numBlocksAlloc;
+	*val=meminfo.numBlocksAlloc;
 }
 static void statsMaxFree(double* val)
 {
 	read_mem_stats();
-	*val=(double)meminfo.maxBlockSizeFree;
+	*val=meminfo.maxBlockSizeFree;
 }
 static void statsTotalBytes(double* val)
 {
     read_mem_stats();
-    *val=(double)meminfo.numBytesTotal;
+    *val=meminfo.numBytesTotal;
 }
 static void statsWSAllocBytes(double* val)
 {
     read_mem_stats();
-    *val=(double)workspaceinfo.numBytesAlloc;
+    *val=workspaceinfo.numBytesAlloc;
 }
 static void statsWSFreeBytes(double* val)
 {
     read_mem_stats();
-    *val=(double)workspaceinfo.numBytesFree;
+    *val=workspaceinfo.numBytesFree;
 }
 static void statsWSTotalBytes(double* val)
 {
     read_mem_stats();
-    *val=(double)workspaceinfo.numBytesTotal;
+    *val=workspaceinfo.numBytesTotal;
 }
 static void statsCpuUsage(double* val)
 {
