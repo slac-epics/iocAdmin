@@ -22,6 +22,7 @@ devIocStats_SYS_LIBS_solaris = kstat
 # OSI parts
 SRCS += devIocStatsAnalog.c
 SRCS += devIocStatsString.c
+SRCS += devIocStatsWaveform.c
 SRCS += devIocStatsSub.c
 SRCS += devIocStatsTest.c
 
@@ -37,6 +38,8 @@ SRCS += osdIFErrors.c
 SRCS += osdBootInfo.c
 SRCS += osdSystemInfo.c
 SRCS += osdHostInfo.c
+
+OBJS_vxWorks += osdCpuUsageTest.o
 
 #===========================
 
