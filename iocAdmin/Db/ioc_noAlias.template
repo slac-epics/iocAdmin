@@ -29,10 +29,20 @@ record(stringin, "$(IOCNAME):TOD")
 }
 record(calcout, "$(IOCNAME):HEARTBEAT")
 {
-    field(DESC, "1 Hz counter since boot")
+    field(DESC, "1 Hz counter since startup")
     field(CALC, "(A<2147483647)?A+1:1")
     field(SCAN, "1 second")
     field(INPA, "$(IOCNAME):HEARTBEAT")
+}
+# if autosave is working, START_CNT creates a running count of 
+# number of times the IOC was started.
+record(calcout, "$(IOCNAME):START_CNT")
+{
+    field(DESC, "Increments at startup")
+    field(CALC, "A+1")
+    field(PINI, "YES")
+    field(INPA, "$(IOCNAME):START_CNT")
+    info(autosaveFields_pass0, "VAL")
 }
 #
 # Using an existing internal set of subroutines, this
@@ -177,6 +187,8 @@ record(ai, "$(IOCNAME):MEM_FREE") {
   field(DTYP, "IOC stats")
   field(INP, "@free_bytes")
   field(EGU, "byte")
+  field(LLSV, "MAJOR")
+  field(LSV, "MINOR")
   info(autosaveFields_pass0, "HOPR LOPR LOW LOLO LSV LLSV")
 }
 
@@ -250,6 +262,15 @@ record(stringin, "$(IOCNAME):ST_SCRIPT2") {
   field(PINI, "YES")
 }
 
+record(waveform, "$(IOCNAME):ST_SCRIPT") {
+  field(DESC, "Startup Script")
+  field(DTYP, "IOC stats")
+  field(INP, "@startup_script")
+  field(NELM, "120")
+  field(FTVL, "CHAR")
+  field(PINI, "YES")
+}
+
 record(stringin, "$(IOCNAME):KERNEL_VERS") {
   field(DESC, "Kernel Version")
   field(DTYP, "IOC stats")
@@ -261,6 +282,15 @@ record(stringin, "$(IOCNAME):EPICS_VERS") {
   field(DESC, "EPICS Version")
   field(DTYP, "IOC stats")
   field(INP, "@epics_ver")
+  field(PINI, "YES")
+}
+
+record(waveform, "$(IOCNAME):EPICS_VERSION") {
+  field(DESC, "EPICS Version")
+  field(DTYP, "IOC stats")
+  field(INP, "@epics_ver")
+  field(NELM, "120")
+  field(FTVL, "CHAR")
   field(PINI, "YES")
 }
 
@@ -282,6 +312,15 @@ record(stringin, "$(IOCNAME):APP_DIR2") {
   field(DESC, "Application Directory Part 2")
   field(DTYP, "IOC stats")
   field(INP, "@pwd2")
+  field(PINI, "YES")
+}
+
+record(waveform, "$(IOCNAME):APP_DIR") {
+  field(DESC, "Application Directory")
+  field(DTYP, "IOC stats")
+  field(INP, "@pwd")
+  field(NELM, "120")
+  field(FTVL, "CHAR")
   field(PINI, "YES")
 }
 
