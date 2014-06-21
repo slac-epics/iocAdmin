@@ -1,14 +1,79 @@
 Release Notes for iocStats
 --------------------------
 
-Note: iocStats releases above R3-1-3 require EPICS base 3.14.11 or above.  
-Edit the following files for EPICS base 3.14.8.2:
-    - iocAdmin/Db/iocAdmin*.substitutions - remove iocGeneralTime.template.
-    - iocAdmin/Db/ioc.template - remove alias line for IOC_CPU_LOAD and 
-      give the record the desired name. Remove alias for SYSRESET.
-    - iocAdmin/srcDisplay and srcRestore - change IOC_CPU_LOAD in files to 
-      the desired name.
- 
+iocAdmin-R3-1-12_1-0: June 20, 2014:
+                     This release is the same as iocStats-R3-1-12 with the
+		     noalias files added.  Our naming convention
+                     for the CVS module is different. 
+
+iocStats-R3-1-12: June 19, 2014
+  * Change by Eric Bjorklund:
+    Change devIocStatsGetClusterInfo().  The fundamental problem is that 
+    vxWorks -- at least ours (6.8) -- does not fill in all of the entries 
+    in the cluster table.  In our example, only 8 of the 13 allocated table 
+    entries are filled in, and when devIocStatsGetClusterInfo() tries to 
+    process the 9th it gets a page fault exception from the null pointer.
+  * Change by Tim Mooney:
+    Add caQtDM displays, translated from the .adl files using caQtDM 3.7.8. 
+  * Change by Stephanie Allison:
+    Added waveform support for epics version, startup script, 
+    application directory, and bootline.
+  * Changes by Ben Franksen and Ralph Lange:
+    - Scan rates now floating point instead of integer.
+    - we have recently discovered some bugs in devIocStats in the vxWorks
+      implementation that measures the cpu load, which result in wrong 
+      results to be displayed. I hacked away at the problem for some days 
+      and ended up with a complete re-write. The solution considerably 
+      reduces code size and complexity, is therefore much easier to 
+      understand and maintain, and --most importantly--
+      works correctly. It also contains some additional features:
+
+      * A test procedure that measures how well the initial calibration 
+        works by doing it for a number of times and gathering statistics 
+	(min, max, avg). This was useful to determine how long initial 
+	calibration should run (the default is 30 clock ticks which on a 
+	mv2100 gives me a variation of less than 0.4%).
+
+      * Another test procedure (to be called from the shell) adds exactly 
+        50% load to the IOC (it burns cpu for one clock tick, then sleeps 
+	for one, and repeats that in a loop for the given duration), so one 
+	can see whether the measured cpu load increases appropriately 
+	(it does on my test machines).
+
+      * Experienced users can customize behaviour to a certain extent by 
+        changing the values of some global variables.
+
+      * I moved the cpuBurnLoad50 test routine to a separate file, since 
+        it is independent of the new implementation of osdCpuUsage; it gets 
+	compiled to a stand-alone object file which you must link to your 
+	IOC binary if you want to use it, e.g.
+	TESTIOC_OBJS_vxWorks += $(IOCSTATS_BIN)/osdCpuUsageTest.o
+
+iocStats-R3-1-11: Dec 5, 2012
+  * Changes by Stephanie Allison:
+    Add LSV and LLSV for MEM_FREE and RAM_WS_FREE.  
+    Add MEM_FREE to limits display.
+    Update RELEASE files for LCLS.
+  * Changes by Judy Rock:
+    Add START_CNT (ioc startup counter) to database and displays.
+
+iocStats-R3-1-10: Jun 26, 2012
+  * Changes by Helge Brands:
+    - add ioc_stats_scanmon.adl
+    - add devIocStats/os/WIN32 files.
+      NOTE: For EPICS base 3.14.12.2 and below, this patch to rsrv.h
+      for casStatsFetch is required (and a rebuild of epics base):
+      http://epics.aps.anl.gov/epics/base/R3-14/12-docs/rsrv2.patch
+    - move epicsExport.h inclusion to later for WIN32 builds.
+    - bug fix for total memory more than 4GB.
+  * Changes by Stephanie Allison:
+    - Check for null pool pointers for vxWorks.
+    - Correct vxWorks 6 compiler warning.
+    - Correct epicsFindSymbol logic.
+
+iocStats-R3-1-9: Mar 13, 2012
+  * add generalTime records to soft IOCs (database and display).
+
 iocStats-R3-1-8: Dec 4, 2011
   * improvements for non-posix targets.
 
@@ -57,6 +122,14 @@ iocStats-R3-1-5: Mar 31, 2011
   * Change by Stephanie Allison:
     - devIocStatsAnalog.c - correction for 64 bit.
 
+Note: iocStats releases above R3-1-3 require EPICS base 3.14.11 or above.  
+Edit the following files for EPICS base 3.14.8.2:
+    - iocAdmin/Db/iocAdmin*.substitutions - remove iocGeneralTime.template.
+    - iocAdmin/Db/ioc.template - remove alias line for IOC_CPU_LOAD and 
+      give the record the desired name. Remove alias for SYSRESET.
+    - iocAdmin/srcDisplay and srcRestore - change IOC_CPU_LOAD in files to 
+      the desired name.
+ 
 iocStats-R3-1-4: Dec 14, 2010
   * Changes by Ralph Lange:
     - Add fixes by M. Davidsaver to avoid segfaults when devsup init failed.
