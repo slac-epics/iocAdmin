@@ -58,7 +58,6 @@ record( sub, "$(IOCNAME):READACF")
 }
 record(sub, "$(IOCNAME):SYSRESET")
 {
-    alias("$(IOCNAME):SysReset")
     field(DESC, "IOC Restart" )
     field(SNAM, "rebootProc")
     field(BRSV,"INVALID")
@@ -142,8 +141,7 @@ record(ai, "$(IOCNAME):SYS_CPU_LOAD") {
   info(autosaveFields_pass0, "HOPR LOPR HIHI HIGH LOW LOLO HHSV HSV LSV LLSV")
 }
 
-record(ai, "$(IOCNAME):IOC_CPU_LOAD") {
-  alias("$(IOCNAME):LOAD")
+record(ai, "$(IOCNAME):LOAD") {
   field(DESC, "IOC CPU Load")
   field(SCAN, "I/O Intr")
   field(DTYP, "IOC stats")
@@ -321,7 +319,7 @@ record(waveform, "$(IOCNAME):APP_DIR") {
   field(DESC, "Application Directory")
   field(DTYP, "IOC stats")
   field(INP, "@pwd")
-  field(NELM, "160")
+  field(NELM, "120")
   field(FTVL, "CHAR")
   field(PINI, "YES")
 }
@@ -331,19 +329,5 @@ record(stringin, "$(IOCNAME):UPTIME") {
   field(SCAN, "1 second")
   field(DTYP, "IOC stats")
   field(INP, "@up_time")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):ENGINEER") {
-  field(DESC, "Engineer")
-  field(DTYP, "IOC stats")
-  field(INP, "@engineer")
-  field(PINI, "YES")
-}
-
-record(stringin, "$(IOCNAME):LOCATION") {
-  field(DESC, "Location")
-  field(DTYP, "IOC stats")
-  field(INP, "@location")
   field(PINI, "YES")
 }
