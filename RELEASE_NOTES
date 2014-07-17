@@ -1,6 +1,9 @@
 Release Notes for iocStats
 --------------------------
 
+iocAdmin-R3-1-12_1-1: July 16, 2014:
+                     This release is the same as iocStats-R3-1-12 with a bug
+		     fix to AO record initialization.
 iocAdmin-R3-1-12_1-0: June 20, 2014:
                      This release is the same as iocStats-R3-1-12 with the
 		     noalias files added.  Our naming convention
