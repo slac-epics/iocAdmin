@@ -321,7 +321,7 @@ record(waveform, "$(IOCNAME):APP_DIR") {
   field(DESC, "Application Directory")
   field(DTYP, "IOC stats")
   field(INP, "@pwd")
-  field(NELM, "120")
+  field(NELM, "160")
   field(FTVL, "CHAR")
   field(PINI, "YES")
 }
@@ -346,4 +346,18 @@ record(stringin, "$(IOCNAME):LOCATION") {
   field(DTYP, "IOC stats")
   field(INP, "@location")
   field(PINI, "YES")
+}
+
+record(ai, "$(IOCNAME):PROCESS_ID") {
+  field(DESC, "Process ID")
+  field(PINI, "YES")
+  field(DTYP, "IOC stats")
+  field(INP, "@proc_id")
+}
+
+record(ai, "$(IOCNAME):PARENT_ID") {
+  field(DESC, "Parent Process ID")
+  field(PINI, "YES")
+  field(DTYP, "IOC stats")
+  field(INP, "@parent_proc_id")
 }
