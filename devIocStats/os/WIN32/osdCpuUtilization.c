@@ -28,8 +28,8 @@
 
 //#include <iostream>
 //#include <iomanip>
-#include <winbase.h>
-#include <winperf.h>
+#include <Winbase.h>
+#include <Winperf.h>
 #pragma comment (lib, "Advapi32.lib")
 #include <devIocStats.h>
 
