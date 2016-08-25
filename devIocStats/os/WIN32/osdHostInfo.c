@@ -40,12 +40,11 @@ int devIocStatsGetPwd (char **pval)
     DWORD dwRet;
     dwRet = GetCurrentDirectory(MAX_PATH, pwd);
     if (dwRet == 0){
-      *pval = notimpl;
-      return -1;
+      *pval = notimpl; 
     }else{
-      *pval = pwd;
-      return 0;
+      *pval = pwd;  
     }
+    return -1;
 }
 
 int devIocStatsGetHostname (char **pval)
