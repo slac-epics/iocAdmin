@@ -2,6 +2,9 @@
 # Run "gnumake clean uninstall install" in the application
 # top directory each time this file is changed.
 
+# Include local release settings
+-include $(TOP)/configure/RELEASE.local
+
 #NOTE: MSI moved to CONFIG_SITE.
 
 # SNCSEQ required only if testIocStatsApp will be built.
@@ -11,16 +14,16 @@ MAKE_TEST_IOC_APP=YES
 # Define the version of modules needed by
 # IOC apps or other Support apps - used by testIocStatsApp
 # =============================================================
-SUPPORT=/usr/local/epics/R3.14.11/modules/soft/synApps_5_5/support
+#SUPPORT=/usr/local/epics/R3.14.11/modules/soft/synApps_5_5/support
 -include $(TOP)/../configure/SUPPORT.$(EPICS_HOST_ARCH)
 
-SNCSEQ     = $(SUPPORT)/seq-2-0-12
+#SNCSEQ     = $(SUPPORT)/seq-2-0-12
 #SNCSEQ = /afs/slac/g/spear/epics/modules/seq/seq
 #SNCSEQ = /afs/slac/g/lcls/epics/R3-15-1_1-0/modules/seq/seq-R2-1-17_1-0
 #SNCSEQ = /afs/slac/g/lcls/epics/R3-16-0/modules/seq/seq-2.2.3
 
 #EPICS_BASE = /usr/local/epics/R3.14.11/base
-EPICS_BASE=/afs/slac/g/spear/epics/base
+#EPICS_BASE=/afs/slac/g/spear/epics/base
 #EPICS_BASE=/afs/slac/g/lcls/epics/R3-15-1_1-0/base/base-R3-15-1_1-0
 #EPICS_BASE=/afs/slac/g/lcls/epics/R3-16-0/base/base-R3-16-0
 
