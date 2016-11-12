@@ -2,6 +2,9 @@
 # Run "gnumake clean uninstall install" in the application
 # top directory each time this file is changed.
 
+# Include local release settings
+-include $(TOP)/configure/RELEASE.local
+
 #NOTE: MSI moved to CONFIG_SITE.
 
 # SNCSEQ required only if testIocStatsApp will be built.

@@ -30,6 +30,10 @@ Please ensure that any further changes take these into account!
 ## iocStats-R3-1-16: Apr 30, 2019
 
 ## iocStats-R3-1-15: Nov 3, 2016
+R3.1.15-0.1.0: Nov 11, 2016
+  * Changes by Bruce Hill
+    - Added RELEASE.local file for local build support
+iocStats-R3-1-15: Nov 3, 2016
   * Changes by Mark Rivers:
     - Improved the layout of the medm files to avoid overlapping widgets, etc.
     - Added ioc_stats_reloadacf_confirm.edl to iocAdmin/srcDisplay/Makefile,
