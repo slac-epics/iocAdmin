@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-0.1.0: Nov 11, 2016
+  * Changes by Bruce Hill
+    - Added RELEASE.local file for local build support
 iocStats-R3-1-15: Nov 3, 2016
   * Changes by Mark Rivers:
     - Improved the layout of the medm files to avoid overlapping widgets, etc.
