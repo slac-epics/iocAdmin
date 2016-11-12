@@ -1,0 +1,7 @@
+#
+# iocAdmin archive sample substitutions file
+#
+file archive_iocAdmin.tpl-arch
+{
+}
+

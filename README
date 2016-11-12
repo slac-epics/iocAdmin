@@ -21,3 +21,16 @@ iocBoot			- test startup files
 testIocAdminApp		- LCLS-unique app for testing devIocStats and iocAdmin
 testIocStatsApp		- Application for testing devIocStats only
 
+PCDS Notes:
+Note regarding no longer building iocAdmin.db:
+iocAdmin.substitutions has been simplified to just use
+iocSoft.db or iocHard.db.
+Just follow the example in iocAdmin.substitutions to
+update older iocAdmin.substitutions files to generate
+hard vs soft IOC specific PV lists.
+
+As part of this change, the PCDS screens directory is iocScreens
+the rest of our screen links.   Also, the macro name for the
+IOC prefix in the screens has been changed from "ioc" to "IOC"
+to conform with the rest of our screens that all use IOC.
+
