@@ -8,6 +8,7 @@ envPaths
 dllPath.bat
 auto_settings.sav*
 auto_positions.sav*
+RELEASE_SITE
 
 # EPICS installation dirs
 /bin/
