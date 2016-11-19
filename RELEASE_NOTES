@@ -1,5 +1,11 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.0.0: Nov 11, 2016
+  * Changes by Bruce Hill vs R3.1.15-0.1.0
+  	- Merged in pcds-trunk
+	- Most changes are to maintain compatibility w/ PCDS module which
+	  introduced iocHard.db and iocSoft.db along w/ archive and autosave files.
+	- Also added full set of PCDS edm iocScreens
 R3.1.15-0.1.0: Nov 11, 2016
   * Changes by Bruce Hill
     - Added RELEASE.local file for local build support
