@@ -31,8 +31,12 @@ DB += iocAdminSoft.db
 DB += iocAdminRTEMS.db
 DB += iocAdminScanMon.db
 
-ARCH += archive_iocAdmin.arch
+REQ  += autosave_iocAdmin.sub-req
+REQ  += autosave_iocAdmin.tpl-req
 REQ  += autosave_iocAdmin.req
+ARCHIVE += archive_iocAdmin.sub-arch
+ARCHIVE += archive_iocAdmin.tpl-arch
+ARCHIVE += archive_iocAdmin.archive
 
 #
 #----------------------------------------------------

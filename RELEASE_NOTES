@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.0.1: Apr 25, 2017
+	Fixed generation of autosave and archive files
+
 R3.1.15-1.0.0: Nov 11, 2016
   * Changes by Bruce Hill vs R3.1.15-0.1.0
   	- Merged in pcds-trunk
