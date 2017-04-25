@@ -3,4 +3,5 @@
 #
 file autosave_iocAdmin.tpl-req
 {
+	{ IOC='$(IOC)' }
 }

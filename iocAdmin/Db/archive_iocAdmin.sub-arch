@@ -3,5 +3,6 @@
 #
 file archive_iocAdmin.tpl-arch
 {
+	{ IOC='$(IOC)' }
 }
 
