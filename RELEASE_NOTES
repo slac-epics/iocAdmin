@@ -1,5 +1,9 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.0.2: 2018-04-12, bhill
+	Changed ioc_stats_soft.edl to show APP_DIR instead of APP_DIR1 next to APP_DIR2
+	Move MAKE_TEST_IOC_APP config macro from RELEASE to CONFIG_SITE
+
 R3.1.15-1.0.1: Apr 25, 2017
 	Fixed generation of autosave and archive files
 
