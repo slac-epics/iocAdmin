@@ -30,3 +30,4 @@
 # provided by Till Straumann.
 #USR_CFLAGS_RTEMS += -DSSRLAPPSMISCUTILS
 
+MAKE_TEST_IOC_APP=YES
