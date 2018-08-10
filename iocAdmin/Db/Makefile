@@ -30,6 +30,7 @@ DB += iocAdminVxWorks.db
 DB += iocAdminSoft.db
 DB += iocAdminRTEMS.db
 DB += iocAdminScanMon.db
+DB += devIocInfo.db
 
 REQ  += autosave_iocAdmin.sub-req
 REQ  += autosave_iocAdmin.tpl-req
