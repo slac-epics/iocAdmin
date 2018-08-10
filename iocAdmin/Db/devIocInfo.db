@@ -1,0 +1,107 @@
+#
+# We recommend adding this to each IOC so scripts are able
+# to derive the IOC PV prefix and power outlet info from
+# each device's PV prefix.
+#
+# Required macros:
+#   DEV             Device PV prefix
+#   IOC             IOC PV prefix
+#   IOCNAME         IOC name, example: ioc-sxr-gmd
+#
+# Optional macros, all default to Unspecifed:
+#   POWER           Power control PV prefix
+#	COM_TYPE		Device communication type: termSrv,usb,ethernet
+#	COM_PORT		Device communications port, format depends on COM_TYPE
+#	WEB_URL			Device web page URL, defaults to Unspecified
+#	CAPTAR			Captar tag for primary device cable
+#
+# POWER should be a PV compatible w/ our Leviton IOC usage
+# Note: ioc/common/Leviton/R2.2.0 introduces a shortened name, SetAction
+#       to replace SetControlAction as the old PV names were all longer than
+#		40 char and thus would not fit in this $DEV:POWER_PV string record
+# To turn power off:    caput $(POWER)  0
+# To turn power on:     caput $(POWER)  1
+# To cycle power:       caput $(POWER)  2
+#
+# COM_TYPE			COM_PORT Examples
+#	camLink			Board 0 Chan 1
+#	ethernet		gige-tst-gc1350c or 172.21.42.114
+#	termSrv			digi-sxr-01:3
+#	usb				/dev/bus/usb/002/003
+#
+# Usage:
+# Install this file from your Db/Makefile via
+# DB_INSTALLS += $(IOC_ADMIN)/db/devIocInfo.db
+#
+# Then add one of these lines for each device in your IOC to your st.cmd
+# dbLoadRecords( "db/devIocInfo.db", "DEV=$(DEV),IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
+# If you have other macros which are applicable, add them to the above line.
+#
+# The $(DEV):LAUNCH_EDM PV is a CHAR waveform, so you can't initialize it with a macro.
+# Instead, add a line like this in your st.cmd after iocInit.
+# dbpf $(CAM_PV):LAUNCH_EDM "$(TOP)/build/iocBoot/$(IOCNAME)/edm-$(IOCNAME).cmd"
+#
+# To launch the edm screen for a device, add a shell cmd widget running the command:
+# iocScreens/devLaunchEdm.sh $(DEV)
+
+record( stringout, "$(DEV):IOC_PV" )
+{
+    field( PINI, "YES" )
+    field( VAL, "$(IOC)" )
+}
+
+record( stringout, "$(DEV):IOC_NAME" )
+{
+	field( PINI, "YES" )
+	field( VAL,  "$(IOCNAME)" )
+}
+
+# Long waveform of CHAR string w/ pathname for edm launch script
+record( waveform, "$(DEV):LAUNCH_EDM" )
+{
+    field( FTVL, "CHAR" )
+    field( NELM, "256" )
+}
+
+record( stringout, "$(DEV):POWER_PV" )
+{
+    field( PINI, "YES" )
+    field( VAL, "$(POWER=Unspecified)" )
+}
+
+# This record provides an easy way to control device power from edm
+# or via caput without having to fetch the POWER_PV string first.
+# It also provides a partial workaround for pre Leviton/R2.2.0 PV names
+# that are too big to fit in $DEV:POWER_PV.
+# This longout record, $DEV:SET_POWER_PV sets it's OUT field which
+# is not length limited to "$POWER PP NMS" so you can write to
+# SET_POWER_PV to control outlets on older IOCs and python or other scripts
+# can still extract the POWER_PV from the $DEV:SET_POWER_PV.OUT field.
+record( longout, "$(DEV):SET_POWER_PV" )
+{
+    field( OUT, "$(POWER=Unspecified) PP NMS" )
+}
+
+record( stringout, "$(DEV):COM_TYPE" )
+{
+    field( PINI, "YES" )
+    field( VAL, "$(COM_TYPE=Unspecified)" )
+}
+
+record( stringout, "$(DEV):COM_PORT" )
+{
+    field( PINI, "YES" )
+    field( VAL, "$(COM_PORT=Unspecified)" )
+}
+
+record( stringout, "$(DEV):WEB_URL" )
+{
+    field( PINI, "YES" )
+    field( VAL, "$(WEB_URL=Unspecified)" )
+}
+
+record( stringout, "$(DEV):CAPTAR_TAG" )
+{
+    field( PINI, "YES" )
+    field( VAL, "$(CAPTAR=Unspecified)" )
+}
