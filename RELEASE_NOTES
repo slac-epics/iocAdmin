@@ -1,5 +1,9 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.2.0: 2018-08-15, bhill
+	Modify comments to not use EPICS style macros to avoid undefined macros warnings when loading devIocInfo.db
+	Added some more usage info as comments in devIocInfo.db
+
 R3.1.15-1.1.0: 2018-08-09, bhill
     Adding devIocInfo.db and devLaunchEdm.sh to iocAdmin.
     Add one instance of devIocInfo.db for each device to provide PVs
