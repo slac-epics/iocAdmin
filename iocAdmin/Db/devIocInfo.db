@@ -19,9 +19,9 @@
 # Note: ioc/common/Leviton/R2.2.0 introduces a shortened name, SetAction
 #       to replace SetControlAction as the old PV names were all longer than
 #       40 char and thus would not fit in this $DEV:POWER_PV string record
-# To turn power off:    caput $(POWER)  0
-# To turn power on:     caput $(POWER)  1
-# To cycle power:       caput $(POWER)  2
+# To turn power off:    caput $POWER  0
+# To turn power on:     caput $POWER  1
+# To cycle power:       caput $POWER  2
 #
 # COM_TYPE      COM_PORT scanf fmt      COM_PORT Examples
 #   camLink     "Board %1d Chan %1d"    Board 0 Chan 1
@@ -31,18 +31,18 @@
 #
 # Usage:
 # Install this file from your Db/Makefile via
-# DB_INSTALLS += $(IOC_ADMIN)/db/devIocInfo.db
+# DB_INSTALLS += $IOC_ADMIN/db/devIocInfo.db
 #
 # Then add one of these lines for each device in your IOC to your st.cmd
-# dbLoadRecords( "db/devIocInfo.db", "DEV=$(DEV),IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
+# dbLoadRecords( "db/devIocInfo.db", "DEV=$DEV,IOC=$IOC_PV,IOCNAME=$IOCNAME" )
 # If you have other macros which are applicable, add them to the above line.
 #
-# The $(DEV):LAUNCH_EDM PV is a CHAR waveform, so you can't initialize it with a macro.
+# The $DEV:LAUNCH_EDM PV is a CHAR waveform, so you can't initialize it with a macro.
 # Instead, add a line like this in your st.cmd after iocInit.
-# dbpf $(CAM_PV):LAUNCH_EDM "$(TOP)/build/iocBoot/$(IOCNAME)/edm-$(IOCNAME).cmd"
+# dbpf $CAM_PV:LAUNCH_EDM "$TOP/build/iocBoot/$IOCNAME/edm-$IOCNAME.cmd"
 #
 # To launch the edm screen for a device, add a shell cmd widget running the command:
-# iocScreens/devLaunchEdm.sh $(DEV)
+# iocScreens/devLaunchEdm.sh $DEV
 
 record( stringout, "$(DEV):IOC_PV" )
 {
