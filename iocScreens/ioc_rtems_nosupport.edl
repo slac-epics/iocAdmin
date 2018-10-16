@@ -168,7 +168,7 @@ buttonLabel "Home..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "lcls_main"
+  0 "$(HOME)"
 }
 setPosition {
   0 "parentWindow"
