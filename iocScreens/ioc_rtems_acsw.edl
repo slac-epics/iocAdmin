@@ -168,7 +168,7 @@ buttonLabel "Home..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "lcls_main"
+  0 "$(HOME)"
 }
 setPosition {
   0 "parentWindow"
@@ -521,7 +521,7 @@ buttonLabel "$(acsw)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "acsw_wti_8port"
+  0 "acsw_wti_8port.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -567,7 +567,7 @@ buttonLabel "$(acsw)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "acsw_wti_4port"
+  0 "acsw_wti_4port.edl"
 }
 setPosition {
   0 "parentWindow"

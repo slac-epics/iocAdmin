@@ -1770,7 +1770,7 @@ buttonLabel "Home"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "AMOHome"
+  0 "$(HOME)"
 }
 setPosition {
   0 "parentWindow"
@@ -1818,10 +1818,10 @@ buttonLabel "Alarm Limits..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_limits.edl"
+  0 "iocScreens/ioc_stats_limits.edl"
 }
 menuLabel {
-  0 "$(ioc) Alarm Limits"
+  0 "$(IOC) Alarm Limits"
 }
 setPosition {
   0 "button"
@@ -1847,13 +1847,13 @@ buttonLabel "Scan Monitor..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_scanmon.edl"
+  0 "iocScreens/ioc_stats_scanmon.edl"
 }
 setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "ioc=$(ioc)"
+  0 "IOC=$(IOC)"
 }
 replaceSymbols {
   0 1
@@ -1882,13 +1882,13 @@ buttonLabel "Release Versions..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_release.edl"
+  0 "iocScreens/ioc_stats_release.edl"
 }
 setPosition {
   0 "parentWindow"
 }
 symbols {
-  0 "ioc=$(ioc),idx=0,p=1"
+  0 "IOC=$(IOC),idx=0,p=1"
 }
 replaceSymbols {
   0 1
@@ -1917,7 +1917,7 @@ buttonLabel "EPICS Env Vars..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_epics_env.edl"
+  0 "iocScreens/ioc_stats_epics_env.edl"
 }
 setPosition {
   0 "parentWindow"

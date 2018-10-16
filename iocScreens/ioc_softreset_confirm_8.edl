@@ -190,7 +190,7 @@ fgColor index 14
 bgColor index 0
 useDisplayBg
 value {
-  "Rebooting this ioc will also reboot other IOCs "
+  "Rebooting this IOC will also reboot other IOCs "
   "installed in the same VME crate."
   ""
   "IOCs with higher slot numbers than this one will "
