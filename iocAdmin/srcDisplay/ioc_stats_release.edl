@@ -381,7 +381,7 @@ buttonLabel "Release Versions (Page 2),,,"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_release"
+  0 "ioc_stats_release.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -413,7 +413,7 @@ buttonLabel "Release Versions (Page 1),,,"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_release"
+  0 "ioc_stats_release.edl"
 }
 setPosition {
   0 "parentWindow"
