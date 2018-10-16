@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 842
-y 266
+x 618
+y 83
 w 370
-h 310
+h 280
 font "helvetica-bold-r-18.0"
 ctlFont "helvetica-bold-r-18.0"
 btnFont "helvetica-bold-r-18.0"
@@ -33,8 +33,8 @@ minor 0
 release 0
 x 15
 y 50
-w 340
-h 250
+w 335
+h 220
 lineColor index 3
 fill
 fillColor index 3
@@ -44,9 +44,9 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 220
+x 210
 y 75
 w 60
 h 20
@@ -62,16 +62,15 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 290
+x 280
 y 75
 w 60
 h 20
@@ -87,7 +86,6 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Static Text)
@@ -96,7 +94,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 230
+x 220
 y 55
 w 30
 h 14
@@ -116,7 +114,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 305
+x 295
 y 55
 w 24
 h 14
@@ -134,9 +132,9 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 220
+x 210
 y 105
 w 60
 h 20
@@ -152,16 +150,15 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 290
+x 280
 y 105
 w 60
 h 20
@@ -177,16 +174,15 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 290
+x 280
 y 135
 w 60
 h 20
@@ -202,20 +198,19 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 220
+x 210
 y 175
 w 60
 h 20
-controlPv "$(ioc):IOC_CPU_LOAD.HIGH"
+controlPv "$(ioc):LOAD.HIGH"
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 5
@@ -227,20 +222,19 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 290
+x 280
 y 175
 w 60
 h 20
-controlPv "$(ioc):IOC_CPU_LOAD.HIHI"
+controlPv "$(ioc):LOAD.HIHI"
 font "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 5
@@ -252,16 +246,15 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 220
+x 210
 y 230
 w 60
 h 20
@@ -277,16 +270,15 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Text)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 3
 release 0
-x 290
+x 280
 y 230
 w 60
 h 20
@@ -302,7 +294,6 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-noExecuteClipMask
 endObjectProperties
 
 # (Rectangle)
@@ -360,8 +351,8 @@ font "helvetica-medium-r-12.0"
 3d
 endObjectProperties
 
-# (Related Display)
-object relatedDisplayClass
+# (Shell Command)
+object shellCmdClass
 beginObjectProperties
 major 4
 minor 2
@@ -376,16 +367,9 @@ topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
 buttonLabel "Home Screen..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "lcls_main"
-}
-setPosition {
-  0 "parentWindow"
-}
-replaceSymbols {
-  0 1
+numCmds 1
+command {
+  0 "lclshome &"
 }
 endObjectProperties
 
@@ -415,9 +399,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 125
+x 120
 y 70
-w 85
+w 80
 h 30
 controlPv "$(ioc):CA_CLNT_CNT"
 displayMode "decimal"
@@ -437,9 +421,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 125
+x 120
 y 105
-w 85
+w 80
 h 30
 controlPv "$(ioc):CA_CONN_CNT"
 displayMode "decimal"
@@ -479,9 +463,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 125
+x 120
 y 140
-w 85
+w 80
 h 30
 controlPv "$(ioc):SUSP_TASK_CNT"
 displayMode "decimal"
@@ -541,11 +525,11 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 125
+x 120
 y 175
-w 85
+w 80
 h 30
-controlPv "$(ioc):IOC_CPU_LOAD"
+controlPv "$(ioc):LOAD"
 fgColor index 16
 fgAlarm
 bgColor index 12
@@ -562,7 +546,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 305
+x 295
 y 210
 w 28
 h 14
@@ -582,7 +566,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 230
+x 220
 y 210
 w 34
 h 14
@@ -602,9 +586,9 @@ beginObjectProperties
 major 10
 minor 0
 release 0
-x 125
+x 120
 y 230
-w 85
+w 80
 h 30
 controlPv "$(ioc):FD_FREE"
 displayMode "decimal"
@@ -634,98 +618,6 @@ bgColor index 0
 useDisplayBg
 value {
   "Free # FDs"
-}
-autoSize
-endObjectProperties
-
-# (Text)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 220
-y 265
-w 60
-h 20
-controlPv "$(ioc):MEM_FREE.LOLO"
-font "helvetica-medium-r-14.0"
-fgColor index 14
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 1
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Text)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 5
-release 0
-x 290
-y 265
-w 60
-h 20
-controlPv "$(ioc):MEM_FREE.LOW"
-font "helvetica-medium-r-14.0"
-fgColor index 14
-bgColor index 5
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 1
-useHexPrefix
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 125
-y 265
-w 85
-h 30
-controlPv "$(ioc):MEM_FREE"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 20
-y 275
-w 99
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Free Mem (bytes)"
 }
 autoSize
 endObjectProperties

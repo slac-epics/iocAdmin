@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1151
-y 471
+x 574
+y 381
 w 540
-h 690
+h 595
 font "helvetica-medium-r-12.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-medium-r-12.0"
@@ -32,7 +32,7 @@ major 4
 minor 0
 release 0
 x 10
-y 360
+y 255
 w 520
 h 35
 lineColor index 3
@@ -46,9 +46,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 320
+x 325
 y 45
-w 210
+w 205
 h 205
 lineColor index 3
 fill
@@ -77,7 +77,7 @@ major 4
 minor 0
 release 0
 x 10
-y 400
+y 295
 w 520
 h 155
 lineColor index 3
@@ -106,7 +106,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 10
 y 0
 w 345
@@ -126,7 +126,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 55
 w 69
@@ -146,7 +146,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 352
 y 536528
 w 54
@@ -180,7 +180,7 @@ font "helvetica-medium-r-12.0"
 3d
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -208,7 +208,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 330
 y 60
 w 71
@@ -223,11 +223,11 @@ value {
 autoSize
 endObjectProperties
 
-# (Related Display)
-object relatedDisplayClass
+# (Shell Command)
+object shellCmdClass
 beginObjectProperties
 major 4
-minor 4
+minor 3
 release 0
 x 375
 y 10
@@ -239,16 +239,9 @@ topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
 buttonLabel "Home Screen..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "lcls_main"
-}
-setPosition {
-  0 "parentWindow"
-}
-replaceSymbols {
-  0 1
+numCmds 1
+command {
+  0 "lclshome &"
 }
 endObjectProperties
 
@@ -257,7 +250,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 80
 w 71
@@ -277,7 +270,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 105
 w 45
@@ -297,7 +290,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 130
 w 54
@@ -317,7 +310,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 155
 w 57
@@ -332,7 +325,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -355,7 +348,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -378,7 +371,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -400,7 +393,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -422,7 +415,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -444,7 +437,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -471,7 +464,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 330
 y 95
 w 90
@@ -486,7 +479,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -513,7 +506,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 330
 y 130
 w 75
@@ -528,7 +521,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -551,7 +544,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -561,7 +554,7 @@ x 90
 y 200
 w 220
 h 20
-controlPv "$(ioc):ENGINEER"
+controlPv "$(ioc):CONTACT"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -574,7 +567,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -584,7 +577,7 @@ x 90
 y 225
 w 220
 h 20
-controlPv "$(ioc):LOCATION"
+controlPv "$(ioc):LOC"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -602,7 +595,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 180
 w 61
@@ -622,7 +615,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 205
 w 61
@@ -642,7 +635,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
 y 230
 w 48
@@ -662,9 +655,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 50
-y 370
+y 265
 w 32
 h 14
 font "helvetica-medium-r-12.0"
@@ -684,7 +677,7 @@ major 4
 minor 0
 release 0
 x 90
-y 365
+y 260
 w 105
 h 25
 fgColor index 14
@@ -701,9 +694,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
-y 410
+y 305
 w 83
 h 14
 font "helvetica-medium-r-12.0"
@@ -716,17 +709,17 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 110
-y 405
-w 415
+y 300
+w 270
 h 20
-controlPv "$(ioc):EPICS_VERSION"
+controlPv "$(ioc):EPICS_VERS"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -744,9 +737,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
-y 455
+y 350
 w 118
 h 14
 font "helvetica-medium-r-12.0"
@@ -759,17 +752,39 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 15
-y 475
-w 510
+y 370
+w 230
 h 25
-controlPv "$(ioc):APP_DIR"
+controlPv "$(ioc):APP_DIR1"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 245
+y 370
+w 230
+h 25
+controlPv "$(ioc):APP_DIR2"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -786,9 +801,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
-y 505
+y 400
 w 75
 h 14
 font "helvetica-medium-r-12.0"
@@ -801,17 +816,17 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 15
-y 525
-w 510
+y 420
+w 230
 h 25
-controlPv "$(ioc):ST_SCRIPT"
+controlPv "$(ioc):ST_SCRIPT1"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -823,14 +838,63 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 245
+y 420
+w 230
+h 25
+controlPv "$(ioc):ST_SCRIPT2"
+displayMode "decimal"
+precision 1
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 385
+y 260
+w 100
+h 25
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Reboot..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ioc_softreset_confirm_soft"
+}
+setPosition {
+  0 "button"
+}
+colorPv "$(ioc):SYSRESET.SEVR"
+endObjectProperties
+
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
-y 435
+y 330
 w 65
 h 14
 font "helvetica-medium-r-12.0"
@@ -850,9 +914,9 @@ major 4
 minor 0
 release 0
 x 10
-y 560
-w 160
-h 120
+y 455
+w 175
+h 130
 lineColor index 3
 fill
 fillColor index 3
@@ -864,23 +928,23 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 325
-y 560
-w 205
-h 120
+x 295
+y 455
+w 235
+h 40
 lineColor index 3
 fill
 fillColor index 3
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 80
-y 585
+y 480
 w 85
 h 20
 controlPv "$(ioc):MEM_FREE"
@@ -895,14 +959,14 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 80
-y 610
+y 505
 w 85
 h 20
 controlPv "$(ioc):MEM_USED"
@@ -922,9 +986,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 15
-y 565
+y 460
 w 94
 h 14
 font "helvetica-medium-r-12.0"
@@ -942,9 +1006,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 20
-y 590
+y 485
 w 26
 h 14
 font "helvetica-medium-r-12.0"
@@ -962,9 +1026,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 20
-y 610
+y 505
 w 28
 h 14
 font "helvetica-medium-r-12.0"
@@ -982,9 +1046,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 330
-y 565
+release 0
+x 305
+y 470
 w 57
 h 14
 font "helvetica-medium-r-12.0"
@@ -997,17 +1061,17 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 430
-y 585
+x 405
+y 460
 w 95
 h 30
-controlPv "$(ioc):IOC_CPU_LOAD"
+controlPv "$(ioc):LOAD"
 fgColor index 16
 fgAlarm
 bgColor index 12
@@ -1024,10 +1088,10 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 175
-y 560
-w 145
-h 120
+x 295
+y 505
+w 235
+h 80
 lineColor index 3
 fill
 fillColor index 3
@@ -1038,9 +1102,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 180
-y 565
+release 0
+x 300
+y 510
 w 99
 h 14
 font "helvetica-medium-r-12.0"
@@ -1053,14 +1117,14 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 220
-y 585
+x 405
+y 525
 w 95
 h 30
 controlPv "$(ioc):FD_FREE"
@@ -1075,14 +1139,14 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
-x 220
-y 620
+x 405
+y 560
 w 95
 h 20
 controlPv "$(ioc):FD_MAX"
@@ -1102,9 +1166,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 185
-y 595
+release 0
+x 315
+y 535
 w 26
 h 14
 font "helvetica-medium-r-12.0"
@@ -1122,9 +1186,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
-x 185
-y 625
+release 0
+x 315
+y 565
 w 24
 h 14
 font "helvetica-medium-r-12.0"
@@ -1137,15 +1201,15 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 110
-y 430
-w 415
+y 325
+w 270
 h 20
 controlPv "$(ioc):KERNEL_VERS"
 displayMode "decimal"
@@ -1160,14 +1224,14 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 80
-y 635
+y 530
 w 85
 h 20
 controlPv "$(ioc):MEM_MAX"
@@ -1187,9 +1251,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 1
+release 0
 x 20
-y 630
+y 525
 w 52
 h 28
 font "helvetica-medium-r-12.0"
@@ -1203,119 +1267,15 @@ value {
 autoSize
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 335
-y 595
-w 84
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "IOC (one CPU)"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 430
-y 620
-w 95
-h 30
-controlPv "$(ioc):SYS_CPU_LOAD"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-14.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 335
-y 620
-w 56
-h 28
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "System "
-  "(all CPUs)"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 430
-y 655
-w 95
-h 20
-controlPv "$(ioc):CPU_CNT"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 335
-y 660
-w 86
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "# System CPUs"
-}
-autoSize
-endObjectProperties
-
 # (Related Display)
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 4
+minor 3
 release 0
-x 325
+x 365
 y 160
-w 85
+w 125
 h 25
 fgColor index 14
 bgColor index 4
@@ -1340,11 +1300,11 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 4
+minor 3
 release 0
-x 415
-y 160
-w 110
+x 365
+y 190
+w 125
 h 25
 fgColor index 14
 bgColor index 4
@@ -1366,18 +1326,18 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 4
+minor 3
 release 0
-x 325
-y 190
-w 115
+x 365
+y 220
+w 125
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Release Versions..."
+buttonLabel "Release Versions,,,"
 numPvs 4
 numDsps 1
 displayFileName {
@@ -1401,80 +1361,18 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 4
+minor 3
 release 0
-x 325
-y 220
-w 115
+x 210
+y 260
+w 160
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Scan Monitor..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ioc_stats_scanmon"
-}
-setPosition {
-  0 "parentWindow"
-}
-symbols {
-  0 "ioc=$(ioc)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 425
-y 365
-w 100
-h 25
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Reboot..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "ioc_stats_reboot_confirm"
-}
-setPosition {
-  0 "button"
-}
-colorPv "$(ioc):SYSRESET.SEVR"
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 205
-y 365
-w 210
-h 25
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Reload Access Security Conf File..."
+buttonLabel "Reload Access Conf File..."
 numPvs 4
 numDsps 1
 displayFileName {
@@ -1483,277 +1381,5 @@ displayFileName {
 setPosition {
   0 "button"
 }
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 10
-y 255
-w 520
-h 100
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 130
-y 260
-w 131
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "General Time Providers"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 280
-w 220
-h 20
-controlPv "$(ioc):GTIM_CUR_SRC"
-displayMode "decimal"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 305
-w 220
-h 20
-controlPv "$(ioc):GTIM_EVT_SRC"
-displayMode "decimal"
-precision 1
-fgColor index 15
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 0
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 90
-y 330
-w 220
-h 20
-controlPv "$(ioc):GTIM_HI_SRC"
-displayMode "decimal"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 285
-w 41
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Current"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 310
-w 32
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Event"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 15
-y 335
-w 68
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "Highest Prio"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 325
-y 275
-w 62
-h 28
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "# Secs "
-  "since 1990"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 395
-y 280
-w 130
-h 20
-controlPv "$(ioc):GTIM_TIME"
-displayMode "decimal"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 325
-y 315
-w 44
-h 14
-font "helvetica-medium-r-12.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "# Errors"
-}
-autoSize
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 395
-y 310
-w 70
-h 25
-controlPv "$(ioc):GTIM_ERR_CNT"
-displayMode "decimal"
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 475
-y 310
-w 50
-h 25
-fgColor index 14
-onColor index 4
-offColor index 4
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(ioc):GTIM_RESET.PROC"
-pressValue "0"
-onLabel "Reset"
-offLabel "Reset"
-3d
-useEnumNumeric
-font "helvetica-medium-r-12.0"
 endObjectProperties
 
