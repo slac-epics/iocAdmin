@@ -183,7 +183,7 @@ buttonLabel "Home..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "lcls_main"
+  0 "$(HOME)"
 }
 setPosition {
   0 "parentWindow"
@@ -524,7 +524,7 @@ buttonLabel "$(crat)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "crat_wiener_21slot"
+  0 "crat_wiener_21slot.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -570,7 +570,7 @@ buttonLabel "$(crat)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "crat_wiener_7slot"
+  0 "crat_wiener_7slot.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -922,7 +922,7 @@ buttonLabel "$(crat)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "crat_hybricon_4slot"
+  0 "crat_hybricon_4slot.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -968,7 +968,7 @@ buttonLabel "$(crat)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "crat_hybricon_8slot"
+  0 "crat_hybricon_8slot.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -1014,7 +1014,7 @@ buttonLabel "$(crat)..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "crat_elma_4slot"
+  0 "crat_elma_4slot.edl"
 }
 setPosition {
   0 "parentWindow"
