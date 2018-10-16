@@ -1286,7 +1286,7 @@ buttonLabel "Alarm Limits..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_limits"
+  0 "ioc_stats_limits.edl"
 }
 menuLabel {
   0 "$(ioc) Alarm Limits"
@@ -1315,7 +1315,7 @@ buttonLabel "EPICS Env Vars..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_epics_env"
+  0 "ioc_stats_epics_env.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -1376,7 +1376,7 @@ buttonLabel "Reload Access Conf File..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reloadacf_confirm"
+  0 "ioc_stats_reloadacf_confirm.edl"
 }
 setPosition {
   0 "button"
