@@ -1,5 +1,12 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.3.0: 2018-10-15, bhill
+	Added EPICS_PVA_* env variables to iocAdminSoft.substitutions
+	Added links to release, scan monitor, and env var screens to PCDS top level iocAdmin stats screens.
+	Updated LCLS screens to latest versions from /afs/slac/g/lcls/tools/edm/display/misc
+	Added info about iocRelease.db and devIocInfo.db to README.
+	Added .edl to end of edm file references to make them easier to search for.
+
 R3.1.15-1.2.0: 2018-08-15, bhill
 	Modify comments to not use EPICS style macros to avoid undefined macros warnings when loading devIocInfo.db
 	Added some more usage info as comments in devIocInfo.db
