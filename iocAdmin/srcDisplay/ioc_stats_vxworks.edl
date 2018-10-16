@@ -195,7 +195,7 @@ font "helvetica-medium-r-12.0"
 3d
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -238,11 +238,11 @@ value {
 autoSize
 endObjectProperties
 
-# (Related Display)
-object relatedDisplayClass
+# (Shell Command)
+object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 375
 y 10
@@ -254,16 +254,9 @@ topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
 buttonLabel "Home Screen..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "lcls_main"
-}
-setPosition {
-  0 "parentWindow"
-}
-replaceSymbols {
-  0 1
+numCmds 1
+command {
+  0 "lclshome &"
 }
 endObjectProperties
 
@@ -347,7 +340,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -370,7 +363,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -393,7 +386,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -415,7 +408,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -437,7 +430,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -459,7 +452,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -501,7 +494,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -543,7 +536,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -566,7 +559,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -576,7 +569,7 @@ x 90
 y 200
 w 220
 h 20
-controlPv "$(ioc):ENGINEER"
+controlPv "$(ioc):CONTACT"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -589,7 +582,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -731,7 +724,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -774,7 +767,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -796,7 +789,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -838,7 +831,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -860,7 +853,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -922,7 +915,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -965,7 +958,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1017,7 +1010,7 @@ fill
 fillColor index 3
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1039,7 +1032,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1061,7 +1054,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1184,7 +1177,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1194,7 +1187,7 @@ x 415
 y 690
 w 95
 h 30
-controlPv "$(ioc):IOC_CPU_LOAD"
+controlPv "$(ioc):LOAD"
 fgColor index 16
 fgAlarm
 bgColor index 12
@@ -1269,7 +1262,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 75
 y 875
@@ -1337,7 +1330,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1358,7 +1351,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1379,7 +1372,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1435,7 +1428,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1457,7 +1450,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1594,7 +1587,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1616,7 +1609,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1638,7 +1631,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1660,7 +1653,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1683,7 +1676,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1704,7 +1697,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1751,7 +1744,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 180
 y 875
@@ -1779,7 +1772,7 @@ symbols {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1801,7 +1794,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1823,7 +1816,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1845,7 +1838,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1902,7 +1895,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1925,7 +1918,7 @@ lineWidth 2
 lineAlarm
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -1946,7 +1939,7 @@ fontAlign "center"
 lineWidth 0
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -2050,7 +2043,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -2093,7 +2086,7 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -2143,7 +2136,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 325
 y 160
@@ -2172,7 +2165,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 415
 y 160
@@ -2198,7 +2191,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 325
 y 190
@@ -2233,7 +2226,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 325
 y 220
@@ -2268,7 +2261,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 425
 y 365
@@ -2295,7 +2288,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 205
 y 365
