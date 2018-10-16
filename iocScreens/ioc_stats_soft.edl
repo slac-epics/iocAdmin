@@ -723,7 +723,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "iocScreens/ioc_reboot_confirm.edl"
+  0 "iocScreens/ioc_softreset_confirm_soft.edl"
 }
 setPosition {
   0 "parentWindow"

@@ -114,11 +114,11 @@ value {
 }
 endObjectProperties
 
-# (Text Update)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 104
 y 440
@@ -126,17 +126,17 @@ w 168
 h 16
 controlPv "SIOC:SYS0:AL00:TOD"
 precision 1
-fgColor index 14
+fgColor index 16
 bgColor index 12
 font "helvetica-medium-r-12.0"
 fontAlign "right"
 endObjectProperties
 
-# (Text Update)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 8
 y 440
@@ -144,7 +144,7 @@ w 120
 h 16
 controlPv "SIOC:SYS0:AL00:MODE"
 precision 1
-fgColor index 14
+fgColor index 16
 bgColor index 12
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -217,11 +217,11 @@ value {
 lineWidth 0
 endObjectProperties
 
-# (Text Update)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 104
 y 488
@@ -231,11 +231,18 @@ controlPv "$(crat):$(slot)NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)

@@ -129,11 +129,11 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 104
 y 552
@@ -141,17 +141,17 @@ w 168
 h 16
 controlPv "SIOC:SYS0:AL00:TOD"
 precision 1
-fgColor index 14
+fgColor index 16
 bgColor index 12
 font "helvetica-medium-r-12.0"
 fontAlign "right"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 8
 y 552
@@ -159,7 +159,7 @@ w 120
 h 16
 controlPv "SIOC:SYS0:AL00:MODE"
 precision 1
-fgColor index 14
+fgColor index 16
 bgColor index 12
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -193,26 +193,32 @@ replaceSymbols {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 216
 y 104
 w 40
 h 24
 controlPv "$(IOC):HEARTBEATECT"
-displayMode "decimal"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)
@@ -253,48 +259,60 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 152
 y 72
 w 104
 h 24
 controlPv "$(IOC):HEARTBEATSUM"
-displayMode "decimal"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 128
 y 168
 w 128
 h 24
 controlPv "$(IOC):TOD"
-displayMode "decimal"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)
@@ -335,26 +353,32 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 128
 y 136
 w 128
 h 24
 controlPv "$(IOC):HEARTBEAT"
-displayMode "decimal"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)
@@ -376,26 +400,32 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 128
 y 200
 w 128
 h 24
 controlPv "$(IOC):STARTTOD"
-displayMode "decimal"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)
@@ -622,11 +652,11 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 104
 y 456
@@ -636,25 +666,32 @@ controlPv "$(crat):POWERSTATE"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 160
 y 456
 w 96
 h 24
 controlPv "$(crat):POWERMSG"
-fgColor index 14
+fgColor index 16
 bgColor index 12
 font "helvetica-medium-r-10.0"
 fontAlign "center"
@@ -698,43 +735,49 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 104
 y 360
 w 152
 h 24
 controlPv "$(crat):TYPE.DESC"
-fgColor index 14
+fgColor index 16
 bgColor index 12
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 128
 y 232
 w 128
 h 24
 controlPv "$(IOC):LOCATION"
-displayMode "decimal"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)
@@ -756,11 +799,11 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 104
 y 424
@@ -770,11 +813,18 @@ controlPv "$(crat):LOCATION"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)

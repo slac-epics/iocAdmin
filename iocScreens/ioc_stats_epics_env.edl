@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 10
-y 99
-w 530
+x 1235
+y 750
+w 577
 h 300
 font "helvetica-bold-r-18.0"
 ctlFont "helvetica-bold-r-18.0"
@@ -20,8 +20,9 @@ ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
 title "$(IOC) EPICS Env Vars"
+showGrid
 snapToGrid
-gridSize 5
+gridSize 4
 endScreenProperties
 
 # (Static Text)
@@ -29,7 +30,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 1
 w 349
@@ -70,8 +71,8 @@ major 4
 minor 0
 release 0
 x 0
-y 50
-w 530
+y 52
+w 576
 h 1
 lineColor index 14
 fillColor index 14
@@ -82,7 +83,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 25
 w 335
@@ -101,7 +102,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 80
 w 207
@@ -116,22 +117,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 80
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_RPTR_PORT"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -141,7 +148,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 60
 w 190
@@ -156,22 +163,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 60
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_SRVR_PORT"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -181,37 +194,43 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 160
-w 205
+w 167
 h 16
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "EPICS_CA_CONN_TMO (sec)"
+  "EPICS_CA_CONN_TMO"
 }
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 160
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_CONN_TIME"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -221,7 +240,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 100
 w 162
@@ -236,22 +255,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 210
+x 260
 y 100
-w 310
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_ADDR_LIST"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -261,7 +286,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 120
 w 211
@@ -276,22 +301,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 120
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_AUTO_ADDR"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -301,7 +332,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 180
 w 285
@@ -311,27 +342,32 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "EPICS_CA_MAX_SEARCH_PERIOD (sec)"
+  "EPICS_CA_MAX_SEARCH_PERIOD"
 }
-autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 180
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_SRCH_TIME"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -341,37 +377,43 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 200
-w 247
+w 209
 h 16
 font "helvetica-bold-r-14.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "EPICS_CA_BEACON_PERIOD (sec)"
+  "EPICS_CA_BEACON_PERIOD"
 }
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 200
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_BEAC_TIME"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -381,7 +423,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 140
 w 228
@@ -396,22 +438,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 140
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):CA_MAX_ARRAY"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -421,7 +469,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 220
 w 127
@@ -436,22 +484,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 215
+x 260
 y 220
-w 300
-h 15
+w 280
+h 16
 controlPv "$(IOC):TIMEZONE"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -461,7 +515,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 240
 w 147
@@ -476,42 +530,54 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 240
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):TS_NTP_INET"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 260
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):IOC_LOG_PORT"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -521,7 +587,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 260
 w 167
@@ -536,22 +602,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
-x 295
+x 260
 y 280
-w 150
-h 15
+w 280
+h 16
 controlPv "$(IOC):IOC_LOG_INET"
-displayMode "decimal"
-fgColor index 14
+fgColor index 16
 fgAlarm
-bgColor index 4
-fill
+bgColor index 12
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 endObjectProperties
@@ -561,7 +633,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 280
 w 158
@@ -574,5 +646,62 @@ value {
   "EPICS_IOC_LOG_INET"
 }
 autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 544
+y 160
+w 25
+h 15
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "sec"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 544
+y 180
+w 25
+h 15
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "sec"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 544
+y 200
+w 25
+h 15
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "sec"
+}
 endObjectProperties
 
