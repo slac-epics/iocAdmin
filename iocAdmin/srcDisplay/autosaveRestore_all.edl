@@ -1,0 +1,2361 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 136
+y 322
+w 971
+h 339
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 2
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 1
+y 0
+w 969
+h 61
+font "helvetica-bold-r-24.0"
+fgColor index 29
+bgColor index 60
+value {
+  " AutoSave-Restore "
+}
+border
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 687
+y 113
+w 82
+h 18
+fgColor index 29
+bgColor index 60
+topShadowColor index 2
+botShadowColor index 12
+font "helvetica-bold-r-12.0"
+buttonLabel "M  C  T  R  P"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "autosave_MCTRP_help"
+}
+menuLabel {
+  0 "Legend"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 241
+y 12
+w 230
+h 28
+controlPv "$(ioc)"
+fgColor index 14
+bgColor index 58
+font "helvetica-bold-r-18.0"
+lineWidth 0
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 140
+w 157
+h 148
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 273
+w 157
+h 14
+controlPv "$(ioc):SR_7_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 254
+w 157
+h 14
+controlPv "$(ioc):SR_6_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 235
+w 157
+h 14
+controlPv "$(ioc):SR_5_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 216
+w 157
+h 14
+controlPv "$(ioc):SR_4_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 197
+w 157
+h 14
+controlPv "$(ioc):SR_3_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 178
+w 157
+h 14
+controlPv "$(ioc):SR_2_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 159
+w 157
+h 14
+controlPv "$(ioc):SR_1_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 387
+y 140
+w 157
+h 14
+controlPv "$(ioc):SR_0_Name"
+format "decimal"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 548
+y 141
+w 138
+h 145
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 141
+w 138
+h 12
+controlPv "$(ioc):SR_0_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 160
+w 138
+h 12
+controlPv "$(ioc):SR_1_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 179
+w 138
+h 12
+controlPv "$(ioc):SR_2_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 198
+w 138
+h 12
+controlPv "$(ioc):SR_3_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 217
+w 138
+h 12
+controlPv "$(ioc):SR_4_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 236
+w 138
+h 12
+controlPv "$(ioc):SR_5_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 255
+w 138
+h 12
+controlPv "$(ioc):SR_6_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 3
+release 0
+x 548
+y 274
+w 138
+h 12
+controlPv "$(ioc):SR_7_Time"
+format "decimal"
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 12
+bgColor index 3
+autoHeight
+nullColor index 32
+smartRefresh
+fastUpdate
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 776
+y 114
+w 193
+h 19
+fgColor index 29
+bgColor index 60
+topShadowColor index 2
+botShadowColor index 12
+font "helvetica-bold-r-12.0"
+buttonLabel "File Save Status"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "autosave_MCTRP_help"
+}
+menuLabel {
+  0 "Legend"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 633
+y 74
+w 39
+h 24
+
+beginGroup
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 633
+y 74
+w 38
+h 22
+lineColor index 64
+fill
+fillColor index 64
+lineWidth 0
+visPv "$(ioc):SR_heartbeat"
+visInvert
+closePolygon
+numPoints 20
+xPoints {
+  0 650
+  1 642
+  2 636
+  3 633
+  4 633
+  5 633
+  6 638
+  7 642
+  8 650
+  9 650
+  10 654
+  11 662
+  12 666
+  13 668
+  14 671
+  15 671
+  16 666
+  17 662
+  18 654
+  19 650
+}
+yPoints {
+  0 96
+  1 92
+  2 89
+  3 83
+  4 78
+  5 76
+  6 74
+  7 74
+  8 76
+  9 80
+  10 76
+  11 74
+  12 74
+  13 76
+  14 78
+  15 83
+  16 89
+  17 92
+  18 96
+  19 96
+}
+endObjectProperties
+
+endGroup
+
+visInvert
+visMin "0"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 181
+y 74
+w 423
+h 22
+controlPv "$(ioc):SR_recentlyStr"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 176
+y 72
+w 431
+h 27
+lineColor index 15
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_i_am_alive"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 11
+y 76
+w 145
+h 21
+font "helvetica-bold-r-18.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 2
+value {
+  "Last Saved File :"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 564
+y 116
+w 108
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 2
+value {
+  "File Saved Time"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 401
+y 116
+w 115
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 2
+value {
+  "File Saved Name"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 753
+y 14
+w 100
+h 26
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-medium-r-12.0"
+buttonLabel "Home Screen..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "lcls_main"
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 872
+y 14
+w 63
+h 26
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+label "EXIT"
+font "helvetica-medium-r-12.0"
+3d
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 2
+release 0
+x 676
+y 14
+w 63
+h 26
+fgColor index 14
+bgColor index 4
+topShadowColor index 2
+botShadowColor index 12
+font "helvetica-medium-r-12.0"
+buttonLabel "Help..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "autosave_MCTRP_help"
+}
+menuLabel {
+  0 "Legend"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 790
+y 315
+w 168
+h 16
+controlPv "SIOC:SYS0:ML00:TOD"
+precision 1
+fgColor index 14
+bgColor index 12
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 12
+y 312
+w 120
+h 16
+controlPv "SIOC:SYS0:AL00:MODE"
+precision 1
+fgColor index 14
+bgColor index 12
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 9
+y 150
+w 175
+h 98
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 9
+y 150
+w 169
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 2
+value {
+  "Recently Save Status:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 9
+y 188
+w 121
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 2
+value {
+  "IOC Boot Time:"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 9
+y 227
+w 175
+h 21
+font "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 2
+value {
+  "IOC Boot Time Status:"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 185
+y 149
+w 192
+h 20
+controlPv "$(ioc):SR_statusStr"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 166
+y 189
+w 211
+h 19
+controlPv "$(ioc):SR_rebootTime"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 194
+y 228
+w 183
+h 18
+controlPv "$(ioc):SR_rebootStatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 3
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 182
+y 149
+w 198
+h 22
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 139
+w 152
+h 146
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 139
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_0_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 158
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_1_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 177
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_2_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 196
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_3_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 215
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_4_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 234
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_5_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 253
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_6_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 387
+y 272
+w 152
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_7_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 192
+y 227
+w 190
+h 22
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_rebootStatus"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 140
+w 76
+h 148
+
+beginGroup
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 140
+w 76
+h 15
+controlPv "$(ioc):SR_0_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 159
+w 76
+h 15
+controlPv "$(ioc):SR_1_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 178
+w 76
+h 15
+controlPv "$(ioc):SR_2_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 197
+w 76
+h 15
+controlPv "$(ioc):SR_3_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 216
+w 76
+h 15
+controlPv "$(ioc):SR_4_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 235
+w 76
+h 15
+controlPv "$(ioc):SR_5_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 254
+w 76
+h 15
+controlPv "$(ioc):SR_6_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 690
+y 273
+w 76
+h 15
+controlPv "$(ioc):SR_7_State"
+lineColor index 14
+onColor index 14
+offColor index 3
+numBits 5
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 140
+w 18
+h 149
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 141
+w 18
+h 148
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 141
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_0_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 160
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_1_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 179
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_2_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 198
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_3_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 217
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_4_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 236
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_5_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 255
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_6_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 772
+y 274
+w 18
+h 15
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 2
+visPv "$(ioc):SR_7_State"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 140
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 140
+w 13
+h 16
+controlPv "$(ioc):SR_0_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_0_State"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 159
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 159
+w 13
+h 16
+controlPv "$(ioc):SR_1_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_1_State"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 178
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 178
+w 13
+h 16
+controlPv "$(ioc):SR_2_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_2_State"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 197
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 197
+w 13
+h 16
+controlPv "$(ioc):SR_3_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_4_State"
+visMin "0"
+visMax "10"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 216
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 216
+w 13
+h 16
+controlPv "$(ioc):SR_4_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_4_State"
+visMin "0"
+visMax "10"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 235
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 235
+w 13
+h 16
+controlPv "$(ioc):SR_5_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_5_State"
+visMin "0"
+visMax "10"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 254
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 254
+w 13
+h 16
+controlPv "$(ioc):SR_6_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_6_State"
+visMin "0"
+visMax "10"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 774
+y 273
+w 13
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 774
+y 273
+w 13
+h 16
+controlPv "$(ioc):SR_7_State"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-18.0"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_7_State"
+visMin "0"
+visMax "10"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 140
+w 175
+h 149
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 140
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 140
+w 175
+h 16
+controlPv "$(ioc):SR_0_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_0_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 159
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 159
+w 175
+h 16
+controlPv "$(ioc):SR_1_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_1_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 178
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 178
+w 175
+h 16
+controlPv "$(ioc):SR_2_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_2_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 197
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 197
+w 175
+h 16
+controlPv "$(ioc):SR_3_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_3_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 216
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 216
+w 175
+h 16
+controlPv "$(ioc):SR_4_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_4_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 235
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 235
+w 175
+h 16
+controlPv "$(ioc):SR_5_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_5_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 254
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 254
+w 175
+h 16
+controlPv "$(ioc):SR_6_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_6_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 791
+y 273
+w 175
+h 16
+
+beginGroup
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 791
+y 273
+w 175
+h 16
+controlPv "$(ioc):SR_7_StatusStr"
+fgColor index 14
+fgAlarm
+bgColor index 0
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 1
+lineAlarm
+endObjectProperties
+
+endGroup
+
+visPv "$(ioc):SR_7_StatusStr"
+visInvert
+visMax "0"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 142
+w 178
+h 146
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 142
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_0_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 161
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_1_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 180
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_2_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 199
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_3_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 218
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_4_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 237
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_5_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 256
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_6_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 790
+y 275
+w 178
+h 13
+lineColor index 20
+lineAlarm
+fillColor index 0
+lineWidth 3
+visPv "$(ioc):SR_7_Status"
+visMin "1"
+visMax "4"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
