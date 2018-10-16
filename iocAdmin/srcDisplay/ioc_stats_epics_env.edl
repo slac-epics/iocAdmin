@@ -695,7 +695,7 @@ x 270
 y 355
 w 280
 h 16
-controlPv "$(IOC):PVA_SRVR_PORT"
+controlPv "$(IOC):PVA_SERVER_PORT"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 fgColor index 16
@@ -739,7 +739,7 @@ x 270
 y 455
 w 280
 h 16
-controlPv "$(IOC):PVA_CONN_TIME"
+controlPv "$(IOC):PVA_CONN_TMO"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 fgColor index 16
@@ -871,7 +871,7 @@ x 270
 y 475
 w 280
 h 16
-controlPv "$(IOC):PVA_BEAC_TIME"
+controlPv "$(IOC):PVA_BEACON_PERIOD"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
 fgColor index 16
