@@ -18,6 +18,12 @@ pattern { IOCNAME }
 }
 file iocAdminScanMon.db
 {
+	pattern
+	{	IOCNAME	 }
+	{	"$(IOC)" }
+}
+file iocEnvVar.template
+{
         pattern
         { IOCNAME }
         { "$(IOC)" }

@@ -34,6 +34,14 @@ DB += iocAdminSoft.db
 DB += iocAdminRTEMS.db
 DB += devIocInfo.db
 
+$(INSTALL_DB)/iocHard.db:	$(INSTALL_DB)/iocAdminScanMon.db
+
+$(INSTALL_DB)/iocSoft.db:	$(INSTALL_DB)/iocAdminScanMon.db
+
+$(INSTALL_DB)/iocAdminRTEMS.db:	$(INSTALL_DB)/iocAdminScanMon.db
+
+$(INSTALL_DB)/iocAdminSoft.db:	$(INSTALL_DB)/iocAdminScanMon.db
+
 REQ  += autosave_iocAdmin.sub-req
 REQ  += autosave_iocAdmin.tpl-req
 REQ  += autosave_iocAdmin.req
