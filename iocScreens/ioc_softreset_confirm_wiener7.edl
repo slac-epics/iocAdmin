@@ -441,11 +441,11 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 280
@@ -455,18 +455,25 @@ controlPv "$(crat):1NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 312
@@ -476,18 +483,25 @@ controlPv "$(crat):2NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 344
@@ -497,18 +511,25 @@ controlPv "$(crat):3NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 376
@@ -518,18 +539,25 @@ controlPv "$(crat):4NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 408
@@ -539,18 +567,25 @@ controlPv "$(crat):5NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 440
@@ -560,18 +595,25 @@ controlPv "$(crat):6NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 5
 release 0
 x 80
 y 472
@@ -581,11 +623,18 @@ controlPv "$(crat):7NAME"
 fgColor index 16
 fgAlarm
 bgColor index 12
-fill
+objType "monitors"
+fgAlarm
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+fontAlign "center"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 lineWidth 2
-lineAlarm
+fgAlarm
 endObjectProperties
 
 # (Static Text)

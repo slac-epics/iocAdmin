@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 329
-y 25
+x 1401
+y 459
 w 510
 h 300
 font "helvetica-bold-r-18.0"
@@ -20,8 +20,9 @@ ctlBgColor2 index 49
 topShadowColor index 1
 botShadowColor index 14
 title "$(IOC) Limits"
+showGrid
 snapToGrid
-gridSize 5
+gridSize 4
 endScreenProperties
 
 # (Static Text)
@@ -29,7 +30,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 1
 w 272
@@ -82,7 +83,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 25
 w 335
@@ -101,7 +102,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 10
 y 90
 w 87
@@ -116,44 +117,52 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 7
 release 0
 x 280
 y 90
 w 80
 h 20
 controlPv "$(IOC):CA_CLNT_CNT"
-displayMode "decimal"
-fgColor index 14
-fgAlarm
-bgColor index 4
-fill
 font "helvetica-bold-r-14.0"
 fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 7
 release 0
 x 280
 y 120
 w 80
 h 20
 controlPv "$(IOC):CA_CONN_CNT"
-displayMode "decimal"
-fgColor index 14
-fgAlarm
-bgColor index 4
-fill
 font "helvetica-bold-r-14.0"
 fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 
 # (Static Text)
@@ -161,7 +170,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 10
 y 120
 w 108
@@ -176,24 +185,28 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 7
 release 0
 x 280
 y 150
 w 80
 h 20
 controlPv "$(IOC):SUSP_TASK_CNT"
-displayMode "decimal"
-fgColor index 14
-fgAlarm
-bgColor index 4
-fill
 font "helvetica-bold-r-14.0"
 fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 
 # (Static Text)
@@ -201,7 +214,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 10
 y 150
 w 93
@@ -216,64 +229,52 @@ value {
 autoSize
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
-release 0
-x 280
-y 240
-w 80
-h 20
-controlPv "$(IOC):MEM_BLK_FREE"
-displayMode "decimal"
-fgColor index 14
-fgAlarm
-bgColor index 4
-fill
-font "helvetica-bold-r-14.0"
-fontAlign "center"
-endObjectProperties
-
-# (Textupdate)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
+major 4
+minor 7
 release 0
 x 280
 y 210
 w 80
 h 20
 controlPv "$(IOC):FD_FREE"
-displayMode "decimal"
-fgColor index 14
-fgAlarm
-bgColor index 4
-fill
 font "helvetica-bold-r-14.0"
 fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 
-# (Textupdate)
-object TextupdateClass
+# (Text Monitor)
+object activeXTextDspClass:noedit
 beginObjectProperties
-major 10
-minor 0
+major 4
+minor 7
 release 0
 x 280
 y 180
 w 80
 h 20
 controlPv "$(IOC):LOAD"
-displayMode "decimal"
-fgColor index 14
-fgAlarm
-bgColor index 4
-fill
 font "helvetica-bold-r-14.0"
 fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
 endObjectProperties
 
 # (Static Text)
@@ -281,7 +282,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 10
 y 180
 w 97
@@ -301,7 +302,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 10
 y 210
 w 76
@@ -316,33 +317,11 @@ value {
 autoSize
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 15
-y 235
-w 87
-h 48
-font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Largest Free"
-  "RAM Block"
-  "(Bytes)"
-}
-autoSize
-endObjectProperties
-
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 370
 y 90
@@ -360,13 +339,14 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 440
 y 90
@@ -384,6 +364,7 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
 # (Static Text)
@@ -391,7 +372,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 380
 y 70
 w 35
@@ -411,7 +392,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 455
 y 70
 w 28
@@ -426,11 +407,11 @@ value {
 autoSize
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 370
 y 120
@@ -448,13 +429,14 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 440
 y 120
@@ -472,13 +454,14 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 440
 y 150
@@ -496,13 +479,14 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 370
 y 180
@@ -520,13 +504,14 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 440
 y 180
@@ -544,6 +529,7 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
 # (Static Text)
@@ -551,7 +537,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 150
 y 70
 w 40
@@ -571,7 +557,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 225
 y 70
 w 34
@@ -591,7 +577,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 300
 y 70
 w 39
@@ -606,11 +592,11 @@ value {
 autoSize
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 130
 y 210
@@ -628,13 +614,14 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
+noExecuteClipMask
 endObjectProperties
 
-# (Text)
+# (Text Control)
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 1
+minor 7
 release 0
 x 205
 y 210
@@ -652,53 +639,6 @@ nullColor index 1
 useHexPrefix
 newPos
 objType "controls"
-endObjectProperties
-
-# (Text)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 130
-y 240
-w 65
-h 20
-controlPv "$(IOC):MEM_BLK_FREE.LOLO"
-font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 1
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 205
-y 240
-w 65
-h 20
-controlPv "$(IOC):MEM_BLK_FREE.LOW"
-font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
-editable
-autoHeight
-motifWidget
-limitsFromDb
-nullColor index 1
-useHexPrefix
-newPos
-objType "controls"
+noExecuteClipMask
 endObjectProperties
 
