@@ -1,0 +1,2839 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 385
+y 211
+w 840
+h 780
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 7
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 4
+ctlBgColor2 index 4
+topShadowColor index 1
+botShadowColor index 11
+title "ATCA crate - $(crat)"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 284
+w 800
+h 468
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 840
+h 40
+lineColor index 54
+fill
+fillColor index 54
+lineWidth 0
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 8
+y 0
+w 208
+h 40
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 53
+useDisplayBg
+value {
+  "ATCA Crate "
+  "$(crat)"
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 692
+y 8
+w 80
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+label "Exit"
+font "helvetica-medium-r-12.0"
+3d
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 19
+y 271
+w 176
+h 16
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Crate Contents "
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 376
+w 40
+h 56
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 432
+w 40
+h 56
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 488
+w 40
+h 56
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 544
+w 40
+h 56
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 600
+w 40
+h 56
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "6"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 196
+y 292
+w 148
+h 28
+font "helvetica-bold-i-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Front"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 680
+y 320
+w 48
+h 84
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 679
+y 320
+w 47
+h 82
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_ipmi_info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=PM,unit=1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 681
+y 329
+w 40
+h 37
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Power"
+  "Module"
+  "1..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):PM1:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 740
+y 320
+w 48
+h 84
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 739
+y 320
+w 47
+h 82
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_ipmi_info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=PM,unit=2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 741
+y 329
+w 40
+h 37
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Power"
+  "Module"
+  "2..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):PM2:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 740
+y 412
+w 48
+h 84
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 739
+y 411
+w 47
+h 82
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_ipmi_info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=PM,unit=4"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 741
+y 419
+w 40
+h 37
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Power"
+  "Module"
+  "4..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):PM4:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 680
+y 412
+w 48
+h 84
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 679
+y 412
+w 47
+h 82
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_ipmi_info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=PM,unit=3"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 681
+y 419
+w 40
+h 37
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Power"
+  "Module"
+  "3..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):PM3:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 672
+y 580
+w 124
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 672
+y 580
+w 122
+h 36
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_utca_cu"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=CU,unit=2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 679
+y 587
+w 105
+h 26
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Fan Tray 2..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):CU2:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 656
+w 40
+h 56
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "7"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 44
+y 608
+w 104
+h 44
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 42
+y 608
+w 104
+h 44
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_ipmi_info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=SH,unit=1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 51
+y 613
+w 92
+h 34
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Shelf FRU "
+  "Info 1..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):SH1:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 44
+y 668
+w 104
+h 44
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 42
+y 668
+w 104
+h 44
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_ipmi_info"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=SH,unit=2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 49
+y 672
+w 92
+h 34
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Shelf FRU "
+  "Info 2..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):SH2:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 672
+y 624
+w 124
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 672
+y 624
+w 122
+h 36
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_utca_cu"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=CU,unit=3"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 679
+y 631
+w 105
+h 26
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Fan Tray 3..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):CU3:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 672
+y 536
+w 124
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 672
+y 536
+w 122
+h 36
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_utca_cu"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=CU,unit=1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 679
+y 543
+w 105
+h 26
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Fan Tray 1..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):CU1:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 672
+y 672
+w 124
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 672
+y 672
+w 122
+h 36
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_utca_cu"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=CU,unit=4"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 679
+y 679
+w 105
+h 26
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Fan Tray 4..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):CU4:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 384
+w 104
+h 56
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 38
+y 384
+w 104
+h 56
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_nopowerinfo"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=SHM,unit=2"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 46
+y 390
+w 92
+h 44
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Shelf Mgr 2..."
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):SHM2:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 60
+w 800
+h 196
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 19
+y 51
+w 176
+h 16
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "System Status and Control"
+}
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 426
+y 153
+w 80
+h 24
+fgColor index 14
+onColor index 4
+offColor index 4
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(crat):POWEROFF"
+pressValue "0"
+onLabel "Power Down"
+offLabel "Power Down"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 522
+y 153
+w 80
+h 24
+fgColor index 14
+onColor index 4
+offColor index 4
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(crat):POWERON"
+pressValue "1"
+onLabel "Power Up"
+offLabel "Power Up"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 618
+y 153
+w 80
+h 24
+fgColor index 14
+onColor index 4
+offColor index 4
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(crat):HARDRESET"
+pressValue "3"
+onLabel "Hard Reset"
+offLabel "Hard Reset"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 519
+y 109
+w 88
+h 24
+controlPv "$(crat):POWERSTATE"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 648
+y 189
+w 48
+h 20
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Info..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "crat_ipmi_chassis_details"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 415
+y 109
+w 96
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Chassis Power"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 610
+y 108
+w 96
+h 24
+controlPv "$(crat):POWERMSG"
+fgColor index 14
+bgColor index 12
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 320
+w 220
+h 392
+lineColor index 14
+fill
+fillColor index 6
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 320
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 156
+y 320
+w 40
+h 52
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 376
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 432
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 488
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 544
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 600
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 196
+y 656
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 134
+y 184
+w 108
+h 32
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visPv "$(crat):INIT"
+visMin "1"
+visMax "2"
+value {
+  "Re-initializing takes"
+  "tens of seconds"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 135
+y 106
+w 88
+h 24
+controlPv "$(crat):ONLNSTAT"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 35
+y 106
+w 96
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Network"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 35
+y 150
+w 96
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Communication"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 135
+y 150
+w 88
+h 24
+controlPv "$(crat):INIT"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 426
+y 188
+w 108
+h 24
+fgColor index 14
+onColor index 4
+offColor index 4
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(crat):SOFTSHUTDOWN"
+pressValue "1"
+onLabel "Soft Shutdown"
+offLabel "Soft Shutdown"
+3d
+useEnumNumeric
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 428
+y 292
+w 148
+h 28
+font "helvetica-bold-i-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Rear"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 320
+w 220
+h 392
+lineColor index 14
+fill
+fillColor index 6
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 320
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 376
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 432
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 488
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 544
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 600
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 428
+y 656
+w 220
+h 56
+lineColor index 14
+fillColor index 4
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 328
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 328
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=1"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 332
+w 203
+h 32
+controlPv "$(crat):RTM1:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM1:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 496
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 496
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=4"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 500
+w 203
+h 32
+controlPv "$(crat):RTM4:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM4:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 440
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 440
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=3"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 444
+w 203
+h 32
+controlPv "$(crat):RTM3:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM3:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 664
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 664
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=7"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 668
+w 203
+h 32
+controlPv "$(crat):RTM7:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM7:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 608
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 608
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=6"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 612
+w 203
+h 32
+controlPv "$(crat):RTM6:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM6:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 552
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 552
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=5"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 556
+w 203
+h 32
+controlPv "$(crat):RTM5:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM5:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 236
+y 148
+w 92
+h 28
+fgColor index 14
+fgAlarm
+bgColor index 3
+inconsistentColor index 5
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(crat):CONNECT"
+font "helvetica-medium-r-10.0"
+colorPv "$(crat):CONNECT"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 328
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 328
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=1"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 332
+w 203
+h 32
+controlPv "$(crat):FB1:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 328
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB1:STATSUMY"
+visPv "$(crat)FB1:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):FB1:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 384
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 384
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=2"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 388
+w 203
+h 32
+controlPv "$(crat):FB2:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 384
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB2:STATSUMY"
+visPv "$(crat)FB2:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):FB2:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 440
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 440
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=3"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 444
+w 203
+h 32
+controlPv "$(crat):FB3:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 440
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB3:STATSUMY"
+visPv "$(crat)FB3:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):FB3:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 496
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 496
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=4"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 500
+w 203
+h 32
+controlPv "$(crat):FB4:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 496
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB4:STATSUMY"
+visPv "$(crat)FB4:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):FB4:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 552
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 552
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=5"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 556
+w 203
+h 32
+controlPv "$(crat):FB5:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 552
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB5:STATSUMY"
+visPv "$(crat)FB5:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv " $(crat):FB5:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 608
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 608
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=6"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 612
+w 203
+h 32
+controlPv "$(crat):FB6:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 608
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB6:STATSUMY"
+visPv "$(crat)FB6:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):FB6:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 664
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 200
+y 664
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=FB,unit=7"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 204
+y 668
+w 203
+h 32
+controlPv "$(crat):FB7:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 664
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)FB7:STATSUMY"
+visPv "$(crat)FB7:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):FB7:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 384
+w 208
+h 40
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 432
+y 384
+w 207
+h 40
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_rtm"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=RTM,unit=2"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 436
+y 388
+w 203
+h 32
+controlPv "$(crat):RTM2:BPRODNAME"
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 432
+y 384
+w 208
+h 40
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)RTM2:STATSUMY"
+visPv "$(crat)RTM2:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):RTM2:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 38
+y 320
+w 104
+h 56
+
+beginGroup
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 38
+y 320
+w 104
+h 56
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "module_atca_nopowerinfo"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "id=SHM,unit=1"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 46
+y 326
+w 92
+h 44
+font "helvetica-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 4
+useDisplayBg
+value {
+  "Shelf Mgr..."
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 320
+w 100
+h 56
+lineColor index 15
+fillColor index 4
+lineWidth 2
+alarmPv "$(crat)SHM1:STATSUMY"
+visPv "$(crat)SHM1:STATSUMY.SEVR"
+visMin "1"
+visMax "5"
+endObjectProperties
+
+endGroup
+
+visPv "$(crat):SHM1:P"
+visMin "1"
+visMax "2"
+endObjectProperties
+

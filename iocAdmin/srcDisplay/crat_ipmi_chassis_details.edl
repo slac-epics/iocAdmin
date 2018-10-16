@@ -1,0 +1,487 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 485
+y 275
+w 440
+h 360
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 7
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 14
+ctlBgColor1 index 4
+ctlBgColor2 index 4
+topShadowColor index 1
+botShadowColor index 11
+title "Server Chassis Details - $(crat)"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 0
+w 440
+h 40
+lineColor index 54
+fill
+fillColor index 54
+lineWidth 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 12
+y 56
+w 396
+h 268
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 12
+y 48
+w 144
+h 16
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Chassis Details"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 260
+y 132
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Cooling/fan fault"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 260
+y 120
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Drive fault"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 260
+y 108
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Front panel lockout"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 260
+y 96
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Chassis intrusion"
+}
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 104
+y 96
+w 20
+h 88
+controlPv "$(crat):POWERSTAT"
+lineColor index 14
+onColor index 25
+offColor index 4
+endian "little"
+numBits 8
+endObjectProperties
+
+# (Byte)
+object ByteClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 236
+y 96
+w 20
+h 88
+controlPv "$(crat):MISCSTAT"
+lineColor index 14
+onColor index 25
+offColor index 4
+endian "little"
+numBits 8
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 200
+y 216
+w 116
+h 24
+controlPv "$(crat):POWERPOLICY"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 200
+y 260
+w 116
+h 24
+controlPv "$(crat):LASTPOWER"
+fgColor index 16
+fgAlarm
+bgColor index 12
+fill
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+lineWidth 2
+lineAlarm
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 128
+y 144
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Power control fault"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 128
+y 132
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Power fault"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 128
+y 120
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Chassis interlock"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 128
+y 108
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Power overload"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 128
+y 96
+w 116
+h 16
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+visMin "1"
+visMax "2"
+value {
+  "Power is on"
+}
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 356
+y 8
+w 48
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+label "Exit"
+font "helvetica-medium-r-12.0"
+3d
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 292
+y 8
+w 56
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Home..."
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "lcls_main"
+}
+setPosition {
+  0 "parentWindow"
+}
+replaceSymbols {
+  0 1
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 8
+y 0
+w 264
+h 40
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 53
+useDisplayBg
+value {
+  "Supermicro Server - Chassis Details"
+  "$(crat)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 12
+y 216
+w 180
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Power State after AC Returns"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 12
+y 260
+w 180
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Last Power Event"
+}
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 12
+y 332
+w 120
+h 16
+controlPv "SIOC:SYS0:AL00:MODE"
+precision 1
+fgColor index 14
+bgColor index 12
+font "helvetica-medium-r-12.0"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 256
+y 332
+w 168
+h 16
+controlPv "SIOC:SYS0:AL00:TOD"
+precision 1
+fgColor index 14
+bgColor index 12
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+endObjectProperties
+
