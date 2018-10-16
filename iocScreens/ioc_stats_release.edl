@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 304
-y 128
+x 544
+y 1782
 w 470
 h 350
 font "helvetica-bold-r-18.0"
@@ -61,7 +61,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 5
 y 0
 w 293
@@ -100,7 +100,7 @@ endObjectProperties
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 305
 y 10
@@ -122,321 +122,283 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 80
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)1"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 105
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)2"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 130
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)3"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 155
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)4"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 180
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)5"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 205
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)6"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 230
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)7"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 255
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)8"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 280
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)9"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 240
 y 55
 w 210
-h 25
+h 20
 controlPv "$(IOC):RELEASE$(idx)0"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-objType "monitors"
-fgAlarm
 limitsFromDb
 nullColor index 40
 smartRefresh
 useHexPrefix
 newPos
-fontAlign "center"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-lineWidth 2
-fgAlarm
+objType "monitors"
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 55
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)0.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 40
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 80
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)1.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 40
+newPos
 endObjectProperties
 
 # (Related Display)
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 4
 release 0
 x 240
 y 315
@@ -468,7 +430,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 2
+minor 4
 release 0
 x 20
 y 315
@@ -500,135 +462,143 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 105
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)2.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 130
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)3.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 155
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)4.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 180
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)5.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 205
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)6.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 230
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)7.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 255
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)8.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 20
 y 280
 w 210
 h 20
 controlPv "$(IOC):RELEASE$(idx)9.DESC"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 12
-font "helvetica-medium-r-12.0"
-lineWidth 0
+nullColor index 2
+newPos
 endObjectProperties
 
