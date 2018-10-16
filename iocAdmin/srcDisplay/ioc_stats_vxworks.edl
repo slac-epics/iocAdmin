@@ -1277,7 +1277,7 @@ buttonLabel "Cluster Info"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_clust"
+  0 "ioc_stats_clust.edl"
 }
 menuLabel {
   0 "$(ioc) System Cluster Info"
@@ -1759,7 +1759,7 @@ buttonLabel "Cluster Info"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_clust"
+  0 "ioc_stats_clust.edl"
 }
 menuLabel {
   0 "$(ioc) Data Cluster Info"
@@ -2151,7 +2151,7 @@ buttonLabel "Alarm Limits..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_limits"
+  0 "ioc_stats_limits.edl"
 }
 menuLabel {
   0 "$(ioc) Alarm Limits"
@@ -2180,7 +2180,7 @@ buttonLabel "EPICS Env Vars..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_epics_env"
+  0 "ioc_stats_epics_env.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -2241,7 +2241,7 @@ buttonLabel "Scan Monitor..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_scanmon"
+  0 "ioc_stats_scanmon.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -2276,7 +2276,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reboot_confirm"
+  0 "ioc_stats_reboot_confirm.edl"
 }
 setPosition {
   0 "button"
@@ -2303,7 +2303,7 @@ buttonLabel "Reload Access Security Conf File..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reloadacf_confirm"
+  0 "ioc_stats_reloadacf_confirm.edl"
 }
 setPosition {
   0 "button"

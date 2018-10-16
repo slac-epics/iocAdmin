@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 168
-y 66
+x 524
+y 1387
 w 540
 h 925
 font "helvetica-medium-r-12.0"
@@ -121,7 +121,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 10
 y 0
 w 345
@@ -141,7 +141,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 55
 w 69
@@ -161,7 +161,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 352
 y 536528
 w 54
@@ -223,7 +223,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 330
 y 60
 w 71
@@ -265,7 +265,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 80
 w 71
@@ -285,7 +285,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 105
 w 45
@@ -305,7 +305,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 130
 w 54
@@ -325,7 +325,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 155
 w 57
@@ -479,7 +479,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 330
 y 95
 w 90
@@ -521,7 +521,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 330
 y 130
 w 75
@@ -610,7 +610,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 180
 w 61
@@ -630,7 +630,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 205
 w 61
@@ -650,7 +650,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 230
 w 48
@@ -670,7 +670,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 50
 y 370
 w 32
@@ -709,7 +709,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 410
 w 83
@@ -752,7 +752,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 455
 w 118
@@ -775,31 +775,9 @@ minor 0
 release 0
 x 15
 y 475
-w 230
+w 505
 h 25
-controlPv "$(ioc):APP_DIR1"
-displayMode "decimal"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 475
-w 230
-h 25
-controlPv "$(ioc):APP_DIR2"
+controlPv "$(ioc):APP_DIR"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -816,7 +794,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 505
 w 75
@@ -839,31 +817,9 @@ minor 0
 release 0
 x 15
 y 525
-w 230
+w 505
 h 25
-controlPv "$(ioc):ST_SCRIPT1"
-displayMode "decimal"
-precision 1
-fgColor index 16
-fgAlarm
-bgColor index 12
-fill
-font "helvetica-medium-r-12.0"
-lineWidth 2
-lineAlarm
-endObjectProperties
-
-# (Text Update)
-object TextupdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 245
-y 525
-w 230
-h 25
-controlPv "$(ioc):ST_SCRIPT2"
+controlPv "$(ioc):ST_SCRIPT"
 displayMode "decimal"
 precision 1
 fgColor index 16
@@ -879,7 +835,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 3
+minor 4
 release 0
 x 425
 y 365
@@ -894,7 +850,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reboot_confirm"
+  0 "ioc_stats_reboot_confirm.edl"
 }
 setPosition {
   0 "button"
@@ -907,7 +863,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 435
 w 65
@@ -927,7 +883,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 555
 w 99
@@ -1065,7 +1021,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 130
 y 615
 w 94
@@ -1085,7 +1041,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 655
 w 26
@@ -1105,7 +1061,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 675
 w 28
@@ -1125,7 +1081,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 730
 w 75
@@ -1146,7 +1102,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 315
 y 625
 w 57
@@ -1187,7 +1143,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 20
 y 795
 w 41
@@ -1207,7 +1163,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 20
 y 825
 w 24
@@ -1227,7 +1183,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 80
 y 770
 w 85
@@ -1283,7 +1239,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 310
 y 660
 w 99
@@ -1347,7 +1303,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 325
 y 685
 w 26
@@ -1367,7 +1323,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 325
 y 715
 w 24
@@ -1402,7 +1358,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 310
 y 745
 w 55
@@ -1422,7 +1378,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 320
 y 770
 w 27
@@ -1442,7 +1398,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 320
 y 795
 w 37
@@ -1594,7 +1550,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 695
 w 52
@@ -1615,7 +1571,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 120
 y 630
 w 30
@@ -1701,7 +1657,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 200
 y 630
 w 62
@@ -1736,7 +1692,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 130
 y 260
 w 131
@@ -1823,7 +1779,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 285
 w 41
@@ -1843,7 +1799,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 310
 w 32
@@ -1863,7 +1819,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 15
 y 335
 w 68
@@ -1883,7 +1839,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 325
 y 275
 w 62
@@ -1927,7 +1883,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 325
 y 315
 w 44
@@ -1968,7 +1924,7 @@ endObjectProperties
 object activeMessageButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 475
 y 310
@@ -1993,7 +1949,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 30
 y 845
 w 24
@@ -2013,7 +1969,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 70
 y 845
 w 45
@@ -2033,7 +1989,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 135
 y 845
 w 26
@@ -2053,7 +2009,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 240
 y 845
 w 35
@@ -2249,7 +2205,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 180
 y 845
 w 49
@@ -2312,7 +2268,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 3
+minor 4
 release 0
 x 325
 y 160
@@ -2327,7 +2283,7 @@ buttonLabel "Alarm Limits..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_limits"
+  0 "ioc_stats_limits.edl"
 }
 menuLabel {
   0 "$(ioc) Alarm Limits"
@@ -2341,7 +2297,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 3
+minor 4
 release 0
 x 415
 y 160
@@ -2356,7 +2312,7 @@ buttonLabel "EPICS Env Vars..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_epics_env"
+  0 "ioc_stats_epics_env.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -2367,7 +2323,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 3
+minor 4
 release 0
 x 325
 y 190
@@ -2402,7 +2358,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 3
+minor 4
 release 0
 x 325
 y 220
@@ -2417,7 +2373,7 @@ buttonLabel "Scan Monitor..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_scanmon"
+  0 "ioc_stats_scanmon.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -2437,7 +2393,7 @@ endObjectProperties
 object relatedDisplayClass
 beginObjectProperties
 major 4
-minor 3
+minor 4
 release 0
 x 205
 y 365
@@ -2452,7 +2408,7 @@ buttonLabel "Reload Access Security Conf File..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reloadacf_confirm"
+  0 "ioc_stats_reloadacf_confirm.edl"
 }
 setPosition {
   0 "button"

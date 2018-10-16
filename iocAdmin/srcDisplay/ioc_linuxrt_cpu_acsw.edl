@@ -425,7 +425,7 @@ buttonLabel "More IOC Stats..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_soft"
+  0 "ioc_stats_soft.edl"
 }
 setPosition {
   0 "parentWindow"

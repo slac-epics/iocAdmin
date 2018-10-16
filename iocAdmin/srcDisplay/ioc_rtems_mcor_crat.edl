@@ -864,7 +864,7 @@ buttonLabel "Reboot..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "ioc_stats_reboot_confirm"
+  0 "ioc_stats_reboot_confirm.edl"
 }
 setPosition {
   0 "button"
