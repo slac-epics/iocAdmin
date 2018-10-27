@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.6.0: 2018-10-27, bhill
+	Fix RHEL5 build issue w/ iocReleaseCreateDb.py
+
 R3.1.15-1.5.0: 2018-10-26, bhill
 	Changed new PVAccess env variables to be type env instead of epics till supported by base.
 	Provide custom error msg when INP field is not recognized as an EPICS env var.
