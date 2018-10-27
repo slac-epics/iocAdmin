@@ -1,5 +1,9 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.5.0: 2018-10-26, bhill
+	Changed new PVAccess env variables to be type env instead of epics till supported by base.
+	Provide custom error msg when INP field is not recognized as an EPICS env var.
+
 R3.1.15-1.4.0: 2018-10-16, bhill
 	Added new PVA env variables to ioc_stats_epics_env.edl screens.
 	Build iocAdminScanMon.db into iocSoft.db, iocHard.db, iocAdminRTEMS.db, and iocAdminSoft.db
