@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 import sys
 import os
@@ -29,36 +30,36 @@ def export_db_file(module_versions, path=None):
 
     sorted_module_versions = [(key, module_versions[key]) for key in sorted(module_versions.keys())]   
 
-    print >> out_file, '#=============================================================================='
-    print >> out_file, '#'
-    print >> out_file, '# Abs:  LCLS read-only stringin records for Modules specified in configure/RELEASE'
-    print >> out_file, '#'
-    print >> out_file, '# Name: iocRelease.db'
-    print >> out_file, '#'
-    print >> out_file, '# Note: generated automatically by $IOCADMIN/bin/$EPICS_HOST_ARCH/iocReleaseCreateDb.py'
-    print >> out_file, '#'
-    print >> out_file, '#=============================================================================='
+    print('#==============================================================================', file=out_file)
+    print('#', file=out_file)
+    print('# Abs:  LCLS read-only stringin records for Modules specified in configure/RELEASE', file=out_file)
+    print('#', file=out_file)
+    print('# Name: iocRelease.db', file=out_file)
+    print('#', file=out_file)
+    print('# Note: generated automatically by $IOCADMIN/bin/$EPICS_HOST_ARCH/iocReleaseCreateDb.py', file=out_file)
+    print('#', file=out_file)
+    print('#==============================================================================', file=out_file)
     for [key, module_version] in sorted_module_versions:
         """
         strip off the _MODULE_VERSION from key for PV NAME
         """
         x = key.replace("_MODULE_VERSION","",1)
         if idx >= idxMax: break
-        print >> out_file, 'record(stringin, "$(IOC):RELEASE%02d") {' % idx
-        print >> out_file, '  field(DESC, "%s")' % x
-        print >> out_file, '  field(PINI, "YES")' 
-        print >> out_file, '  field(VAL, "%s")' % module_version
-        print >> out_file, '  #field(ASG, "some read only grp")' 
-        print >> out_file, '}'
+        print('record(stringin, "$(IOC):RELEASE%02d") {' % idx, file=out_file)
+        print('  field(DESC, "%s")' % x, file=out_file)
+        print('  field(PINI, "YES")' , file=out_file)
+        print('  field(VAL, "%s")' % module_version, file=out_file)
+        print('  #field(ASG, "some read only grp")' , file=out_file)
+        print('}', file=out_file)
         idx = idx + 1
         
     while idx < idxMax:
-        print >> out_file, 'record(stringin, "$(IOC):RELEASE%02d") {' % idx
-        print >> out_file, '  field(DESC, "Not Applicable")'
-        print >> out_file, '  field(PINI, "YES")' 
-        print >> out_file, '  field(VAL, "Not Applicable")'
-        print >> out_file, '  #field(ASG, "some read only grp")' 
-        print >> out_file, '}'
+        print('record(stringin, "$(IOC):RELEASE%02d") {' % idx, file=out_file)
+        print('  field(DESC, "Not Applicable")', file=out_file)
+        print('  field(PINI, "YES")' , file=out_file)
+        print('  field(VAL, "Not Applicable")', file=out_file)
+        print('  #field(ASG, "some read only grp")' , file=out_file)
+        print('}', file=out_file)
         idx = idx + 1
     
     if out_file != sys.stdout:
@@ -102,7 +103,7 @@ def module_versions(release_path, site_path):
     # now get all the modules
     try:
         release_file = open(release_path, 'r')
-    except IOError, e:
+    except IOError as e:
         sys.stderr.write('Could not open "%s": %s\n' % (release_path, e.strerror))
         return None
 
