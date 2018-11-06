@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.7.0: 2018-11-06, slepicka
+	Fix Python 3 compatibility issues w/ iocReleaseCreateDb.py
+
 R3.1.15-1.6.0: 2018-10-27, bhill
 	Fix RHEL5 build issue w/ iocReleaseCreateDb.py
 
