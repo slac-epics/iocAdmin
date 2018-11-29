@@ -1,6 +1,6 @@
 Release Notes for iocStats
 --------------------------
-R3.1.15-1.7.0: 2018-11-29, bhill
+R3.1.15-1.8.0: 2018-11-29, bhill
 	Improved module dependency logic borrowed from eco_tools handles more variations in RELEASE files.
 	Bumped up max # of dependencies to 30: $IOC:RELEASE00 - $IOC:RELEASE29
 	Added support for EPICS_CAS_* env variables
