@@ -4,12 +4,13 @@ import sys
 import os
 import subprocess
 import optparse
-
+from pkgNamesToMacroNames import *
+from version_utils import *
 
 __all__ = ['export_db_file', 'module_versions', 'process_options']
 
 
-def export_db_file(module_versions, path=None):
+def export_db_file( ioc_version, module_versions, path=None):
     """
     Use the contents of a dictionary of module versions to create a database
     of module release stringin PVs. The database
@@ -18,7 +19,7 @@ def export_db_file(module_versions, path=None):
 
     out_file = sys.stdout
     idx = 0
-    idxMax = 20
+    idxMax = 30
 
     if path:
         try:
@@ -27,7 +28,9 @@ def export_db_file(module_versions, path=None):
             sys.stderr.write('Could not open "%s": %s\n' % (path, e.strerror))
             return None
 
-    sorted_module_versions = [(key, module_versions[key]) for key in sorted(module_versions.keys())]
+    # Start list w/ ioc_version
+    sorted_module_versions = [ ioc_version ]
+    sorted_module_versions += [(key, module_versions[key]) for key in sorted(module_versions.keys())]
 
     print >> out_file, '#=============================================================================='
     print >> out_file, '#'
@@ -43,7 +46,8 @@ def export_db_file(module_versions, path=None):
         strip off the _MODULE_VERSION from key for PV NAME
         """
         x = key.replace("_MODULE_VERSION","",1)
-        if idx >= idxMax: break
+        if idx >= idxMax:
+            break
         print >> out_file, 'record(stringin, "$(IOC):RELEASE%02d") {' % idx
         print >> out_file, '  field(DESC, "%s")' % x
         print >> out_file, '  field(PINI, "YES")'
@@ -70,7 +74,16 @@ def module_versions(release_path, site_path):
     Return a dictionary containing module names and versions.
     """
 
-    # first grab EPICS_BASE_VER from RELEASE_SITE file, if it's there
+    macro_dict = {}
+    release_file_dict = {}
+
+    # first get the IOC version
+    topDir = os.path.abspath( os.path.dirname(site_path) )
+    ( iocName, iocVersion ) = os.path.split( topDir )
+    iocName = os.path.split( iocName )[1]
+    release_file_dict[iocName] = iocVersion
+
+    # next grab EPICS_BASE_VER from RELEASE_SITE file, if it's there
     siteBaseVer = "Nada"
     openSiteFile = 1
 
@@ -89,11 +102,11 @@ def module_versions(release_path, site_path):
             (key, sep, value) = line.partition('=')
             key = key.strip()
             value = value.strip()
+            macro_dict[key] = expandMacros( value, macro_dict )
 
             # save EPICS_BASE_VER, if it's in there
-            if key.startswith('EPICS_BASE_VER'):
+            if key == 'EPICS_BASE_VER' or key == 'BASE_MODULE_VERSION':
                 siteBaseVer = value
-                break
 
         site_file.close()
 
@@ -102,9 +115,7 @@ def module_versions(release_path, site_path):
         release_file = open(release_path, 'r')
     except IOError, e:
         sys.stderr.write('Could not open "%s": %s\n' % (release_path, e.strerror))
-        return None
-
-    release_file_dict = {}
+        return {}
 
     for line in release_file:
         # Remove comments
@@ -114,6 +125,7 @@ def module_versions(release_path, site_path):
         (key, sep, value) = line.partition('=')
         key = key.strip()
         value = value.strip()
+        macro_dict[key] = expandMacros( value, macro_dict )
 
         # Add the key/value pair to the dictionary if the key ends with _MODULE_VERSION
         if key.endswith('_MODULE_VERSION'):
@@ -126,11 +138,9 @@ def module_versions(release_path, site_path):
                     # don't set BASE at all
                     pass
             else:
-                release_file_dict[key] = value
+                release_file_dict[key] = expandMacros( value, macro_dict )
 
     release_file.close()
-
-
     return release_file_dict
 
 
@@ -145,7 +155,7 @@ def process_options(argv):
 
     #    usage = 'Usage: %prog RELEASE_FILE [options]'
     usage = 'Usage: %prog RELEASE_FILE RELEASE_SITE_FILE [options]'
-    version = '%prog 0.1'
+    version = '%prog 0.2'
     parser = optparse.OptionParser(usage=usage, version=version)
 
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', help='print verbose output')
@@ -164,11 +174,20 @@ def process_options(argv):
 
     return options
 
-
 def main(argv=None):
     options = process_options(argv)
-    versions = module_versions(options.release_file_path, options.release_site_file_path)
-    export_db_file(versions, options.db_file)
+#	versions = module_versions(options.release_file_path, options.release_site_file_path)
+
+    # get the IOC dependents
+    topDir = os.path.abspath( os.path.dirname(options.release_site_file_path) )
+    dependents = getEpicsPkgDependents( topDir )
+
+    # Split the iocPath into a two level IOC name and a version
+    ( iocPath, iocVersion ) = os.path.split( topDir )
+    iocName = '/'.join( iocPath.split('/')[-2:] )
+
+    # export the iocRelease.db file
+    export_db_file( (iocName, iocVersion), dependents, options.db_file)
 
     return 0
 
