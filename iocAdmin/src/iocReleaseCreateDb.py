@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 
 import sys
 import os
@@ -30,15 +29,15 @@ def export_db_file(module_versions, path=None):
 
     sorted_module_versions = [(key, module_versions[key]) for key in sorted(module_versions.keys())]   
 
-    print('#==============================================================================', file=out_file)
-    print('#', file=out_file)
-    print('# Abs:  LCLS read-only stringin records for Modules specified in configure/RELEASE', file=out_file)
-    print('#', file=out_file)
-    print('# Name: iocRelease.db', file=out_file)
-    print('#', file=out_file)
-    print('# Note: generated automatically by $IOCADMIN/bin/$EPICS_HOST_ARCH/iocReleaseCreateDb.py', file=out_file)
-    print('#', file=out_file)
-    print('#==============================================================================', file=out_file)
+    print >> out_file, '#=============================================================================='
+    print >> out_file, '#'
+    print >> out_file, '# Abs:  LCLS read-only stringin records for Modules specified in configure/RELEASE'
+    print >> out_file, '#'
+    print >> out_file, '# Name: iocRelease.db'
+    print >> out_file, '#'
+    print >> out_file, '# Note: generated automatically by $IOCADMIN/bin/$EPICS_HOST_ARCH/iocReleaseCreateDb.py'
+    print >> out_file, '#'
+    print >> out_file, '#=============================================================================='
     for [key, module_version] in sorted_module_versions:
         """
         strip off the _MODULE_VERSION from key for PV NAME
