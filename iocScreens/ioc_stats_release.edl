@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 544
-y 1782
+x 390
+y 607
 w 470
-h 350
+h 375
 font "helvetica-bold-r-18.0"
 ctlFont "helvetica-bold-r-18.0"
 btnFont "helvetica-bold-r-18.0"
@@ -32,7 +32,7 @@ major 4
 minor 0
 release 0
 x 10
-y 50
+y 70
 w 450
 h 295
 lineColor index 3
@@ -124,9 +124,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 80
-w 210
+x 215
+y 100
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)1"
 font "helvetica-medium-r-12.0"
@@ -148,9 +148,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 105
-w 210
+x 215
+y 125
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)2"
 font "helvetica-medium-r-12.0"
@@ -172,9 +172,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 130
-w 210
+x 215
+y 150
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)3"
 font "helvetica-medium-r-12.0"
@@ -196,9 +196,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 155
-w 210
+x 215
+y 175
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)4"
 font "helvetica-medium-r-12.0"
@@ -220,9 +220,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 180
-w 210
+x 215
+y 200
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)5"
 font "helvetica-medium-r-12.0"
@@ -244,9 +244,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 205
-w 210
+x 215
+y 225
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)6"
 font "helvetica-medium-r-12.0"
@@ -268,9 +268,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 230
-w 210
+x 215
+y 250
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)7"
 font "helvetica-medium-r-12.0"
@@ -292,9 +292,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 255
-w 210
+x 215
+y 275
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)8"
 font "helvetica-medium-r-12.0"
@@ -316,9 +316,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 280
-w 210
+x 215
+y 300
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)9"
 font "helvetica-medium-r-12.0"
@@ -340,14 +340,14 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 240
-y 55
-w 210
+x 215
+y 75
+w 235
 h 20
 controlPv "$(IOC):RELEASE$(idx)0"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -365,8 +365,8 @@ major 4
 minor 7
 release 0
 x 20
-y 55
-w 210
+y 75
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)0.DESC"
 font "helvetica-medium-r-12.0"
@@ -383,8 +383,8 @@ major 4
 minor 7
 release 0
 x 20
-y 80
-w 210
+y 100
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)1.DESC"
 font "helvetica-medium-r-12.0"
@@ -400,20 +400,23 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 240
-y 315
-w 210
+x 165
+y 335
+w 135
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Release Versions (Page 2),,,"
+buttonLabel "Releases (Page 2),,,"
 numPvs 4
 numDsps 1
 displayFileName {
   0 "iocScreens/ioc_stats_release.edl"
+}
+closeAction {
+  0 1
 }
 setPosition {
   0 "parentWindow"
@@ -422,6 +425,9 @@ symbols {
   0 "IOC=$(IOC),idx=1,p=2"
 }
 replaceSymbols {
+  0 1
+}
+closeDisplay {
   0 1
 }
 endObjectProperties
@@ -433,19 +439,22 @@ major 4
 minor 4
 release 0
 x 20
-y 315
-w 210
+y 335
+w 135
 h 25
 fgColor index 14
 bgColor index 4
 topShadowColor index 1
 botShadowColor index 11
 font "helvetica-medium-r-12.0"
-buttonLabel "Release Versions (Page 1),,,"
+buttonLabel "Releases (Page 1),,,"
 numPvs 4
 numDsps 1
 displayFileName {
   0 "iocScreens/ioc_stats_release.edl"
+}
+closeAction {
+  0 1
 }
 setPosition {
   0 "parentWindow"
@@ -454,6 +463,9 @@ symbols {
   0 "IOC=$(IOC),idx=0,p=1"
 }
 replaceSymbols {
+  0 1
+}
+closeDisplay {
   0 1
 }
 endObjectProperties
@@ -465,8 +477,8 @@ major 4
 minor 7
 release 0
 x 20
-y 105
-w 210
+y 125
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)2.DESC"
 font "helvetica-medium-r-12.0"
@@ -483,8 +495,8 @@ major 4
 minor 7
 release 0
 x 20
-y 130
-w 210
+y 150
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)3.DESC"
 font "helvetica-medium-r-12.0"
@@ -501,8 +513,8 @@ major 4
 minor 7
 release 0
 x 20
-y 155
-w 210
+y 175
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)4.DESC"
 font "helvetica-medium-r-12.0"
@@ -519,8 +531,8 @@ major 4
 minor 7
 release 0
 x 20
-y 180
-w 210
+y 200
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)5.DESC"
 font "helvetica-medium-r-12.0"
@@ -537,8 +549,8 @@ major 4
 minor 7
 release 0
 x 20
-y 205
-w 210
+y 225
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)6.DESC"
 font "helvetica-medium-r-12.0"
@@ -555,8 +567,8 @@ major 4
 minor 7
 release 0
 x 20
-y 230
-w 210
+y 250
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)7.DESC"
 font "helvetica-medium-r-12.0"
@@ -573,8 +585,8 @@ major 4
 minor 7
 release 0
 x 20
-y 255
-w 210
+y 275
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)8.DESC"
 font "helvetica-medium-r-12.0"
@@ -591,8 +603,8 @@ major 4
 minor 7
 release 0
 x 20
-y 280
-w 210
+y 300
+w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)9.DESC"
 font "helvetica-medium-r-12.0"
@@ -600,5 +612,85 @@ fgColor index 16
 bgColor index 12
 nullColor index 2
 newPos
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 315
+y 335
+w 135
+h 25
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Releases (Page 3),,,"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "iocScreens/ioc_stats_release.edl"
+}
+closeAction {
+  0 1
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "IOC=$(IOC),idx=2,p=3"
+}
+replaceSymbols {
+  0 1
+}
+closeDisplay {
+  0 1
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 215
+y 45
+w 235
+h 20
+controlPv "$(IOC):EPICS_VERS"
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 20
+y 45
+w 185
+h 20
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 6
+value {
+  "EPICS BASE Version"
+}
 endObjectProperties
 

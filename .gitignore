@@ -3,6 +3,7 @@ O.*/
 *~
 *.log
 *.swp
+*.pyc
 *BAK.adl
 cdCommands
 envPaths
