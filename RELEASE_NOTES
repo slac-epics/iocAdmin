@@ -1,5 +1,12 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.7.0: 2018-11-29, bhill
+	Improved module dependency logic borrowed from eco_tools handles more variations in RELEASE files.
+	Bumped up max # of dependencies to 30: $IOC:RELEASE00 - $IOC:RELEASE29
+	Added support for EPICS_CAS_* env variables
+	Backed out Python 3 compatibility changes so we can still support RHEL5
+	Modified to use /usr/bin/python instead of env python to avoid Python 3 compatibility issues
+
 R3.1.15-1.7.0: 2018-11-06, slepicka
 	Fix Python 3 compatibility issues w/ iocReleaseCreateDb.py
 
