@@ -142,7 +142,7 @@ h 20
 controlPv "SIOC:SYS0:AL00:TOD"
 font "helvetica-medium-r-12.0"
 fontAlign "right"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 precision 1
@@ -163,7 +163,7 @@ w 120
 h 20
 controlPv "SIOC:SYS0:AL00:MODE"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 precision 1
 nullColor index 40
@@ -213,7 +213,7 @@ h 24
 controlPv "$(IOC):HEARTBEATECT"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -275,7 +275,7 @@ h 24
 controlPv "$(IOC):HEARTBEATSUM"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -299,7 +299,7 @@ h 24
 controlPv "$(IOC):TOD"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -361,7 +361,7 @@ h 24
 controlPv "$(IOC):HEARTBEAT"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -404,7 +404,7 @@ h 24
 controlPv "$(IOC):STARTTOD"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -539,9 +539,8 @@ w 60
 h 14
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 bgColor index 12
-useDisplayBg
 autoHeight
 limitsFromDb
 nullColor index 40

@@ -131,7 +131,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)1"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -155,7 +155,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)2"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -179,7 +179,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)3"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -203,7 +203,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)4"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -227,7 +227,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)5"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -251,7 +251,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)6"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -275,7 +275,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)7"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -299,7 +299,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)8"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -323,7 +323,7 @@ h 20
 controlPv "$(IOC):RELEASE$(idx)9"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -370,7 +370,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)0.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 40
 newPos
@@ -388,7 +388,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)1.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 40
 newPos
@@ -482,7 +482,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)2.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -500,7 +500,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)3.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -518,7 +518,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)4.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -536,7 +536,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)5.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -554,7 +554,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)6.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -572,7 +572,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)7.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -590,7 +590,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)8.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos
@@ -608,7 +608,7 @@ w 185
 h 20
 controlPv "$(IOC):RELEASE$(idx)9.DESC"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 nullColor index 2
 newPos

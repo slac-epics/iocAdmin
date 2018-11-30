@@ -467,7 +467,7 @@ y 240
 w 104
 h 24
 controlPv "$(crat):1NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -495,7 +495,7 @@ y 272
 w 104
 h 24
 controlPv "$(crat):2NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -523,7 +523,7 @@ y 304
 w 104
 h 24
 controlPv "$(crat):3NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -551,7 +551,7 @@ y 336
 w 104
 h 24
 controlPv "$(crat):4NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -579,7 +579,7 @@ y 368
 w 104
 h 24
 controlPv "$(crat):5NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -607,7 +607,7 @@ y 400
 w 104
 h 24
 controlPv "$(crat):6NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -635,7 +635,7 @@ y 432
 w 104
 h 24
 controlPv "$(crat):7NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -866,7 +866,7 @@ y 240
 w 104
 h 24
 controlPv "$(crat):8NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -894,7 +894,7 @@ y 272
 w 104
 h 24
 controlPv "$(crat):9NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -922,7 +922,7 @@ y 304
 w 104
 h 24
 controlPv "$(crat):10NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -950,7 +950,7 @@ y 336
 w 104
 h 24
 controlPv "$(crat):11NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -978,7 +978,7 @@ y 368
 w 104
 h 24
 controlPv "$(crat):12NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1006,7 +1006,7 @@ y 400
 w 104
 h 24
 controlPv "$(crat):13NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1034,7 +1034,7 @@ y 432
 w 104
 h 24
 controlPv "$(crat):14NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1265,7 +1265,7 @@ y 240
 w 104
 h 24
 controlPv "$(crat):15NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1293,7 +1293,7 @@ y 272
 w 104
 h 24
 controlPv "$(crat):16NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1321,7 +1321,7 @@ y 304
 w 104
 h 24
 controlPv "$(crat):17NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1349,7 +1349,7 @@ y 336
 w 104
 h 24
 controlPv "$(crat):18NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1377,7 +1377,7 @@ y 368
 w 104
 h 24
 controlPv "$(crat):19NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1405,7 +1405,7 @@ y 400
 w 104
 h 24
 controlPv "$(crat):20NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -1433,7 +1433,7 @@ y 432
 w 104
 h 24
 controlPv "$(crat):21NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
