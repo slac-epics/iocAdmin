@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.9.0: 2018-11-29, bhill
+	Updates to edm screens for 30 $IOC:RELEASE** PVs and new EPICS_* env variable PVs
+
 R3.1.15-1.8.0: 2018-11-29, bhill
 	Improved module dependency logic borrowed from eco_tools handles more variations in RELEASE files.
 	Bumped up max # of dependencies to 30: $IOC:RELEASE00 - $IOC:RELEASE29
