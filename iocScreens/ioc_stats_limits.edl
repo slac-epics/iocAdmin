@@ -130,7 +130,7 @@ h 20
 controlPv "$(IOC):CA_CLNT_CNT"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -154,7 +154,7 @@ h 20
 controlPv "$(IOC):CA_CONN_CNT"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -198,7 +198,7 @@ h 20
 controlPv "$(IOC):SUSP_TASK_CNT"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -242,7 +242,7 @@ h 20
 controlPv "$(IOC):FD_FREE"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -266,7 +266,7 @@ h 20
 controlPv "$(IOC):LOAD"
 font "helvetica-bold-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -329,8 +329,8 @@ w 60
 h 20
 controlPv "$(IOC):CA_CLNT_CNT.HIGH"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -354,8 +354,8 @@ w 60
 h 20
 controlPv "$(IOC):CA_CLNT_CNT.HIHI"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -419,8 +419,8 @@ w 60
 h 20
 controlPv "$(IOC):CA_CONN_CNT.HIGH"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -444,8 +444,8 @@ w 60
 h 20
 controlPv "$(IOC):CA_CONN_CNT.HIHI"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -469,8 +469,8 @@ w 60
 h 20
 controlPv "$(IOC):SUSP_TASK_CNT.HIHI"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -494,8 +494,8 @@ w 60
 h 20
 controlPv "$(IOC):LOAD.HIGH"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -519,8 +519,8 @@ w 60
 h 20
 controlPv "$(IOC):LOAD.HIHI"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -604,8 +604,8 @@ w 65
 h 20
 controlPv "$(IOC):FD_FREE.LOLO"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget
@@ -629,8 +629,8 @@ w 65
 h 20
 controlPv "$(IOC):FD_FREE.LOW"
 font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 6
+fgColor index 25
+bgColor index 5
 editable
 autoHeight
 motifWidget

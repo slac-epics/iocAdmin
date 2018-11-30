@@ -126,7 +126,7 @@ w 168
 h 16
 controlPv "SIOC:SYS0:AL00:TOD"
 precision 1
-fgColor index 16
+fgColor index 15
 bgColor index 12
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -144,7 +144,7 @@ w 120
 h 16
 controlPv "SIOC:SYS0:AL00:MODE"
 precision 1
-fgColor index 16
+fgColor index 15
 bgColor index 12
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -189,7 +189,7 @@ y 104
 w 40
 h 24
 controlPv "$(IOC):HEARTBEATECT"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -255,7 +255,7 @@ y 72
 w 104
 h 24
 controlPv "$(IOC):HEARTBEATSUM"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -283,7 +283,7 @@ y 168
 w 128
 h 24
 controlPv "$(IOC):TOD"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -349,7 +349,7 @@ y 136
 w 128
 h 24
 controlPv "$(IOC):HEARTBEAT"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -396,7 +396,7 @@ y 200
 w 128
 h 24
 controlPv "$(IOC):STARTTOD"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -478,7 +478,7 @@ y 232
 w 128
 h 24
 controlPv "$(IOC):LOCATION"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
