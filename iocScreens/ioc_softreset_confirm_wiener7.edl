@@ -452,7 +452,7 @@ y 280
 w 104
 h 24
 controlPv "$(crat):1NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -480,7 +480,7 @@ y 312
 w 104
 h 24
 controlPv "$(crat):2NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -508,7 +508,7 @@ y 344
 w 104
 h 24
 controlPv "$(crat):3NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -536,7 +536,7 @@ y 376
 w 104
 h 24
 controlPv "$(crat):4NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -564,7 +564,7 @@ y 408
 w 104
 h 24
 controlPv "$(crat):5NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -592,7 +592,7 @@ y 440
 w 104
 h 24
 controlPv "$(crat):6NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -620,7 +620,7 @@ y 472
 w 104
 h 24
 controlPv "$(crat):7NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"

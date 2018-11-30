@@ -126,7 +126,7 @@ w 168
 h 16
 controlPv "SIOC:SYS0:AL00:TOD"
 precision 1
-fgColor index 16
+fgColor index 15
 bgColor index 12
 font "helvetica-medium-r-12.0"
 fontAlign "right"
@@ -144,7 +144,7 @@ w 120
 h 16
 controlPv "SIOC:SYS0:AL00:MODE"
 precision 1
-fgColor index 16
+fgColor index 15
 bgColor index 12
 font "helvetica-medium-r-12.0"
 endObjectProperties
@@ -228,7 +228,7 @@ y 488
 w 152
 h 24
 controlPv "$(crat):$(slot)NAME"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"

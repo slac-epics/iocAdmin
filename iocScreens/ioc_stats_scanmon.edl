@@ -149,7 +149,7 @@ w 80
 h 20
 controlPv "$(IOC):5HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -278,7 +278,7 @@ w 80
 h 20
 controlPv "$(IOC):2HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -307,7 +307,7 @@ w 80
 h 20
 controlPv "$(IOC):1HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -336,7 +336,7 @@ w 80
 h 20
 controlPv "$(IOC):02HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -365,7 +365,7 @@ w 80
 h 20
 controlPv "$(IOC):05HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -394,7 +394,7 @@ w 80
 h 20
 controlPv "$(IOC):01HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"
@@ -464,7 +464,7 @@ w 80
 h 20
 controlPv "$(IOC):10HZ_UPD_TIME"
 precision 5
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 objType "monitors"

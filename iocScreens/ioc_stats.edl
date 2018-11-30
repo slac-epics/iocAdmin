@@ -121,7 +121,7 @@ h 20
 controlPv "$(IOC):STARTTOD"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -230,7 +230,7 @@ h 20
 controlPv "$(IOC):TOD"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -254,7 +254,7 @@ h 20
 controlPv "$(IOC):UPTIME"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -278,7 +278,7 @@ h 25
 controlPv "$(IOC):CA_CLNT_CNT"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -302,7 +302,7 @@ h 25
 controlPv "$(IOC):CA_CONN_CNT"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -345,7 +345,7 @@ h 25
 controlPv "$(IOC):SUSP_TASK_CNT"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -407,7 +407,7 @@ h 20
 controlPv "$(IOC):HEARTBEAT"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -450,7 +450,7 @@ h 20
 controlPv "$(IOC):HOSTNAME"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -474,7 +474,7 @@ h 20
 controlPv "$(IOC):LOCATION"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -536,7 +536,7 @@ h 20
 controlPv "$(IOC):ENGINEER"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -560,7 +560,7 @@ h 20
 controlPv "$(IOC):EPICS_VERS"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -602,7 +602,7 @@ w 516
 h 20
 controlPv "$(IOC):APP_DIR"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -644,7 +644,7 @@ w 516
 h 20
 controlPv "$(IOC):ST_SCRIPT"
 font "helvetica-medium-r-12.0"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -687,7 +687,7 @@ h 16
 controlPv "$(IOC):KERNEL_VERS"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -730,7 +730,7 @@ h 20
 controlPv "$(IOC):BSP_REV"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -792,7 +792,7 @@ h 20
 controlPv "$(IOC):BOOTLINE2"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -816,7 +816,7 @@ h 20
 controlPv "$(IOC):BOOTLINE1"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -859,7 +859,7 @@ h 20
 controlPv "$(IOC):BOOTLINE4"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -883,7 +883,7 @@ h 20
 controlPv "$(IOC):BOOTLINE3"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -907,7 +907,7 @@ h 20
 controlPv "$(IOC):BOOTLINE6"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -931,7 +931,7 @@ h 20
 controlPv "$(IOC):BOOTLINE5"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -955,7 +955,7 @@ h 20
 controlPv "$(IOC):BOOTLINE2"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 bgColor index 12
 limitsFromDb
 nullColor index 40
@@ -1021,7 +1021,7 @@ h 25
 controlPv "$(IOC):FD_FREE"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1045,7 +1045,7 @@ h 15
 controlPv "$(IOC):FD_MAX"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1121,7 +1121,7 @@ h 25
 controlPv "$(IOC):LOAD"
 font "helvetica-medium-r-18.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1197,7 +1197,7 @@ h 15
 controlPv "$(IOC):MEM_FREE"
 font "helvetica-medium-r-14.0"
 fontAlign "right"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1221,7 +1221,7 @@ h 15
 controlPv "$(IOC):MEM_USED"
 font "helvetica-medium-r-14.0"
 fontAlign "right"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1303,7 +1303,7 @@ h 25
 controlPv "$(IOC):MEM_BLK_FREE"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1360,7 +1360,7 @@ h 15
 controlPv "$(IOC):IFI_ERR_CNT"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1384,7 +1384,7 @@ h 15
 controlPv "$(IOC):IFO_ERR_CNT"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1479,7 +1479,7 @@ h 25
 controlPv "$(IOC):DAT_MBUF_FREE"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1503,7 +1503,7 @@ h 15
 controlPv "$(IOC):DAT_MBUF_MAX"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1584,7 +1584,7 @@ h 25
 controlPv "$(IOC):SYS_MBUF_FREE"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
@@ -1608,7 +1608,7 @@ h 15
 controlPv "$(IOC):SYS_MBUF_MAX"
 font "helvetica-medium-r-14.0"
 fontAlign "center"
-fgColor index 16
+fgColor index 15
 fgAlarm
 bgColor index 12
 limitsFromDb
