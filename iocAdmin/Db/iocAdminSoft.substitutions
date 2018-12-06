@@ -43,12 +43,12 @@ pattern { IOCNAME, ENVNAME      , ENVVAR                          , ENVTYPE}
     { $(IOC) , CAS_ADDR_IGNORE_LIST , EPICS_CAS_IGNORE_ADDR_LIST     , epics  } 
 
     { $(IOC) , TIMEZONE     , EPICS_TIMEZONE                  , epics  }
-    { $(IOC) , TS_MIN_WEST  , EPICS_TS_MIN_WEST               , epics  }
     { $(IOC) , TS_NTP_INET  , EPICS_TS_NTP_INET               , epics  }
     { $(IOC) , IOC_LOG_PORT , EPICS_IOC_LOG_PORT              , epics  }
     { $(IOC) , IOC_LOG_INET , EPICS_IOC_LOG_INET              , epics  }
 
 # NOTE: ENVTYPE must be env instead of epics till these are in the base env_param_list array.
+    { $(IOC) , TS_MIN_WEST  , EPICS_TS_MIN_WEST               , env  }
     { $(IOC) , PVA_ADDR_LIST ,      EPICS_PVA_ADDR_LIST       , env  }
     { $(IOC) , PVA_AUTO_ADDR ,      EPICS_PVA_AUTO_ADDR_LIST  , env  }
     { $(IOC) , PVA_BEACON_PERIOD ,  EPICS_PVA_BEACON_PERIOD   , env  }
