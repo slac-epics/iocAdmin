@@ -1,5 +1,11 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.10.0: 2019-04-16 Bruce Hill
+	Updated iocAdminRTEMS and iocAdminVxWorks to match epics ENV list from iocAdminSoft
+	Drop obsolete EPICS_TS_MIN_WEST and change PVA vars to type epics
+	EPICS_TS_MIN_WEST is not in EPICS envDefs.h
+	Make iocReleaseCreateDb.py executable
+
 R3.1.15-1.9.0: 2018-11-29, bhill
 	Updates to edm screens for 30 $IOC:RELEASE** PVs and new EPICS_* env variable PVs
 
