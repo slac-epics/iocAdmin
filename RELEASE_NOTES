@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.15-1.11.0: 2019-06-14 Bruce Hill
+	Make EPICS_PVA* ENVTYPE configured on BASE_7_0
+
 R3.1.15-1.10.0: 2019-04-16 Bruce Hill
 	Updated iocAdminRTEMS and iocAdminVxWorks to match epics ENV list from iocAdminSoft
 	Drop obsolete EPICS_TS_MIN_WEST and change PVA vars to type epics
