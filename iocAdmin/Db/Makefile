@@ -34,13 +34,12 @@ DB += iocAdminSoft.db
 DB += iocAdminRTEMS.db
 DB += devIocInfo.db
 
-$(INSTALL_DB)/iocHard.db:	$(INSTALL_DB)/iocAdminScanMon.db
-
-$(INSTALL_DB)/iocSoft.db:	$(INSTALL_DB)/iocAdminScanMon.db
-
-$(INSTALL_DB)/iocAdminRTEMS.db:	$(INSTALL_DB)/iocAdminScanMon.db
-
-$(INSTALL_DB)/iocAdminSoft.db:	$(INSTALL_DB)/iocAdminScanMon.db
+ifdef BASE_7_0
+V4_ENVTYPE=epics
+else
+V4_ENVTYPE=env
+endif
+USR_DBFLAGS += -M V4_ENVTYPE=$(V4_ENVTYPE)
 
 REQ  += autosave_iocAdmin.sub-req
 REQ  += autosave_iocAdmin.tpl-req
@@ -59,12 +58,6 @@ include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
 
-$(COMMON_DIR)/iocAdminRTEMS.db:   $(COMMON_DIR)/iocAdminScanMon.db $(COMMON_DIR)/epicsEnvVars.db $(COMMON_DIR)/siteEnvVars.db
-
-$(COMMON_DIR)/iocAdminSoft.db:    $(COMMON_DIR)/iocAdminScanMon.db $(COMMON_DIR)/epicsEnvVars.db $(COMMON_DIR)/siteEnvVars.db
-
-$(COMMON_DIR)/iocAdminVxWorks.db: $(COMMON_DIR)/iocAdminScanMon.db $(COMMON_DIR)/epicsEnvVars.db $(COMMON_DIR)/siteEnvVars.db
-
 $(COMMON_DIR)/siteEnvVars.substitutions: $(EPICS_BASE)/configure/CONFIG_SITE_ENV
 	@echo Expanding siteEnvVars.substitutions from CONFIG_SITE_ENV....
 	@echo "file iocEnvVar.template" > $@
@@ -73,3 +66,15 @@ $(COMMON_DIR)/siteEnvVars.substitutions: $(EPICS_BASE)/configure/CONFIG_SITE_ENV
 	@echo "{ ENVNAME, ENVVAR, ENVTYPE }" >> $@
 	@sed -n 's/^EPICS_\([A-Z_]*\).*/{\1, EPICS_\1, epics}/p' $< >> $@
 	@echo "}" >> $@
+
+$(COMMON_DIR)/iocHard.db:		$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+
+$(COMMON_DIR)/iocSoft.db:		$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+
+$(COMMON_DIR)/iocAdminRTEMS.db:	$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+
+$(COMMON_DIR)/iocAdminSoft.db:	$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+
+#$(INSTALL_DB)/iocAdminScanMon.db:	$(COMMON_DIR)/iocAdminScanMon.db
+
+#$(INSTALL_DB)/epicsEnvVars.db:	$(COMMON_DIR)/epicsEnvVars.db
