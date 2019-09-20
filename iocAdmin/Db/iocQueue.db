@@ -5,6 +5,7 @@ record(ai, "$(IOCNAME):$(QUEUE_CAPS)_Q_HIGH") {
   field(INP,  "@$(QUEUE)QueueHiWtrMrk")
   field(PINI, "YES")
   field(FLNK, "$(IOCNAME):$(QUEUE_CAPS)_Q_HIGHPER")
+  info(autosaveFields_pass0, "HIGH HIHI LOW LOLO HHSV HSV LSV LLSV")
 }
 
 record(calc, "$(IOCNAME):$(QUEUE_CAPS)_Q_HIGHPER") {
@@ -15,6 +16,11 @@ record(calc, "$(IOCNAME):$(QUEUE_CAPS)_Q_HIGHPER") {
   field(LOPR, "0")
   field(HOPR, "100")
   field(EGU,  "%")
+  field(HIGH, "50")
+  field(HSV,  "MINOR")
+  field(HIHI, "90")
+  field(HHSV, "MAJOR")
+  info(autosaveFields_pass0, "HIGH HIHI LOW LOLO HHSV HSV LSV LLSV")
 }
 
 record(ai, "$(IOCNAME):$(QUEUE_CAPS)_Q_USED") {
@@ -24,6 +30,7 @@ record(ai, "$(IOCNAME):$(QUEUE_CAPS)_Q_USED") {
   field(INP,  "@$(QUEUE)QueueUsed")
   field(PINI, "YES")
   field(FLNK, "$(IOCNAME):$(QUEUE_CAPS)_Q_USEDPER")
+  info(autosaveFields_pass0, "HIGH HIHI LOW LOLO HHSV HSV LSV LLSV")
 }
 
 record(calc, "$(IOCNAME):$(QUEUE_CAPS)_Q_USEDPER") {
@@ -34,6 +41,11 @@ record(calc, "$(IOCNAME):$(QUEUE_CAPS)_Q_USEDPER") {
   field(LOPR, "0")
   field(HOPR, "100")
   field(EGU,  "%")
+  field(HIGH, "50")
+  field(HSV,  "MINOR")
+  field(HIHI, "90")
+  field(HHSV, "MAJOR")
+  info(autosaveFields_pass0, "HIGH HIHI LOW LOLO HHSV HSV LSV LLSV")
 }
 
 record(ai, "$(IOCNAME):$(QUEUE_CAPS)_Q_OVERRUNS") {
@@ -42,4 +54,7 @@ record(ai, "$(IOCNAME):$(QUEUE_CAPS)_Q_OVERRUNS") {
   field(DTYP, "IOC stats")
   field(INP,  "@$(QUEUE)QueueOverruns")
   field(PINI, "YES")
+  field(HIGH, "1")
+  field(HSV,  "MINOR")
+  info(autosaveFields_pass0, "HIGH HIHI LOW LOLO HHSV HSV LSV LLSV")
 }
