@@ -31,3 +31,114 @@ iocAdmin             | LCLS-unique EDM database, displays, and config files, inc
 iocBoot              | test startup files
 testIocAdminApp      | LCLS-unique app for testing devIocStats and iocAdmin
 testIocStatsApp      | Application for testing devIocStats only
+
+
+## iocRelease.db
+
+Contains a series of $IOC:RELEASE00 - $IOC:RELEASE19 stringin records
+set to the first 20 module versions defined via $TOP/Makefile/RELEASE.
+
+This file is created in your IOC by adding the following line to your TOP/\*App/Db/Makefile:
+IOCRELEASE_DB  +=  iocRelease.db
+
+Then load iocRelease.db in your st.cmd, for example:
+dbLoadRecords("db/iocRelease.db","IOC=IOC:SYS0:BD01")
+
+
+
+## devIocInfo.db
+
+We recommend loading devIocInfo.db in each IOC so scripts are able to
+derive the IOC PV prefix and power outlet info from each device's PV prefix.
+
+Records provided by devIocInfo.db:
+
+stringout	$DEV:IOC_PV
+stringout	$DEV:IOC_NAME
+stringout	$DEV:COM_TYPE
+stringout	$DEV:COM_PORT
+stringout	$DEV:POWER_PV
+longout		$DEV:SET_POWER_PV
+stringout	$DEV:WEB_URL
+stringout	$DEV:CAPTAR_TAG
+waveform	$DEV:LAUNCH_EDM
+
+Required macros:
+
+DEV             Device PV prefix
+IOC             IOC PV prefix
+IOCNAME         IOC name, example: ioc-sxr-gmd
+
+Optional macros, all default to Unspecifed:
+
+POWER           Power control PV prefix
+COM_TYPE		Device communication type: termSrv,usb,ethernet
+COM_PORT		Device communications port, format depends on COM_TYPE
+WEB_URL			Device web page URL, defaults to Unspecified
+CAPTAR			Captar tag for primary device cable
+
+POWER should be a PV compatible w/ our Leviton IOC usage
+
+Note:
+
+ioc/common/Leviton/R2.2.0 introduces a shortened name,
+SetAction to replace SetControlAction
+as the old PV names were all longer than 40 char and
+thus would not fit in this $DEV:POWER_PV string record
+
+To turn power off:    caput $(POWER)  0
+To turn power on:     caput $(POWER)  1
+To cycle power:       caput $(POWER)  2
+
+COM_TYPE	COM_PORT scanf fmt		COM_PORT Examples
+camLink		"Board %1d Chan %1d"	Board 0 Chan 1
+ethernet	"%.40s"					gige-tst-gc1350c or 172.21.42.114
+termSrv		"%.40[^:]:%d"			digi-sxr-01:3
+usb			"%.40s"					/dev/bus/usb/002/003
+
+Usage:
+
+Install this file from your Db/Makefile via
+
+DB_INSTALLS += $(IOC_ADMIN)/db/devIocInfo.db
+
+Then add one of these lines for each device in your IOC to your st.cmd:
+
+dbLoadRecords( "db/devIocInfo.db", "DEV=$(DEV),IOC=$(IOC_PV),IOCNAME=$(IOCNAME)" )
+If you have other macros which are applicable, add them to the above line.
+
+The $DEV:LAUNCH_EDM PV is a CHAR waveform, so you can't initialize it with a macro.
+
+Instead, add a line like this in your st.cmd after iocInit.
+
+dbpf $(DEV):LAUNCH_EDM "$(TOP)/build/iocBoot/$(IOCNAME)/edm-$(IOCNAME).cmd"
+
+To launch the edm screen for a device, add a shell cmd widget running the command:
+
+iocScreens/devLaunchEdm.sh $(DEV)
+
+Long waveform of CHAR string w/ pathname for edm launch script
+
+The $DEV:SET_POWER_PV record provides an easy way to control device power from edm or
+via caput without having to fetch the POWER_PV string first.
+
+It also provides a partial workaround for pre Leviton/R2.2.0 PV
+names that are too big to fit in $DEV:POWER_PV.
+
+Since $DEV:SET_POWER_PV is a longout record, it's OUT field which is not
+length limited is set to "$POWER PP NMS" so you can write to SET_POWER_PV
+to control outlets on older IOCs.
+Also, python or other scripts can still extract the POWER_PV
+from the $DEV:SET_POWER_PV.OUT field.
+
+
+PCDS Notes:
+Note regarding no longer building iocAdmin.db:
+iocAdmin.substitutions has been simplified to just use
+iocSoft.db or iocHard.db.
+
+As part of this change, the PCDS screens directory is iocScreens
+the rest of our screen links.   Also, the macro name for the
+IOC prefix in the screens has been changed from "ioc" to "IOC"
+to conform with the rest of our screens that all use IOC.
+
