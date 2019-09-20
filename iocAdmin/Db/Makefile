@@ -12,19 +12,27 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 DB += ioc.db
+DB += ioc.template
+DB += iocStatus.template
 DB += iocRTOS.db
 DB += iocVxWorksOnly.db
 DB += iocRTEMSOnly.db
 DB += iocEnvVar.db
 DB += iocCluster.db
+DB += iocHard.db
+DB += iocSoft.db
 DB += iocScanMon.db
 DB += iocScanMonSum.db
 DB += iocGeneralTime.db
 DB += access.db
+DB += iocAdmin.db
 DB += iocAdminVxWorks.db
 DB += iocAdminSoft.db
 DB += iocAdminRTEMS.db
 DB += iocAdminScanMon.db
+
+ARCH += archive_iocAdmin.arch
+REQ  += autosave_iocAdmin.req
 
 #
 #----------------------------------------------------
