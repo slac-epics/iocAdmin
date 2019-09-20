@@ -16,6 +16,7 @@ DB += epicsEnvVars.db
 DB += iocAdminScanMon.db
 DB += ioc.db
 DB += ioc.template
+DB += iocQueue.db
 DB += iocStatus.template
 DB += iocRTOS.db
 DB += iocVxWorksOnly.db
