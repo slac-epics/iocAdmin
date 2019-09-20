@@ -12,6 +12,8 @@ auto_positions.sav*
 RELEASE_SITE
 
 # EPICS installation dirs
+/archive/
+/autosave/
 /bin/
 /lib/
 /db/
