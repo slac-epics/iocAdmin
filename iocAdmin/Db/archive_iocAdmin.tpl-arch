@@ -1,0 +1,31 @@
+# iocAdmin Archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# Archive these values only when they change
+$(IOC):APP_DIR1 30 monitor 
+$(IOC):APP_DIR2 30 monitor 
+$(IOC):BSP_REV 30 monitor
+$(IOC):CA_CLNT_CNT 1 monitor 
+$(IOC):CA_CONN_CNT 1 monitor 
+$(IOC):EPICS_VERS 30 monitor
+$(IOC):FD_CNT 1 monitor 
+$(IOC):FD_FREE 1 monitor 
+$(IOC):FD_MAX 1 monitor 
+$(IOC):HOSTNAME 30 monitor
+$(IOC):KERNEL_VERS 30 monitor
+$(IOC):RECORD_CNT 10 monitor
+$(IOC):STARTTOD 30 monitor
+$(IOC):ST_SCRIPT1 30 monitor 
+$(IOC):ST_SCRIPT2 30 monitor 
+$(IOC):SUSP_TASK_CNT 30 monitor 
+$(IOC):SYSRESET 30 monitor 
+
+# Archive these values at the specified rate
+$(IOC):DAT_MBUF_FREE 10
+$(IOC):DAT_MBUF_MAX 10
+$(IOC):LOAD 30 
+$(IOC):MEM_BLK_FREE 30 
+$(IOC):MEM_FREE 30 
+$(IOC):MEM_USED 30 
+$(IOC):SYS_MBUF_FREE 30 
