@@ -13,9 +13,9 @@ DBD += iocAdmin.dbd
 
 #=============================
 
-#SCRIPTS_HOST += iocReleaseCreateDb.py
-#SCRIPTS_HOST += pkgNamesToMacroNames.py
-#SCRIPTS_HOST += version_utils.py
+SCRIPTS_HOST += iocReleaseCreateDb.py
+SCRIPTS_HOST += pkgNamesToMacroNames.py
+SCRIPTS_HOST += version_utils.py
 
 #LIBRARY = iocAdmin
 
