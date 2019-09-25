@@ -28,7 +28,7 @@ pattern { IOCNAME , DAT_MBUF_FLNK     }
 }
 file epicsEnvVars.db
 {
-	{ IOC_NAME = "\$(IOC)" }
+	{ IOCNAME = "\$(IOC)" }
 }
 file iocCluster.template
 {
