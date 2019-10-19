@@ -15,6 +15,7 @@ $(IOC):FD_MAX 1 monitor
 $(IOC):HOSTNAME 30 monitor
 $(IOC):KERNEL_VERS 30 monitor
 $(IOC):RECORD_CNT 10 monitor
+$(IOC):START_CNT 30 monitor
 $(IOC):STARTTOD 30 monitor
 $(IOC):ST_SCRIPT 30 monitor 
 $(IOC):ST_SCRIPT1 30 monitor 
