@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.16-1.2.0: 2019-10-18 Bruce Hill
+	Added generation of archive_iocAdmin_RTEMS.archive.
+
 R3.1.16-1.1.0: 2019-09-24 Bruce Hill
 	Fix typo IOC_NAME to IOCNAME in iocAdminRTEMS and iocAdminVxWorks
 	Updated iocAdmin/srcDisplay/Makefile to automatically install all *.edl files
