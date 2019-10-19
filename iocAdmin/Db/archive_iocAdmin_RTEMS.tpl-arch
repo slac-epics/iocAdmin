@@ -1,0 +1,16 @@
+# archive_iocAdmin_RTEMS Archive template
+# Format:
+# <PVNAME> <PERIOD> [ monitor ]
+
+# RTEMS only archive values
+$(IOC):IFI_ERR_CNT 10 monitor
+$(IOC):IFO_ERR_CNT 10 monitor
+$(IOC):CLUST_1_0_2	10	monitor
+$(IOC):CLUST_1_0_3	10	monitor
+$(IOC):CLUST_1_1_2	10	monitor
+$(IOC):CLUST_1_1_3	10	monitor
+$(IOC):SYS_MBUF_FREE 10 
+$(IOC):RAM_WS_FREE 10 
+$(IOC):RAM_WS_MAX 10 
+$(IOC):RAM_WS_USED 10 
+

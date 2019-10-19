@@ -1,0 +1,13 @@
+#
+# archive_iocAdmin_RTEMS sample substitutions file
+#
+file archive_iocAdmin.tpl-arch
+{
+	{ IOC='$(IOC)' }
+}
+
+file archive_iocAdmin_RTEMS.tpl-arch
+{
+	{ IOC='$(IOC)' }
+}
+

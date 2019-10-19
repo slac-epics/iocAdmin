@@ -47,6 +47,9 @@ REQ  += autosave_iocAdmin.req
 ARCHIVE += archive_iocAdmin.sub-arch
 ARCHIVE += archive_iocAdmin.tpl-arch
 ARCHIVE += archive_iocAdmin.archive
+ARCHIVE += archive_iocAdmin_RTEMS.sub-arch
+ARCHIVE += archive_iocAdmin_RTEMS.tpl-arch
+ARCHIVE += archive_iocAdmin_RTEMS.archive
 
 #
 #----------------------------------------------------
