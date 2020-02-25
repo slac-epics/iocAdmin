@@ -453,49 +453,6 @@ major 4
 minor 1
 release 1
 x 8
-y 392
-w 248
-h 16
-font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "EPICS_TIMEZONE"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 264
-y 392
-w 280
-h 16
-controlPv "$(ioc):TIMEZONE"
-font "helvetica-bold-r-14.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 8
 y 412
 w 248
 h 16
