@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.16-1.3.0: 2020-02-24 Bruce Hill
+	Remove EPICS_TIMEZONE env support as name changed to EPICS_TZ and we don't use either.
+
 R3.1.16-1.2.0: 2019-10-18 Bruce Hill
 	Added generation of archive_iocAdmin_RTEMS.archive.
 
