@@ -27,7 +27,6 @@ file iocEnvVar.template
     { CAS_ADDR_INTF_LIST         , EPICS_CAS_INTF_ADDR_LIST        , epics  } 
     { CAS_ADDR_IGNORE_LIST       , EPICS_CAS_IGNORE_ADDR_LIST      , epics  } 
 
-    { TIMEZONE                   , EPICS_TIMEZONE                  , epics  }
     { TS_NTP_INET                , EPICS_TS_NTP_INET               , epics  }
     { IOC_LOG_PORT               , EPICS_IOC_LOG_PORT              , epics  }
     { IOC_LOG_INET               , EPICS_IOC_LOG_INET              , epics  }
