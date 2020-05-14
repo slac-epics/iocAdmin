@@ -12,8 +12,8 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 
-RESTORES += iocAdmin.cwConfig
-RESTORES += iocAdminSoft.cwConfig
+RESTORE += iocAdmin.cwConfig
+RESTORE += iocAdminSoft.cwConfig
 
 include $(TOP)/configure/RULES
 #----------------------------------------
