@@ -3,6 +3,7 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
+INSTALL_EDL = $(INSTALL_LOCATION)/display
 # Rules for installing EDM files:
 CFG +=  CONFIG_EDL
 

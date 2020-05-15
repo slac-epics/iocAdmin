@@ -15,6 +15,7 @@ RELEASE_SITE
 /archive/
 /autosave/
 /bin/
+/cfg/
 /lib/
 /db/
 /dbd/

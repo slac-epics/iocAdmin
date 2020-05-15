@@ -73,12 +73,12 @@ $(COMMON_DIR)/siteEnvVars.substitutions: $(EPICS_BASE)/configure/CONFIG_SITE_ENV
 
 $(COMMON_DIR)/iocHard.db:		$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
 
-$(COMMON_DIR)/iocSoft.db:		$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+$(COMMON_DIR)/iocSoft.db:		$(COMMON_DIR)/iocAdminScanMon.db $(COMMON_DIR)/epicsEnvVars.db
 
-$(COMMON_DIR)/iocAdminRTEMS.db:	$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+$(COMMON_DIR)/iocAdminRTEMS.db:	$(COMMON_DIR)/iocAdminScanMon.db $(COMMON_DIR)/epicsEnvVars.db
 
-$(COMMON_DIR)/iocAdminSoft.db:	$(INSTALL_DB)/iocAdminScanMon.db $(INSTALL_DB)/epicsEnvVars.db
+$(COMMON_DIR)/iocAdminSoft.db:	$(COMMON_DIR)/iocAdminScanMon.db $(COMMON_DIR)/epicsEnvVars.db
 
-#$(INSTALL_DB)/iocAdminScanMon.db:	$(COMMON_DIR)/iocAdminScanMon.db
+$(COMMON_DIR)/iocAdminVxWorks.db:	$(COMMON_DIR)/epicsEnvVars.db
 
-#$(INSTALL_DB)/epicsEnvVars.db:	$(COMMON_DIR)/epicsEnvVars.db
+$(COMMON_DIR)/iocAdmin.db:	$(COMMON_DIR)/iocHard.db
