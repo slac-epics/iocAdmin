@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.16-1.3.2: 2020-05-15 Bruce Hill
+	Restore CONFIG_RESTORE and CONFIG_EDL for pre EPICS 7 support of cwConfig installs.
+
 R3.1.16-1.3.1: 2020-05-14 Bruce Hill
 	Fix typo RESTORE vs RESTORES so *.cwConfig files get installed.
 
