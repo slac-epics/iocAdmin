@@ -1270,50 +1270,6 @@ value {
 }
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 36
-y 608
-w 87
-h 32
-font "helvetica-bold-r-14.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Largest Free"
-  "RAM Block"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 132
-y 612
-w 130
-h 25
-controlPv "$(IOC):MEM_BLK_FREE"
-font "helvetica-medium-r-14.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
 # (Rectangle)
 object activeRectangleClass
 beginObjectProperties
