@@ -7,14 +7,13 @@
 
 record(calc, "$(IOC):STATUS") {
   field(DESC, "Summary ioc devStats")
-  field(CALC, "A&&B&&C&&D&&E&&F&&G")
+  field(CALC, "A&&B&&C&&D&&E&&F")
   field(INPA, "$(IOC):CA_CLNT_CNT CPP MS")
   field(INPB, "$(IOC):CA_CONN_CNT CPP MS")
   field(INPC, "$(IOC):FD_FREE CPP MS")
   field(INPD, "$(IOC):LOAD CPP MS")
   field(INPE, "$(IOC):SUSP_TASK_CNT CPP MS")
   field(INPF, "$(IOC):MEM_FREE CPP MS")
-  field(INPG, "$(IOC):MEM_BLK_FREE CPP MS")
 }
 
 #! Further lines contain data used by VisualDCT

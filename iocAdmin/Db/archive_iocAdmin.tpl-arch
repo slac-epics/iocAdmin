@@ -26,7 +26,6 @@ $(IOC):SYSRESET 30 monitor
 # Archive these values at the specified rate
 $(IOC):SYS_CPU_LOAD 10
 $(IOC):LOAD 10 
-$(IOC):MEM_BLK_FREE 10 
 $(IOC):MEM_FREE 10 
 $(IOC):MEM_USED 10 
 $(IOC):UPTIME 3600 
