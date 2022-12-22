@@ -92,18 +92,18 @@
 
 
 	ao:
-		memoryScanRate	 - max rate at which new memory stats can be read
-		fdScanRate	 - max rate at which file descriptors can be counted
-		cpuScanRate	 - max rate at which cpu load can be calculated
-		caConnScanRate	 - max rate at which CA connections can be calculated
+		memory_scan_rate	 - max rate at which new memory stats can be read
+		fd_scan_rate	 - max rate at which file descriptors can be counted
+		cpu_scan_rate	 - max rate at which cpu load can be calculated
+		ca_scan_rate	 - max rate at which CA connections can be calculated
 
 	* scan rates are all in seconds
 
 	default rates:
-		10 - memory scan rate
-		20 - cpu scan rate
-		10 - fd scan rate
-		15 - CA scan rate
+		10 - memory_scan_rate
+		20 - cpu_scan_rate
+		10 - fd_scan_rate
+		15 - ca_scan_rate
 */
 
 #include <string.h>
