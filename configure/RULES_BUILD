@@ -8,10 +8,7 @@ ifdef IOCADMIN
 
 INSTALL_IOCRELEASE_DBS=$(IOCRELEASE_DB:%=$(INSTALL_DB)/%)
 
-PYTHON=$(shell which python2)
-ifneq ("python2","$(notdir $(PYTHON))")
-	PYTHON=python
-endif
+PYTHON=python3
 
 #--------------------------------------------------
 # Rules

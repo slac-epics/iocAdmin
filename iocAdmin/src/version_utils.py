@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-#from __future__ import print_function
+#!/usr/bin/env python3
 import os
 import re
 import sys
 import glob
 import subprocess
 from pkgNamesToMacroNames import *
+
 #
 # Purpose:
 #
@@ -35,7 +35,7 @@ def VersionToRelNumber( version, debug=False ):
     try:
         ver = version
         if debug:
-            print("VersionToRelNumber: %s" % ( ver ))
+            print(("VersionToRelNumber: %s" % ( ver )))
         verMatch = releaseRegExp.search( ver )
         if verMatch:
             ver = verMatch.group(2) + '.' + verMatch.group(3) + verMatch.group(4)
@@ -51,7 +51,7 @@ def VersionToRelNumber( version, debug=False ):
     except:
         pass
     if debug:
-        print("VersionToRelNumber: %s = %f" % ( version, relNumber ))
+        print(("VersionToRelNumber: %s = %f" % ( version, relNumber )))
     return relNumber
 
 def isReleaseCandidate(release):
@@ -123,10 +123,10 @@ def getPkgReleaseList( top, pkgName ):
     Returns a sorted list of releases, most recent first.'''
     # Loop through the directories looking for releases
     if not os.path.isdir( top ):
-        print("getPkgReleaseList Error: top is not a directory: %s\n" % top)
+        print(("getPkgReleaseList Error: top is not a directory: %s\n" % top))
     pkgDir = os.path.join( top, pkgName )
     if not os.path.isdir( pkgDir ):
-        print("getPkgReleaseList Error: %s is not a package under %s\n" % ( pkgName, top ))
+        print(("getPkgReleaseList Error: %s is not a package under %s\n" % ( pkgName, top )))
 
     releaseList = [ ]
     for dirPath, dirs, files in os.walk( pkgDir, topdown=True ):
@@ -174,10 +174,10 @@ def getMacrosFromFile( filePath, macroDict, debug = False, required = False ):
     '''
     if not os.path.isfile( filePath ):
         if required:
-            print("getMacrosFromFile Error: unable to open %s" % filePath) 
+            print(("getMacrosFromFile Error: unable to open %s" % filePath)) 
         return macroDict
     if debug:
-        print("getMacrosFromFile %s: %d versions on entry" % ( filePath, len(macroDict) ))
+        print(("getMacrosFromFile %s: %d versions on entry" % ( filePath, len(macroDict) )))
     in_file = open( filePath, "r" )
     for line in in_file:
         line = line.strip()
@@ -207,7 +207,7 @@ def getMacrosFromFile( filePath, macroDict, debug = False, required = False ):
             macroValue = macroMatch.group(2)
             if macroName and macroValue:
                 if debug:
-                    print("getMacrosFromFile: %s = %s" % ( macroName, macroValue ))
+                    print(("getMacrosFromFile: %s = %s" % ( macroName, macroValue )))
                 macroDict[ macroName ] = macroValue
                 break
 
@@ -217,7 +217,7 @@ def getMacrosFromFile( filePath, macroDict, debug = False, required = False ):
         macroDict[macroName] = expandMacros( macroValue, macroDict )
 
     if debug:
-        print("getMacrosFromFile %s: %d versions on exit" % ( filePath, len(macroDict) ))
+        print(("getMacrosFromFile %s: %d versions on exit" % ( filePath, len(macroDict) )))
     return macroDict
 
 def getEpicsPkgDependents( topDir, debug=False ):
@@ -229,7 +229,7 @@ def getEpicsPkgDependents( topDir, debug=False ):
     # Get the base and dependent modules from RELEASE files
     releaseFile = os.path.join( topDir, "configure", "RELEASE" )
     if debug:
-        print("getEpicsPkgDependents: Checking release file: %s" % ( releaseFile ))
+        print(("getEpicsPkgDependents: Checking release file: %s" % ( releaseFile )))
     if os.path.isfile( releaseFile ):
         macroDict = getMacrosFromFile( releaseFile, macroDict, debug=debug )
 
@@ -254,7 +254,7 @@ def getEpicsPkgDependents( topDir, debug=False ):
             pkgVersion = '/'.join( macroValue.split('/')[-3:] )
         if pkgName and pkgVersion:
             if debug:
-                print("getEpicsPkgDependents: %s = %s" % ( pkgName, pkgVersion ))
+                print(("getEpicsPkgDependents: %s = %s" % ( pkgName, pkgVersion )))
             pkgDependents[ pkgName ] = pkgVersion
 
     return pkgDependents
@@ -287,10 +287,10 @@ def update_pkg_dependency( topDir, pkgSpecs, debug=False, verbose=False ):
     """
     # Check for a valid top directory
     if not os.path.isdir( topDir ):
-        print("update_pkg_dependency: Invalid topDir: %s" % topDir)
+        print(("update_pkg_dependency: Invalid topDir: %s" % topDir))
         return 0
     if verbose:
-        print("update_pkg_dependency: %s" % topDir)
+        print(("update_pkg_dependency: %s" % topDir))
 
     # Get current pkgSpecs
     oldPkgDependents = getEpicsPkgDependents( topDir, debug=debug )
@@ -298,10 +298,10 @@ def update_pkg_dependency( topDir, pkgSpecs, debug=False, verbose=False ):
     for pkgName in oldPkgDependents:
         pkgSpec = pkgName + "/" + oldPkgDependents[pkgName]
         if verbose:
-            print("OLD: %s" % pkgSpec)
+            print(("OLD: %s" % pkgSpec))
         oldMacroVersions.update( pkgSpecToMacroVersions( pkgSpec ) )
     if len(oldMacroVersions) == 0:
-        print("update_pkg_dependency error: No pkgSpecs found under topDir:\n%s" % topDir)
+        print(("update_pkg_dependency error: No pkgSpecs found under topDir:\n%s" % topDir))
         return 0
 
     # Convert the list of pkgSpecs into a list of macroVersions
@@ -309,7 +309,7 @@ def update_pkg_dependency( topDir, pkgSpecs, debug=False, verbose=False ):
     newMacroVersions = {}
     for pkgSpec in pkgSpecs:
         if verbose:
-            print("NEW: %s" % pkgSpec)
+            print(("NEW: %s" % pkgSpec))
         newMacroVersions.update( pkgSpecToMacroVersions( pkgSpec ) )
     if len(newMacroVersions) == 0:
         print("update_pkg_dependency error: No valid converions for pkgSpecs:")
