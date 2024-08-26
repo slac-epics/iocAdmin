@@ -1,5 +1,8 @@
 Release Notes for iocStats
 --------------------------
+R3.1.16-1.4.0: 2024-08-26 Jeremy Lorelli
+	Convert all python scripts to python 3. This is required for Rocky 9 support as python 2.7 is not available there.
+
 R3.1.16-1.3.2: 2020-05-15 Bruce Hill
 	Restore CONFIG_RESTORE and CONFIG_EDL for pre EPICS 7 support of cwConfig installs.
 
