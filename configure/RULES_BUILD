@@ -16,10 +16,14 @@ PYTHON=python3
 build : $(IOCRELEASE_DB)
 buildInstall : $(INSTALL_IOCRELEASE_DBS)
 
+ifeq ($(EPICS_VERSION),7)
+IOCRELEASE_FLAGS=-7
+endif
+
 # Create database for module version PVs
 $(IOCRELEASE_DB)   : $(TOP)/configure/RELEASE
 	$(RM) $@
-	$(PYTHON) $(IOCADMIN)/bin/$(EPICS_HOST_ARCH)/iocReleaseCreateDb.py $^ > $@
+	$(PYTHON) $(IOCADMIN)/bin/$(EPICS_HOST_ARCH)/iocReleaseCreateDb.py $(IOCRELEASE_FLAGS) $^ > $@
 
 $(INSTALL_DB)/%: %
 	@echo "Installing db file $@"
