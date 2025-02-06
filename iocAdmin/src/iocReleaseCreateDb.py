@@ -10,7 +10,7 @@ from version_utils import *
 __all__ = ['export_db_file', 'process_options']
 
 
-def export_db_file( module_versions, path=None):
+def export_db_file( module_versions, path=None, is_epics7=False):
     """
     Use the contents of a dictionary of module versions to create a database
     of module release stringin PVs. The database
@@ -47,19 +47,25 @@ def export_db_file( module_versions, path=None):
         x = key.replace("_MODULE_VERSION","",1)
         if idx >= idxMax:
             break
-        print('record(stringin, "$(IOC):RELEASE%02d") {' % idx, file=out_file)
+        print('record(%s, "$(IOC):RELEASE%02d") {' % ('lsi' if is_epics7 else 'stringin', idx), file=out_file)
+        if is_epics7:
+            print('  field(INP, {const:"%s"})' % module_version, file=out_file)
+        else:
+            print('  field(VAL, "%s")' % module_version[:38], file=out_file) # Truncate module_version at 40 chars (including NULL terminator). Otherwise this DB will fail to load.
         print('  field(DESC, "%s")' % x, file=out_file)
         print('  field(PINI, "YES")', file=out_file) 
-        print('  field(VAL, "%s")' % module_version[:38], file=out_file) # Truncate module_version at 40 chars (including NULL terminator). Otherwise this DB will fail to load.
         print('  #field(ASG, "some read only grp")', file=out_file) 
         print('}', file=out_file)
         idx = idx + 1
 
     while idx < idxMax:
-        print('record(stringin, "$(IOC):RELEASE%02d") {' % idx, file=out_file)
+        print('record(%s, "$(IOC):RELEASE%02d") {' % ('lsi' if is_epics7 else 'stringin', idx), file=out_file)
         print('  field(DESC, "Not Applicable")', file=out_file)
-        print('  field(PINI, "YES")', file=out_file) 
-        print('  field(VAL, "Not Applicable")', file=out_file)
+        print('  field(PINI, "YES")', file=out_file)
+        if is_epics7:
+            print('  field(INP, {const:"Not Applicable"})', file=out_file)
+        else:
+            print('  field(VAL, "Not Applicable")', file=out_file)
         print('  #field(ASG, "some read only grp")', file=out_file) 
         print('}', file=out_file)
         idx = idx + 1
@@ -81,6 +87,7 @@ def process_options(argv):
     parser = optparse.OptionParser(usage=usage, version=version)
 
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose', help='print verbose output')
+    parser.add_option('-7', action='store_true', dest='EPICS7')
     parser.add_option("-e", "--db_file", action="store", type="string", dest="db_file", metavar="FILE", help="module database file path")
 
     parser.set_defaults(verbose=False,
@@ -103,7 +110,7 @@ def main(argv=None):
     dependents = getEpicsPkgDependents( topDir )
 
     # export the iocRelease.db file
-    export_db_file( dependents, options.db_file)
+    export_db_file( dependents, options.db_file, options.EPICS7)
 
     return 0
 
