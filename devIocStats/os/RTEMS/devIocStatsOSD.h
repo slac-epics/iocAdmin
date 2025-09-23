@@ -72,6 +72,7 @@
 
 #undef malloc
 #undef free
+#undef random
 
 #if (__RTEMS_MAJOR__ > 4) || (__RTEMS_MAJOR__ == 4 && __RTEMS_MINOR__ > 7)
 #define RTEMS_PROTECTED_HEAP
