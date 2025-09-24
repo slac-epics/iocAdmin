@@ -5,6 +5,10 @@ Release Notes for iocStats
 # Releases
 
 ## iocStats-R3-2-0:
+R3.2.0-1.0.0: 2025-09-23 Jeremy Lorelli
+    Add support for RTEMS 7 (cherry-picked)
+    Fix issue with iocClusters.db (cherry-picked)
+
 
 **NOTE** Please note that as of 3-2-0, there is a pre-commit (https://pre-commit.com/) workflow that
 includes
