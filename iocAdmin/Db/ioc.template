@@ -175,6 +175,18 @@ record(ai, "$(IOCNAME):SUSP_TASK_CNT") {
   info(autosaveFields_pass0, "HOPR LOPR HIHI HIGH LOW LOLO HHSV HSV LSV LLSV")
 }
 
+record(ai, "$(IOCNAME):TASK_CNT") {
+  field(DESC, "Number of Tasks")
+  field(SCAN, "I/O Intr")
+  field(DTYP, "IOC stats")
+  field(INP, "@tasks")
+  field(HIGH, "64")
+  field(HSV, "MINOR")
+  field(HIHI, "100")
+  field(HSV, "MAJOR")
+  info(autosaveFields_pass0, "HOPR LOPR HIHI HIGH LOW LOLO HHSV HSV LSV LLSV")
+}
+
 record(ai, "$(IOCNAME):MEM_USED") {
   field(DESC, "Allocated Memory")
   field(SCAN, "I/O Intr")

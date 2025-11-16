@@ -100,9 +100,9 @@ extern int devIocStatsGetMemUsage (memInfo *pval);
 extern int devIocStatsInitWorkspaceUsage (void);
 extern int devIocStatsGetWorkspaceUsage (memInfo *pval);
 
-/* Suspended Tasks */
+/* Tasks */
 extern int devIocStatsInitSuspTasks (void);
-extern int devIocStatsGetSuspTasks (int *pval);
+extern int devIocStatsGetTaskInfo (int *nsusp, int *ntasks);
 
 /* Cluster Info */
 extern int devIocStatsInitClusterInfo (void);

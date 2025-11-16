@@ -42,12 +42,12 @@
 
 int devIocStatsInitSuspTasks (void) { return 0; }
 
-int devIocStatsGetSuspTasks (int *pval)
+int devIocStatsGetTaskInfo (int *nsusp, int *ntasks)
 {
     Objects_Control   *o;
     Objects_Id        id = OBJECTS_ID_INITIAL_INDEX;
     Objects_Id        nid;
-    int               n = 0;
+    int               n = 0, k = 0;
     Objects_Locations l;
 
     /* count all suspended (LOCAL -- cannot deal with remote ones ATM) tasks */
@@ -55,9 +55,12 @@ int devIocStatsGetSuspTasks (int *pval)
         if ( (RTEMS_ALREADY_SUSPENDED == rtems_task_is_suspended( nid )) ) {
             n++;
         }
+        k++;
         _Thread_Enable_dispatch();
         id = nid;
     }
-    *pval = n;
+    *nsusp = n;
+    *ntasks = k;
     return 0;
 }
+

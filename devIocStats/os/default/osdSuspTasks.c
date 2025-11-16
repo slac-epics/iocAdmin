@@ -37,8 +37,9 @@ int devIocStatsInitSuspTasks (void)
     return 0;
 }
 
-int devIocStatsGetSuspTasks (int *pval)
+int devIocStatsGetTaskInfo (int *nsusp, int *ntasks)
 {
-    *pval = suspendedTasks;
+    *nsusp = suspendedTasks;
+    *ntasks = 0;
     return 0;
 }

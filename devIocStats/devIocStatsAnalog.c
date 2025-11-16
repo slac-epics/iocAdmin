@@ -204,6 +204,7 @@ static void statsCpuUsage(double*);
 static void statsCpuUtilization(double*);
 static void statsNoOfCpus(double*);
 static void statsSuspendedTasks(double*);
+static void statsTaskCount(double*);
 static void statsFdUsage(double*);
 static void statsFdMax(double*);
 static void statsCAConnects(double*);
@@ -259,6 +260,7 @@ static validGetParms statsGetParms[]={
         { "cpu",			statsCpuUtilization,    LOAD_TYPE },
         { "no_of_cpus",			statsNoOfCpus,		LOAD_TYPE },
         { "suspended_tasks",		statsSuspendedTasks,	LOAD_TYPE },
+        { "tasks",					statsTaskCount,	LOAD_TYPE },
 	{ "fd",				statsFdUsage,		FD_TYPE },
         { "maxfd",			statsFdMax,	        FD_TYPE },
 	{ "ca_clients",			statsCAClients,		CA_TYPE },
@@ -307,6 +309,7 @@ static scanInfo scan[TOTAL_TYPES] = {{0}};
 static fdInfo fdusage = {0,0};
 static loadInfo loadinfo = {1,0.,0.};
 static int susptasknumber = 0;
+static int tasksnumber = 0;
 static int recordnumber = 0;
 static clustInfo clustinfo[2] = {{{0}},{{0}}};
 static int mbufnumber[2] = {0,0};
@@ -385,12 +388,14 @@ static void scan_time(int type)
       {
 	loadInfo loadinfo_local = {1,0.,0.};
 	int      susptasknumber_local = 0;
+	int      task_count = 0;
         devIocStatsGetCpuUsage(&loadinfo_local);
         devIocStatsGetCpuUtilization(&loadinfo_local);
-        devIocStatsGetSuspTasks(&susptasknumber_local);
+        devIocStatsGetTaskInfo(&susptasknumber_local, &task_count);
         epicsMutexLock(scan_mutex);
 	loadinfo       = loadinfo_local;
 	susptasknumber = susptasknumber_local;
+	tasksnumber = task_count;
         epicsMutexUnlock(scan_mutex);
 	break;
       }
@@ -754,6 +759,10 @@ static void statsNoOfCpus(double* val)
 static void statsSuspendedTasks(double *val)
 {
     *val = (double)susptasknumber;
+}
+static void statsTaskCount(double *val)
+{
+	*val = (double)tasksnumber;
 }
 static void statsFdUsage(double* val)
 {
