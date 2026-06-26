@@ -38,6 +38,8 @@ testIocStatsApp      | Application for testing devIocStats only
 Contains a series of $IOC:RELEASE00 - $IOC:RELEASE19 stringin records
 set to the first 20 module versions defined via $TOP/Makefile/RELEASE.
 
+Also contains $IOC:APPRELEASE, set to the IOC application release.
+
 This file is created in your IOC by adding the following line to your TOP/\*App/Db/Makefile:
 IOCRELEASE_DB  +=  iocRelease.db
 

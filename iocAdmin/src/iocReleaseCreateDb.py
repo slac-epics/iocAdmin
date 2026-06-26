@@ -10,7 +10,7 @@ from version_utils import *
 __all__ = ['export_db_file', 'process_options']
 
 
-def export_db_file( module_versions, path=None, is_epics7=False):
+def export_db_file( module_versions, app_version, path=None, is_epics7=False):
     """
     Use the contents of a dictionary of module versions to create a database
     of module release stringin PVs. The database
@@ -53,8 +53,8 @@ def export_db_file( module_versions, path=None, is_epics7=False):
         else:
             print('  field(VAL, "%s")' % module_version[:38], file=out_file) # Truncate module_version at 40 chars (including NULL terminator). Otherwise this DB will fail to load.
         print('  field(DESC, "%s")' % x, file=out_file)
-        print('  field(PINI, "YES")', file=out_file) 
-        print('  #field(ASG, "some read only grp")', file=out_file) 
+        print('  field(PINI, "YES")', file=out_file)
+        print('  #field(ASG, "some read only grp")', file=out_file)
         print('}', file=out_file)
         idx = idx + 1
 
@@ -66,9 +66,20 @@ def export_db_file( module_versions, path=None, is_epics7=False):
             print('  field(INP, {const:"Not Applicable"})', file=out_file)
         else:
             print('  field(VAL, "Not Applicable")', file=out_file)
-        print('  #field(ASG, "some read only grp")', file=out_file) 
+        print('  #field(ASG, "some read only grp")', file=out_file)
         print('}', file=out_file)
         idx = idx + 1
+
+    # Include app release
+    print('record(%s, "$(IOC):APPRELEASE") {' % ('lsi' if is_epics7 else 'stringin'), file=out_file)
+    if is_epics7:
+        print('  field(INP, {const:"%s"})' % app_version, file=out_file)
+    else:
+        print('  field(VAL, "%s")' % app_version[:38], file=out_file)
+    print('  field(DESC, "Application release")', file=out_file)
+    print('  field(PINI, "YES")', file=out_file)
+    print('  #field(ASG, "some read only grp")', file=out_file)
+    print('}', file=out_file)
 
     if out_file != sys.stdout:
         out_file.close()
@@ -108,9 +119,10 @@ def main(argv=None):
     # get the IOC dependents
     topDir = os.path.abspath( os.path.dirname( os.path.dirname(options.release_file_path) ) )
     dependents = getEpicsPkgDependents( topDir )
+    app_version = os.path.basename(os.path.normpath(topDir))
 
     # export the iocRelease.db file
-    export_db_file( dependents, options.db_file, options.EPICS7)
+    export_db_file( dependents, app_version, options.db_file, options.EPICS7)
 
     return 0
 
